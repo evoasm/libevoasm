@@ -20,12 +20,10 @@ typedef enum {
   EVOASM_EXAMPLE_TYPE_F64,
 } evoasm_example_type_t;
 
-typedef struct {
-  union {
-    double f64;
-    int64_t i64;
-    uint64_t u64;
-  };
+typedef union {
+  double f64;
+  int64_t i64;
+  uint64_t u64;
 } evoasm_example_val_t;
 
 #define EVOASM_PROGRAM_IO_MAX_ARITY 8
@@ -101,6 +99,8 @@ typedef struct {
 
 typedef struct {
   evoasm_inst_id_t *insts;
+  evoasm_arch_param_id_t *params;
+  evoasm_domain_t *domains[EVOASM_ARCH_MAX_PARAMS];
   evoasm_program_size_t min_program_size;
   evoasm_program_size_t max_program_size;
   evoasm_kernel_size_t min_kernel_size;
@@ -109,14 +109,11 @@ typedef struct {
   uint16_t insts_len;
   uint8_t params_len;
   uint32_t pop_size;
-  uint32_t mutation_rate;
+  uint32_t mut_rate;
   evoasm_program_input_t program_input;
   evoasm_program_output_t program_output;
-  evoasm_arch_param_id_t *params;
   evoasm_prng64_seed_t seed64;
   evoasm_prng32_seed_t seed32;
-  evoasm_domain_t *domains[EVOASM_ARCH_MAX_PARAMS];
-
 } evoasm_search_params_t;
 
 
@@ -204,8 +201,8 @@ evoasm_program_run(evoasm_program_t *program,
                   evoasm_program_output_t *output);
 
 
-evoasm_program_t *
-evoasm_program_clone(evoasm_program_t *program);
+evoasm_success_t
+evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program);
 
 evoasm_success_t
 evoasm_program_destroy(evoasm_program_t *program);

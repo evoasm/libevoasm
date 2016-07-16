@@ -18,6 +18,15 @@
 #include "evoasm-arch.h"
 #include "evoasm-error.h"
 
+typedef enum {
+  EVOASM_STRUCT_SEARCH,
+  EVOASM_STRUCT_PROGRAM,
+  EVOASM_STRUCT_X64,
+  EVOASM_N_STRUCTS
+} evoasm_struct_t;
+
+size_t evoasm_struct_sizes[EVOASM_N_STRUCTS];
+
 void
 evoasm_init(int argc, const char **argv, FILE *log_file);
 

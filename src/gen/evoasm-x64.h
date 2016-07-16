@@ -2059,11 +2059,11 @@ evoasm_x64_func_prolog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x64_abi_t ab
 evoasm_success_t
 evoasm_x64_func_epilog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x64_abi_t abi);
 
-extern const evoasm_x64_inst_t *_evoasm_x64_insts;
+extern const evoasm_x64_inst_t *evoasm_x64_insts;
 
 static inline const evoasm_x64_inst_t *
 evoasm_x64_get_inst(unsigned index) {
-  return &_evoasm_x64_insts[index];
+  return &evoasm_x64_insts[index];
 }
 
 static inline evoasm_success_t
@@ -2073,7 +2073,7 @@ evoasm_x64_inst_enc(const evoasm_x64_inst_t *inst, evoasm_x64_t *x64, evoasm_arc
 
 static inline evoasm_success_t
 evoasm_x64_enc(evoasm_x64_t *x64, evoasm_inst_id_t inst_id, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  const evoasm_x64_inst_t *inst = &_evoasm_x64_insts[inst_id];
+  const evoasm_x64_inst_t *inst = &evoasm_x64_insts[inst_id];
   return evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
 }
 

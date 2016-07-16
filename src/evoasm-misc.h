@@ -2,22 +2,12 @@
 
 #include "evoasm-error.h"
 
-#define _EVOASM_DOMAIN_HEADER \
-  evoasm_domain_type_t type: 8; \
-  unsigned index         :24;
-
-#define _EVOASM_ENUM_HEADER \
-  _EVOASM_DOMAIN_HEADER \
-  uint16_t len;
-
 #define _EVOASM_DECL_ENUM_TYPE(l) \
   typedef struct { \
-    _EVOASM_ENUM_HEADER \
+    uint8_t type; \
+    uint16_t len; \
     int64_t vals[l]; \
   } evoasm_enum ## l ## _t;
-
-
-#define EVOASM_ENUM_MAX_LEN 32
 
 #define EVOASM_ENUM_VALS_SIZE(len) ((size_t)(len) * sizeof(int64_t))
 #define EVOASM_ENUM_SIZE(len) (sizeof(evoasm_enum_t) + EVOASM_ENUM_VALS_SIZE(len))
@@ -30,18 +20,18 @@ typedef enum {
 } evoasm_domain_type_t;
 
 typedef struct {
-  _EVOASM_DOMAIN_HEADER
-  int64_t pad[EVOASM_ENUM_MAX_LEN];
+  uint8_t type;
 } evoasm_domain_t;
 
 typedef struct {
-  _EVOASM_DOMAIN_HEADER
+  uint8_t type;
   int64_t min;
   int64_t max;
 } evoasm_interval_t;
 
 typedef struct {
-  _EVOASM_ENUM_HEADER
+  uint8_t type;
+  uint16_t len;
   int64_t vals[];
 } evoasm_enum_t;
 

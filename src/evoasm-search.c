@@ -1789,8 +1789,8 @@ done:;
 static void
 evoasm_search_mutate_kernel(evoasm_search_t *search, evoasm_kernel_params_t *child) {
   uint32_t r = evoasm_prng32_rand(&search->pop.prng32);
-  evoasm_debug("mutating child: %u < %u", r, search->params.mutation_rate);
-  if(r < search->params.mutation_rate) {
+  evoasm_debug("mutating child: %u < %u", r, search->params.mut_rate);
+  if(r < search->params.mut_rate) {
 
     r = evoasm_prng32_rand(&search->pop.prng32);
     if(child->size > search->params.min_kernel_size && r < UINT32_MAX / 16) {
@@ -2176,18 +2176,13 @@ evoasm_program_destroy_(evoasm_program_t *program, bool free_buf, bool free_body
       retval = false;
     }
   }
-  evoasm_free(program);
-  
   return retval;
 }
 
-evoasm_program_t *
-evoasm_program_clone(evoasm_program_t *program) {
-
+evoasm_success_t
+evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program) {
   unsigned i = 0;
   bool free_buf = false, free_body_buf = false, free_params = false;
-
-  evoasm_program_t *cloned_program = evoasm_malloc(sizeof(evoasm_program_t));
 
   *cloned_program = *program;
   cloned_program->index = 0;
@@ -2222,7 +2217,7 @@ evoasm_program_clone(evoasm_program_t *program) {
     memcpy(cloned_kernel->params, orig_kernel->params, params_size);
   }
 
-  return cloned_program;
+  return true;
   
 error_free_params:
   free_params = true;
@@ -2232,7 +2227,7 @@ error_free_buf:
   free_buf = true;  
 error:
   (void) evoasm_program_destroy_(cloned_program, free_buf, free_body_buf, free_params, i);
-  return NULL;
+  return false;
 }
 
 
