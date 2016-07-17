@@ -89,10 +89,8 @@ typedef struct evoasm_arch {
 uint16_t
 evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts);
 
-static inline evoasm_success_t
-evoasm_arch_enc(evoasm_arch_t *arch, evoasm_inst_id_t inst, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  return arch->cls->enc_func(arch, inst, param_vals, set_params);
-}
+evoasm_success_t
+evoasm_arch_enc(evoasm_arch_t *arch, evoasm_inst_id_t inst, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 
 void
 evoasm_arch_reset(evoasm_arch_t *arch);
