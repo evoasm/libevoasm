@@ -57,7 +57,7 @@ typedef enum evoasm_x64_inst_flag_t {
 #define EVOASM_X64_INST_FLAG_ALL 127
 
 
-typedef enum evoasm_x64_exception_id_t {
+typedef enum evoasm_x64_exception_t {
   EVOASM_X64_EXCEPTION_SSX = 0,
   EVOASM_X64_EXCEPTION_GPX = 1,
   EVOASM_X64_EXCEPTION_PF = 2,
@@ -83,7 +83,7 @@ typedef enum evoasm_x64_exception_id_t {
   EVOASM_X64_EXCEPTION_XF = 22,
   EVOASM_X64_EXCEPTION_PFX = 23,
   EVOASM_X64_N_EXCEPTIONS
-} evoasm_x64_exception_id_t;
+} evoasm_x64_exception_t;
 #define EVOASM_X64_EXCEPTION_BITSIZE 5
 #define EVOASM_X64_EXCEPTION_BITSIZE_WITH_N 5
 
@@ -2059,11 +2059,11 @@ evoasm_x64_func_prolog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x64_abi_t ab
 evoasm_success_t
 evoasm_x64_func_epilog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x64_abi_t abi);
 
-extern const evoasm_x64_inst_t *evoasm_x64_insts;
+extern const evoasm_x64_inst_t *_evoasm_x64_insts;
 
 static inline const evoasm_x64_inst_t *
 evoasm_x64_get_inst(unsigned index) {
-  return &evoasm_x64_insts[index];
+  return &_evoasm_x64_insts[index];
 }
 
 static inline evoasm_success_t
@@ -2073,7 +2073,7 @@ evoasm_x64_inst_enc(const evoasm_x64_inst_t *inst, evoasm_x64_t *x64, evoasm_arc
 
 static inline evoasm_success_t
 evoasm_x64_enc(evoasm_x64_t *x64, evoasm_inst_id_t inst_id, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  const evoasm_x64_inst_t *inst = &evoasm_x64_insts[inst_id];
+  const evoasm_x64_inst_t *inst = &_evoasm_x64_insts[inst_id];
   return evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
 }
 
