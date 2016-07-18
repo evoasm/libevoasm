@@ -386,7 +386,7 @@ enc_failed:
 
 static evoasm_x64_reg_id_t
 evoasm_op_x64_reg_id(evoasm_x64_operand_t *op, evoasm_kernel_param_t *param) {
-  const evoasm_x64_inst_t *inst = evoasm_x64_get_inst(param->inst);
+  const evoasm_x64_inst_t *inst = evoasm_x64_inst(param->inst);
 
   if(op->param_idx < inst->params_len) {
     return (evoasm_x64_reg_id_t) param->param_vals[inst->params[op->param_idx].id];
@@ -487,7 +487,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
 
   for(i = 0; i < kernel_params->size; i++) {
     evoasm_kernel_param_t *param = &kernel_params->params[i];
-    const evoasm_x64_inst_t *x64_inst = evoasm_x64_get_inst(param->inst);
+    const evoasm_x64_inst_t *x64_inst = evoasm_x64_inst(param->inst);
 
     for(j = 0; j < x64_inst->n_operands; j++) {
       evoasm_x64_operand_t *op = &x64_inst->operands[j];
@@ -900,7 +900,7 @@ evoasm_program_x64_emit_kernel(evoasm_program_t *program, evoasm_kernel_t *kerne
 
   assert(kernel_params->size > 0);
   for(i = 0; i < kernel_params->size; i++) {
-    const evoasm_x64_inst_t *inst = evoasm_x64_get_inst(kernel_params->params[i].inst);
+    const evoasm_x64_inst_t *inst = evoasm_x64_inst(kernel_params->params[i].inst);
     evoasm_x64_inst_t *x64_inst = (evoasm_x64_inst_t *) inst;
     program->exception_mask = program->exception_mask | x64_inst->exceptions;
     EVOASM_TRY(error, evoasm_x64_inst_enc,
@@ -1494,7 +1494,7 @@ evoasm_search_eval_program(evoasm_search_t *search,
 
 static bool
 evoasm_kernel_param_x64_writes_p(evoasm_kernel_param_t *param, evoasm_reg_id_t reg_id, evoasm_x64_reg_modif_acc *reg_modif_acc) {
-  const evoasm_x64_inst_t *x64_inst = evoasm_x64_get_inst(param->inst);
+  const evoasm_x64_inst_t *x64_inst = evoasm_x64_inst(param->inst);
   unsigned i;
 
   for(i = 0; i < x64_inst->n_operands; i++) {
@@ -1562,7 +1562,7 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
 
       fprintf(stderr, "marking writer %d\n", writer_idx);
       evoasm_kernel_param_t *param = &kernel->params->params[writer_idx];
-      const evoasm_x64_inst_t *x64_inst = evoasm_x64_get_inst(param->inst);
+      const evoasm_x64_inst_t *x64_inst = evoasm_x64_inst(param->inst);
       evoasm_bitmap_set(inst_bitmap, writer_idx);
       ctx->change = true;
 
@@ -2099,7 +2099,7 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
       sizeof(evoasm_domain_t));
 
   for(i = 0; i < search->params.insts_len; i++) {
-    const evoasm_x64_inst_t *inst =  evoasm_x64_get_inst(search->params.insts[i]);
+    const evoasm_x64_inst_t *inst =  evoasm_x64_inst(search->params.insts[i]);
     for(j = 0; j < search->params.params_len; j++) {
       evoasm_domain_t *inst_domain = &search->domains[i * search->params.params_len + j];
       evoasm_arch_param_id_t param_id =search->params.params[j];
