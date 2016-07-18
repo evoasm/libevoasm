@@ -55,7 +55,7 @@ evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code
                 unsigned line, const char *format, ...);
 
 
-extern _Thread_local evoasm_error_t evoasm_last_error;
+extern _Thread_local evoasm_error_t _evoasm_last_error;
 
 #define EVOASM_TRY(label, func, ...) \
   do { if(!func(__VA_ARGS__)) {goto label;} } while(0)
@@ -63,7 +63,7 @@ extern _Thread_local evoasm_error_t evoasm_last_error;
 #define evoasm_success_t evoasm_check_return bool
 
 #define evoasm_set_error(type, code, data, ...) \
-  evoasm_error_set(&evoasm_last_error, (type), (code), (data),\
+  evoasm_error_set(&_evoasm_last_error, (type), (code), (data),\
                    __FILE__, __LINE__, __VA_ARGS__)
 
 #define evoasm_assert_not_reached() \
