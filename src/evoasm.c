@@ -19,3 +19,12 @@ size_t
 evoasm_struct_size(evoasm_struct_t strct) {
   return _evoasm_struct_sizes[strct];
 }
+
+#define _EVOASM_DEFINE_ALLOC_FREE_FUNCS(type) \
+evoasm_##type##_t *evoasm_##type##_alloc() { return evoasm_malloc(sizeof(evoasm_##type##_t)); }\
+void evoasm_##type##_free(evoasm_##type##_t *ptr) { evoasm_free(ptr); }
+
+_EVOASM_DEFINE_ALLOC_FREE_FUNCS(search)
+_EVOASM_DEFINE_ALLOC_FREE_FUNCS(program)
+_EVOASM_DEFINE_ALLOC_FREE_FUNCS(x64)
+

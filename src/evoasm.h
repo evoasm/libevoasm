@@ -25,6 +25,3 @@ typedef enum {
   EVOASM_N_STRUCTS
 } evoasm_struct_t;
 
-void
-evoasm_init(int argc, const char **argv, FILE *log_file);
-
