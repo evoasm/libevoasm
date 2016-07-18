@@ -33,12 +33,25 @@ void
 evoasm_arch_destroy(evoasm_arch_t *arch) {
 }
 
-void
+size_t
 evoasm_arch_save(evoasm_arch_t *arch, evoasm_buf_t *buf) {
-  uint8_t len = (uint8_t)(arch->buf_end - arch->buf_start);
+  size_t len = (size_t) (arch->buf_end - arch->buf_start);
 
   memcpy(buf->data + buf->pos, arch->buf + arch->buf_start, len);
   buf->pos += len;
 
   evoasm_arch_reset(arch);
+
+  return len;
+}
+
+size_t
+evoasm_arch_save2(evoasm_arch_t *arch, uint8_t *buf) {
+  size_t len = (size_t) (arch->buf_end - arch->buf_start);
+
+  memcpy(buf, arch->buf + arch->buf_start, len);
+
+  evoasm_arch_reset(arch);
+
+  return len;
 }

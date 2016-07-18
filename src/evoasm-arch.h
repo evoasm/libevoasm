@@ -101,7 +101,7 @@ evoasm_arch_init(evoasm_arch_t *arch, evoasm_arch_cls_t *cls);
 void
 evoasm_arch_destroy(evoasm_arch_t *arch);
 
-void
+size_t
 evoasm_arch_save(evoasm_arch_t *arch, evoasm_buf_t *buf);
 
 static inline void
