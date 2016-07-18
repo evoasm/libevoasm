@@ -59,6 +59,8 @@ evoasm_x64_inst_enc(const evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
   return inst->enc_func(x64, param_vals, set_params);
 }
 
+#include "gen/evoasm-x64.h"
+
 extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
 
 static inline const evoasm_x64_inst_t *
@@ -71,8 +73,6 @@ evoasm_x64_enc(evoasm_x64_t *x64, evoasm_inst_id_t inst_id, evoasm_arch_param_va
   const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
   return evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
 }
-
-#include "gen/evoasm-x64.h"
 
 typedef struct {
   _EVOASM_ARCH_PARAMS_HEADER
