@@ -24,7 +24,7 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
 
 #include "gen/evoasm-x64.c"
 
-static uint16_t
+uint16_t
 evoasm_x64_insts(evoasm_x64_t *x64, evoasm_x64_inst_id_t *insts, evoasm_arch_insts_flags_t flags) {
   uint16_t len = 0;
   unsigned i, j;
@@ -76,9 +76,7 @@ static evoasm_arch_cls_t evoasm_x64_cls = {
     EVOASM_ARCH_X64,
     EVOASM_X64_N_INSTS,
     EVOASM_X64_N_PARAMS,
-    15,
-    (evoasm_arch_insts_func_t) evoasm_x64_insts,
-    (evoasm_arch_enc_func_t) evoasm_x64_enc,
+    15
 };
 
 static evoasm_success_t

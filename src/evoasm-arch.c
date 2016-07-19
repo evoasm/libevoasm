@@ -5,16 +5,6 @@
 
 EVOASM_DECL_LOG_TAG("arch")
 
-uint16_t
-evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts, evoasm_arch_insts_flags_t flags) {
-  return arch->cls->insts_func(arch, insts, flags);
-}
-
-evoasm_success_t
-evoasm_arch_enc(evoasm_arch_t *arch, evoasm_inst_id_t inst, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  return arch->cls->enc_func(arch, inst, param_vals, set_params);
-}
-
 void
 evoasm_arch_reset(evoasm_arch_t *arch) {
   arch->buf_start = EVOASM_ARCH_BUF_CAPA / 2;

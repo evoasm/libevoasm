@@ -824,7 +824,7 @@ evoasm_program_x64_emit_kernel_transitions(evoasm_program_t *program,
   if(jmp_insts_len > 0) {
     evoasm_inst_id_t jmp_inst_id = jmp_insts[kernel->params->jmp_selector % jmp_insts_len];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);
-    EVOASM_TRY(error, evoasm_arch_enc, arch, jmp_inst_id, params.vals, (evoasm_bitmap_t *) &params.set);
+    EVOASM_TRY(error, evoasm_x64_enc, x64, jmp_inst_id, params.vals, (evoasm_bitmap_t *) &params.set);
     evoasm_arch_save(arch, buf);
     branch_phi = _EVOASM_BUF_PHI_GET(buf);
     assert(*branch_phi == 0xdeadbeef);

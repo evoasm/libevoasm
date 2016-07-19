@@ -49,8 +49,6 @@ typedef struct {
   uint16_t n_insts;
   uint8_t n_params;
   uint8_t max_inst_len;
-  evoasm_arch_insts_func_t insts_func;
-  evoasm_arch_enc_func_t enc_func;
 } evoasm_arch_cls_t;
 
 typedef enum {
@@ -91,12 +89,6 @@ typedef struct evoasm_arch {
   evoasm_inst_id_t id; \
   uint16_t params_len; \
   evoasm_arch_param_t *params; \
-
-uint16_t
-evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts, evoasm_arch_insts_flags_t flags);
-
-evoasm_success_t
-evoasm_arch_enc(evoasm_arch_t *arch, evoasm_inst_id_t inst, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 
 void
 evoasm_arch_reset(evoasm_arch_t *arch);
