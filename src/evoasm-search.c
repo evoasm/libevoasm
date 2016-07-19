@@ -2099,7 +2099,7 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
       sizeof(evoasm_domain_t));
 
   for(i = 0; i < search->params.insts_len; i++) {
-    const evoasm_x64_inst_t *inst =  evoasm_x64_inst(search->params.insts[i]);
+    const evoasm_x64_inst_t *inst = evoasm_x64_inst(search->params.insts[i]);
     for(j = 0; j < search->params.params_len; j++) {
       evoasm_domain_t *inst_domain = &search->domains[i * search->params.params_len + j];
       evoasm_arch_param_id_t param_id =search->params.params[j];

@@ -12,6 +12,12 @@ typedef struct {
   uint64_t features;
 } evoasm_x64_t;
 
+typedef enum {
+  EVOASM_X64_INSTS_FLAG_RFLAGS = (1 << (EVOASM_N_INSTS_FLAGS)),
+  EVOASM_X64_INSTS_FLAG_GP = (1 << (EVOASM_N_INSTS_FLAGS + 1)),
+  EVOASM_X64_INSTS_FLAG_XMM = (1 << (EVOASM_N_INSTS_FLAGS + 2)),
+} evoasm_x64_insts_flags_t;
+
 typedef struct {
   unsigned acc_r: 1;
   unsigned acc_w: 1;
@@ -38,6 +44,7 @@ typedef struct {
   uint32_t exceptions;
   uint32_t flags;
 } evoasm_x64_inst_t;
+
 
 #define EVOASM_X64_ENC(inst) \
   EVOASM_TRY(enc_failed, evoasm_x64_##inst, x64, params.vals, (evoasm_bitmap_t *) &params.set)
@@ -95,4 +102,3 @@ evoasm_x64_func_prolog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x64_abi_t ab
 
 evoasm_success_t
 evoasm_x64_func_epilog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x64_abi_t abi);
-

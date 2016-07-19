@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+
 #include "evoasm-error.h"
 #include "evoasm-param.h"
 #include "evoasm-buf.h"
@@ -31,7 +32,12 @@ typedef enum {
 struct evoasm_arch;
 struct evoasm_inst;
 
-typedef uint16_t (*evoasm_arch_insts_func_t)(struct evoasm_arch *arch, evoasm_inst_id_t *insts);
+typedef enum {
+  EVOASM_ARCH_INSTS_FLAG_SEARCH = (1 << 0),
+} evoasm_arch_insts_flags_t;
+#define EVOASM_N_INSTS_FLAGS 1
+
+typedef uint16_t (*evoasm_arch_insts_func_t)(struct evoasm_arch *arch, evoasm_inst_id_t *insts, evoasm_arch_insts_flags_t flags);
 typedef evoasm_success_t (*evoasm_arch_enc_func_t)(struct evoasm_arch *arch, evoasm_inst_id_t inst, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 
 typedef enum {
@@ -87,7 +93,7 @@ typedef struct evoasm_arch {
   evoasm_arch_param_t *params; \
 
 uint16_t
-evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts);
+evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts, evoasm_arch_insts_flags_t flags);
 
 evoasm_success_t
 evoasm_arch_enc(evoasm_arch_t *arch, evoasm_inst_id_t inst, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params);

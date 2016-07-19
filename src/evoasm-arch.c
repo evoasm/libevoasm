@@ -6,8 +6,8 @@
 EVOASM_DECL_LOG_TAG("arch")
 
 uint16_t
-evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts) {
-  return arch->cls->insts_func(arch, insts);
+evoasm_arch_insts(evoasm_arch_t *arch, evoasm_inst_id_t *insts, evoasm_arch_insts_flags_t flags) {
+  return arch->cls->insts_func(arch, insts, flags);
 }
 
 evoasm_success_t
