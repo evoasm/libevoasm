@@ -824,7 +824,7 @@ evoasm_program_x64_emit_kernel_transitions(evoasm_program_t *program,
   if(jmp_insts_len > 0) {
     evoasm_inst_id_t jmp_inst_id = jmp_insts[kernel->params->jmp_selector % jmp_insts_len];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);
-    EVOASM_TRY(error, evoasm_x64_enc, x64, jmp_inst_id, params.vals, (evoasm_bitmap_t *) &params.set);
+    EVOASM_TRY(error, _evoasm_x64_enc, x64, jmp_inst_id, params.vals, (evoasm_bitmap_t *) &params.set);
     evoasm_arch_save(arch, buf);
     branch_phi = _EVOASM_BUF_PHI_GET(buf);
     assert(*branch_phi == 0xdeadbeef);
@@ -1684,13 +1684,14 @@ error:
 
 static evoasm_success_t
 evoasm_search_eval_population(evoasm_search_t *search, unsigned char *programs,
-                             evoasm_loss_t max_loss, evoasm_search_result_func_t result_func,
-                             void *user_data) {
+                              evoasm_search_result_func_t result_func,
+                              void *user_data) {
   unsigned i, j;
   struct evoasm_signal_context signal_ctx = {0};
   evoasm_population_t *pop = &search->pop;
   bool retval;
   unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(&search->params.program_input);
+  evoasm_loss_t max_loss = search->params.max_loss;
 
   evoasm_signal_context_install(&signal_ctx, search->arch);
 
@@ -1999,14 +2000,14 @@ evoasm_search_new_generation(evoasm_search_t *search, unsigned char **programs) 
 
 static evoasm_success_t
 evoasm_search_start_(evoasm_search_t *search, unsigned char **programs,
-                    evoasm_loss_t max_loss, evoasm_search_result_func_t result_func,
-                    void *user_data) {
+                     evoasm_search_result_func_t result_func,
+                     void *user_data) {
   unsigned gen;
   evoasm_loss_t last_loss = 0.0;
   unsigned ups = 0;
 
   for(gen = 0;;gen++) {
-    if(!evoasm_search_eval_population(search, *programs, max_loss, result_func, user_data)) {
+    if(!evoasm_search_eval_population(search, *programs, result_func, user_data)) {
       return true;
     }
 
@@ -2050,17 +2051,17 @@ evoasm_search_merge(evoasm_search_t *search) {
 }
 
 void
-evoasm_search_start(evoasm_search_t *search, evoasm_loss_t max_loss, evoasm_search_result_func_t result_func, void *user_data) {
+evoasm_search_start(evoasm_search_t *search, evoasm_search_result_func_t result_func, void *user_data) {
 
   unsigned kalpa;
 
   evoasm_search_seed(search, search->pop.programs_main);
 
   for(kalpa = 0;;kalpa++) {
-    if(!evoasm_search_start_(search, &search->pop.programs_main, max_loss, result_func, user_data)) {
+    if(!evoasm_search_start_(search, &search->pop.programs_main, result_func, user_data)) {
       evoasm_search_seed(search, search->pop.programs_aux);
       evoasm_info("starting aux search");
-      if(!evoasm_search_start_(search, &search->pop.programs_aux, max_loss, result_func, user_data)) {
+      if(!evoasm_search_start_(search, &search->pop.programs_aux, result_func, user_data)) {
         evoasm_search_merge(search);
       }
       else {
@@ -2096,13 +2097,13 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
   }
 
   search->domains = evoasm_calloc((size_t)(search->params.insts_len * search->params.params_len),
-      sizeof(evoasm_domain_t));
+                                  sizeof(evoasm_domain_t));
 
   for(i = 0; i < search->params.insts_len; i++) {
     const evoasm_x64_inst_t *inst = evoasm_x64_inst(search->params.insts[i]);
     for(j = 0; j < search->params.params_len; j++) {
       evoasm_domain_t *inst_domain = &search->domains[i * search->params.params_len + j];
-      evoasm_arch_param_id_t param_id =search->params.params[j];
+      evoasm_arch_param_id_t param_id = search->params.params[j];
       for(k = 0; k < inst->params_len; k++) {
         evoasm_arch_param_t *param = &inst->params[k];
         if(param->id == param_id) {

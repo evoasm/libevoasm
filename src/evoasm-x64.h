@@ -15,9 +15,7 @@ typedef struct {
 #include "gen/evoasm-x64-misc.h"
 
 typedef enum {
-  EVOASM_X64_INSTS_FLAG_RFLAGS = (1 << (EVOASM_N_INSTS_FLAGS)),
-  EVOASM_X64_INSTS_FLAG_GP = (1 << (EVOASM_N_INSTS_FLAGS + 1)),
-  EVOASM_X64_INSTS_FLAG_XMM = (1 << (EVOASM_N_INSTS_FLAGS + 2)),
+  EVOASM_X64_INSTS_FLAG_SEARCH = (1 << 0),
 } evoasm_x64_insts_flags_t;
 
 typedef struct {
@@ -77,7 +75,8 @@ evoasm_x64_inst(unsigned index) {
 }
 
 static inline evoasm_success_t
-evoasm_x64_enc(evoasm_x64_t *x64, evoasm_inst_id_t inst_id, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
+_evoasm_x64_enc(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_arch_param_val_t *param_vals,
+                evoasm_bitmap_t *set_params) {
   const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
   return evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
 }

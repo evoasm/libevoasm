@@ -21,10 +21,6 @@ typedef enum {
 
 typedef struct {
   uint8_t type;
-} evoasm_domain_t;
-
-typedef struct {
-  uint8_t type;
   int64_t min;
   int64_t max;
 } evoasm_interval_t;
@@ -41,6 +37,11 @@ _EVOASM_DECL_ENUM_TYPE(4)
 _EVOASM_DECL_ENUM_TYPE(8)
 _EVOASM_DECL_ENUM_TYPE(11)
 _EVOASM_DECL_ENUM_TYPE(16)
+
+/* evoasm_domain_t must be as large
+ * as biggest enum
+ */
+typedef evoasm_enum16_t evoasm_domain_t;
 
 typedef struct {
   uint64_t data[16];

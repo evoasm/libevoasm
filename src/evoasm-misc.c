@@ -1,5 +1,6 @@
 #include "evoasm.h"
 #include "evoasm-util.h"
+#include "evoasm-misc.h"
 
 //static const char *_evoasm_log_tag = "general";
 

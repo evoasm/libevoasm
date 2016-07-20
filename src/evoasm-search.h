@@ -114,6 +114,7 @@ typedef struct {
   evoasm_program_output_t program_output;
   evoasm_prng64_seed_t seed64;
   evoasm_prng32_seed_t seed32;
+  evoasm_loss_t max_loss;
 } evoasm_search_params_t;
 
 
@@ -192,8 +193,7 @@ typedef bool (*evoasm_search_result_func_t)(evoasm_program_t *program,
                                          evoasm_loss_t loss, void *user_data);
 
 void
-evoasm_search_start(evoasm_search_t *search, evoasm_loss_t max_loss,
-                   evoasm_search_result_func_t func, void *user_data);
+evoasm_search_start(evoasm_search_t *search, evoasm_search_result_func_t func, void *user_data);
 
 bool
 evoasm_program_run(evoasm_program_t *program,
