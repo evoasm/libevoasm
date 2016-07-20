@@ -1,17 +1,8 @@
 #include "evoasm-x64.h"
 
-static const char *_evoasm_log_tag = "x64";
+//static const char *_evoasm_log_tag = "x64";
 
 uint8_t evoasm_x64_reg_type_sizes[EVOASM_X64_N_REG_TYPES] = {0};
-
-static int64_t
-evoasm_x64_disp_size(evoasm_x64_t *x64, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  evoasm_arch_param_val_t val = param_vals[EVOASM_X64_PARAM_DISP];
-  if(!evoasm_bitmap_get(set_params, EVOASM_X64_PARAM_DISP)) return 0;
-  if(val >= INT8_MIN && val <= INT8_MAX) return 8;
-  if(val >= INT32_MIN && val <= INT32_MAX) return 32;
-  return 0;
-}
 
 static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
     EVOASM_X64_REG_BP,
@@ -22,8 +13,6 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
     EVOASM_X64_REG_15,
 };
 
-#include "gen/evoasm-x64.c"
-
 uint16_t
 evoasm_x64_insts(evoasm_x64_t *x64, evoasm_x64_inst_id_t *insts, evoasm_arch_insts_flags_t flags) {
   uint16_t len = 0;
@@ -31,7 +20,7 @@ evoasm_x64_insts(evoasm_x64_t *x64, evoasm_x64_inst_id_t *insts, evoasm_arch_ins
   bool search_flag = flags & EVOASM_ARCH_INSTS_FLAG_SEARCH;
 
   for(i = 0; i < EVOASM_X64_N_INSTS; i++) {
-    const evoasm_x64_inst_t *inst = &_EVOASM_X64_STATIC_INSTS_VAR_NAME[i];
+    const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[i];
     
     if(search_flag && (inst->features & ~x64->features) != 0) goto skip;
     if(search_flag && inst->n_operands == 0) goto skip;
@@ -158,9 +147,15 @@ evoasm_x64_init(evoasm_x64_t *x64) {
   }
   return true;
 
-  cpuid_failed:
+cpuid_failed:
   evoasm_arch_destroy(arch);
   return false;
+}
+
+
+uint64_t
+evoasm_x64_features(evoasm_x64_t *x64) {
+  return x64->features;
 }
 
 void

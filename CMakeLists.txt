@@ -10,7 +10,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}\
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DEVOASM_MIN_LOG_LEVEL=EVOASM_LOG_LEVEL_DEBUG")
 
-#include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCE_FILES
     src/evoasm-alloc.c
@@ -33,6 +33,8 @@ set(SOURCE_FILES
     src/evoasm.c
     src/evoasm.h
     src/evoasm-x64.c
-    src/evoasm-x64.h)
+    src/evoasm-x64.h
+    src/gen/evoasm-x64-misc.c
+    src/gen/evoasm-x64-insts.c)
 
 add_library(evoasm SHARED ${SOURCE_FILES})

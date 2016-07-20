@@ -12,6 +12,8 @@ typedef struct {
   uint64_t features;
 } evoasm_x64_t;
 
+#include "gen/evoasm-x64-misc.h"
+
 typedef enum {
   EVOASM_X64_INSTS_FLAG_RFLAGS = (1 << (EVOASM_N_INSTS_FLAGS)),
   EVOASM_X64_INSTS_FLAG_GP = (1 << (EVOASM_N_INSTS_FLAGS + 1)),
@@ -59,14 +61,13 @@ typedef enum {
   EVOASM_X64_ABI_SYSV
 } evoasm_x64_abi_t;
 
+#include "gen/evoasm-x64-insts.h"
 
 static inline evoasm_success_t
 evoasm_x64_inst_enc(const evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
                     evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
   return inst->enc_func(x64, param_vals, set_params);
 }
-
-#include "gen/evoasm-x64.h"
 
 extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
 
@@ -90,6 +91,14 @@ _Static_assert(EVOASM_X64_N_PARAMS <= EVOASM_ARCH_MAX_PARAMS,
                 "Too much parameters. Redeclar EVOASM_ARCH_MAX_PARAMS and evoasm_arch_params_bitmap.");
 
 
+static inline int64_t
+evoasm_x64_disp_size(evoasm_x64_t *x64, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
+  evoasm_arch_param_val_t val = param_vals[EVOASM_X64_PARAM_DISP];
+  if(!evoasm_bitmap_get(set_params, EVOASM_X64_PARAM_DISP)) return 0;
+  if(val >= INT8_MIN && val <= INT8_MAX) return 8;
+  if(val >= INT32_MIN && val <= INT32_MAX) return 32;
+  return 0;
+}
 
 void
 evoasm_x64_destroy(evoasm_x64_t *x64);
