@@ -1698,7 +1698,7 @@ evoasm_search_eval_population(evoasm_search_t *search, unsigned char *adfs,
   for(i = 0; i < search->params.pop_size; i++) {
     evoasm_loss_t loss;
     evoasm_adf_params_t *adf_params = _EVOASM_SEARCH_ADF_PARAMS(search, adfs, i);
-    
+
     /* encode solution */
     evoasm_adf_t adf = {
       .params = adf_params,
@@ -2260,7 +2260,7 @@ evoasm_adf_size(evoasm_adf_t *adf) {
 const uint8_t *
 evoasm_adf_code(evoasm_adf_t *adf, unsigned kernel_idx, size_t *len) {
   evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
-  *len = kernel->buf_end - kernel->buf_start;
+  *len = (size_t) kernel->buf_end - kernel->buf_start;
   return adf->body_buf->data + kernel->buf_start;
 }
 
