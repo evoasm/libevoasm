@@ -26,23 +26,23 @@ typedef union {
   uint64_t u64;
 } evoasm_example_val_t;
 
-#define EVOASM_PROGRAM_IO_MAX_ARITY 8
+#define EVOASM_ADF_IO_MAX_ARITY 8
 
 typedef struct {
   uint8_t arity;
   uint16_t len;
   evoasm_example_val_t *vals;
-  evoasm_example_type_t types[EVOASM_PROGRAM_IO_MAX_ARITY];
+  evoasm_example_type_t types[EVOASM_ADF_IO_MAX_ARITY];
 } evoasm_adf_io_t;
 
-#define EVOASM_PROGRAM_OUTPUT_MAX_ARITY EVOASM_PROGRAM_IO_MAX_ARITY
-#define EVOASM_PROGRAM_INPUT_MAX_ARITY EVOASM_PROGRAM_IO_MAX_ARITY
+#define EVOASM_ADF_OUTPUT_MAX_ARITY EVOASM_ADF_IO_MAX_ARITY
+#define EVOASM_ADF_INPUT_MAX_ARITY EVOASM_ADF_IO_MAX_ARITY
 typedef evoasm_adf_io_t evoasm_adf_output_t;
 typedef evoasm_adf_io_t evoasm_adf_input_t;
 
-#define EVOASM_PROGRAM_IO_N_EXAMPLES(adf_io) ((uint16_t)((adf_io)->len / (adf_io)->arity))
-#define EVOASM_PROGRAM_INPUT_N_EXAMPLES(adf_input) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_input)
-#define EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(adf_output) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_output)
+#define EVOASM_ADF_IO_N_EXAMPLES(adf_io) ((uint16_t)((adf_io)->len / (adf_io)->arity))
+#define EVOASM_ADF_INPUT_N_EXAMPLES(adf_input) EVOASM_ADF_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_input)
+#define EVOASM_ADF_OUTPUT_N_EXAMPLES(adf_output) EVOASM_ADF_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_output)
 
 typedef struct {
   evoasm_inst_id_t inst;
@@ -129,7 +129,7 @@ typedef struct {
   bool need_emit    : 1;
   void *_signal_ctx;
   uint32_t exception_mask;
-  evoasm_example_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
+  evoasm_example_type_t types[EVOASM_ADF_OUTPUT_MAX_ARITY];
   evoasm_example_val_t *output_vals;
   evoasm_kernel_t kernels[EVOASM_ADF_MAX_SIZE];
   uint32_t recur_counters[EVOASM_ADF_MAX_SIZE];
@@ -137,7 +137,7 @@ typedef struct {
   evoasm_adf_input_t _input;
   evoasm_adf_output_t _output;
   evoasm_search_params_t *search_params;
-  evoasm_reg_id_t output_regs[EVOASM_PROGRAM_IO_MAX_ARITY];
+  evoasm_reg_id_t output_regs[EVOASM_ADF_IO_MAX_ARITY];
   evoasm_buf_t _buf;
   evoasm_buf_t _body_buf;
 
