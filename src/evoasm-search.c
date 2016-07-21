@@ -2135,12 +2135,13 @@ evoasm_success_t
 evoasm_search_destroy(evoasm_search_t *search) {
   unsigned i;
 
-  for(i = 0; i < EVOASM_ARCH_MAX_PARAMS; i++) {
+  /*for(i = 0; i < EVOASM_ARCH_MAX_PARAMS; i++) {
     evoasm_free(search->params.domains[i]);
   }
   evoasm_free(search->params.program_input.vals);
   evoasm_free(search->params.program_output.vals);
-  evoasm_free(search->params.params);
+  evoasm_free(search->params.params);*/
+
   evoasm_free(search->domains);
   EVOASM_TRY(error, evoasm_population_destroy, &search->pop);
 
