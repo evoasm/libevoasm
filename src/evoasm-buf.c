@@ -128,3 +128,8 @@ evoasm_buf_clone(evoasm_buf_t * restrict buf, evoasm_buf_t * restrict cloned_buf
   }
   return evoasm_buf_append(cloned_buf, buf) == 0;
 }
+
+uint8_t *
+evoasm_buf_data(evoasm_buf_t *buf) {
+  return buf->data;
+}

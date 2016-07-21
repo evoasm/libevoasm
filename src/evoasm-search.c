@@ -1341,10 +1341,10 @@ evoasm_adf_assess(evoasm_adf_t *adf,
 
 static void
 evoasm_adf_load_output(evoasm_adf_t *adf,
-                           evoasm_kernel_t *kernel,
-                           evoasm_adf_input_t *input,
-                           evoasm_adf_output_t *output,
-                           evoasm_adf_output_t *loaded_output) {
+                       evoasm_kernel_t *kernel,
+                       evoasm_adf_input_t *input,
+                       evoasm_adf_output_t *output,
+                       evoasm_adf_output_t *loaded_output) {
 
   unsigned i, j;
   unsigned width = kernel->n_output_regs;
@@ -2195,8 +2195,11 @@ evoasm_adf_clone(evoasm_adf_t *adf, evoasm_adf_t *cloned_adf) {
   cloned_adf->_output.vals = NULL;
   cloned_adf->output_vals = NULL;
 
-  EVOASM_TRY(error, evoasm_buf_clone, adf->buf, cloned_adf->buf);
-  EVOASM_TRY(error_free_buf, evoasm_buf_clone, adf->body_buf, cloned_adf->body_buf);
+  EVOASM_TRY(error, evoasm_buf_clone, adf->buf, &cloned_adf->_buf);
+  EVOASM_TRY(error_free_buf, evoasm_buf_clone, adf->body_buf, &cloned_adf->_body_buf);
+
+  cloned_adf->buf = &cloned_adf->_buf;
+  cloned_adf->body_buf = &cloned_adf->_body_buf;
 
   size_t adf_params_size = sizeof(evoasm_adf_params_t);
   cloned_adf->params = evoasm_malloc(adf_params_size);
@@ -2238,3 +2241,6 @@ evoasm_success_t
 evoasm_adf_destroy(evoasm_adf_t *adf) {
   return evoasm_adf_destroy_(adf, true, true, true, UINT_MAX);
 }
+
+//evoasm_buf_t *
+//evoasm_adf_buf(evoasm_adf_t *adf, bool )

@@ -138,7 +138,9 @@ typedef struct {
   evoasm_adf_output_t _output;
   evoasm_search_params_t *search_params;
   evoasm_reg_id_t output_regs[EVOASM_PROGRAM_IO_MAX_ARITY];
-  
+  evoasm_buf_t _buf;
+  evoasm_buf_t _body_buf;
+
   union {
     /* register at index i has input i % input_arity */
     uint8_t x64[EVOASM_X64_N_REGS];
