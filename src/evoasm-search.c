@@ -301,7 +301,7 @@ evoasm_search_seed_kernel(evoasm_search_t *search, evoasm_kernel_params_t *kerne
   assert(kernel_size > 0);
   kernel_params->size = kernel_size;
   kernel_params->jmp_selector = (uint8_t) evoasm_prng32_rand_between(&search->pop.prng32, 0, UINT8_MAX);
-  kernel_params->branch_kernel_idx = (evoasm_kernel_size_t)
+  kernel_params->alt_succ_idx = (evoasm_kernel_size_t)
     evoasm_prng32_rand_between(&search->pop.prng32, 0, adf_size - 1);
 
   for(i = 0; i < kernel_size; i++) {
@@ -945,8 +945,8 @@ evoasm_adf_x64_emit_adf_kernels(evoasm_adf_t *adf, bool set_io_mapping) {
       next_kernel = NULL;
     }
     
-    assert(kernel->params->branch_kernel_idx < adf->params->size);
-    branch_kernel = &adf->kernels[kernel->params->branch_kernel_idx];
+    assert(kernel->params->alt_succ_idx < adf->params->size);
+    branch_kernel = &adf->kernels[kernel->params->alt_succ_idx];
        
     EVOASM_TRY(error, evoasm_adf_x64_emit_kernel_transitions, adf, kernel,
       next_kernel, branch_kernel, buf, &branch_phis[i], set_io_mapping);      
@@ -958,7 +958,7 @@ evoasm_adf_x64_emit_adf_kernels(evoasm_adf_t *adf, bool set_io_mapping) {
     uint32_t *branch_phi = branch_phis[i];
     if(branch_phi != NULL) {
       kernel = &adf->kernels[i];
-      uint8_t *branch_kernel_addr = kernel_addrs[kernel->params->branch_kernel_idx];
+      uint8_t *branch_kernel_addr = kernel_addrs[kernel->params->alt_succ_idx];
       assert(*branch_phi == 0xdeadbeef);
       _EVOASM_BUF_PHI_SET(branch_phi, branch_kernel_addr);
     }
@@ -1581,7 +1581,7 @@ evoasm_adf_x64_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
           if(kernel->reg_info.x64[op_reg_id].input) {
             fprintf(stderr, "marking input reg %d\n", op_reg_id);
             unsigned trans_kernels_idcs[] = {(unsigned)(kernel->idx + 1),
-                                             kernel->params->branch_kernel_idx};
+                                             kernel->params->alt_succ_idx};
             for(k = 0; k < EVOASM_ARY_LEN(trans_kernels_idcs); k++) {
               //evoasm_kernel_t *trans_kernel = &adf->kernels[trans_kernels_idcs[k]];
               for(l = 0; l < EVOASM_X64_N_REGS; l++) {
@@ -2264,7 +2264,11 @@ evoasm_adf_code(evoasm_adf_t *adf, unsigned kernel_idx, size_t *len) {
   return adf->body_buf->data + kernel->buf_start;
 }
 
-
+unsigned
+evoasm_adf_kernel_alt_succ(evoasm_adf_t *adf, unsigned kernel_idx) {
+  evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
+  return kernel->params->alt_succ_idx;
+}
 
 
 

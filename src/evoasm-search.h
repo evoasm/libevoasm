@@ -55,7 +55,7 @@ typedef struct {
   /* kernel executed next (jumped to)
    * Kernel terminates if EVOASM_KERNEL_SIZE_MAX 
    */
-  evoasm_kernel_size_t branch_kernel_idx;
+  evoasm_kernel_size_t alt_succ_idx;
   uint8_t jmp_selector;
   evoasm_kernel_param_t params[];
 } evoasm_kernel_params_t;
