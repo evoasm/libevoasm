@@ -11,7 +11,7 @@ evoasm_init(int argc, const char **argv, FILE *log_file) {
   evoasm_log_file = log_file;
 
   _evoasm_struct_sizes[EVOASM_STRUCT_SEARCH] = sizeof(evoasm_search_t);
-  _evoasm_struct_sizes[EVOASM_STRUCT_PROGRAM] = sizeof(evoasm_program_t);
+  _evoasm_struct_sizes[EVOASM_STRUCT_PROGRAM] = sizeof(evoasm_adf_t);
   _evoasm_struct_sizes[EVOASM_STRUCT_X64] = sizeof(evoasm_x64_t);
 }
 
@@ -25,6 +25,6 @@ evoasm_##type##_t *evoasm_##type##_alloc() { return evoasm_malloc(sizeof(evoasm_
 void evoasm_##type##_free(evoasm_##type##_t *ptr) { evoasm_free(ptr); }
 
 _EVOASM_DEFINE_ALLOC_FREE_FUNCS(search)
-_EVOASM_DEFINE_ALLOC_FREE_FUNCS(program)
+_EVOASM_DEFINE_ALLOC_FREE_FUNCS(adf)
 _EVOASM_DEFINE_ALLOC_FREE_FUNCS(x64)
 

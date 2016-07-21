@@ -8,7 +8,7 @@
 #include "evoasm-x64.h"
 
 typedef double evoasm_loss_t;
-typedef uint8_t evoasm_program_size_t;
+typedef uint8_t evoasm_adf_size_t;
 
 #define EVOASM_KERNEL_SIZE_MAX UINT8_MAX
 typedef uint8_t evoasm_kernel_size_t;
@@ -33,16 +33,16 @@ typedef struct {
   uint16_t len;
   evoasm_example_val_t *vals;
   evoasm_example_type_t types[EVOASM_PROGRAM_IO_MAX_ARITY];
-} evoasm_program_io_t;
+} evoasm_adf_io_t;
 
 #define EVOASM_PROGRAM_OUTPUT_MAX_ARITY EVOASM_PROGRAM_IO_MAX_ARITY
 #define EVOASM_PROGRAM_INPUT_MAX_ARITY EVOASM_PROGRAM_IO_MAX_ARITY
-typedef evoasm_program_io_t evoasm_program_output_t;
-typedef evoasm_program_io_t evoasm_program_input_t;
+typedef evoasm_adf_io_t evoasm_adf_output_t;
+typedef evoasm_adf_io_t evoasm_adf_input_t;
 
-#define EVOASM_PROGRAM_IO_N_EXAMPLES(program_io) ((uint16_t)((program_io)->len / (program_io)->arity))
-#define EVOASM_PROGRAM_INPUT_N_EXAMPLES(program_input) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_input)
-#define EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(program_output) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_output)
+#define EVOASM_PROGRAM_IO_N_EXAMPLES(adf_io) ((uint16_t)((adf_io)->len / (adf_io)->arity))
+#define EVOASM_PROGRAM_INPUT_N_EXAMPLES(adf_input) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_input)
+#define EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(adf_output) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_output)
 
 typedef struct {
   evoasm_inst_id_t inst;
@@ -61,12 +61,12 @@ typedef struct {
 } evoasm_kernel_params_t;
 
 typedef struct {
-  evoasm_program_size_t size;
-} evoasm_program_params_t;
+  evoasm_adf_size_t size;
+} evoasm_adf_params_t;
 
 #define EVOASM_KERNEL_MAX_OUTPUT_REGS 254
 #define EVOASM_KERNEL_MAX_INPUT_REGS 254
-#define EVOASM_PROGRAM_MAX_SIZE 64
+#define EVOASM_ADF_MAX_SIZE 64
 
 #define EVOASM_KERNEL_REG_INFO_N_TRANS_REGS 2
 
@@ -101,8 +101,8 @@ typedef struct {
   evoasm_inst_id_t *insts;
   evoasm_arch_param_id_t *params;
   evoasm_domain_t *domains[EVOASM_ARCH_MAX_PARAMS];
-  evoasm_program_size_t min_program_size;
-  evoasm_program_size_t max_program_size;
+  evoasm_adf_size_t min_adf_size;
+  evoasm_adf_size_t max_adf_size;
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
@@ -110,8 +110,8 @@ typedef struct {
   uint8_t params_len;
   uint32_t pop_size;
   uint32_t mut_rate;
-  evoasm_program_input_t program_input;
-  evoasm_program_output_t program_output;
+  evoasm_adf_input_t adf_input;
+  evoasm_adf_output_t adf_output;
   evoasm_prng64_seed_t seed64;
   evoasm_prng32_seed_t seed32;
   evoasm_loss_t max_loss;
@@ -131,11 +131,11 @@ typedef struct {
   uint32_t exception_mask;
   evoasm_example_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_example_val_t *output_vals;
-  evoasm_kernel_t kernels[EVOASM_PROGRAM_MAX_SIZE];
-  uint32_t recur_counters[EVOASM_PROGRAM_MAX_SIZE];
-  evoasm_program_params_t *params;
-  evoasm_program_input_t _input;
-  evoasm_program_output_t _output;
+  evoasm_kernel_t kernels[EVOASM_ADF_MAX_SIZE];
+  uint32_t recur_counters[EVOASM_ADF_MAX_SIZE];
+  evoasm_adf_params_t *params;
+  evoasm_adf_input_t _input;
+  evoasm_adf_output_t _output;
   evoasm_search_params_t *search_params;
   evoasm_reg_id_t output_regs[EVOASM_PROGRAM_IO_MAX_ARITY];
   
@@ -144,7 +144,7 @@ typedef struct {
     uint8_t x64[EVOASM_X64_N_REGS];
   } reg_inputs;
 
-} evoasm_program_t;
+} evoasm_adf_t;
 
 #define EVOASM_SEARCH_ELITE_SIZE 4
 
@@ -160,10 +160,10 @@ typedef struct {
   uint_fast8_t *matching;
   evoasm_example_val_t *output_vals;
   evoasm_loss_t *losses;
-  unsigned char *programs;
-  unsigned char *programs_main;
-  unsigned char *programs_swap;
-  unsigned char *programs_aux;
+  unsigned char *adfs;
+  unsigned char *adfs_main;
+  unsigned char *adfs_swap;
+  unsigned char *adfs_aux;
 } evoasm_population_t;
 
 #define EVOASM_EXAMPLES_MAX_ARITY 8
@@ -189,32 +189,32 @@ evoasm_search_init(evoasm_search_t *search,
 bool
 evoasm_search_destroy(evoasm_search_t *search);
 
-typedef bool (*evoasm_search_result_func_t)(evoasm_program_t *program,
+typedef bool (*evoasm_search_result_func_t)(evoasm_adf_t *adf,
                                          evoasm_loss_t loss, void *user_data);
 
 void
 evoasm_search_start(evoasm_search_t *search, evoasm_search_result_func_t func, void *user_data);
 
 bool
-evoasm_program_run(evoasm_program_t *program,
-                  evoasm_program_input_t *input,
-                  evoasm_program_output_t *output);
+evoasm_adf_run(evoasm_adf_t *adf,
+               evoasm_adf_input_t *input,
+               evoasm_adf_output_t *output);
 
 
 evoasm_success_t
-evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program);
+evoasm_adf_clone(evoasm_adf_t *adf, evoasm_adf_t *cloned_adf);
 
 evoasm_success_t
-evoasm_program_destroy(evoasm_program_t *program);
+evoasm_adf_destroy(evoasm_adf_t *adf);
 
 void
-evoasm_program_io_destroy(evoasm_program_io_t *program_io);
+evoasm_adf_io_destroy(evoasm_adf_io_t *adf_io);
 
 evoasm_success_t
-evoasm_program_eliminate_introns(evoasm_program_t *program);
+evoasm_adf_eliminate_introns(evoasm_adf_t *adf);
 
-#define evoasm_program_output_destroy(program_output) \
-  evoasm_program_io_destroy((evoasm_program_io *)program_output)
+#define evoasm_adf_output_destroy(adf_output) \
+  evoasm_adf_io_destroy((evoasm_adf_io *)adf_output)
 
 void
-evoasm_program_output_regs(evoasm_program_t *program, evoasm_reg_id_t *output_regs, size_t *len);
+evoasm_adf_output_regs(evoasm_adf_t *adf, evoasm_reg_id_t *output_regs, size_t *len);
