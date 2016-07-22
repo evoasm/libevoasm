@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(__linux__) || defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+#if defined(__linux__) || defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #  if !defined(_DEFAULT_SOURCE)
 #    define _DEFAULT_SOURCE
 #  endif

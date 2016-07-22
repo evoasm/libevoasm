@@ -1,5 +1,4 @@
 language: generic
-os: osx
 matrix:
   include:
     - os: linux
@@ -9,9 +8,12 @@ matrix:
         apt:
           packages:
             - gcc-5
+            - cmake
+            - cmake-data
           sources: &sources
             - llvm-toolchain-precise-3.8
             - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
     - os: linux
       dist: precise
       env: CC=clang-3.8
@@ -19,7 +21,12 @@ matrix:
         apt:
           packages:
             - clang-3.8
+            - cmake
+            - cmake-data
           sources: *sources
+    - os: osx
+      env: CC=clang
+
 script:
   - mkdir build
   - cd build
