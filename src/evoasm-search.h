@@ -217,6 +217,3 @@ evoasm_adf_eliminate_introns(evoasm_adf_t *adf);
 
 #define evoasm_adf_output_destroy(adf_output) \
   evoasm_adf_io_destroy((evoasm_adf_io *)adf_output)
-
-void
-evoasm_adf_output_regs(evoasm_adf_t *adf, evoasm_reg_id_t *output_regs, size_t *len);
