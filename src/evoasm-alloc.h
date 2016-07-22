@@ -4,8 +4,8 @@
 #  if !defined(_DEFAULT_SOURCE)
 #    define _DEFAULT_SOURCE
 #  endif
-#  if !defined(_BSD_SOURCE)
-#    define _BSD_SOURCE
+#  if defined(__linux__) && !defined(_GNU_SOURCE)
+#    define _GNU_SOURCE
 #  endif
 #  include <unistd.h>
 #  include <sys/mman.h>

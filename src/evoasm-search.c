@@ -1,4 +1,10 @@
-#define _DEFAULT_SOURCE
+#if !defined(_DEFAULT_SOURCE)
+#  define _DEFAULT_SOURCE
+#endif
+
+#if defined(__linux__) && !defined(_GNU_SOURCE)
+#  define _GNU_SOURCE
+#endif
 
 #include "evoasm-search.h"
 #include "evoasm-error.h"
