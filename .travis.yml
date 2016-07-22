@@ -25,6 +25,7 @@ matrix:
             - cmake-data
           sources: *sources
     - os: osx
+      osx_image: xcode8
       env: CC=clang
 
 script:
