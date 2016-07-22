@@ -1,2 +1,9 @@
+[![Build Status](https://travis-ci.org/furunkel/libevoasm.svg?branch=master)](https://travis-ci.org/furunkel/libevoasm)
 # libevoasm
-An AIMGP (Automatic Induction of Machine code by Genetic Programming) engine
+Backend library for *Evoasm*. Please see the [Ruby Evoasm frontent](https://github.com/furunkel/evoasm)
+for more information.
+
+#License
+[MPL-2.0][license]
+
+[license]: https://github.com/furunkel/libevoasm/blob/master/LICENSE.txt
