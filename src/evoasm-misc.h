@@ -1,3 +1,11 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ */
+
 #pragma once
 
 #include "evoasm-error.h"
@@ -270,4 +278,21 @@ evoasm_log2(int64_t num) {
   uint64_t log = 0;
   while (num >>= 1) ++log;
   return (int64_t)log;
+}
+
+static inline bool
+evoasm_domain_empty(evoasm_domain_t *domain) {
+  switch(domain->type) {
+    case EVOASM_DOMAIN_TYPE_ENUM:
+      return ((evoasm_enum_t *) domain)->len == 0;
+    case EVOASM_DOMAIN_TYPE_INTERVAL: {
+      evoasm_interval_t *interval = (evoasm_interval_t *) domain;
+      return interval->min >= interval->max;
+    }
+    case EVOASM_DOMAIN_TYPE_INTERVAL64:
+      return false;
+    default:
+      evoasm_assert_not_reached();
+  }
+  return false;
 }

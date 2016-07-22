@@ -1,3 +1,11 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ */
+
 #if !defined(_DEFAULT_SOURCE)
 #  define _DEFAULT_SOURCE
 #endif
@@ -8,6 +16,7 @@
 
 #include "evoasm-search.h"
 #include "evoasm-error.h"
+#include "evoasm-misc.h"
 #include <stdalign.h>
 
 #if 0
@@ -2091,12 +2100,11 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
   if(search_params->max_adf_size > EVOASM_ADF_MAX_SIZE) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
       NULL, "Program size cannot exceed %d", EVOASM_ADF_MAX_SIZE);
+    goto fail;
   }
 
   search->params = *search_params;
   search->arch = arch;
-
-  EVOASM_TRY(fail, evoasm_population_init, &search->pop, search);
 
   for(i = 0; i < search_params->params_len; i++) {
     evoasm_bitmap_set((evoasm_bitmap_t *) &active_params, search_params->params[i]);
@@ -2115,8 +2123,11 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
         if(param->id == param_id) {
           evoasm_domain_t *user_domain = search->params.domains[param_id];
           if(user_domain != NULL) {
+            if(evoasm_domain_empty(user_domain)) goto empty_domain;
+
             evoasm_domain_clone(user_domain, &cloned_domain);
             evoasm_domain_intersect(&cloned_domain, param->domain, inst_domain);
+            if(evoasm_domain_empty(inst_domain)) goto empty_domain;
           } else {
             evoasm_domain_clone(param->domain, inst_domain);
           }
@@ -2129,11 +2140,17 @@ found:;
     }
   }
 
+  EVOASM_TRY(fail, evoasm_population_init, &search->pop, search);
+
   assert(search->params.min_adf_size > 0);
   assert(search->params.min_adf_size <= search->params.max_adf_size);
 
   return true;
 fail:
+  return false;
+empty_domain:
+  evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                   NULL, "Empty domain");
   return false;
 }
 
