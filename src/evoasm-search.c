@@ -33,7 +33,7 @@ EVOASM_DECL_LOG_TAG("search")
        (size_t)EVOASM_KERNEL_MAX_OUTPUT_REGS * \
        sizeof(evoasm_example_val_t))
 
-#if (defined(__unix__) || defined(__unix) ||\
+#if (defined(__linux__) || defined(__unix__) || defined(__unix) ||\
     (defined(__APPLE__) && defined(__MACH__)))
 
 #define EVOASM_SEARCH_PROLOG_EPILOG_SIZE UINT32_C(1024)
