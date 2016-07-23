@@ -175,7 +175,8 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
   uint32_t pop_size = search->params.pop_size;
   unsigned i;
 
-  size_t body_buf_size = (size_t) (search->params.max_adf_size * search->params.max_kernel_size * search->arch->cls->max_inst_len);
+  /* FIXME: find a way to calculate tighter bound */
+  size_t body_buf_size = (size_t) (2 * search->params.max_adf_size * search->params.max_kernel_size * search->arch->cls->max_inst_len);
   size_t buf_size = EVOASM_ADF_INPUT_N_EXAMPLES(&search->params.adf_input) * (body_buf_size + EVOASM_SEARCH_PROLOG_EPILOG_SIZE);
 
   static evoasm_population_t zero_pop = {0};
@@ -294,7 +295,6 @@ evoasm_search_seed_kernel_param(evoasm_search_t *search, evoasm_kernel_param_t *
       evoasm_arch_param_val_t param_val;
 
       param_val = (evoasm_arch_param_val_t) evoasm_domain_rand(domain, &search->pop.prng64);
-      fprintf(stderr, "param_val %ld\n", param_val);
       assert(param_id < sizeof(evoasm_arch_params_bitmap_t) * CHAR_BIT);
       evoasm_arch_params_set(
           kernel_param->param_vals,
@@ -1569,34 +1569,27 @@ evoasm_adf_x64_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
 
   unsigned writers_len = evoasm_adf_x64_find_writers(adf, kernel, reg_id, index, writers);
 
-  fprintf(stderr, "found %d writers\n", writers_len);
-
   if(writers_len > 0) {
     for(i = 0; i < writers_len; i++) {
       unsigned writer_idx = writers[i];
       evoasm_bitmap_t *inst_bitmap = (evoasm_bitmap_t *) &ctx->inst_bitmaps[kernel->idx];
       if(evoasm_bitmap_get(inst_bitmap, writer_idx)) continue;
 
-      fprintf(stderr, "marking writer %d\n", writer_idx);
       evoasm_kernel_param_t *param = &kernel->params->params[writer_idx];
       const evoasm_x64_inst_t *x64_inst = evoasm_x64_inst(param->inst);
       evoasm_bitmap_set(inst_bitmap, writer_idx);
       ctx->change = true;
 
-      fprintf(stderr, "checking writer operands %d\n", x64_inst->n_operands);
-        
       for(j = 0; j < x64_inst->n_operands; j++) {
         evoasm_x64_operand_t *op = &x64_inst->operands[j];
         evoasm_x64_reg_id_t op_reg_id = evoasm_op_x64_reg_id(op, param);
 
         if(op->acc_r) {
-          fprintf(stderr, "found r op\n");
           if(writer_idx > 0) {
             evoasm_adf_x64_mark_writers(adf, kernel, op_reg_id, writer_idx - 1, ctx);
           }
 
           if(kernel->reg_info.x64[op_reg_id].input) {
-            fprintf(stderr, "marking input reg %d\n", op_reg_id);
             unsigned trans_kernels_idcs[] = {(unsigned)(kernel->idx + 1),
                                              kernel->params->alt_succ_idx};
             for(k = 0; k < EVOASM_ARY_LEN(trans_kernels_idcs); k++) {
@@ -1608,7 +1601,6 @@ evoasm_adf_x64_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
               }
             }
            } else {
-            fprintf(stderr, "marking reg %d\n", op_reg_id);
           }
         }
       }
@@ -1636,7 +1628,6 @@ evoasm_adf_mark_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, _evoasm_adf_i
   for(i = 0; i < EVOASM_X64_N_REGS; i++) {
     evoasm_bitmap_t *bitmap = (evoasm_bitmap_t *)&ctx->output_reg_bitmaps[kernel->idx];
     if(evoasm_bitmap_get(bitmap, i)) {
-      fprintf(stderr, "marking bit %d of %d\n", i, kernel->idx);
       evoasm_adf_mark_writers(adf, kernel, (evoasm_reg_id_t) i, (unsigned)(kernel->params->size - 1), ctx);
     }
   }
@@ -1680,12 +1671,9 @@ evoasm_adf_eliminate_introns(evoasm_adf_t *adf) {
         kernel->params->params[k++] = kernel->params->params[j];
       }
     }
-    fprintf(stderr, "kernel %d has now size %d\n", i, k);
     kernel->params->size = (evoasm_adf_size_t) k;
   }
-  
 
-  
   /* adf is already prepared, must be reset before doing it again */
   evoasm_adf_unprepare(adf);
   
@@ -1811,14 +1799,14 @@ evoasm_search_mutate_kernel(evoasm_search_t *search, evoasm_kernel_params_t *chi
   if(r < search->params.mut_rate) {
 
     r = evoasm_prng32_rand(&search->pop.prng32);
-    /*if(child->size > search->params.min_kernel_size && r < UINT32_MAX / 16) {
+    if(child->size > search->params.min_kernel_size && r < UINT32_MAX / 16) {
       uint32_t index = r % child->size;
 
       if(index < (uint32_t) (child->size - 1)) {
         memmove(child->params + index, child->params + index + 1, (child->size - index - 1) * sizeof(evoasm_kernel_param_t));
       }
       child->size--;
-    }*/
+    }
 
     r = evoasm_prng32_rand(&search->pop.prng32);
     {
@@ -2104,8 +2092,24 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
       NULL, "Program size cannot exceed %d", EVOASM_ADF_MAX_SIZE);
     goto fail;
   }
-
   search->params = *search_params;
+
+  size_t params_size = sizeof(evoasm_arch_param_id_t) * search_params->params_len;
+  search->params.params = evoasm_malloc(params_size);
+  memcpy(search->params.params, search_params->params, params_size);
+
+  size_t input_vals_size = sizeof(evoasm_example_val_t) * search_params->adf_input.len;
+  search->params.adf_input.vals = evoasm_malloc(input_vals_size);
+  memcpy(search->params.adf_input.vals, search_params->adf_input.vals, input_vals_size);
+
+  size_t output_vals_size = sizeof(evoasm_example_val_t) * search_params->adf_output.len;
+  search->params.adf_output.vals = evoasm_malloc(output_vals_size);
+  memcpy(search->params.adf_output.vals, search_params->adf_output.vals, output_vals_size);
+
+  size_t insts_size = sizeof(evoasm_inst_id_t) * search_params->insts_len;
+  search->params.insts = evoasm_malloc(insts_size);
+  memcpy(search->params.insts, search_params->insts, insts_size);
+
   search->arch = arch;
 
   for(i = 0; i < search_params->params_len; i++) {
@@ -2143,9 +2147,10 @@ found:;
     }
   }
 
+  /*
   for(i = 0; i < domains_len; i++) {
     evoasm_domain_log(&search->domains[i], EVOASM_LOG_LEVEL_WARN);
-  }
+  }*/
 
   EVOASM_TRY(fail, evoasm_population_init, &search->pop, search);
 
@@ -2164,14 +2169,10 @@ empty_domain:
 evoasm_success_t
 evoasm_search_destroy(evoasm_search_t *search) {
 
-  /*
-  unsigned i;
-  for(i = 0; i < EVOASM_ARCH_MAX_PARAMS; i++) {
-    evoasm_free(search->params.domains[i]);
-  }
   evoasm_free(search->params.adf_input.vals);
   evoasm_free(search->params.adf_output.vals);
-  evoasm_free(search->params.params);*/
+  evoasm_free(search->params.params);
+  evoasm_free(search->params.insts);
 
   evoasm_free(search->domains);
   EVOASM_TRY(error, evoasm_population_destroy, &search->pop);

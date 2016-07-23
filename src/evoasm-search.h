@@ -108,7 +108,7 @@ typedef struct {
 typedef struct {
   evoasm_inst_id_t *insts;
   evoasm_arch_param_id_t *params;
-  evoasm_domain_t *domains[EVOASM_ARCH_MAX_PARAMS];
+  evoasm_domain_t **domains;
   evoasm_adf_size_t min_adf_size;
   evoasm_adf_size_t max_adf_size;
   evoasm_kernel_size_t min_kernel_size;
