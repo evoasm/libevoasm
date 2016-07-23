@@ -9,6 +9,7 @@
 #pragma once
 
 #include "evoasm-error.h"
+#include "evoasm-log.h"
 
 #define _EVOASM_DECL_ENUM_TYPE(l) \
   typedef struct { \
@@ -296,3 +297,6 @@ evoasm_domain_empty(evoasm_domain_t *domain) {
   }
   return false;
 }
+
+void
+evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level log_level);

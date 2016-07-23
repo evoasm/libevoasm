@@ -294,6 +294,8 @@ evoasm_search_seed_kernel_param(evoasm_search_t *search, evoasm_kernel_param_t *
       evoasm_arch_param_val_t param_val;
 
       param_val = (evoasm_arch_param_val_t) evoasm_domain_rand(domain, &search->pop.prng64);
+      fprintf(stderr, "param_val %ld\n", param_val);
+      assert(param_id < sizeof(evoasm_arch_params_bitmap_t) * CHAR_BIT);
       evoasm_arch_params_set(
           kernel_param->param_vals,
           (evoasm_bitmap_t *) &kernel_param->set_params,
@@ -1809,19 +1811,19 @@ evoasm_search_mutate_kernel(evoasm_search_t *search, evoasm_kernel_params_t *chi
   if(r < search->params.mut_rate) {
 
     r = evoasm_prng32_rand(&search->pop.prng32);
-    if(child->size > search->params.min_kernel_size && r < UINT32_MAX / 16) {
+    /*if(child->size > search->params.min_kernel_size && r < UINT32_MAX / 16) {
       uint32_t index = r % child->size;
 
       if(index < (uint32_t) (child->size - 1)) {
         memmove(child->params + index, child->params + index + 1, (child->size - index - 1) * sizeof(evoasm_kernel_param_t));
       }
       child->size--;
-    }
+    }*/
 
     r = evoasm_prng32_rand(&search->pop.prng32);
     {
-      evoasm_kernel_param_t *adf_param = child->params + (r % child->size);
-      evoasm_search_seed_kernel_param(search, adf_param);
+      evoasm_kernel_param_t *param = child->params + (r % child->size);
+      evoasm_search_seed_kernel_param(search, param);
     }
   }
 }
@@ -2110,7 +2112,8 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
     evoasm_bitmap_set((evoasm_bitmap_t *) &active_params, search_params->params[i]);
   }
 
-  search->domains = evoasm_calloc((size_t)(search->params.insts_len * search->params.params_len),
+  size_t domains_len = (size_t)(search->params.insts_len * search->params.params_len);
+  search->domains = evoasm_calloc(domains_len,
                                   sizeof(evoasm_domain_t));
 
   for(i = 0; i < search->params.insts_len; i++) {
@@ -2138,6 +2141,10 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
       inst_domain->type = EVOASM_N_DOMAIN_TYPES;
 found:;
     }
+  }
+
+  for(i = 0; i < domains_len; i++) {
+    evoasm_domain_log(&search->domains[i], EVOASM_LOG_LEVEL_WARN);
   }
 
   EVOASM_TRY(fail, evoasm_population_init, &search->pop, search);
