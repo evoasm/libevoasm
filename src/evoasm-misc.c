@@ -31,7 +31,7 @@ evoasm_prng32_destroy(evoasm_prng32_t *prng) {
 }
 
 void
-evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level log_level) {
+evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       unsigned i;

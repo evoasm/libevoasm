@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-typedef uint8_t evoasm_log_level;
+typedef uint8_t evoasm_log_level_t;
 #define EVOASM_LOG_LEVEL_TRACE   0
 #define EVOASM_LOG_LEVEL_DEBUG   1
 #define EVOASM_LOG_LEVEL_INFO    2
@@ -25,8 +25,8 @@ typedef uint8_t evoasm_log_level;
 #  define EVOASM_MIN_LOG_LEVEL EVOASM_LOG_LEVEL_INFO
 #endif
 
-extern evoasm_log_level evoasm_min_log_level;
-extern FILE *          evoasm_log_file;
+extern evoasm_log_level_t _evoasm_min_log_level;
+extern FILE *          _evoasm_log_file;
 
 #ifdef __GNUC__
 #  define EVOASM_LOG_ATTRS __attribute__ ((format(printf, 3, 4)))
@@ -38,7 +38,7 @@ extern FILE *          evoasm_log_file;
 #define EVOASM_LOG_TAG _evoasm_log_tag
 
 void
-evoasm_log(evoasm_log_level level, const char *tag, const char *format, ...) EVOASM_LOG_ATTRS;
+evoasm_log(evoasm_log_level_t level, const char *tag, const char *format, ...) EVOASM_LOG_ATTRS;
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_TRACE
 #  define evoasm_trace(...) evoasm_log(EVOASM_LOG_LEVEL_TRACE, EVOASM_LOG_TAG, __VA_ARGS__)

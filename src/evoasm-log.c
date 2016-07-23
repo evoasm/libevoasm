@@ -26,8 +26,13 @@
 #include "evoasm-log.h"
 #include "evoasm-alloc.h"
 
-evoasm_log_level evoasm_min_log_level = EVOASM_LOG_LEVEL_WARN;
-FILE *          evoasm_log_file;
+evoasm_log_level_t _evoasm_min_log_level = EVOASM_LOG_LEVEL_WARN;
+FILE *          _evoasm_log_file;
+
+void
+evoasm_set_min_log_level(evoasm_log_level_t min_log_level) {
+  _evoasm_min_log_level = min_log_level;
+}
 
 static const char *const log_levels[EVOASM_N_LOG_LEVELS] = {
   "TRACE",
@@ -49,9 +54,9 @@ static const char *const log_colors[EVOASM_N_LOG_LEVELS] = {
 
 
 void
-evoasm_log(evoasm_log_level level, const char *tag, const char *format, ...)
+evoasm_log(evoasm_log_level_t level, const char *tag, const char *format, ...)
 {
-  if(level < evoasm_min_log_level) return;
+  if(level < _evoasm_min_log_level) return;
 
   va_list args;
 
@@ -59,7 +64,7 @@ evoasm_log(evoasm_log_level level, const char *tag, const char *format, ...)
   static const char *sep1 = ":";
   static const char *sep2 = ": ";
   static const char *color_reset = "\x1b[0m";
-  bool is_tty = isatty(fileno(evoasm_log_file));
+  bool is_tty = isatty(fileno(_evoasm_log_file));
 
   size_t prefix_len = strlen(prefix);
   size_t color_len = is_tty ? strlen(log_colors[level]) : 0;
@@ -109,7 +114,7 @@ evoasm_log(evoasm_log_level level, const char *tag, const char *format, ...)
 
   //fprintf(stderr, "printing '%s'\n", full_format);
   va_start(args, format);
-  vfprintf(evoasm_log_file, full_format, args);
+  vfprintf(_evoasm_log_file, full_format, args);
   va_end(args);
 }
 

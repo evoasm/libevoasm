@@ -299,4 +299,4 @@ evoasm_domain_empty(evoasm_domain_t *domain) {
 }
 
 void
-evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level log_level);
+evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level);

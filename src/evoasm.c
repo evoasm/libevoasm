@@ -16,7 +16,7 @@ static size_t _evoasm_struct_sizes[EVOASM_N_STRUCTS];
 void
 evoasm_init(int argc, const char **argv, FILE *log_file) {
   if(log_file == NULL) log_file = stderr;
-  evoasm_log_file = log_file;
+  _evoasm_log_file = log_file;
 
   _evoasm_struct_sizes[EVOASM_STRUCT_SEARCH] = sizeof(evoasm_search_t);
   _evoasm_struct_sizes[EVOASM_STRUCT_PROGRAM] = sizeof(evoasm_adf_t);

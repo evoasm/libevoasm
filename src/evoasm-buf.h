@@ -48,7 +48,7 @@ intptr_t
 evoasm_buf_exec(evoasm_buf_t *buf);
 
 void
-evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level log_level);
+evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level_t log_level);
 
 evoasm_success_t
 evoasm_buf_clone(evoasm_buf_t * restrict buf, evoasm_buf_t * restrict cloned_buf);

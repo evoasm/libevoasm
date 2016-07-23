@@ -104,7 +104,7 @@ evoasm_buf_exec(evoasm_buf_t *buf) {
 }
 
 void
-evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level log_level) {
+evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level_t log_level) {
   unsigned i;
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Buffer: capa: %zu, pos: %zu, addr: %p\n", buf->capa, buf->pos, (void *) buf->data);

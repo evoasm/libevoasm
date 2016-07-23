@@ -567,6 +567,7 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
   }
 
   assert(kernel->n_output_regs <= EVOASM_KERNEL_MAX_OUTPUT_REGS);
+  assert(kernel->n_output_regs > 0);
   assert(kernel->n_input_regs <= EVOASM_KERNEL_MAX_INPUT_REGS);
 }
 
@@ -1109,7 +1110,7 @@ evoasm_adf_log_adf_output(evoasm_adf_t *adf,
                                   evoasm_kernel_t *kernel,
                                   evoasm_adf_output_t *output,
                                   uint_fast8_t * const matching,
-                                  evoasm_log_level log_level) {
+                                  evoasm_log_level_t log_level) {
 
   unsigned n_examples = EVOASM_ADF_OUTPUT_N_EXAMPLES(output);
   unsigned height = output->arity;
@@ -1143,7 +1144,7 @@ evoasm_adf_log_dist_dist_mat(evoasm_adf_t *adf,
                                unsigned height,
                                double *dist_mat,
                                uint_fast8_t *matching,
-                               evoasm_log_level log_level) {
+                               evoasm_log_level_t log_level) {
 
   unsigned width = kernel->n_output_regs;
   unsigned i, j;
