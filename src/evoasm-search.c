@@ -2083,17 +2083,73 @@ evoasm_search_start(evoasm_search_t *search, evoasm_search_result_func_t result_
 done:;
 }
 
+static bool
+evoasm_search_params_valid(evoasm_search_params_t *search_params) {
+
+  if(search_params->max_adf_size > EVOASM_ADF_MAX_SIZE) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "Program size cannot exceed %d", EVOASM_ADF_MAX_SIZE);
+    goto fail;
+  }
+
+  if(search_params->params_len == 0) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "No parameters given");
+    goto fail;
+  }
+
+  if(search_params->insts_len == 0) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "No instructions given");
+    goto fail;
+  }
+
+  if(search_params->adf_input.len == 0) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "No input values given");
+    goto fail;
+  }
+
+  if(search_params->adf_output.len == 0) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "No output values given");
+    goto fail;
+  }
+
+  if(search_params->pop_size == 0) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "Population size cannot be zero");
+    goto fail;
+  }
+
+  if(search_params->min_adf_size == 0 || search_params->min_adf_size > search_params->max_adf_size) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "Invalid ADF size");
+    goto fail;
+  }
+
+  if(search_params->min_kernel_size == 0 || search_params->min_kernel_size > search_params->max_kernel_size) {
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+                     NULL, "Invalid kernel size");
+    goto fail;
+  }
+
+  return true;
+
+fail:
+    return false;
+}
+
 evoasm_success_t
 evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_params_t *search_params) {
   unsigned i, j, k;
   evoasm_domain_t cloned_domain;
   evoasm_arch_params_bitmap_t active_params = {0};
 
-  if(search_params->max_adf_size > EVOASM_ADF_MAX_SIZE) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
-      NULL, "Program size cannot exceed %d", EVOASM_ADF_MAX_SIZE);
+  if(!evoasm_search_params_valid(search_params)) {
     goto fail;
   }
+
   search->params = *search_params;
 
   size_t params_size = sizeof(evoasm_arch_param_id_t) * search_params->params_len;
