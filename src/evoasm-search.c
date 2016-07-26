@@ -2351,12 +2351,26 @@ evoasm_adf_size(evoasm_adf_t *adf) {
   return adf->params->size;
 }
 
-const uint8_t *
-evoasm_adf_code(evoasm_adf_t *adf, unsigned kernel_idx, size_t *len) {
+size_t
+evoasm_adf_kernel_code(evoasm_adf_t *adf, unsigned kernel_idx, const uint8_t **code) {
   evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
-  *len = (size_t) kernel->buf_end - kernel->buf_start;
-  return adf->body_buf->data + kernel->buf_start;
+  size_t len = (size_t) kernel->buf_end - kernel->buf_start;
+  *code = adf->body_buf->data + kernel->buf_start;
+  return len;
 }
+
+size_t
+evoasm_adf_code(evoasm_adf_t *adf, bool frame, const uint8_t **code) {
+  evoasm_buf_t *buf;
+  if(frame) {
+    buf = adf->buf;
+  } else {
+    buf = adf->body_buf;
+  }
+  *code = buf->data;
+  return buf->pos;
+}
+
 
 unsigned
 evoasm_adf_kernel_alt_succ(evoasm_adf_t *adf, unsigned kernel_idx) {
