@@ -16,7 +16,7 @@
 #include "evoasm-log.h"
 
 #define EVOASM_ARCH_BUF_CAPA 32
-#define EVOASM_ARCH_MAX_PARAMS 64
+#define EVOASM_ARCH_MAX_PARAMS 32
 
 typedef uint8_t evoasm_reg_id_t;
 #define EVOASM_REG_ID_MAX UINT8_MAX
