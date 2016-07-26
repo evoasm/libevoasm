@@ -17,6 +17,8 @@
 #include "evoasm-search.h"
 #include "evoasm-error.h"
 #include "evoasm-misc.h"
+#include "evoasm-arch.h"
+#include "evoasm-x64.h"
 #include <stdalign.h>
 
 #if 0
@@ -496,9 +498,6 @@ static void
 evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
   unsigned i, j;
 
-  //kernel->n_input_regs = 0;
-  //kernel->n_output_regs = 0;
-   
   /* NOTE: output register are register that are written to
    *       input registers are register that are read from without
    *       a previous write 
@@ -509,6 +508,7 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
 
   for(i = 0; i < kernel_params->size; i++) {
     evoasm_kernel_param_t *param = &kernel_params->params[i];
+
     const evoasm_x64_inst_t *x64_inst = evoasm_x64_inst(param->inst);
 
     for(j = 0; j < x64_inst->n_operands; j++) {
@@ -516,7 +516,6 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
       
       if(op->type == EVOASM_X64_OPERAND_TYPE_REG ||
          op->type == EVOASM_X64_OPERAND_TYPE_RM) {
-        evoasm_x64_reg_id_t reg_id;
 
         if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
           if(op->acc_r) {
@@ -526,7 +525,7 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
           }
         }
         else {
-          reg_id = evoasm_op_x64_reg_id(op, param);
+          evoasm_x64_reg_id_t reg_id = evoasm_op_x64_reg_id(op, param);
           evoasm_kernel_x64_reg_info_t *reg_info = &kernel->reg_info.x64[reg_id];
           evoasm_x64_reg_modif_acc *reg_modif_acc = &reg_modif_accs[reg_id];
 
@@ -538,7 +537,7 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
             if(!reg_info->input) {
               // has not been written before, might contain garbage
               bool dirty_read;
-              
+
               if(!reg_info->written) {
                 dirty_read = true;
               } else {
@@ -553,9 +552,6 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
           }
 
           if(op->acc_w) {
-            // ???
-            //evoasm_operand_size_t reg_size = (evoasm_operand_size_t) EVOASM_MIN(output_sizes[adf->n_output_regs],
-            //    op->acc_c ? EVOASM_N_OPERAND_SIZES : op->size);
 
             if(!reg_info->written) {
               reg_info->written = true;
@@ -2379,4 +2375,14 @@ evoasm_adf_kernel_alt_succ(evoasm_adf_t *adf, unsigned kernel_idx) {
 }
 
 
+bool
+evoasm_adf_kernel_is_input_reg(evoasm_adf_t *adf, unsigned kernel_idx, evoasm_reg_id_t reg_id) {
+  evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
+  switch(adf->arch->cls->id) {
+    case EVOASM_ARCH_X64:
+      return kernel->reg_info.x64[reg_id].input;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
 

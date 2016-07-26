@@ -25,13 +25,27 @@ uint16_t
 evoasm_x64_insts(evoasm_x64_t *x64, uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
   uint16_t len = 0;
   unsigned i, j;
+  bool search = flags & EVOASM_X64_INSTS_FLAG_SEARCH;
 
   for(i = 0; i < EVOASM_X64_N_INSTS; i++) {
+    if(search && (i == EVOASM_X64_INST_CRC32_R32_RM8 ||
+                  i == EVOASM_X64_INST_CRC32_R32_RM16 ||
+                  i == EVOASM_X64_INST_CRC32_R32_RM32 ||
+                  i == EVOASM_X64_INST_CRC32_R64_RM8 ||
+                  i == EVOASM_X64_INST_CRC32_R64_RM64 ||
+                  i == EVOASM_X64_INST_CPUID ||
+                  i == EVOASM_X64_INST_AESDEC_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESDECLAST_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESENC_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESENCLAST_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESIMC_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESKEYGENASSIST_XMM_XMMM128_IMM8)) goto skip;
+
     const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[i];
-    
+
     if((inst->features & ~features) != 0) goto skip;
 
-    if((flags & EVOASM_X64_INSTS_FLAG_SEARCH) && inst->n_operands == 0) goto skip;
+    if(search && inst->n_operands == 0) goto skip;
     
     for(j = 0; j < inst->n_operands; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
