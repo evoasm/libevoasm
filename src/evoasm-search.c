@@ -185,6 +185,8 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
   size_t adf_size = _EVOASM_ADF_SIZE(search->params.max_adf_size, search->params.max_kernel_size);
 
   pop->adfs = evoasm_calloc(3 * pop_size, adf_size);
+  if(!pop->adfs) goto adfs_alloc_failed;
+
   pop->adfs_main = pop->adfs;
   pop->adfs_swap = pop->adfs + 1 * search->params.pop_size * adf_size;
   pop->adfs_aux = pop->adfs + 2 * search->params.pop_size * adf_size;
@@ -209,6 +211,9 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
       EVOASM_MPROT_RWX);
 
   return true;
+
+adfs_alloc_failed:
+  return false;
 
 buf_alloc_failed:
   _evoasm_population_destroy(pop, false, false);
