@@ -2021,7 +2021,7 @@ evoasm_search_start_(evoasm_search_t *search, unsigned char **adfs,
     if(gen % 256 == 0) {
       unsigned n_inf;
       evoasm_loss_t loss = evoasm_search_population_loss(search, &n_inf);
-      evoasm_info("population loss: %g/%u\n\n", loss, n_inf);
+      evoasm_info("norm. population loss: %g/%u\n\n", loss / search->params.pop_size, n_inf);
 
       if(gen > 0) {
         if(last_loss <= loss) {
