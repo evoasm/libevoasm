@@ -25,7 +25,7 @@ uint16_t
 evoasm_x64_insts(evoasm_x64_t *x64, uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
   uint16_t len = 0;
   unsigned i, j;
-  bool search = flags & EVOASM_X64_INSTS_FLAG_SEARCH;
+  bool search = (flags & EVOASM_X64_INSTS_FLAG_SEARCH) != 0;
 
   for(i = 0; i < EVOASM_X64_N_INSTS; i++) {
     if(search && (i == EVOASM_X64_INST_CRC32_R32_RM8 ||
@@ -61,7 +61,7 @@ evoasm_x64_insts(evoasm_x64_t *x64, uint64_t flags, uint64_t features, uint64_t 
       }
     }
     
-    insts[len++] = i;
+    insts[len++] = (evoasm_x64_inst_id_t) i;
 skip:;
   }
   return len;
