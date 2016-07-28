@@ -50,14 +50,15 @@ evoasm_x64_insts(evoasm_x64_t *x64, uint64_t flags, uint64_t features, uint64_t 
     for(j = 0; j < inst->n_operands; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
 
-      if(((1ull << operand->type) & ~operand_types) != 0) goto skip;
+      if(((1ull << operand->type) & operand_types) == 0) goto skip;
 
-      if(operand->type == EVOASM_X64_OPERAND_TYPE_REG) {
+      if(operand->type == EVOASM_X64_OPERAND_TYPE_REG ||
+         operand->type == EVOASM_X64_OPERAND_TYPE_RM) {
         if((flags & EVOASM_X64_INSTS_FLAG_SEARCH) &&
            (operand->reg_id == EVOASM_X64_REG_SP ||
             operand->reg_id == EVOASM_X64_REG_IP)) goto skip;
 
-        if(((1ull << operand->reg_type) & ~reg_types) != 0) goto skip;
+        if(((1ull << operand->reg_type) & reg_types) == 0) goto skip;
       }
     }
     

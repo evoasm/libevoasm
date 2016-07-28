@@ -477,10 +477,8 @@ evoasm_x64_reg_modif_acc_uncovered_access(evoasm_x64_reg_modif_acc *reg_modif_ac
   if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
     if(op->size == EVOASM_OPERAND_SIZE_8) {
       uncovered_acc = l8 != reg_modif_acc->l8;
-    } else if(op->size == EVOASM_OPERAND_SIZE_16) {
-      uncovered_acc = reg_modif_acc->size < EVOASM_OPERAND_SIZE_16;
     } else {
-      uncovered_acc = false;
+      uncovered_acc = reg_modif_acc->size < op->size;
     }
   }
   else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
@@ -601,7 +599,17 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
   unsigned input_reg_idx;
 
   evoasm_debug("n input regs %d", kernel->n_input_regs);
-
+#if 0
+  for(input_reg_id = 9; input_reg_id < 25; input_reg_id++) {
+    if(input_reg_id == EVOASM_X64_REG_SP) continue;
+    evoasm_x64_params_t params = {0};
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
+    /*FIXME: hard-coded example type */
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, 0);
+    EVOASM_X64_ENC(mov_r64_imm64);
+    evoasm_arch_save(adf->arch, adf->buf);
+  }
+#endif
 
   for(input_reg_id = 0, input_reg_idx = 0; input_reg_idx < kernel->n_input_regs; input_reg_id++) {
     if(!kernel->reg_info.x64[input_reg_id].input) continue;
@@ -1127,11 +1135,18 @@ evoasm_adf_log_adf_output(evoasm_adf_t *adf,
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "OUTPUT MATRICES:\n");
 
+  for(i = 0; i < width; i++) {
+    evoasm_log(log_level, EVOASM_LOG_TAG, " %d  ", adf->output_regs[i]);
+  }
+
+  evoasm_log(log_level, EVOASM_LOG_TAG, " \n\n ");
+
   for(i = 0; i < n_examples; i++) {
     for(j = 0; j < height; j++) {
       for(k = 0; k < width; k++) {
         bool matched = matching[j] == k;
         evoasm_example_val_t val = adf->output_vals[i * width + k];
+
         if(matched) {
           evoasm_log(log_level, EVOASM_LOG_TAG, " \x1b[1m ");
         }
@@ -1340,16 +1355,6 @@ evoasm_adf_assess(evoasm_adf_t *adf,
   }
 
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
-  if(loss == 0.0) {
-    evoasm_adf_log_adf_output(adf,
-                              kernel,
-                              output,
-                              matching,
-                              EVOASM_LOG_LEVEL_DEBUG);
-  }
-#endif
-
   for(i = 0; i < height; i++) {
     switch(adf->arch->cls->id) {
       case EVOASM_ARCH_X64: {
@@ -1360,6 +1365,16 @@ evoasm_adf_assess(evoasm_adf_t *adf,
         evoasm_assert_not_reached();
     }
   }
+
+#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
+  if(loss == 0.0) {
+    evoasm_adf_log_adf_output(adf,
+                              kernel,
+                              output,
+                              matching,
+                              EVOASM_LOG_LEVEL_DEBUG);
+  }
+#endif
 
   return loss;
 }
