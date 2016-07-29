@@ -460,9 +460,23 @@ evoasm_kernel_param_x64_l8(evoasm_kernel_param_t *param) {
 }
 
 static void
+evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
+  static evoasm_x64_reg_write_acc_t zero_reg_write_acc = {0};
+  *reg_write_acc = zero_reg_write_acc;
+
+  reg_write_acc->size = EVOASM_N_OPERAND_SIZES;
+}
+
+static void
 evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t*reg_write_acc,
                                 evoasm_x64_operand_t *op, evoasm_kernel_param_t *param) {
-  reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size);
+  if(reg_write_acc->size < EVOASM_N_OPERAND_SIZES) {
+    reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size);
+  }
+  else {
+    reg_write_acc->size = op->size;
+  }
+
   reg_write_acc->mask |= op->acc_w_mask;
   reg_write_acc->l8 |= evoasm_kernel_param_x64_l8(param);
 }
@@ -473,6 +487,11 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
                                        evoasm_kernel_param_t *param) {
   bool uncovered_acc;
   bool l8 = evoasm_kernel_param_x64_l8(param);
+
+  assert(reg_write_acc->size <= EVOASM_N_OPERAND_SIZES);
+  if(reg_write_acc->size == EVOASM_N_OPERAND_SIZES) {
+    return true;
+  }
 
   if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
     /* 32bit writes clear the whole register */
@@ -513,7 +532,10 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
    */
   evoasm_kernel_params_t *kernel_params = kernel->params;
 
-  evoasm_x64_reg_write_acc_t reg_write_accs[EVOASM_X64_N_REGS] = {0};
+  evoasm_x64_reg_write_acc_t reg_write_accs[EVOASM_X64_N_REGS];
+  for(i = 0; i < EVOASM_X64_N_REGS; i++) {
+    evoasm_x64_reg_write_acc_init(&reg_write_accs[i]);
+  }
 
   for(i = 0; i < kernel_params->size; i++) {
     evoasm_kernel_param_t *param = &kernel_params->params[i];
@@ -605,7 +627,7 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
   unsigned input_reg_idx;
 
   evoasm_debug("n input regs %d", kernel->n_input_regs);
-#if 0
+#if 1
   for(input_reg_id = 9; input_reg_id < 25; input_reg_id++) {
     if(input_reg_id == EVOASM_X64_REG_SP) continue;
     evoasm_x64_params_t params = {0};
@@ -1566,7 +1588,8 @@ evoasm_adf_x64_find_writers_(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_
     j = index - i;
 
     evoasm_kernel_param_t *param = &kernel->params->params[j];
-    evoasm_x64_reg_write_acc_t reg_write_acc = {0};
+    evoasm_x64_reg_write_acc_t reg_write_acc;
+    evoasm_x64_reg_write_acc_init(&reg_write_acc);
 
     if(evoasm_kernel_param_x64_writes_p(param, reg_id, &reg_write_acc)) {
       writers[len++] = j;
