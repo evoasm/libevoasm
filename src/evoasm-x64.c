@@ -34,6 +34,12 @@ evoasm_x64_insts(evoasm_x64_t *x64, uint64_t flags, uint64_t features, uint64_t 
                   i == EVOASM_X64_INST_CRC32_R64_RM8 ||
                   i == EVOASM_X64_INST_CRC32_R64_RM64 ||
                   i == EVOASM_X64_INST_CPUID ||
+                  i == EVOASM_X64_INST_RDRAND_R16 ||
+                  i == EVOASM_X64_INST_RDRAND_R32 ||
+                  i == EVOASM_X64_INST_RDRAND_R64 ||
+                  i == EVOASM_X64_INST_RDSEED_R16 ||
+                  i == EVOASM_X64_INST_RDSEED_R32 ||
+                  i == EVOASM_X64_INST_RDSEED_R64 ||
                   i == EVOASM_X64_INST_AESDEC_XMM_XMMM128 ||
                   i == EVOASM_X64_INST_AESDECLAST_XMM_XMMM128 ||
                   i == EVOASM_X64_INST_AESENC_XMM_XMMM128 ||
