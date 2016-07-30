@@ -1486,9 +1486,11 @@ evoasm_adf_run(evoasm_adf_t *adf,
   signal_ctx.exception_mask = adf->exception_mask;
   adf->_signal_ctx = &signal_ctx;
 
-  if(!evoasm_adf_emit(adf, input, false, false, true, false)) {
+  if(!evoasm_adf_emit(adf, input, false, adf->need_emit, true, false)) {
     return false;
   }
+
+  adf->need_emit = false;
 
   // FIXME:
   if(kernel->n_output_regs == 0) {
@@ -2336,6 +2338,10 @@ evoasm_adf_clone(evoasm_adf_t *adf, evoasm_adf_t *cloned_adf) {
   cloned_adf->_input.vals = NULL;
   cloned_adf->_output.vals = NULL;
   cloned_adf->output_vals = NULL;
+
+  /* memory addresses in original buffer point to memory in original adf,
+   * we need to reemit assembly, this is done in a lazy fashion */
+  cloned_adf->need_emit = true;
 
   EVOASM_TRY(error, evoasm_buf_clone, adf->buf, &cloned_adf->_buf);
   EVOASM_TRY(error_free_buf, evoasm_buf_clone, adf->body_buf, &cloned_adf->_body_buf);
