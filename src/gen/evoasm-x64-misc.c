@@ -307,6 +307,12 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
   } else {
     evoasm_info("Missing support for ADX");
   }
+  if(vals[1][0] & (1 << 28)) {
+    x64->features |= (1 << EVOASM_X64_FEATURE_SHA);
+    evoasm_info("Found support for SHA");
+  } else {
+    evoasm_info("Missing support for SHA");
+  }
   if(vals[1][1] & (1 << 0)) {
     x64->features |= (1 << EVOASM_X64_FEATURE_PREFETCHWT1);
     evoasm_info("Found support for PREFETCHWT1");

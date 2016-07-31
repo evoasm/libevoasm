@@ -397,7 +397,7 @@ evoasm_search_x64_emit_mxcsr_reset(evoasm_search_t *search, evoasm_buf_t *buf) {
   evoasm_x64_params_t params = {0};
   evoasm_arch_param_val_t addr_imm = (evoasm_arch_param_val_t) (uintptr_t) &default_mxcsr_val;
 
-  evoasm_x64_reg_id_t reg_tmp0 = EVOASM_X64_REG_14;
+  evoasm_x64_reg_id_t reg_tmp0 = EVOASM_SEARCH_X64_REG_TMP;
 
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg_tmp0);
   EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
