@@ -1744,7 +1744,7 @@ evoasm_adf_eliminate_introns(evoasm_adf_t *adf) {
 
 static evoasm_success_t
 evoasm_search_eval_population(evoasm_search_t *search, unsigned char *adfs,
-                              evoasm_search_result_func_t result_func,
+                              evoasm_search_goal_func_t goal_func,
                               void *user_data) {
   unsigned i, j;
   struct evoasm_signal_context signal_ctx = {0};
@@ -1798,7 +1798,7 @@ evoasm_search_eval_population(evoasm_search_t *search, unsigned char *adfs,
       adf._output = search->params.adf_output;
       adf._input = search->params.adf_input;
 
-      if(!result_func(&adf, loss, user_data)) {
+      if(!goal_func(&adf, loss, user_data)) {
         retval = false;
         goto done;
       }
@@ -2066,14 +2066,14 @@ evoasm_search_start_(evoasm_search_t *search,
                      unsigned cycle,
                      unsigned char **adfs,
                      evoasm_search_progress_func_t progress_func,
-                     evoasm_search_result_func_t result_func,
+                     evoasm_search_goal_func_t goal_func,
                      void *user_data) {
   unsigned gen;
   evoasm_loss_t last_pop_loss = 0.0;
   unsigned ups = 0;
 
   for(gen = 0;; gen++) {
-    if(!evoasm_search_eval_population(search, *adfs, result_func, user_data)) {
+    if(!evoasm_search_eval_population(search, *adfs, goal_func, user_data)) {
       return true;
     }
 
@@ -2123,7 +2123,7 @@ evoasm_search_merge(evoasm_search_t *search) {
 void
 evoasm_search_start(evoasm_search_t *search,
                     evoasm_search_progress_func_t progress_func,
-                    evoasm_search_result_func_t result_func,
+                    evoasm_search_goal_func_t goal_func,
                     void *user_data) {
 
   unsigned cycle;
@@ -2131,10 +2131,10 @@ evoasm_search_start(evoasm_search_t *search,
   evoasm_search_seed(search, search->pop.adfs_main);
 
   for(cycle = 0;; cycle++) {
-    if(!evoasm_search_start_(search, 1, cycle, &search->pop.adfs_main, progress_func, result_func, user_data)) {
+    if(!evoasm_search_start_(search, 0, cycle, &search->pop.adfs_main, progress_func, goal_func, user_data)) {
       evoasm_search_seed(search, search->pop.adfs_aux);
       evoasm_info("starting aux search");
-      if(!evoasm_search_start_(search, 1, cycle, &search->pop.adfs_aux, progress_func, result_func, user_data)) {
+      if(!evoasm_search_start_(search, 1, cycle, &search->pop.adfs_aux, progress_func, goal_func, user_data)) {
         evoasm_search_merge(search);
       }
       else {
