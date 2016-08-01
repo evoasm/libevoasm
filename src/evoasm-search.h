@@ -202,8 +202,16 @@ evoasm_search_destroy(evoasm_search_t *search);
 typedef bool (*evoasm_search_result_func_t)(evoasm_adf_t *adf,
                                          evoasm_loss_t loss, void *user_data);
 
+typedef bool (*evoasm_search_progress_func_t)(unsigned pop_idx,
+                                              unsigned cycle, unsigned gen,
+                                              evoasm_loss_t pop_loss,
+                                              unsigned n_inf, void *user_data);
+
 void
-evoasm_search_start(evoasm_search_t *search, evoasm_search_result_func_t func, void *user_data);
+evoasm_search_start(evoasm_search_t *search,
+                    evoasm_search_progress_func_t progress_func,
+                    evoasm_search_result_func_t result_func,
+                    void *user_data);
 
 bool
 evoasm_adf_run(evoasm_adf_t *adf,

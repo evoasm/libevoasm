@@ -2061,11 +2061,15 @@ evoasm_search_new_generation(evoasm_search_t *search, unsigned char **adfs) {
 #define EVOASM_SEARCH_CONVERGENCE_THRESHOLD 0.03
 
 static evoasm_success_t
-evoasm_search_start_(evoasm_search_t *search, unsigned char **adfs,
+evoasm_search_start_(evoasm_search_t *search,
+                     unsigned pop_idx,
+                     unsigned cycle,
+                     unsigned char **adfs,
+                     evoasm_search_progress_func_t progress_func,
                      evoasm_search_result_func_t result_func,
                      void *user_data) {
   unsigned gen;
-  evoasm_loss_t last_loss = 0.0;
+  evoasm_loss_t last_pop_loss = 0.0;
   unsigned ups = 0;
 
   for(gen = 0;; gen++) {
@@ -2075,16 +2079,20 @@ evoasm_search_start_(evoasm_search_t *search, unsigned char **adfs,
 
     if(gen % 256 == 0) {
       unsigned n_inf;
-      evoasm_loss_t loss = evoasm_search_population_loss(search, &n_inf);
-      evoasm_info("norm. population loss: %g/%u\n\n", loss / search->params.pop_size, n_inf);
+      evoasm_loss_t pop_loss = evoasm_search_population_loss(search, &n_inf);
+      evoasm_info("norm. population pop_loss: %g/%u\n\n", pop_loss / search->params.pop_size, n_inf);
+
+      if(progress_func != NULL) {
+        progress_func(pop_idx, cycle, gen, pop_loss, n_inf, user_data);
+      }
 
       if(gen > 0) {
-        if(last_loss <= loss) {
+        if(last_pop_loss <= pop_loss) {
           ups++;
         }
       }
 
-      last_loss = loss;
+      last_pop_loss = pop_loss;
 
       if(ups >= 3) {
         evoasm_info("reached convergence\n");
@@ -2113,17 +2121,20 @@ evoasm_search_merge(evoasm_search_t *search) {
 }
 
 void
-evoasm_search_start(evoasm_search_t *search, evoasm_search_result_func_t result_func, void *user_data) {
+evoasm_search_start(evoasm_search_t *search,
+                    evoasm_search_progress_func_t progress_func,
+                    evoasm_search_result_func_t result_func,
+                    void *user_data) {
 
-  unsigned kalpa;
+  unsigned cycle;
 
   evoasm_search_seed(search, search->pop.adfs_main);
 
-  for(kalpa = 0;; kalpa++) {
-    if(!evoasm_search_start_(search, &search->pop.adfs_main, result_func, user_data)) {
+  for(cycle = 0;; cycle++) {
+    if(!evoasm_search_start_(search, 1, cycle, &search->pop.adfs_main, progress_func, result_func, user_data)) {
       evoasm_search_seed(search, search->pop.adfs_aux);
       evoasm_info("starting aux search");
-      if(!evoasm_search_start_(search, &search->pop.adfs_aux, result_func, user_data)) {
+      if(!evoasm_search_start_(search, 1, cycle, &search->pop.adfs_aux, progress_func, result_func, user_data)) {
         evoasm_search_merge(search);
       }
       else {
