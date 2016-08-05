@@ -54,7 +54,7 @@ typedef struct {
   unsigned write_mask: EVOASM_X64_BIT_MASK_BITSIZE;
 } evoasm_x64_operand_t;
 
-typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_t *x64, evoasm_arch_param_val_t *param_vals,
+typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals,
                                            evoasm_bitmap_t *set_params);
 
 typedef struct {
@@ -72,10 +72,10 @@ typedef struct {
   EVOASM_TRY(enc_failed, evoasm_x64_##inst, x64, params.vals, (evoasm_bitmap_t *) &params.set)
 
 #define EVOASM_X64_SET(param, val) \
-  evoasm_arch_params_set(params.vals, (evoasm_bitmap_t *) &params.set, param, val)
+  evoasm_inst_params_set(params.vals, (evoasm_bitmap_t *) &params.set, param, val)
 
 #define EVOASM_X64_UNSET(param) \
-  evoasm_arch_params_unset(params.vals, (evoasm_bitmap_t *) &params.set, param)
+  evoasm_inst_params_unset(params.vals, (evoasm_bitmap_t *) &params.set, param)
 
 typedef enum {
   EVOASM_X64_ABI_SYSV
@@ -84,28 +84,28 @@ typedef enum {
 #include "gen/evoasm-x64-insts.h"
 
 static inline evoasm_success_t
-evoasm_x64_inst_enc(const evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
-                    evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
+_evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
+                     evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
   return inst->enc_func(x64, param_vals, set_params);
 }
 
 extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
 
 static inline evoasm_x64_inst_t *
-_evoasm_x64_inst(unsigned index) {
-  return (evoasm_x64_inst_t *) &_EVOASM_X64_INSTS_VAR_NAME[index];
+_evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
+  return (evoasm_x64_inst_t *) &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
 }
 
 static inline evoasm_success_t
-_evoasm_x64_enc(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_arch_param_val_t *param_vals,
+_evoasm_x64_enc(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_inst_param_val_t *param_vals,
                 evoasm_bitmap_t *set_params) {
-  const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
-  return evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
+  evoasm_x64_inst_t *inst = _evoasm_x64_inst(inst_id);
+  return _evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
 }
 
 typedef struct {
-  _EVOASM_ARCH_PARAMS_HEADER
-  evoasm_arch_param_val_t vals[EVOASM_X64_N_PARAMS];
+  _EVOASM_INST_PARAMS_HEADER
+  evoasm_inst_param_val_t vals[EVOASM_X64_N_PARAMS];
 } evoasm_x64_params_t;
 
 _Static_assert(EVOASM_X64_N_PARAMS <= EVOASM_ARCH_MAX_PARAMS,
@@ -113,8 +113,8 @@ _Static_assert(EVOASM_X64_N_PARAMS <= EVOASM_ARCH_MAX_PARAMS,
 
 
 static inline int64_t
-evoasm_x64_disp_size(evoasm_x64_t *x64, evoasm_arch_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  evoasm_arch_param_val_t val = param_vals[EVOASM_X64_PARAM_DISP];
+evoasm_x64_disp_size(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
+  evoasm_inst_param_val_t val = param_vals[EVOASM_X64_PARAM_DISP];
   if(!evoasm_bitmap_get(set_params, EVOASM_X64_PARAM_DISP)) return 0;
   if(val >= INT8_MIN && val <= INT8_MAX) return 8;
   if(val >= INT32_MIN && val <= INT32_MAX) return 32;

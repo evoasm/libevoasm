@@ -37,8 +37,8 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
 
 
   {
-    evoasm_arch_param_val_t addr_imm;
-    addr_imm = (evoasm_arch_param_val_t)(uintptr_t) &vals[0][0];
+    evoasm_inst_param_val_t addr_imm;
+    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[0][0];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
@@ -54,8 +54,8 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
   }
 
   {
-    evoasm_arch_param_val_t addr_imm;
-    addr_imm = (evoasm_arch_param_val_t)(uintptr_t) &vals[0][1];
+    evoasm_inst_param_val_t addr_imm;
+    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[0][1];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
@@ -85,8 +85,8 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
 
 
   {
-    evoasm_arch_param_val_t addr_imm;
-    addr_imm = (evoasm_arch_param_val_t)(uintptr_t) &vals[1][0];
+    evoasm_inst_param_val_t addr_imm;
+    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[1][0];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
@@ -102,8 +102,8 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
   }
 
   {
-    evoasm_arch_param_val_t addr_imm;
-    addr_imm = (evoasm_arch_param_val_t)(uintptr_t) &vals[1][1];
+    evoasm_inst_param_val_t addr_imm;
+    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[1][1];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
@@ -129,8 +129,8 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
 
 
   {
-    evoasm_arch_param_val_t addr_imm;
-    addr_imm = (evoasm_arch_param_val_t)(uintptr_t) &vals[2][0];
+    evoasm_inst_param_val_t addr_imm;
+    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[2][0];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
@@ -146,8 +146,8 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
   }
 
   {
-    evoasm_arch_param_val_t addr_imm;
-    addr_imm = (evoasm_arch_param_val_t)(uintptr_t) &vals[2][1];
+    evoasm_inst_param_val_t addr_imm;
+    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[2][1];
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);

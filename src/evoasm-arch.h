@@ -73,7 +73,7 @@ typedef struct evoasm_arch {
 #define EVOASM_INST_HEADER \
   evoasm_inst_id_t id; \
   uint16_t params_len; \
-  evoasm_arch_param_t *params; \
+  evoasm_inst_param_t *params; \
 
 void
 evoasm_arch_reset(evoasm_arch_t *arch);

@@ -255,7 +255,7 @@ evoasm_adf_x64_emit_output_store(evoasm_adf_t *adf,
     evoasm_example_val_t *val_addr = &adf->output_vals[(example_index * kernel->n_output_regs) + i];
     evoasm_x64_reg_type_t reg_type = evoasm_x64_reg_type(reg_id);
 
-    evoasm_arch_param_val_t addr_imm = (evoasm_arch_param_val_t) (uintptr_t) val_addr;
+    evoasm_inst_param_val_t addr_imm = (evoasm_inst_param_val_t) (uintptr_t) val_addr;
 
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_SEARCH_X64_REG_TMP);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
@@ -301,12 +301,12 @@ evoasm_search_seed_kernel_param(evoasm_search_t *search, evoasm_kernel_param_t *
   for(i = 0; i < search->params.params_len; i++) {
     evoasm_domain_t *domain = &search->domains[inst_idx * search->params.params_len + i];
     if(domain->type < EVOASM_N_DOMAIN_TYPES) {
-      evoasm_arch_param_id_t param_id = search->params.params[i];
-      evoasm_arch_param_val_t param_val;
+      evoasm_inst_param_id_t param_id = search->params.params[i];
+      evoasm_inst_param_val_t param_val;
 
-      param_val = (evoasm_arch_param_val_t) evoasm_domain_rand(domain, &search->pop.prng64);
-      assert(param_id < sizeof(evoasm_arch_params_bitmap_t) * CHAR_BIT);
-      evoasm_arch_params_set(
+      param_val = (evoasm_inst_param_val_t) evoasm_domain_rand(domain, &search->pop.prng64);
+      assert(param_id < sizeof(evoasm_inst_params_bitmap_t) * CHAR_BIT);
+      evoasm_inst_params_set(
           kernel_param->param_vals,
           (evoasm_bitmap_t *) &kernel_param->set_params,
           param_id,
@@ -395,7 +395,7 @@ evoasm_search_x64_emit_mxcsr_reset(evoasm_search_t *search, evoasm_buf_t *buf) {
   static uint32_t default_mxcsr_val = 0x1f80;
   evoasm_x64_t *x64 = (evoasm_x64_t *) arch;
   evoasm_x64_params_t params = {0};
-  evoasm_arch_param_val_t addr_imm = (evoasm_arch_param_val_t) (uintptr_t) &default_mxcsr_val;
+  evoasm_inst_param_val_t addr_imm = (evoasm_inst_param_val_t) (uintptr_t) &default_mxcsr_val;
 
   evoasm_x64_reg_id_t reg_tmp0 = EVOASM_SEARCH_X64_REG_TMP;
 
@@ -662,7 +662,7 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
       case EVOASM_X64_REG_TYPE_GP: {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         /*FIXME: hard-coded example type */
-        EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_arch_param_val_t) example->i64);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_inst_param_val_t) example->i64);
         EVOASM_X64_ENC(mov_r64_imm64);
         evoasm_arch_save(adf->arch, adf->buf);
         break;
@@ -671,7 +671,7 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
         /* load address of example into tmp_reg */
         if(loaded_example != example) {
           EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_SEARCH_X64_REG_TMP);
-          EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_arch_param_val_t) (uintptr_t) &example->f64);
+          EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_inst_param_val_t) (uintptr_t) &example->f64);
           EVOASM_X64_ENC(mov_r64_imm64);
           loaded_example = example;
         }
@@ -897,7 +897,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
       uintptr_t addr_imm = (uintptr_t) counter;
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_SEARCH_X64_REG_TMP);
-      EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_arch_param_val_t) addr_imm);
+      EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_inst_param_val_t) addr_imm);
       EVOASM_X64_ENC(mov_r64_imm64);
       evoasm_arch_save(arch, buf);
 
@@ -964,7 +964,7 @@ evoasm_adf_x64_emit_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_bu
     evoasm_x64_inst_t *inst = _evoasm_x64_inst(kernel_params->params[i].inst);
     evoasm_x64_inst_t *x64_inst = (evoasm_x64_inst_t *) inst;
     adf->exception_mask = adf->exception_mask | x64_inst->exceptions;
-    EVOASM_TRY(error, evoasm_x64_inst_enc,
+    EVOASM_TRY(error, _evoasm_x64_inst_enc,
                inst,
                x64,
                kernel_params->params[i].param_vals,
@@ -2210,7 +2210,7 @@ evoasm_success_t
 evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_params_t *search_params) {
   unsigned i, j, k;
   evoasm_domain_t cloned_domain;
-  evoasm_arch_params_bitmap_t active_params = {0};
+  evoasm_inst_params_bitmap_t active_params = {0};
 
   if(!evoasm_search_params_valid(search_params)) {
     goto fail;
@@ -2218,7 +2218,7 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
 
   search->params = *search_params;
 
-  size_t params_size = sizeof(evoasm_arch_param_id_t) * search_params->params_len;
+  size_t params_size = sizeof(evoasm_inst_param_id_t) * search_params->params_len;
   search->params.params = evoasm_malloc(params_size);
   memcpy(search->params.params, search_params->params, params_size);
 
@@ -2248,9 +2248,9 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
     evoasm_x64_inst_t *inst = _evoasm_x64_inst(search->params.insts[i]);
     for(j = 0; j < search->params.params_len; j++) {
       evoasm_domain_t *inst_domain = &search->domains[i * search->params.params_len + j];
-      evoasm_arch_param_id_t param_id = search->params.params[j];
+      evoasm_inst_param_id_t param_id = search->params.params[j];
       for(k = 0; k < inst->params_len; k++) {
-        evoasm_arch_param_t *param = &inst->params[k];
+        evoasm_inst_param_t *param = &inst->params[k];
         if(param->id == param_id) {
           evoasm_domain_t *user_domain = search->params.domains[param_id];
           if(user_domain != NULL) {

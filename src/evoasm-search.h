@@ -54,8 +54,8 @@ typedef evoasm_adf_io_t evoasm_adf_input_t;
 
 typedef struct {
   evoasm_inst_id_t inst;
-  evoasm_arch_params_bitmap_t set_params;
-  evoasm_arch_param_val_t param_vals[EVOASM_ARCH_MAX_PARAMS];
+  evoasm_inst_params_bitmap_t set_params;
+  evoasm_inst_param_val_t param_vals[EVOASM_ARCH_MAX_PARAMS];
 } evoasm_kernel_param_t;
 
 typedef struct {
@@ -107,7 +107,7 @@ typedef struct {
 
 typedef struct {
   evoasm_inst_id_t *insts;
-  evoasm_arch_param_id_t *params;
+  evoasm_inst_param_id_t *params;
   evoasm_domain_t **domains;
   evoasm_adf_size_t min_adf_size;
   evoasm_adf_size_t max_adf_size;

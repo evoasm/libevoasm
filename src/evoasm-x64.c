@@ -179,10 +179,16 @@ evoasm_x64_destroy(evoasm_x64_t *x64) {
 
 
 evoasm_success_t
-evoasm_x64_enc(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_arch_param_val_t *param_vals,
+evoasm_x64_enc(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_inst_param_val_t *param_vals,
                 evoasm_bitmap_t *set_params) {
 
   return _evoasm_x64_enc(x64, inst_id, param_vals, set_params);
+}
+
+evoasm_success_t
+evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
+                     evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
+  return _evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
 }
 
 evoasm_x64_inst_t *
@@ -226,4 +232,9 @@ evoasm_x64_operand_param(evoasm_x64_operand_t *operand, evoasm_x64_inst_id_t ins
   else {
     return EVOASM_X64_N_PARAMS;
   }
+}
+
+evoasm_inst_param_t *
+evoasm_x64_inst_params(evoasm_x64_inst_t *inst) {
+  return inst->params;
 }

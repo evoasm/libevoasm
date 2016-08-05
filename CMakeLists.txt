@@ -13,28 +13,28 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DEVOASM_MIN_LOG_LEVEL=EVOASM_LO
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCE_FILES
-    src/evoasm-alloc.c
-    src/evoasm-alloc.h
-    src/evoasm-arch.c
-    src/evoasm-arch.h
-    src/evoasm-bitmap.h
-    src/evoasm-buf.c
-    src/evoasm-buf.h
-    src/evoasm-error.c
-    src/evoasm-error.h
-    src/evoasm-log.c
-    src/evoasm-log.h
-    src/evoasm-misc.c
-    src/evoasm-misc.h
-    src/evoasm-param.h
-    src/evoasm-search.c
-    src/evoasm-search.h
-    src/evoasm-util.h
-    src/evoasm.c
-    src/evoasm.h
-    src/evoasm-x64.c
-    src/evoasm-x64.h
-    src/gen/evoasm-x64-misc.c
-    src/gen/evoasm-x64-insts.c)
+        src/evoasm-alloc.c
+        src/evoasm-alloc.h
+        src/evoasm-arch.c
+        src/evoasm-arch.h
+        src/evoasm-bitmap.h
+        src/evoasm-buf.c
+        src/evoasm-buf.h
+        src/evoasm-error.c
+        src/evoasm-error.h
+        src/evoasm-log.c
+        src/evoasm-log.h
+        src/evoasm-misc.c
+        src/evoasm-misc.h
+        src/evoasm-param.h
+        src/evoasm-search.c
+        src/evoasm-search.h
+        src/evoasm-util.h
+        src/evoasm.c
+        src/evoasm.h
+        src/evoasm-x64.c
+        src/evoasm-x64.h
+        src/gen/evoasm-x64-misc.c
+        src/gen/evoasm-x64-insts.c)
 
 add_library(evoasm SHARED ${SOURCE_FILES})
