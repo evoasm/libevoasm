@@ -22,21 +22,6 @@ typedef uint8_t evoasm_reg_id_t;
 #define EVOASM_REG_ID_MAX UINT8_MAX
 typedef uint16_t evoasm_inst_id_t;
 
-typedef enum {
-  EVOASM_OPERAND_SIZE_1,
-  EVOASM_OPERAND_SIZE_8,
-  EVOASM_OPERAND_SIZE_16,
-  EVOASM_OPERAND_SIZE_32,
-  EVOASM_OPERAND_SIZE_64,
-  EVOASM_OPERAND_SIZE_128,
-  EVOASM_OPERAND_SIZE_256,
-  EVOASM_OPERAND_SIZE_512,
-  EVOASM_N_OPERAND_SIZES,
-} evoasm_operand_size_t;
-
-#define EVOASM_OPERAND_SIZE_BITSIZE 3
-#define EVOASM_OPERAND_SIZE_BITSIZE_WITH_N 4
-
 struct evoasm_arch;
 struct evoasm_inst;
 

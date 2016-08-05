@@ -26,18 +26,32 @@ typedef enum {
   EVOASM_X64_INSTS_FLAG_SEARCH = (1 << 0),
 } evoasm_x64_insts_flags_t;
 
+typedef enum {
+  EVOASM_X64_OPERAND_SIZE_8,
+  EVOASM_X64_OPERAND_SIZE_16,
+  EVOASM_X64_OPERAND_SIZE_32,
+  EVOASM_X64_OPERAND_SIZE_64,
+  EVOASM_X64_OPERAND_SIZE_128,
+  EVOASM_X64_OPERAND_SIZE_256,
+  EVOASM_X64_OPERAND_SIZE_512,
+  EVOASM_X64_N_OPERAND_SIZES,
+} evoasm_x64_operand_size_t;
+
+#define EVOASM_X64_OPERAND_SIZE_BITSIZE 3
+#define EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N 3
+
 typedef struct {
-  unsigned acc_r: 1;
-  unsigned acc_w: 1;
-  unsigned acc_u: 1;
-  unsigned acc_c: 1;
+  unsigned read: 1;
+  unsigned written: 1;
+  unsigned undefined: 1;
+  unsigned cond_written: 1;
   unsigned implicit: 1;
   unsigned param_idx: 5;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
-  unsigned size: EVOASM_OPERAND_SIZE_BITSIZE_WITH_N;
+  unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
   unsigned reg_id: EVOASM_X64_REG_BITSIZE_WITH_N;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_WITH_N;
-  unsigned acc_w_mask: EVOASM_X64_BIT_MASK_BITSIZE;
+  unsigned write_mask: EVOASM_X64_BIT_MASK_BITSIZE;
 } evoasm_x64_operand_t;
 
 typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_t *x64, evoasm_arch_param_val_t *param_vals,
