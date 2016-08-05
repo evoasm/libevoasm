@@ -185,6 +185,11 @@ evoasm_x64_enc(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_arch_para
   return _evoasm_x64_enc(x64, inst_id, param_vals, set_params);
 }
 
+evoasm_x64_inst_t *
+evoasm_x64_inst(unsigned index) {
+  return _evoasm_x64_inst(index);
+}
+
 evoasm_x64_operand_t *
 evoasm_x64_operand(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, unsigned index) {
   const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
@@ -222,4 +227,3 @@ evoasm_x64_operand_param(evoasm_x64_operand_t *operand, evoasm_x64_inst_id_t ins
     return EVOASM_X64_N_PARAMS;
   }
 }
-

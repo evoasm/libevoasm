@@ -91,9 +91,9 @@ evoasm_x64_inst_enc(const evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
 
 extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
 
-static inline const evoasm_x64_inst_t *
-evoasm_x64_inst(unsigned index) {
-  return &_EVOASM_X64_INSTS_VAR_NAME[index];
+static inline evoasm_x64_inst_t *
+_evoasm_x64_inst(unsigned index) {
+  return (evoasm_x64_inst_t *) &_EVOASM_X64_INSTS_VAR_NAME[index];
 }
 
 static inline evoasm_success_t
