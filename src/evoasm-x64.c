@@ -192,19 +192,17 @@ evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_t *x64,
 }
 
 evoasm_x64_inst_t *
-evoasm_x64_inst(unsigned index) {
+evoasm_x64_inst(evoasm_x64_t *x64, unsigned index) {
   return _evoasm_x64_inst(index);
 }
 
 evoasm_x64_operand_t *
-evoasm_x64_operand(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id, unsigned index) {
-  const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
+evoasm_x64_inst_operand(evoasm_x64_inst_t *inst, unsigned index) {
   return &inst->operands[index];
 }
 
 unsigned
-evoasm_x64_n_operands(evoasm_x64_t *x64, evoasm_x64_inst_id_t inst_id) {
-  const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
+evoasm_x64_inst_n_operands(evoasm_x64_inst_t *inst) {
   return inst->n_operands;
 }
 
@@ -222,19 +220,15 @@ _EVOASM_X64_OPERAND_DEF_FIELD_READER(type, evoasm_x64_operand_type_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(size, evoasm_x64_operand_size_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_type, evoasm_x64_reg_type_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_id, evoasm_x64_reg_id_t)
-
-evoasm_x64_param_id_t
-evoasm_x64_operand_param(evoasm_x64_operand_t *operand, evoasm_x64_inst_id_t inst_id) {
-  const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
-  if(operand->param_idx < inst->params_len) {
-    return inst->params[operand->param_idx].id;
-  }
-  else {
-    return EVOASM_X64_N_PARAMS;
-  }
-}
+_EVOASM_X64_OPERAND_DEF_FIELD_READER(param_idx, unsigned)
 
 evoasm_inst_param_t *
-evoasm_x64_inst_params(evoasm_x64_inst_t *inst) {
-  return inst->params;
+evoasm_x64_inst_param(evoasm_x64_inst_t *inst, unsigned index) {
+  return &inst->params[index];
 }
+
+unsigned
+evoasm_x64_inst_n_params(evoasm_x64_inst_t *inst) {
+  return inst->n_params;
+}
+

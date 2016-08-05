@@ -418,7 +418,7 @@ static evoasm_x64_reg_id_t
 evoasm_op_x64_reg_id(evoasm_x64_operand_t *op, evoasm_kernel_param_t *param) {
   evoasm_x64_inst_t *inst = _evoasm_x64_inst(param->inst);
 
-  if(op->param_idx < inst->params_len) {
+  if(op->param_idx < inst->n_params) {
     return (evoasm_x64_reg_id_t) param->param_vals[inst->params[op->param_idx].id];
   } else if(op->reg_id < EVOASM_X64_N_REGS) {
     return op->reg_id;
@@ -2249,7 +2249,7 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_t *arch, evoasm_search_p
     for(j = 0; j < search->params.params_len; j++) {
       evoasm_domain_t *inst_domain = &search->domains[i * search->params.params_len + j];
       evoasm_inst_param_id_t param_id = search->params.params[j];
-      for(k = 0; k < inst->params_len; k++) {
+      for(k = 0; k < inst->n_params; k++) {
         evoasm_inst_param_t *param = &inst->params[k];
         if(param->id == param_id) {
           evoasm_domain_t *user_domain = search->params.domains[param_id];

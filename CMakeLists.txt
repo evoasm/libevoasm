@@ -26,6 +26,7 @@ set(SOURCE_FILES
         src/evoasm-log.h
         src/evoasm-misc.c
         src/evoasm-misc.h
+        src/evoasm-param.c
         src/evoasm-param.h
         src/evoasm-search.c
         src/evoasm-search.h
