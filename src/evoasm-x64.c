@@ -77,7 +77,7 @@ skip:;
 static evoasm_arch_cls_t evoasm_x64_cls = {
     EVOASM_ARCH_X64,
     EVOASM_X64_N_INSTS,
-    EVOASM_X64_N_PARAMS,
+    EVOASM_X64_N_INST_PARAMS,
     15
 };
 
@@ -94,7 +94,7 @@ evoasm_x64_func_prolog_or_epilog(evoasm_x64_t *x64, evoasm_buf_t *buf, evoasm_x6
   for(i = 0; i < regs_len; i++) {
     evoasm_x64_reg_id_t reg = evoasm_x64_sysv_callee_save_regs[prolog ? i : (regs_len - 1 - i)];
     evoasm_arch_write_access(arch, (evoasm_bitmap_t *) &arch->acc, reg);
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
+    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, reg);
 
     if(prolog) {
       EVOASM_X64_ENC(push_r64);
