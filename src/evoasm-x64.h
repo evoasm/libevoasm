@@ -16,8 +16,13 @@
 #include "gen/evoasm-x64-enums.h"
 
 typedef struct {
+  bool encode_rex;
+} evoasm_x64_shared_vars_t;
+
+typedef struct {
   evoasm_arch_t base;
   uint64_t features;
+  evoasm_x64_shared_vars_t shared_vars;
 } evoasm_x64_t;
 
 #include "gen/evoasm-x64-misc.h"
