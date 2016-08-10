@@ -32,6 +32,7 @@ typedef enum {
 } evoasm_x64_insts_flags_t;
 
 typedef enum {
+  EVOASM_X64_OPERAND_SIZE_1,
   EVOASM_X64_OPERAND_SIZE_8,
   EVOASM_X64_OPERAND_SIZE_16,
   EVOASM_X64_OPERAND_SIZE_32,
@@ -43,7 +44,7 @@ typedef enum {
 } evoasm_x64_operand_size_t;
 
 #define EVOASM_X64_OPERAND_SIZE_BITSIZE 3
-#define EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N 3
+#define EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N 4
 
 typedef struct {
   unsigned read: 1;
@@ -55,9 +56,12 @@ typedef struct {
   unsigned param_idx: 5;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
   unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
-  unsigned reg_id: EVOASM_X64_REG_BITSIZE_WITH_N;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_WITH_N;
   unsigned write_mask: EVOASM_X64_BIT_MASK_BITSIZE;
+  union {
+    uint8_t reg_id;
+    int8_t imm;
+  };
 } evoasm_x64_operand_t;
 
 typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals,
