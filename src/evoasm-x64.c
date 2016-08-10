@@ -215,6 +215,7 @@ _EVOASM_X64_OPERAND_DEF_FIELD_READER(type, evoasm_x64_operand_type_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(size, evoasm_x64_operand_size_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_type, evoasm_x64_reg_type_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_id, evoasm_x64_reg_id_t)
+_EVOASM_X64_OPERAND_DEF_FIELD_READER(imm, int8_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(param_idx, unsigned)
 
 evoasm_inst_param_t *
