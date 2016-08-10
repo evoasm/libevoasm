@@ -53,9 +53,10 @@ typedef struct {
   unsigned cond_written: 1;
   unsigned implicit: 1;
   unsigned mnem: 1;
-  unsigned param_idx: 5;
+  unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
-  unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
+  unsigned size1: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
+  unsigned size2: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_WITH_N;
   unsigned write_mask: EVOASM_X64_BIT_MASK_BITSIZE;
   union {

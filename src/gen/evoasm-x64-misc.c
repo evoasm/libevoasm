@@ -307,6 +307,12 @@ evoasm_x64_load_cpuid(evoasm_x64_t *x64) {
   } else {
     evoasm_info("Missing support for ADX");
   }
+  if(vals[1][0] & (1 << 23)) {
+    x64->features |= (1 << EVOASM_X64_FEATURE_CLFLUSHOPT);
+    evoasm_info("Found support for CLFLUSHOPT");
+  } else {
+    evoasm_info("Missing support for CLFLUSHOPT");
+  }
   if(vals[1][0] & (1 << 28)) {
     x64->features |= (1 << EVOASM_X64_FEATURE_SHA);
     evoasm_info("Found support for SHA");

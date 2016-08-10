@@ -212,11 +212,22 @@ _EVOASM_X64_OPERAND_DEF_FIELD_READER(cond_written, bool)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(implicit, bool)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(mnem, bool)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(type, evoasm_x64_operand_type_t)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(size, evoasm_x64_operand_size_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_type, evoasm_x64_reg_type_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_id, evoasm_x64_reg_id_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(imm, int8_t)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(param_idx, unsigned)
+
+evoasm_x64_operand_size_t evoasm_x64_operand_size(evoasm_x64_operand_t *operand) {
+  return (evoasm_x64_operand_size_t) operand->size1;
+}
+
+evoasm_x64_operand_size_t evoasm_x64_operand_reg_size(evoasm_x64_operand_t *operand) {
+  return (evoasm_x64_operand_size_t) operand->size1;
+}
+
+evoasm_x64_operand_size_t evoasm_x64_operand_mem_size(evoasm_x64_operand_t *operand) {
+  return (evoasm_x64_operand_size_t) operand->size2;
+}
 
 evoasm_inst_param_t *
 evoasm_x64_inst_param(evoasm_x64_inst_t *inst, unsigned index) {

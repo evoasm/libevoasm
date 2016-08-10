@@ -471,10 +471,10 @@ static void
 evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t*reg_write_acc,
                                 evoasm_x64_operand_t *op, evoasm_kernel_param_t *param) {
   if(reg_write_acc->size < EVOASM_X64_N_OPERAND_SIZES) {
-    reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size);
+    reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size1);
   }
   else {
-    reg_write_acc->size = op->size;
+    reg_write_acc->size = op->size1;
   }
 
   reg_write_acc->mask |= op->write_mask;
@@ -498,17 +498,17 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
     if(reg_write_acc->size >= EVOASM_X64_OPERAND_SIZE_32) {
       uncovered_acc = false;
     } else {
-      if(op->size == EVOASM_X64_OPERAND_SIZE_8 &&
+      if(op->size1 == EVOASM_X64_OPERAND_SIZE_8 &&
          reg_write_acc->size == EVOASM_X64_OPERAND_SIZE_8) {
         uncovered_acc = l8 != reg_write_acc->l8;
       } else {
-        uncovered_acc = reg_write_acc->size < op->size;
+        uncovered_acc = reg_write_acc->size < op->size1;
       }
     }
   }
   else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
     unsigned mask;
-    if(op->size == EVOASM_X64_OPERAND_SIZE_128) {
+    if(op->size1 == EVOASM_X64_OPERAND_SIZE_128) {
       mask = EVOASM_X64_BIT_MASK_0_127;
     } else {
       mask = EVOASM_X64_BIT_MASK_ALL;

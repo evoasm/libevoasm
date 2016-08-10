@@ -15,7 +15,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
-#include <setjmp.h>
 
 #include "evoasm-util.h"
 
