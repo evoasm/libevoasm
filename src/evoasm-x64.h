@@ -51,6 +51,7 @@ typedef struct {
   unsigned undefined: 1;
   unsigned cond_written: 1;
   unsigned implicit: 1;
+  unsigned mnem: 1;
   unsigned param_idx: 5;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
   unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
@@ -63,13 +64,16 @@ typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_t *x64, evoasm_inst_param_
                                            evoasm_bitmap_t *set_params);
 
 typedef struct {
-  EVOASM_INST_HEADER
-  evoasm_x64_inst_enc_func_t enc_func;
-  uint64_t features;
-  evoasm_x64_operand_t *operands;
   uint8_t n_operands;
+  uint16_t id;
+  uint16_t n_params;
   uint32_t exceptions;
   uint32_t flags;
+  uint64_t features;
+  evoasm_inst_param_t *params;
+  evoasm_x64_inst_enc_func_t enc_func;
+  evoasm_x64_operand_t *operands;
+  char *mnem;
 } evoasm_x64_inst_t;
 
 
