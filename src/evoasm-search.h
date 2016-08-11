@@ -127,7 +127,7 @@ typedef struct {
 
 
 typedef struct {
-  evoasm_arch_t *arch;
+  evoasm_arch_ctx_t *arch_ctx;
   evoasm_buf_t *buf;
   evoasm_buf_t *body_buf;
   uint32_t index;
@@ -186,7 +186,7 @@ typedef struct {
 } evoasm_examples_t;
 
 typedef struct {
-  evoasm_arch_t *arch;
+  evoasm_arch_ctx_t *arch_ctx;
   evoasm_population_t pop;
   evoasm_search_params_t params;
   evoasm_domain_t *domains;
@@ -194,7 +194,7 @@ typedef struct {
 
 bool
 evoasm_search_init(evoasm_search_t *search,
-                   evoasm_arch_t *arch, evoasm_search_params_t *params);
+                   evoasm_arch_ctx_t *arch, evoasm_search_params_t *params);
 
 bool
 evoasm_search_destroy(evoasm_search_t *search);

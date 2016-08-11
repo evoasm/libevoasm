@@ -14,42 +14,42 @@
 EVOASM_DECL_LOG_TAG("arch")
 
 void
-evoasm_arch_reset(evoasm_arch_t *arch) {
-  arch->buf_start = EVOASM_ARCH_BUF_CAPA / 2;
-  arch->buf_end   = EVOASM_ARCH_BUF_CAPA / 2;
+evoasm_arch_ctx_reset(evoasm_arch_ctx_t *arch_ctx) {
+  arch_ctx->buf_start = EVOASM_ARCH_BUF_CAPA / 2;
+  arch_ctx->buf_end   = EVOASM_ARCH_BUF_CAPA / 2;
 }
 
 void
-evoasm_arch_init(evoasm_arch_t *arch, evoasm_arch_cls_t *cls) {
-  static evoasm_arch_t zero_arch = {0};
-  *arch = zero_arch;
-  evoasm_arch_reset(arch);
-  arch->cls = cls;
+evoasm_arch_ctx_init(evoasm_arch_ctx_t *arch_ctx, evoasm_arch_cls_t *cls) {
+  static evoasm_arch_ctx_t zero_arch = {0};
+  *arch_ctx = zero_arch;
+  evoasm_arch_ctx_reset(arch_ctx);
+  arch_ctx->cls = cls;
 }
 
 void
-evoasm_arch_destroy(evoasm_arch_t *arch) {
+evoasm_arch_ctx_destroy(evoasm_arch_ctx_t *arch_ctx) {
 }
 
 size_t
-evoasm_arch_save(evoasm_arch_t *arch, evoasm_buf_t *buf) {
-  size_t len = (size_t) (arch->buf_end - arch->buf_start);
+evoasm_arch_ctx_save(evoasm_arch_ctx_t *arch_ctx, evoasm_buf_t *buf) {
+  size_t len = (size_t) (arch_ctx->buf_end - arch_ctx->buf_start);
 
-  memcpy(buf->data + buf->pos, arch->buf + arch->buf_start, len);
+  memcpy(buf->data + buf->pos, arch_ctx->buf + arch_ctx->buf_start, len);
   buf->pos += len;
 
-  evoasm_arch_reset(arch);
+  evoasm_arch_ctx_reset(arch_ctx);
 
   return len;
 }
 
 size_t
-evoasm_arch_save2(evoasm_arch_t *arch, uint8_t *buf) {
-  size_t len = (size_t) (arch->buf_end - arch->buf_start);
+evoasm_arch_ctx_save2(evoasm_arch_ctx_t *arch_ctx, uint8_t *buf) {
+  size_t len = (size_t) (arch_ctx->buf_end - arch_ctx->buf_start);
 
-  memcpy(buf, arch->buf + arch->buf_start, len);
+  memcpy(buf, arch_ctx->buf + arch_ctx->buf_start, len);
 
-  evoasm_arch_reset(arch);
+  evoasm_arch_ctx_reset(arch_ctx);
 
   return len;
 }

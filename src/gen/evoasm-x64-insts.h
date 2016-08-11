@@ -11,3379 +11,3379 @@
 
 
 evoasm_success_t
-evoasm_x64_adc_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adc_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adc_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adcx_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adcx_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adcx_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adcx_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_add_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_add_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_addpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_addpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_addps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_addps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_addsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_addsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_addss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_addss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_addsubpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_addsubpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddsubpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddsubpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddsubpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddsubpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_addsubps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_addsubps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddsubps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddsubps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaddsubps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaddsubps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adox_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adox_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_adox_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_adox_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_aesdec_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_aesdec_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaesdec_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaesdec_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_aesdeclast_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_aesdeclast_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaesdeclast_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaesdeclast_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_aesenc_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_aesenc_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaesenc_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaesenc_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_aesenclast_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_aesenclast_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaesenclast_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaesenclast_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_aesimc_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_aesimc_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaesimc_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaesimc_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_aeskeygenassist_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_aeskeygenassist_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vaeskeygenassist_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vaeskeygenassist_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_and_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_and_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_andn_r32_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_andn_r32_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_andn_r64_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_andn_r64_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_andpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_andpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_andps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_andps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_andnpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_andnpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandnpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandnpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandnpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandnpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_andnps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_andnps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandnps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandnps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vandnps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vandnps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blendpd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blendpd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendpd_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendpd_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendpd_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendpd_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bextr_r32_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bextr_r32_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bextr_r64_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bextr_r64_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blendps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blendps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendps_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendps_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendps_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendps_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blendvpd_xmm_xmmm128_xmm0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blendvpd_xmm_xmmm128_xmm0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendvpd_xmm_xmm_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendvpd_xmm_xmm_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendvpd_ymm_ymm_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendvpd_ymm_ymm_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blendvps_xmm_xmmm128_xmm0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blendvps_xmm_xmmm128_xmm0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendvps_xmm_xmm_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendvps_xmm_xmm_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vblendvps_ymm_ymm_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vblendvps_ymm_ymm_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blsi_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blsi_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blsi_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blsi_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blsmsk_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blsmsk_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blsmsk_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blsmsk_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blsr_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blsr_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_blsr_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_blsr_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bsf_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bsf_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bsf_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bsf_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bsf_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bsf_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bsr_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bsr_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bsr_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bsr_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bsr_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bsr_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bswap_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bswap_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bswap_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bswap_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bt_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bt_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bt_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bt_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bt_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bt_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bt_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bt_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bt_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bt_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bt_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bt_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btc_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btc_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btc_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btc_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btc_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btc_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btc_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btc_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btc_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btc_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btc_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btc_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btr_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btr_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btr_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btr_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btr_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btr_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btr_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btr_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btr_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btr_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_btr_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_btr_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bts_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bts_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bts_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bts_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bts_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bts_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bts_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bts_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bts_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bts_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bts_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bts_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bzhi_r32_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bzhi_r32_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_bzhi_r64_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_bzhi_r64_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_call_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_call_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_call_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_call_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cbw(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cbw(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cwde(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cwde(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cdqe(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cdqe(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_clc(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_clc(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cld(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cld(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_clflush_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_clflush_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_clflushopt_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_clflushopt_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmc(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmc(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmova_cmovnbe_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmova_cmovnbe_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmova_cmovnbe_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmova_cmovnbe_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmova_cmovnbe_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmova_cmovnbe_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovae_cmovnb_cmovnc_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovae_cmovnb_cmovnc_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovae_cmovnb_cmovnc_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovae_cmovnb_cmovnc_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovae_cmovnb_cmovnc_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovae_cmovnb_cmovnc_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovc_cmovb_cmovnae_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovc_cmovb_cmovnae_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovc_cmovb_cmovnae_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovc_cmovb_cmovnae_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovc_cmovb_cmovnae_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovc_cmovb_cmovnae_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovbe_cmovna_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovbe_cmovna_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovbe_cmovna_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovbe_cmovna_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovbe_cmovna_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovbe_cmovna_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmove_cmovz_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmove_cmovz_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmove_cmovz_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmove_cmovz_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmove_cmovz_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmove_cmovz_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovg_cmovnle_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovg_cmovnle_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovg_cmovnle_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovg_cmovnle_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovg_cmovnle_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovg_cmovnle_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovge_cmovnl_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovge_cmovnl_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovge_cmovnl_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovge_cmovnl_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovge_cmovnl_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovge_cmovnl_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovl_cmovnge_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovl_cmovnge_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovl_cmovnge_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovl_cmovnge_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovl_cmovnge_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovl_cmovnge_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovle_cmovng_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovle_cmovng_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovle_cmovng_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovle_cmovng_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovle_cmovng_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovle_cmovng_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovne_cmovnz_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovne_cmovnz_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovne_cmovnz_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovne_cmovnz_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovne_cmovnz_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovne_cmovnz_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovno_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovno_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovno_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovno_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovno_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovno_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovnp_cmovpo_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovnp_cmovpo_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovnp_cmovpo_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovnp_cmovpo_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovnp_cmovpo_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovnp_cmovpo_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovns_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovns_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovns_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovns_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovns_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovns_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovo_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovo_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovo_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovo_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovo_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovo_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovp_cmovpe_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovp_cmovpe_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovp_cmovpe_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovp_cmovpe_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovp_cmovpe_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovp_cmovpe_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovs_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovs_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovs_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovs_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmovs_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmovs_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmp_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmp_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmppd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmppd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcmppd_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcmppd_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcmppd_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcmppd_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcmpps_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcmpps_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcmpps_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcmpps_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpsb(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsb(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpsw(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsw(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpsd(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsd(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpsq(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsq(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpsd_xmm_xmmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsd_xmm_xmmm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcmpsd_xmm_xmm_xmmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcmpsd_xmm_xmm_xmmm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpss_xmm_xmmm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpss_xmm_xmmm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcmpss_xmm_xmm_xmmm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcmpss_xmm_xmm_xmmm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpxchg_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpxchg_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpxchg_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpxchg_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpxchg_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpxchg_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpxchg_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpxchg_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpxchg8b_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpxchg8b_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmpxchg16b_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpxchg16b_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_comisd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_comisd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcomisd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcomisd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_comiss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_comiss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcomiss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcomiss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cpuid(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cpuid(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_crc32_r32_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_crc32_r32_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_crc32_r32_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_crc32_r32_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_crc32_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_crc32_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_crc32_r64_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_crc32_r64_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_crc32_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_crc32_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtdq2pd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtdq2pd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtdq2pd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtdq2pd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtdq2pd_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtdq2pd_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtdq2ps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtdq2ps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtdq2ps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtdq2ps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtdq2ps_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtdq2ps_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtpd2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtpd2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtpd2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtpd2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtpd2dq_xmm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtpd2dq_xmm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtpd2pi_mm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtpd2pi_mm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtpd2ps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtpd2ps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtpd2ps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtpd2ps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtpd2ps_xmm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtpd2ps_xmm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtpi2pd_xmm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtpi2pd_xmm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtpi2ps_xmm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtpi2ps_xmm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtps2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtps2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtps2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtps2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtps2dq_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtps2dq_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtps2pd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtps2pd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtps2pd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtps2pd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtps2pd_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtps2pd_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtps2pi_mm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtps2pi_mm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsd2si_r32_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsd2si_r32_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsd2si_r64_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsd2si_r64_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsd2si_r32_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsd2si_r32_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsd2si_r64_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsd2si_r64_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsd2ss_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsd2ss_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsd2ss_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsd2ss_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsi2sd_xmm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsi2sd_xmm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsi2sd_xmm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsi2sd_xmm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsi2sd_xmm_xmm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsi2sd_xmm_xmm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsi2sd_xmm_xmm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsi2sd_xmm_xmm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsi2ss_xmm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsi2ss_xmm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtsi2ss_xmm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtsi2ss_xmm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsi2ss_xmm_xmm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsi2ss_xmm_xmm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtsi2ss_xmm_xmm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtsi2ss_xmm_xmm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtss2sd_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtss2sd_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtss2sd_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtss2sd_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtss2si_r32_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtss2si_r32_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvtss2si_r64_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvtss2si_r64_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtss2si_r32_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtss2si_r32_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtss2si_r64_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtss2si_r64_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttpd2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttpd2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttpd2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttpd2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttpd2dq_xmm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttpd2dq_xmm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttpd2pi_mm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttpd2pi_mm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttps2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttps2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttps2dq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttps2dq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttps2dq_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttps2dq_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttps2pi_mm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttps2pi_mm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttsd2si_r32_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttsd2si_r32_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttsd2si_r64_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttsd2si_r64_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttsd2si_r32_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttsd2si_r32_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttsd2si_r64_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttsd2si_r64_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttss2si_r32_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttss2si_r32_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cvttss2si_r64_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cvttss2si_r64_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttss2si_r32_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttss2si_r32_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvttss2si_r64_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvttss2si_r64_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cwd(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cwd(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cdq(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cdq(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cqo(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cqo(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_dec_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_dec_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_dec_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_dec_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_dec_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_dec_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_dec_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_dec_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_div_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_div_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_div_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_div_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_div_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_div_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_div_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_div_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_divpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_divpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdivpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdivpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdivpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdivpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_divps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_divps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdivps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdivps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdivps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdivps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_divsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_divsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdivsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdivsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_divss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_divss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdivss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdivss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_dppd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_dppd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdppd_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdppd_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_dpps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_dpps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdpps_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdpps_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vdpps_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vdpps_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_enter_imm16_imm8_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_enter_imm16_imm8_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_enter_imm16_imm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_enter_imm16_imm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_extractps_rm32_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_extractps_rm32_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vextractps_rm32_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vextractps_rm32_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_haddpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_haddpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhaddpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhaddpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhaddpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhaddpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_haddps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_haddps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhaddps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhaddps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhaddps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhaddps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_hsubpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_hsubpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhsubpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhsubpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhsubpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhsubpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_hsubps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_hsubps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhsubps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhsubps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vhsubps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vhsubps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_idiv_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_idiv_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_idiv_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_idiv_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_idiv_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_idiv_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_idiv_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_idiv_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r16_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r16_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r32_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r32_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r64_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r64_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r16_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r16_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r32_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r32_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_imul_r64_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_imul_r64_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_inc_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_inc_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_inc_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_inc_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_inc_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_inc_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_inc_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_inc_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_insertps_xmm_xmmm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_insertps_xmm_xmmm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vinsertps_xmm_xmm_xmmm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vinsertps_xmm_xmm_xmmm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ja_jnbe_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ja_jnbe_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jae_jnb_jnc_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jae_jnb_jnc_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jb_jc_jnae_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jb_jc_jnae_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jbe_jna_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jbe_jna_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jecxz_jrcxz_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jecxz_jrcxz_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_je_jz_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_je_jz_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jg_jnle_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jg_jnle_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jge_jnl_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jge_jnl_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jl_jnge_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jl_jnge_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jle_jng_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jle_jng_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jne_jnz_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jne_jnz_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jno_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jno_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jnp_jpo_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jnp_jpo_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jns_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jns_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jo_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jo_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jp_jpe_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jp_jpe_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_js_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_js_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ja_jnbe_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ja_jnbe_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jae_jnb_jnc_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jae_jnb_jnc_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jb_jc_jnae_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jb_jc_jnae_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jbe_jna_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jbe_jna_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_je_jz_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_je_jz_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jg_jnle_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jg_jnle_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jge_jnl_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jge_jnl_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jl_jnge_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jl_jnge_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jle_jng_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jle_jng_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jne_jnz_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jne_jnz_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jno_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jno_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jnp_jpo_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jnp_jpo_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jns_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jns_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jo_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jo_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jp_jpe_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jp_jpe_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_js_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_js_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jmp_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jmp_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jmp_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jmp_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_jmp_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_jmp_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lahf(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lahf(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lddqu_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lddqu_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vlddqu_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vlddqu_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vlddqu_ymm_m256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vlddqu_ymm_m256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ldmxcsr_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ldmxcsr_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vldmxcsr_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vldmxcsr_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lea_r16_m(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lea_r16_m(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lea_r32_m(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lea_r32_m(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lea_r64_m(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lea_r64_m(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_leave_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_leave_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_leave_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_leave_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lfence(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lfence(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lods_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lods_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lods_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lods_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lods_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lods_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lods_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lods_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_loop_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_loop_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_loope_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_loope_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_loopne_rel8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_loopne_rel8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lzcnt_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lzcnt_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lzcnt_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lzcnt_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_lzcnt_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_lzcnt_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_maskmovdqu_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_maskmovdqu_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovdqu_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovdqu_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_maskmovq_mm_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_maskmovq_mm_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_maxpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_maxpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaxpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaxpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaxpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaxpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_maxps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_maxps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaxps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaxps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaxps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaxps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_maxsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_maxsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaxsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaxsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_maxss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_maxss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaxss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaxss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mfence(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mfence(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_minpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_minpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vminpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vminpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vminpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vminpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_minps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_minps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vminps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vminps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vminps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vminps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_minsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_minsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vminsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vminsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_minss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_minss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vminss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vminss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_al_moffs8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_al_moffs8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_ax_moffs16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_ax_moffs16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_eax_moffs32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_eax_moffs32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rax_moffs64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rax_moffs64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_moffs8_al(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_moffs8_al(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_moffs16_ax(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_moffs16_ax(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_moffs32_eax(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_moffs32_eax(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_moffs64_rax(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_moffs64_rax(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_r64_imm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_r64_imm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mov_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mov_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movapd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movapd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movapd_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movapd_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovapd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovapd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovapd_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovapd_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovapd_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovapd_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovapd_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovapd_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movaps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movaps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movaps_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movaps_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovaps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovaps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovaps_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovaps_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovaps_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovaps_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovaps_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovaps_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movbe_r16_m16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movbe_r16_m16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movbe_r32_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movbe_r32_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movbe_r64_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movbe_r64_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movbe_m16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movbe_m16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movbe_m32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movbe_m32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movbe_m64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movbe_m64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movd_mm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movd_mm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_mm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_mm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movd_rm32_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movd_rm32_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_rm64_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_rm64_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movd_xmm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movd_xmm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_xmm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_xmm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movd_rm32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movd_rm32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_rm64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_rm64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovd_xmm_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovd_xmm_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovq_xmm_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovq_xmm_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovd_rm32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovd_rm32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovq_rm64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovq_rm64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movddup_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movddup_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovddup_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovddup_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovddup_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovddup_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movdqa_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movdqa_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movdqa_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movdqa_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqa_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqa_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqa_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqa_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqa_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqa_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqa_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqa_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movdqu_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movdqu_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movdqu_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movdqu_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqu_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqu_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqu_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqu_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqu_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqu_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovdqu_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovdqu_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movdq2q_mm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movdq2q_mm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movhlps_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movhlps_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovhlps_xmm_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovhlps_xmm_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movhpd_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movhpd_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovhpd_xmm_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovhpd_xmm_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movhpd_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movhpd_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovhpd_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovhpd_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movhps_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movhps_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovhps_xmm_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovhps_xmm_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movhps_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movhps_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovhps_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovhps_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movlhps_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movlhps_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovlhps_xmm_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovlhps_xmm_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movlpd_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movlpd_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovlpd_xmm_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovlpd_xmm_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movlpd_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movlpd_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovlpd_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovlpd_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movlps_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movlps_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovlps_xmm_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovlps_xmm_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movlps_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movlps_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovlps_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovlps_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movmskpd_r32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movmskpd_r32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovmskpd_r32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovmskpd_r32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovmskpd_r32_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovmskpd_r32_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movmskps_r32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movmskps_r32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovmskps_r32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovmskps_r32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovmskps_r32_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovmskps_r32_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movntdqa_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movntdqa_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntdqa_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntdqa_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntdqa_ymm_m256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntdqa_ymm_m256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movntdq_m128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movntdq_m128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntdq_m128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntdq_m128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntdq_m256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntdq_m256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movnti_m32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movnti_m32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movnti_m64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movnti_m64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movntpd_m128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movntpd_m128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntpd_m128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntpd_m128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntpd_m256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntpd_m256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movntps_m128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movntps_m128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntps_m128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntps_m128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovntps_m256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovntps_m256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movntq_m64_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movntq_m64_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_mmm64_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_mmm64_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq_xmmm64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq_xmmm64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovq_xmmm64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovq_xmmm64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movq2dq_xmm_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movq2dq_xmm_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movs_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movs_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movs_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movs_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movs_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movs_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movs_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movs_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsd_xmmm64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsd_xmmm64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovsd_xmm_xmm_xmm_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovsd_xmm_xmm_xmm_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovsd_xmm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovsd_xmm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovsd_xmm_xmm_xmm_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovsd_xmm_xmm_xmm_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovsd_m64_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovsd_m64_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movshdup_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movshdup_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovshdup_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovshdup_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovshdup_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovshdup_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsldup_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsldup_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovsldup_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovsldup_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovsldup_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovsldup_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovss_xmm_xmm_xmm_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovss_xmm_xmm_xmm_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovss_xmm_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovss_xmm_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movss_xmmm32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movss_xmmm32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovss_xmm_xmm_xmm_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovss_xmm_xmm_xmm_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovss_m32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovss_m32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsx_r16_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsx_r16_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsx_r32_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsx_r32_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsx_r64_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsx_r64_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsx_r32_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsx_r32_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsx_r64_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsx_r64_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movsxd_r64_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movsxd_r64_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movupd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movupd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movupd_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movupd_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovupd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovupd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovupd_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovupd_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovupd_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovupd_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovupd_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovupd_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movups_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movups_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movups_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movups_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovups_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovups_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovups_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovups_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovups_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovups_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmovups_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmovups_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movzx_r16_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movzx_r16_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movzx_r32_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movzx_r32_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movzx_r64_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movzx_r64_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movzx_r32_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movzx_r32_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_movzx_r64_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_movzx_r64_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mpsadbw_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mpsadbw_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmpsadbw_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmpsadbw_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmpsadbw_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmpsadbw_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mul_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mul_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mul_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mul_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mul_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mul_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mul_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mul_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mulpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mulpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmulpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmulpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmulpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmulpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mulps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mulps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmulps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmulps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmulps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmulps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mulsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mulsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmulsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmulsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mulss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mulss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmulss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmulss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mulx_r32_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mulx_r32_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_mulx_r64_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_mulx_r64_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_neg_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_neg_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_neg_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_neg_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_neg_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_neg_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_neg_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_neg_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_nop(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_nop(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_nop_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_nop_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_nop_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_nop_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_not_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_not_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_not_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_not_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_not_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_not_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_not_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_not_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_or_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_or_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_orpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_orpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vorpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vorpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vorpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vorpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_orps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_orps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vorps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vorps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vorps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vorps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pabsb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pabsb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pabsb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pabsb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pabsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pabsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pabsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pabsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pabsd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pabsd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pabsd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pabsd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpabsb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpabsb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpabsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpabsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpabsd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpabsd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpabsb_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpabsb_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpabsw_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpabsw_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpabsd_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpabsd_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packsswb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packsswb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packsswb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packsswb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packssdw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packssdw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packssdw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packssdw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpacksswb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpacksswb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpackssdw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpackssdw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpacksswb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpacksswb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpackssdw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpackssdw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packusdw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packusdw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpackusdw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpackusdw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpackusdw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpackusdw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packuswb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packuswb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_packuswb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_packuswb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpackuswb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpackuswb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpackuswb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpackuswb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddsb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddsb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddsb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddsb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddsb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddsb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddsb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddsb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddusb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddusb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddusb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddusb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddusw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddusw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_paddusw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_paddusw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddusb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddusb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddusw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddusw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddusb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddusb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpaddusw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpaddusw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_palignr_mm_mmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_palignr_mm_mmm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_palignr_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_palignr_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpalignr_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpalignr_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpalignr_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpalignr_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pand_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pand_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pand_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pand_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpand_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpand_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpand_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpand_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pandn_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pandn_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pandn_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pandn_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpandn_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpandn_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpandn_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpandn_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pause(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pause(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pavgb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pavgb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pavgb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pavgb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pavgw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pavgw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pavgw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pavgw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpavgb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpavgb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpavgw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpavgw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpavgb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpavgb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpavgw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpavgw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pblendvb_xmm_xmmm128_xmm0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pblendvb_xmm_xmmm128_xmm0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpblendvb_xmm_xmm_xmmm128_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpblendvb_xmm_xmm_xmmm128_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpblendvb_ymm_ymm_ymmm256_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpblendvb_ymm_ymm_ymmm256_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pblendw_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pblendw_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpblendw_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpblendw_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpblendw_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpblendw_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pclmulqdq_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pclmulqdq_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpclmulqdq_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpclmulqdq_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpeqq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpeqq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpeqq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpeqq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpestri_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpestri_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpestri_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpestri_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpestrm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpestrm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpestrm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpestrm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpgtq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpgtq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpgtq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpgtq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpistri_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpistri_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpistri_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpistri_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pcmpistrm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pcmpistrm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpcmpistrm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpcmpistrm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pdep_r32_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pdep_r32_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pdep_r64_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pdep_r64_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pext_r32_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pext_r32_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pext_r64_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pext_r64_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pextrb_r32m8_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pextrb_r32m8_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pextrd_rm32_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pextrd_rm32_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pextrq_rm64_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pextrq_rm64_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpextrb_r32m8_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpextrb_r32m8_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpextrd_rm32_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpextrd_rm32_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpextrq_rm64_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpextrq_rm64_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pextrw_r32_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pextrw_r32_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pextrw_r32_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pextrw_r32_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pextrw_r32m16_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pextrw_r32m16_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpextrw_r32_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpextrw_r32_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpextrw_r32m16_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpextrw_r32m16_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phaddw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phaddw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phaddw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phaddw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phaddd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phaddd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phaddd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phaddd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphaddw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphaddw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphaddd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphaddd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphaddw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphaddw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphaddd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphaddd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phaddsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phaddsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phaddsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phaddsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphaddsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphaddsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphaddsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphaddsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phminposuw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phminposuw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphminposuw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphminposuw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phsubw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phsubw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phsubw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phsubw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phsubd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phsubd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phsubd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phsubd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphsubw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphsubw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphsubd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphsubd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphsubw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphsubw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphsubd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphsubd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phsubsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phsubsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_phsubsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_phsubsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphsubsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphsubsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vphsubsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vphsubsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pinsrb_xmm_r32m8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pinsrb_xmm_r32m8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pinsrd_xmm_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pinsrd_xmm_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pinsrq_xmm_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pinsrq_xmm_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpinsrb_xmm_xmm_r32m8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpinsrb_xmm_xmm_r32m8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpinsrd_xmm_xmm_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpinsrd_xmm_xmm_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpinsrq_xmm_xmm_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpinsrq_xmm_xmm_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pinsrw_mm_r32m16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pinsrw_mm_r32m16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pinsrw_xmm_r32m16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pinsrw_xmm_r32m16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpinsrw_xmm_xmm_r32m16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpinsrw_xmm_xmm_r32m16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaddubsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaddubsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaddubsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaddubsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaddubsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaddubsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaddubsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaddubsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaddwd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaddwd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaddwd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaddwd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaddwd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaddwd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaddwd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaddwd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxsb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxsb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxsd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxsd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxsb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxsb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxsd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxsd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxsb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxsb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxsd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxsd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxub_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxub_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxub_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxub_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxuw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxuw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxub_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxub_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxuw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxuw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxub_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxub_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxuw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxuw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmaxud_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmaxud_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxud_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxud_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaxud_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaxud_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminsb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminsb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminsb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminsb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminsb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminsb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminsd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminsd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminsd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminsd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminsd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminsd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminub_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminub_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminub_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminub_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminuw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminuw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminub_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminub_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminuw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminuw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminub_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminub_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminuw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminuw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pminud_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pminud_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminud_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminud_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpminud_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpminud_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovmskb_r32_mm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovmskb_r32_mm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovmskb_r32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovmskb_r32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovmskb_r32_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovmskb_r32_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovmskb_r32_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovmskb_r32_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovsxbw_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovsxbw_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovsxbd_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovsxbd_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovsxbq_xmm_xmmm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovsxbq_xmm_xmmm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovsxwd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovsxwd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovsxwq_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovsxwq_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovsxdq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovsxdq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxbw_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxbw_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxbd_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxbd_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxbq_xmm_xmmm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxbq_xmm_xmmm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxwd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxwd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxwq_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxwq_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxdq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxdq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxbw_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxbw_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxbd_ymm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxbd_ymm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxbq_ymm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxbq_ymm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxwd_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxwd_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxwq_ymm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxwq_ymm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovsxdq_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovsxdq_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovzxbw_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovzxbw_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovzxbd_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovzxbd_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovzxbq_xmm_xmmm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovzxbq_xmm_xmmm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovzxwd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovzxwd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovzxwq_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovzxwq_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmovzxdq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmovzxdq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxbw_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxbw_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxbd_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxbd_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxbq_xmm_xmmm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxbq_xmm_xmmm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxwd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxwd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxwq_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxwq_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxdq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxdq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxbw_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxbw_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxbd_ymm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxbd_ymm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxbq_ymm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxbq_ymm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxwd_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxwd_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxwq_ymm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxwq_ymm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmovzxdq_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmovzxdq_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmuldq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmuldq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmuldq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmuldq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmuldq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmuldq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulhrsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulhrsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulhrsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulhrsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulhrsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulhrsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulhrsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulhrsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulhuw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulhuw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulhuw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulhuw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulhuw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulhuw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulhuw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulhuw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulhw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulhw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulhw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulhw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulhw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulhw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulhw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulhw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmulld_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmulld_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulld_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulld_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmulld_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmulld_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmullw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmullw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmullw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmullw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmullw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmullw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmullw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmullw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmuludq_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmuludq_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pmuludq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pmuludq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmuludq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmuludq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmuludq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmuludq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pop_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pop_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pop_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pop_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pop_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pop_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pop_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pop_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_popcnt_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_popcnt_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_popcnt_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_popcnt_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_popcnt_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_popcnt_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_popf(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_popf(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_popfq(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_popfq(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_por_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_por_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_por_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_por_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpor_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpor_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpor_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpor_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_prefetcht0_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_prefetcht0_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_prefetcht1_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_prefetcht1_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_prefetcht2_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_prefetcht2_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_prefetchnta_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_prefetchnta_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_prefetchw_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_prefetchw_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_prefetchwt1_m8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_prefetchwt1_m8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psadbw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psadbw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psadbw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psadbw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsadbw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsadbw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsadbw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsadbw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pshufb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pshufb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pshufb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pshufb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshufb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshufb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshufb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshufb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pshufd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pshufd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshufd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshufd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshufd_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshufd_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pshufhw_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pshufhw_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshufhw_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshufhw_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshufhw_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshufhw_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pshuflw_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pshuflw_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshuflw_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshuflw_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpshuflw_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpshuflw_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pshufw_mm_mmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pshufw_mm_mmm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psignb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psignb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psignb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psignb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psignw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psignw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psignw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psignw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psignd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psignd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psignd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psignd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsignb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsignb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsignw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsignw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsignd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsignd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsignb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsignb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsignw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsignw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsignd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsignd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pslldq_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pslldq_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpslldq_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpslldq_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpslldq_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpslldq_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllw_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllw_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllw_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllw_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pslld_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pslld_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pslld_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pslld_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pslld_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pslld_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pslld_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pslld_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllq_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllq_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllq_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllq_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psllq_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psllq_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllw_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllw_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpslld_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpslld_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpslld_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpslld_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllq_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllq_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllw_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllw_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllw_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllw_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpslld_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpslld_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpslld_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpslld_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllq_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllq_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllq_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllq_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psraw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psraw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psraw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psraw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psraw_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psraw_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psraw_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psraw_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrad_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrad_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrad_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrad_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrad_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrad_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrad_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrad_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsraw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsraw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsraw_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsraw_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrad_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrad_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrad_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrad_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsraw_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsraw_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsraw_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsraw_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrad_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrad_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrad_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrad_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrldq_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrldq_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrldq_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrldq_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrldq_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrldq_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlw_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlw_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlw_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlw_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrld_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrld_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrld_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrld_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrld_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrld_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrld_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrld_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlq_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlq_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlq_mm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlq_mm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psrlq_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psrlq_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlw_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlw_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrld_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrld_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrld_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrld_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlq_xmm_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlq_xmm_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlw_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlw_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlw_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlw_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrld_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrld_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrld_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrld_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlq_ymm_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlq_ymm_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlq_ymm_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlq_ymm_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubq_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubq_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubsb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubsb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubsb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubsb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubsw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubsw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubsw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubsw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubsb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubsb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubsw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubsw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubsb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubsb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubsw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubsw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubusb_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubusb_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubusb_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubusb_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubusw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubusw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_psubusw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_psubusw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubusb_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubusb_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubusw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubusw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubusb_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubusb_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsubusw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsubusw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ptest_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ptest_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vptest_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vptest_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vptest_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vptest_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhbw_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhbw_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhbw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhbw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhwd_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhwd_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhwd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhwd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhdq_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhdq_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhdq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhdq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckhqdq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckhqdq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhbw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhbw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhwd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhwd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhdq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhdq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhqdq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhqdq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhbw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhbw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhwd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhwd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhdq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhdq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckhqdq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckhqdq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpcklbw_mm_mmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpcklbw_mm_mmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpcklbw_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpcklbw_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpcklwd_mm_mmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpcklwd_mm_mmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpcklwd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpcklwd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckldq_mm_mmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckldq_mm_mmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpckldq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpckldq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_punpcklqdq_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_punpcklqdq_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpcklbw_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpcklbw_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpcklwd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpcklwd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckldq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckldq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpcklqdq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpcklqdq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpcklbw_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpcklbw_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpcklwd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpcklwd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpckldq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpckldq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpunpcklqdq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpunpcklqdq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_push_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_push_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pushf(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pushf(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pushfq(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pushfq(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pxor_mm_mmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pxor_mm_mmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_pxor_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_pxor_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpxor_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpxor_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpxor_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpxor_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm16_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm16_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm32_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm32_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm64_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm64_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcl_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcl_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm16_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm16_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm32_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm32_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm64_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm64_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcr_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcr_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm16_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm16_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm32_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm32_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm64_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm64_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rol_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rol_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm16_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm16_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm32_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm32_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm64_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm64_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ror_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ror_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcpps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcpps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vrcpps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vrcpps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vrcpps_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vrcpps_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rcpss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rcpss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vrcpss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vrcpss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdpid_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdpid_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdrand_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdrand_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdrand_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdrand_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdrand_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdrand_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdseed_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdseed_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdseed_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdseed_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rdseed_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rdseed_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_movs_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_movs_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_movs_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_movs_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_movs_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_movs_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_movs_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_movs_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_lods_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_lods_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_lods_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_lods_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_lods_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_lods_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_lods_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_lods_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_stos_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_stos_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_stos_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_stos_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_stos_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_stos_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rep_stos_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rep_stos_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_cmps_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_cmps_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_cmps_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_cmps_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_cmps_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_cmps_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_cmps_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_cmps_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_scas_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_scas_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_scas_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_scas_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_scas_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_scas_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repe_scas_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repe_scas_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repne_cmps_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repne_cmps_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repne_cmps_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repne_cmps_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repne_cmps_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repne_cmps_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repne_scas_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repne_scas_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repne_scas_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repne_scas_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_repne_scas_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_repne_scas_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ret(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ret(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ret_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ret_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rorx_r32_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rorx_r32_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rorx_r64_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rorx_r64_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_roundpd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_roundpd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vroundpd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vroundpd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vroundpd_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vroundpd_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_roundps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_roundps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vroundps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vroundps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vroundps_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vroundps_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_roundsd_xmm_xmmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_roundsd_xmm_xmmm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vroundsd_xmm_xmm_xmmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vroundsd_xmm_xmm_xmmm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_roundss_xmm_xmmm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_roundss_xmm_xmmm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vroundss_xmm_xmm_xmmm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vroundss_xmm_xmm_xmmm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rsqrtps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rsqrtps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vrsqrtps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vrsqrtps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vrsqrtps_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vrsqrtps_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_rsqrtss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_rsqrtss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vrsqrtss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vrsqrtss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sahf(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sahf(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm16_1_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm16_1_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm16_cl_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm16_cl_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm32_1_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm32_1_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm64_1_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm64_1_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm32_cl_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm32_cl_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm64_cl_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm64_cl_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm16_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm16_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm32_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm32_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm64_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm64_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sar_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sar_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm16_1_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm16_1_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm16_cl_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm16_cl_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm32_1_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm32_1_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm64_1_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm64_1_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm32_cl_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm32_cl_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sal_shl_rm64_cl_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sal_shl_rm64_cl_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm8_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm8_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm8_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm8_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm16_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm16_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm32_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm32_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm64_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm64_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shr_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shr_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sarx_r32_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sarx_r32_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shlx_r32_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shlx_r32_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrx_r32_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrx_r32_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sarx_r64_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sarx_r64_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shlx_r64_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shlx_r64_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrx_r64_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrx_r64_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sbb_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sbb_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_scas_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_scas_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_scas_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_scas_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_scas_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_scas_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_scas_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_scas_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_seta_setnbe_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_seta_setnbe_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setae_setnb_setnc_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setae_setnb_setnc_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setb_setc_setnae_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setb_setc_setnae_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setbe_setna_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setbe_setna_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sete_setz_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sete_setz_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setg_setnle_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setg_setnle_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setge_setnl_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setge_setnl_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setnge_setl_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setnge_setl_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setle_setng_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setle_setng_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setne_setnz_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setne_setnz_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setno_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setno_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setpo_setnp_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setpo_setnp_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setns_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setns_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_seto_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_seto_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_setp_setpe_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_setp_setpe_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sets_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sets_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sfence(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sfence(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha1rnds4_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha1rnds4_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha1nexte_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha1nexte_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha1msg1_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha1msg1_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha1msg2_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha1msg2_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha256rnds2_xmm_xmmm128_xmm0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha256rnds2_xmm_xmmm128_xmm0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha256msg1_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha256msg1_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sha256msg2_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sha256msg2_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shld_rm16_r16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shld_rm16_r16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shld_rm16_r16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shld_rm16_r16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shld_rm32_r32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shld_rm32_r32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shld_rm64_r64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shld_rm64_r64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shld_rm32_r32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shld_rm32_r32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shld_rm64_r64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shld_rm64_r64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrd_rm16_r16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrd_rm16_r16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrd_rm16_r16_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrd_rm16_r16_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrd_rm32_r32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrd_rm32_r32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrd_rm64_r64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrd_rm64_r64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrd_rm32_r32_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrd_rm32_r32_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shrd_rm64_r64_cl(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shrd_rm64_r64_cl(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shufpd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shufpd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vshufpd_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vshufpd_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vshufpd_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vshufpd_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_shufps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_shufps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vshufps_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vshufps_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vshufps_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vshufps_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sqrtpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sqrtpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsqrtpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsqrtpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsqrtpd_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsqrtpd_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sqrtps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sqrtps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsqrtps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsqrtps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsqrtps_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsqrtps_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sqrtsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sqrtsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsqrtsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsqrtsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sqrtss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sqrtss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsqrtss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsqrtss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stac(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stac(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stc(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stc(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_std(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_std(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stmxcsr_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stmxcsr_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vstmxcsr_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vstmxcsr_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stos_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stos_0(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stos_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stos_1(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stos_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stos_2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_stos_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_stos_3(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_sub_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_sub_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_subpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_subpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsubpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsubpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsubpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsubpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_subps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_subps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsubps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsubps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsubps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsubps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_subsd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_subsd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsubsd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsubsd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_subss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_subss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vsubss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vsubss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_test_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_test_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_tzcnt_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_tzcnt_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_tzcnt_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_tzcnt_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_tzcnt_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_tzcnt_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ucomisd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ucomisd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vucomisd_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vucomisd_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ucomiss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ucomiss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vucomiss_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vucomiss_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_ud2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_ud2(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_unpckhpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_unpckhpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpckhpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpckhpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpckhpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpckhpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_unpckhps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_unpckhps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpckhps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpckhps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpckhps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpckhps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_unpcklpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_unpcklpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpcklpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpcklpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpcklpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpcklpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_unpcklps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_unpcklps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpcklps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpcklps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vunpcklps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vunpcklps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vbroadcastss_xmm_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vbroadcastss_xmm_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vbroadcastss_ymm_m32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vbroadcastss_ymm_m32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vbroadcastsd_ymm_m64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vbroadcastsd_ymm_m64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vbroadcastf128_ymm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vbroadcastf128_ymm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtph2ps_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtph2ps_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtph2ps_ymm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtph2ps_ymm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtps2ph_xmmm64_xmm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtps2ph_xmmm64_xmm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vcvtps2ph_xmmm128_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vcvtps2ph_xmmm128_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vextractf128_xmmm128_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vextractf128_xmmm128_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vextracti128_xmmm128_ymm_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vextracti128_xmmm128_ymm_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd132pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd132pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd213pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd213pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd231pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd231pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd132pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd132pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd213pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd213pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd231pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd231pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd132ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd132ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd213ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd213ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd231ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd231ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd132ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd132ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd213ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd213ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd231ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd231ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd132sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd132sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd213sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd213sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd231sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd231sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd132ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd132ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd213ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd213ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmadd231ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmadd231ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub132pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub132pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub213pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub213pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub231pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub231pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub132pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub132pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub213pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub213pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub231pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub231pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub132ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub132ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub213ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub213ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub231ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub231ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub132ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub132ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub213ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub213ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmaddsub231ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmaddsub231ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd132pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd132pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd213pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd213pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd231pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd231pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd132pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd132pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd213pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd213pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd231pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd231pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd132ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd132ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd213ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd213ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd231ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd231ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd132ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd132ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd213ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd213ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsubadd231ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsubadd231ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub132pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub132pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub213pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub213pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub231pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub231pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub132pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub132pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub213pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub213pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub231pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub231pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub132ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub132ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub213ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub213ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub231ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub231ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub132ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub132ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub213ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub213ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub231ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub231ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub132sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub132sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub213sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub213sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub231sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub231sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub132ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub132ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub213ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub213ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfmsub231ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfmsub231ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd132pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd132pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd213pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd213pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd231pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd231pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd132pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd132pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd213pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd213pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd231pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd231pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd132ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd132ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd213ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd213ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd231ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd231ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd132ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd132ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd213ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd213ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd231ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd231ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd132sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd132sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd213sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd213sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd231sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd231sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd132ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd132ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd213ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd213ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmadd231ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmadd231ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub132pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub132pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub213pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub213pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub231pd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub231pd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub132pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub132pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub213pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub213pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub231pd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub231pd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub132ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub132ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub213ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub213ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub231ps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub231ps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub132ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub132ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub213ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub213ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub231ps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub231ps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub132sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub132sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub213sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub213sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub231sd_xmm_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub231sd_xmm_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub132ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub132ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub213ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub213ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vfnmsub231ss_xmm_xmm_xmmm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vfnmsub231ss_xmm_xmm_xmmm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherdpd_xmm_vm32x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherdpd_xmm_vm32x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherqpd_xmm_vm64x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherqpd_xmm_vm64x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherdpd_ymm_vm32x_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherdpd_ymm_vm32x_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherqpd_ymm_vm64y_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherqpd_ymm_vm64y_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherdps_xmm_vm32x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherdps_xmm_vm32x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherqps_xmm_vm64x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherqps_xmm_vm64x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherdps_ymm_vm32y_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherdps_ymm_vm32y_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vgatherqps_xmm_vm64y_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vgatherqps_xmm_vm64y_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherdd_xmm_vm32x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherdd_xmm_vm32x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherqd_xmm_vm64x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherqd_xmm_vm64x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherdd_ymm_vm32y_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherdd_ymm_vm32y_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherqd_xmm_vm64y_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherqd_xmm_vm64y_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherdq_xmm_vm32x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherdq_xmm_vm32x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherqq_xmm_vm64x_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherqq_xmm_vm64x_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherdq_ymm_vm32x_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherdq_ymm_vm32x_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpgatherqq_ymm_vm64y_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpgatherqq_ymm_vm64y_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vinsertf128_ymm_ymm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vinsertf128_ymm_ymm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vinserti128_ymm_ymm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vinserti128_ymm_ymm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovps_xmm_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovps_xmm_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovps_ymm_ymm_m256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovps_ymm_ymm_m256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovpd_xmm_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovpd_xmm_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovpd_ymm_ymm_m256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovpd_ymm_ymm_m256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovps_m128_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovps_m128_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovps_m256_ymm_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovps_m256_ymm_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovpd_m128_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovpd_m128_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vmaskmovpd_m256_ymm_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vmaskmovpd_m256_ymm_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpblendd_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpblendd_xmm_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpblendd_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpblendd_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpbroadcastq_xmm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpbroadcastq_xmm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpbroadcastq_ymm_xmmm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpbroadcastq_ymm_xmmm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vbroadcasti128_ymm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vbroadcasti128_ymm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vperm2f128_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vperm2f128_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vperm2i128_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vperm2i128_ymm_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilpd_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilpd_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilpd_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilpd_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilps_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilps_xmm_xmmm128_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermilps_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermilps_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermpd_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermpd_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpermq_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpermq_ymm_ymmm256_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovd_xmm_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovd_xmm_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovd_ymm_ymm_m256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovd_ymm_ymm_m256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovq_xmm_xmm_m128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovq_xmm_xmm_m128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovq_ymm_ymm_m256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovq_ymm_ymm_m256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovd_m128_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovd_m128_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovd_m256_ymm_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovd_m256_ymm_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovq_m128_xmm_xmm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovq_m128_xmm_xmm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpmaskmovq_m256_ymm_ymm(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpmaskmovq_m256_ymm_ymm(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllvd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllvd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllvq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllvq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllvd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllvd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsllvq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsllvq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsravd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsravd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsravd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsravd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlvd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlvd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlvq_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlvq_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlvd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlvd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vpsrlvq_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vpsrlvq_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vtestps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vtestps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vtestps_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vtestps_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vtestpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vtestpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vtestpd_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vtestpd_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vzeroall(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vzeroall(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vzeroupper(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vzeroupper(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xabort_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xabort_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xadd_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xadd_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xadd_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xadd_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xadd_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xadd_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xadd_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xadd_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xbegin_rel16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xbegin_rel16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xbegin_rel32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xbegin_rel32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_ax_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_ax_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_eax_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_eax_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_rax_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_rax_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xchg_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xchg_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xend(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xend(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xlatb(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xlatb(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_al_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_al_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_ax_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_ax_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_eax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_eax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rax_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rax_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm8_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm8_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm16_imm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm16_imm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm32_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm32_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm64_imm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm64_imm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm16_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm16_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm32_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm32_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm64_imm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm8_r8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm8_r8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm16_r16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm16_r16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm32_r32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm32_r32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_rm64_r64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_rm64_r64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_r8_rm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_r8_rm8(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_r16_rm16(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_r16_rm16(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_r32_rm32(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_r32_rm32(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xor_r64_rm64(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xor_r64_rm64(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xorpd_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xorpd_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vxorpd_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vxorpd_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vxorpd_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vxorpd_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xorps_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xorps_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vxorps_xmm_xmm_xmmm128(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vxorps_xmm_xmm_xmmm128(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_vxorps_ymm_ymm_ymmm256(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_vxorps_ymm_ymm_ymmm256(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_xtest(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_xtest(evoasm_x64_ctx_t *x64_ctx, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 

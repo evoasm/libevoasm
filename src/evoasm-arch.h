@@ -22,7 +22,7 @@ typedef uint8_t evoasm_reg_id_t;
 #define EVOASM_REG_ID_MAX UINT8_MAX
 typedef uint16_t evoasm_inst_id_t;
 
-struct evoasm_arch;
+struct evoasm_arch_ctx;
 struct evoasm_inst;
 
 typedef enum {
@@ -43,10 +43,10 @@ typedef enum {
   EVOASM_ARCH_ERROR_CODE_MISSING_FEATURE,
 } evoasm_arch_error_code_t;
 
-struct evoasm_arch_t;
+struct evoasm_arch_ctx_t;
 
 typedef struct {
-  struct evoasm_arch *arch;
+  struct evoasm_arch_ctx *arch;
   uint8_t reg;
   uint8_t param;
   uint16_t inst;
@@ -59,7 +59,7 @@ typedef struct {
   evoasm_arch_error_data_t data;
 } evoasm_arch_error_t;
 
-typedef struct evoasm_arch {
+typedef struct evoasm_arch_ctx {
   evoasm_arch_cls_t *cls;
   uint8_t buf_end;
   uint8_t buf_start;
@@ -68,65 +68,66 @@ typedef struct evoasm_arch {
   /* must have a bit for every
    * writable register    */
   evoasm_bitmap128_t acc;
-} evoasm_arch_t;
+} evoasm_arch_ctx_t;
 
 void
-evoasm_arch_reset(evoasm_arch_t *arch);
+evoasm_arch_ctx_reset(evoasm_arch_ctx_t *arch_ctx);
 
 void
-evoasm_arch_init(evoasm_arch_t *arch, evoasm_arch_cls_t *cls);
+evoasm_arch_ctx_init(evoasm_arch_ctx_t *arch_ctx, evoasm_arch_cls_t *cls);
 
 void
-evoasm_arch_destroy(evoasm_arch_t *arch);
+evoasm_arch_ctx_destroy(evoasm_arch_ctx_t *arch_ctx);
 
 size_t
-evoasm_arch_save(evoasm_arch_t *arch, evoasm_buf_t *buf);
+evoasm_arch_ctx_save(evoasm_arch_ctx_t *arch_ctx, evoasm_buf_t *buf);
 
 static inline void
-evoasm_arch_write8(evoasm_arch_t *arch, int64_t datum) {
-  uint8_t new_end = (uint8_t)(arch->buf_end + 1);
-  *((uint8_t *)(arch->buf + arch->buf_end)) = (uint8_t) datum;
-  arch->buf_end = new_end;
+evoasm_arch_ctx_write8(evoasm_arch_ctx_t *arch_ctx, int64_t datum) {
+  uint8_t new_end = (uint8_t)(arch_ctx->buf_end + 1);
+  *((uint8_t *)(arch_ctx->buf + arch_ctx->buf_end)) = (uint8_t) datum;
+  arch_ctx->buf_end = new_end;
 }
 
 static inline void
-evoasm_arch_write16(evoasm_arch_t *arch, int64_t datum) {
-  uint8_t new_end = (uint8_t)(arch->buf_end + 2);
-  *((int16_t *)(arch->buf + arch->buf_end)) = (int16_t) datum;
-  arch->buf_end = new_end;
+evoasm_arch_ctx_write16(evoasm_arch_ctx_t *arch_ctx, int64_t datum) {
+  uint8_t new_end = (uint8_t)(arch_ctx->buf_end + 2);
+  *((int16_t *)(arch_ctx->buf + arch_ctx->buf_end)) = (int16_t) datum;
+  arch_ctx->buf_end = new_end;
 }
 
 static inline void
-evoasm_arch_write32(evoasm_arch_t *arch, int64_t datum) {
-  uint8_t new_end = (uint8_t)(arch->buf_end + 4);
-  *((int32_t *)(arch->buf + arch->buf_end)) = (int32_t) datum;
-  arch->buf_end = new_end;
+evoasm_arch_ctx_write32(evoasm_arch_ctx_t *arch_ctx, int64_t datum) {
+  uint8_t new_end = (uint8_t)(arch_ctx->buf_end + 4);
+  *((int32_t *)(arch_ctx->buf + arch_ctx->buf_end)) = (int32_t) datum;
+  arch_ctx->buf_end = new_end;
 }
 
 static inline void
-evoasm_arch_write64(evoasm_arch_t *arch, int64_t datum) {
-  uint8_t new_end = (uint8_t)(arch->buf_end + 8);
-  *((int64_t *)(arch->buf + arch->buf_end)) = (int64_t) datum;
-  arch->buf_end = new_end;
+evoasm_arch_ctx_write64(evoasm_arch_ctx_t *arch_ctx, int64_t datum) {
+  uint8_t new_end = (uint8_t)(arch_ctx->buf_end + 8);
+  *((int64_t *)(arch_ctx->buf + arch_ctx->buf_end)) = (int64_t) datum;
+  arch_ctx->buf_end = new_end;
 }
 
 static inline void
-evoasm_arch_write_access(evoasm_arch_t *arch, evoasm_bitmap_t *acc, evoasm_reg_id_t reg) {
+evoasm_arch_ctx_write_access(evoasm_arch_ctx_t *arch_ctx, evoasm_bitmap_t *acc, evoasm_reg_id_t reg) {
   evoasm_bitmap_set(acc, (unsigned) reg);
 }
 
 static inline void
-evoasm_arch_undefined_access(evoasm_arch_t *arch, evoasm_bitmap_t *acc, evoasm_reg_id_t reg) {
+evoasm_arch_ctx_undefined_access(evoasm_arch_ctx_t *arch_ctx, evoasm_bitmap_t *acc, evoasm_reg_id_t reg) {
   evoasm_bitmap_unset(acc, (unsigned) reg);
 }
 
 static inline evoasm_success_t
-_evoasm_arch_read_access(evoasm_arch_t *arch, evoasm_bitmap_t *acc, evoasm_reg_id_t reg, evoasm_inst_id_t inst, const char *file, unsigned line) {
+_evoasm_arch_ctx_read_access(evoasm_arch_ctx_t *arch_ctx, evoasm_bitmap_t *acc, evoasm_reg_id_t reg,
+                             evoasm_inst_id_t inst, const char *file, unsigned line) {
   if(!evoasm_bitmap_get(acc, (unsigned) reg)) {
     evoasm_arch_error_data_t error_data = {
       .reg = (uint8_t) reg,
       .inst = (uint16_t) inst,
-      .arch = arch
+      .arch = arch_ctx
     };
     evoasm_set_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_ACCESS, &error_data, file, line, "read access violation");
     return false;

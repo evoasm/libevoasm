@@ -80,7 +80,7 @@ evoasm_x64_reg_type(evoasm_x64_reg_id_t reg) {
 }
 
 evoasm_success_t
-evoasm_x64_load_cpuid(evoasm_x64_t *x64);
+evoasm_x64_ctx_load_cpuid(evoasm_x64_ctx_t *x64_ctx);
 
 #define _EVOASM_X64_INSTS_VAR_NAME _evoasm_x64_insts
 

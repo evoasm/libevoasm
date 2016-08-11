@@ -24,10 +24,3 @@
 #include "evoasm-arch.h"
 #include "evoasm-error.h"
 
-typedef enum {
-  EVOASM_STRUCT_SEARCH,
-  EVOASM_STRUCT_PROGRAM,
-  EVOASM_STRUCT_X64,
-  EVOASM_N_STRUCTS
-} evoasm_struct_t;
-
