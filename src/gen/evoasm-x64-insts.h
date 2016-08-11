@@ -491,13 +491,13 @@ evoasm_x64_vcmpps_xmm_xmm_xmmm128_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_
 evoasm_success_t
 evoasm_x64_vcmpps_ymm_ymm_ymmm256_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmps_0(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsb(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmps_1(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsw(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmps_2(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsd(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
-evoasm_x64_cmps_3(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
+evoasm_x64_cmpsq(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
 evoasm_x64_cmpsd_xmm_xmmm64_imm8(evoasm_x64_t *x64, evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params);
 evoasm_success_t
