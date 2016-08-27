@@ -9,6 +9,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <gen/evoasm-x64-misc.h>
 #include "evoasm-error.h"
 #include "evoasm-alloc.h"
 #include "evoasm-arch.h"
@@ -127,12 +128,11 @@ _Static_assert(EVOASM_X64_N_INST_PARAMS <= EVOASM_ARCH_MAX_PARAMS,
 
 
 static inline int64_t
-evoasm_x64_disp_size(evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  evoasm_inst_param_val_t val = param_vals[EVOASM_X64_INST_PARAM_DISP];
-  if(!evoasm_bitmap_get(set_params, EVOASM_X64_INST_PARAM_DISP)) return 0;
-  if(val >= INT8_MIN && val <= INT8_MAX) return 8;
-  if(val >= INT32_MIN && val <= INT32_MAX) return 32;
-  return 0;
+evoasm_x64_disp_size(evoasm_x64_inst_params_t *params) {
+  unsigned disp = params->disp;
+  if(disp >= INT16_MIN && disp <= INT16_MAX) return EVOASM_X64_DISP_SIZE_16;
+  if(disp >= INT32_MIN && disp <= INT32_MAX) return EVOASM_X64_DISP_SIZE_32;
+  return EVOASM_X64_N_DISP_SIZES;
 }
 
 void

@@ -36,6 +36,6 @@ set(SOURCE_FILES
         src/evoasm-x64.c
         src/evoasm-x64.h
         src/gen/evoasm-x64-misc.c
-        src/gen/evoasm-x64-insts.c)
+        src/gen/evoasm-x64-insts.c src/evoasm-dyn-struct.c src/evoasm-dyn-struct.h)
 
 add_library(evoasm SHARED ${SOURCE_FILES})

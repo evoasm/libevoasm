@@ -7,6 +7,53 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+typedef struct {
+  uint64_t addr_size : 1;
+  uint64_t disp_set : 1;
+  uint64_t disp_size : 1;
+  uint64_t disp_size_set : 1;
+  uint64_t force_disp32 : 1;
+  uint64_t force_long_vex : 1;
+  uint64_t force_rex : 1;
+  uint64_t force_sib : 1;
+  uint64_t reg0_high_byte : 1;
+  uint64_t reg0_set : 1;
+  uint64_t reg1_high_byte : 1;
+  uint64_t reg1_set : 1;
+  uint64_t reg_base_set : 1;
+  uint64_t reg_index_set : 1;
+  uint64_t rex_b : 1;
+  uint64_t rex_r : 1;
+  uint64_t rex_w : 1;
+  uint64_t rex_x : 1;
+  uint64_t vex_l : 1;
+  uint64_t scale : 2;
+  uint64_t legacy_prefix_order : 3;
+  uint64_t modrm_reg : 3;
+  uint64_t vex_v : 4;
+  uint64_t reg0 : 7;
+  uint64_t reg1 : 7;
+  uint64_t reg2 : 7;
+  uint64_t reg3 : 7;
+  uint64_t reg_base : 7;
+  uint64_t reg_index : 7;
+  uint64_t disp : 32;
+  uint64_t imm : 64;
+} evoasm_x64_inst_params_t;
+
+typedef struct {
+  uint64_t reg0_high_byte : 1;
+  uint64_t reg0_set : 1;
+  uint64_t reg1_high_byte : 1;
+  uint64_t reg1_set : 1;
+  uint64_t reg0 : 7;
+  uint64_t reg1 : 7;
+  uint64_t reg2 : 7;
+  uint64_t reg3 : 7;
+  uint64_t imm : 32;
+} evoasm_x64_inst_params_t;
+
+
 static inline evoasm_x64_reg_type_t
 evoasm_x64_reg_type(evoasm_x64_reg_id_t reg) {
   switch(reg) {

@@ -48,7 +48,7 @@ evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
       evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Interval(%" PRId64 "..%" PRId64 ")", interval->min, interval->max);
       break;
     }
-    case EVOASM_DOMAIN_TYPE_INTERVAL64:
+    case EVOASM_DOMAIN_TYPE_INT64:
       evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Interval(INT64_MIN..INT64_MAX)");
       break;
     default:

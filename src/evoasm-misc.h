@@ -24,7 +24,7 @@
 typedef enum {
   EVOASM_DOMAIN_TYPE_ENUM,
   EVOASM_DOMAIN_TYPE_INTERVAL,
-  EVOASM_DOMAIN_TYPE_INTERVAL64,
+  EVOASM_DOMAIN_TYPE_INT64,
   EVOASM_N_DOMAIN_TYPES
 } evoasm_domain_type_t;
 
@@ -124,7 +124,7 @@ evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng64_t *prng) {
       evoasm_interval_t *interval = (evoasm_interval_t *) domain;
       return evoasm_prng64_rand_between(prng, interval->min, interval->max);
     }
-    case EVOASM_DOMAIN_TYPE_INTERVAL64: {
+    case EVOASM_DOMAIN_TYPE_INT64: {
       return (int64_t) evoasm_prng64_rand(prng);
     }
     case EVOASM_DOMAIN_TYPE_ENUM: {
@@ -141,7 +141,7 @@ static inline size_t
 evoasm_domain_size(evoasm_domain_t *domain) {
   switch(domain->type){
     case EVOASM_DOMAIN_TYPE_INTERVAL:
-    case EVOASM_DOMAIN_TYPE_INTERVAL64: return sizeof(evoasm_interval_t);
+    case EVOASM_DOMAIN_TYPE_INT64: return sizeof(evoasm_interval_t);
     case EVOASM_DOMAIN_TYPE_ENUM: return EVOASM_ENUM_SIZE(((evoasm_enum_t *) domain)->len);
     default:
       evoasm_assert_not_reached();
@@ -155,7 +155,7 @@ evoasm_domain_clone(evoasm_domain_t * restrict domain, evoasm_domain_t * restric
 
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_INTERVAL:
-    case EVOASM_DOMAIN_TYPE_INTERVAL64: {
+    case EVOASM_DOMAIN_TYPE_INT64: {
       evoasm_interval_t *interval = (evoasm_interval_t *) domain;
       evoasm_interval_t *interval_dst = (evoasm_interval_t *) domain_dst;
       interval_dst->min = interval->min;
@@ -180,10 +180,10 @@ evoasm_domain_intersect(evoasm_domain_t * restrict domain1, evoasm_domain_t * re
 #define _EVOASM_DOMAIN_TYPES2(type_a, type_b) (int)(((type_a) << 8) | (type_b))
 
   switch(_EVOASM_DOMAIN_TYPES2(domain1->type, domain2->type)) {
-    case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL, EVOASM_DOMAIN_TYPE_INTERVAL64):
+    case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL, EVOASM_DOMAIN_TYPE_INT64):
     case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL, EVOASM_DOMAIN_TYPE_INTERVAL):
-    case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL64, EVOASM_DOMAIN_TYPE_INTERVAL64):
-    case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL64, EVOASM_DOMAIN_TYPE_INTERVAL): {
+    case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INT64, EVOASM_DOMAIN_TYPE_INT64):
+    case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INT64, EVOASM_DOMAIN_TYPE_INTERVAL): {
       evoasm_interval_t *interval1 = (evoasm_interval_t *) domain1;
       evoasm_interval_t *interval2 = (evoasm_interval_t *) domain2;
       evoasm_interval_t *interval_dst = (evoasm_interval_t *) domain_dst;
@@ -227,12 +227,12 @@ evoasm_domain_intersect(evoasm_domain_t * restrict domain1, evoasm_domain_t * re
       unsigned i;
 
       case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_ENUM, EVOASM_DOMAIN_TYPE_INTERVAL):
-      case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_ENUM, EVOASM_DOMAIN_TYPE_INTERVAL64):
+      case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_ENUM, EVOASM_DOMAIN_TYPE_INT64):
         enm = (evoasm_enum_t *) domain1;
         interval = (evoasm_interval_t *) domain2;
         goto intersect;
       case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL, EVOASM_DOMAIN_TYPE_ENUM):
-      case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INTERVAL64, EVOASM_DOMAIN_TYPE_ENUM):
+      case _EVOASM_DOMAIN_TYPES2(EVOASM_DOMAIN_TYPE_INT64, EVOASM_DOMAIN_TYPE_ENUM):
         enm = (evoasm_enum_t *) domain2;
         interval = (evoasm_interval_t *) domain1;
     intersect: {
@@ -254,7 +254,7 @@ evoasm_domain_intersect(evoasm_domain_t * restrict domain1, evoasm_domain_t * re
 }
 
 static inline bool
-evoasm_domain_contains_p(evoasm_domain_t *domain, int64_t val) {
+evoasm_domain_contains(evoasm_domain_t *domain, int64_t val) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_INTERVAL: {
       evoasm_interval_t *interval = (evoasm_interval_t *) domain;
@@ -290,7 +290,7 @@ evoasm_domain_empty(evoasm_domain_t *domain) {
       evoasm_interval_t *interval = (evoasm_interval_t *) domain;
       return interval->min >= interval->max;
     }
-    case EVOASM_DOMAIN_TYPE_INTERVAL64:
+    case EVOASM_DOMAIN_TYPE_INT64:
       return false;
     default:
       evoasm_assert_not_reached();

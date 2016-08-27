@@ -88,9 +88,6 @@ evoasm_x64_func_prolog_or_epilog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, e
   size_t regs_len = EVOASM_ARY_LEN(evoasm_x64_sysv_callee_save_regs);
   evoasm_x64_params_t params = {0};
 
-  /* touch RSP and RBX so we don't get a read access violation for PUSH */
-  //evoasm_arch_ctx_write_access(arch_ctx, (evoasm_bitmap_t *) &arch_ctx->acc, EVOASM_X64_REG_SP);
-
   for(i = 0; i < regs_len; i++) {
     evoasm_x64_reg_id_t reg = evoasm_x64_sysv_callee_save_regs[prolog ? i : (regs_len - 1 - i)];
     evoasm_arch_ctx_write_access(arch_ctx, (evoasm_bitmap_t *) &arch_ctx->acc, reg);

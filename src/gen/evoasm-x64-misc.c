@@ -345,3 +345,88 @@ alloc_failed:
   return false;
 }
 
+void evoasm_x64_inst_params_set(evoasm_x64_inst_params_t *params, evoasm_x64_inst_param_id_t param, evoasm_inst_param_val_t param_val) {
+  switch(param) {
+    case EVOASM_X64_INST_PARAM_REG0:
+      params->reg0 = param_val;
+      params->reg0_set = true;
+      break;
+    case EVOASM_X64_INST_PARAM_REG1:
+      params->reg1 = param_val;
+      params->reg1_set = true;
+      break;
+    case EVOASM_X64_INST_PARAM_REG2:
+      params->reg2 = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REG3:
+      params->reg3 = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_IMM:
+      params->imm = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_FORCE_REX:
+      params->force_rex = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REX_R:
+      params->rex_r = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REX_X:
+      params->rex_x = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REX_B:
+      params->rex_b = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_LEGACY_PREFIX_ORDER:
+      params->legacy_prefix_order = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_ADDR_SIZE:
+      params->addr_size = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REG_BASE:
+      params->reg_base = param_val;
+      params->reg_base_set = true;
+      break;
+    case EVOASM_X64_INST_PARAM_REG_INDEX:
+      params->reg_index = param_val;
+      params->reg_index_set = true;
+      break;
+    case EVOASM_X64_INST_PARAM_REX_W:
+      params->rex_w = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_DISP:
+      params->disp = param_val;
+      params->disp_set = true;
+      break;
+    case EVOASM_X64_INST_PARAM_SCALE:
+      params->scale = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_FORCE_SIB:
+      params->force_sib = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_DISP_SIZE:
+      params->disp_size = param_val;
+      params->disp_size_set = true;
+      break;
+    case EVOASM_X64_INST_PARAM_FORCE_DISP32:
+      params->force_disp32 = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REG0_HIGH_BYTE:
+      params->reg0_high_byte = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_REG1_HIGH_BYTE:
+      params->reg1_high_byte = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_FORCE_LONG_VEX:
+      params->force_long_vex = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_VEX_L:
+      params->vex_l = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_MODRM_REG:
+      params->modrm_reg = param_val;
+      break;
+    case EVOASM_X64_INST_PARAM_VEX_V:
+      params->vex_v = param_val;
+      break;
+  }
+}
