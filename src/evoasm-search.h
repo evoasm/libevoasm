@@ -53,9 +53,12 @@ typedef evoasm_adf_io_t evoasm_adf_input_t;
 #define EVOASM_ADF_OUTPUT_N_EXAMPLES(adf_output) EVOASM_ADF_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_output)
 
 typedef struct {
-  evoasm_inst_id_t inst;
-  evoasm_inst_params_bitmap_t set_params;
-  evoasm_inst_param_val_t param_vals[EVOASM_ARCH_MAX_PARAMS];
+  unsigned inst : EVOASM_X64_INST_BITSIZE;
+  evoasm_x64_basic_params_t params;
+} evoasm_x64_kernel_param_t;
+
+typedef union {
+  evoasm_x64_kernel_param_t;
 } evoasm_kernel_param_t;
 
 typedef struct {
@@ -107,7 +110,7 @@ typedef struct {
 
 typedef struct {
   evoasm_inst_id_t *insts;
-  evoasm_inst_param_id_t *params;
+  evoasm_param_id_t *params;
   evoasm_domain_t **domains;
   evoasm_adf_size_t min_adf_size;
   evoasm_adf_size_t max_adf_size;
@@ -127,7 +130,7 @@ typedef struct {
 
 
 typedef struct {
-  evoasm_arch_ctx_t *arch_ctx;
+  evoasm_buf_ref_t *enc_ctx;
   evoasm_buf_t *buf;
   evoasm_buf_t *body_buf;
   uint32_t index;
@@ -186,7 +189,7 @@ typedef struct {
 } evoasm_examples_t;
 
 typedef struct {
-  evoasm_arch_ctx_t *arch_ctx;
+  evoasm_buf_ref_t *enc_ctx;
   evoasm_population_t pop;
   evoasm_search_params_t params;
   evoasm_domain_t *domains;
@@ -194,7 +197,7 @@ typedef struct {
 
 bool
 evoasm_search_init(evoasm_search_t *search,
-                   evoasm_arch_ctx_t *arch, evoasm_search_params_t *params);
+                   evoasm_buf_ref_t *arch, evoasm_search_params_t *params);
 
 bool
 evoasm_search_destroy(evoasm_search_t *search);

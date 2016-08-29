@@ -9,24 +9,26 @@
 #pragma once
 
 #include <stdint.h>
-#include <gen/evoasm-x64-misc.h>
 #include "evoasm-error.h"
 #include "evoasm-alloc.h"
 #include "evoasm-arch.h"
 
 #include "gen/evoasm-x64-enums.h"
+#include "gen/evoasm-x64-params.h"
 
 typedef struct {
-  bool encode_rex;
-} evoasm_x64_shared_vars_t;
-
-typedef struct {
-  evoasm_arch_ctx_t base;
-  uint64_t features;
-  evoasm_x64_shared_vars_t shared_vars;
-} evoasm_x64_ctx_t;
+  evoasm_buf_ref_t buf_ref;
+  struct {
+    bool encode_rex : 1;
+  } shared_vars;
+  union {
+    evoasm_x64_params_t *params;
+    evoasm_x64_basic_params_t *basic_params;
+  };
+} evoasm_x64_enc_ctx_t;
 
 #include "gen/evoasm-x64-misc.h"
+
 
 typedef enum {
   EVOASM_X64_INSTS_FLAG_SEARCH = (1 << 0),
@@ -66,8 +68,7 @@ typedef struct {
   };
 } evoasm_x64_operand_t;
 
-typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_ctx_t *x64, evoasm_inst_param_val_t *param_vals,
-                                           evoasm_bitmap_t *set_params);
+typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_enc_ctx_t *ctx);
 
 typedef struct {
   uint8_t n_operands;
@@ -76,7 +77,7 @@ typedef struct {
   uint32_t exceptions;
   uint32_t flags;
   uint64_t features;
-  evoasm_inst_param_t *params;
+  evoasm_param_t *params;
   evoasm_x64_inst_enc_func_t enc_func;
   evoasm_x64_operand_t *operands;
   char *mnem;
@@ -84,13 +85,13 @@ typedef struct {
 
 
 #define EVOASM_X64_ENC(inst) \
-  EVOASM_TRY(enc_failed, evoasm_x64_##inst, x64_ctx, params.vals, (evoasm_bitmap_t *) &params.set)
+  EVOASM_TRY(enc_failed, evoasm_x64_##inst, x64_ctx)
 
-#define EVOASM_X64_SET(param, val) \
-  evoasm_inst_params_set(params.vals, (evoasm_bitmap_t *) &params.set, param, val)
+#define EVOASM_X64_PARAM_SET(param, val) \
+  evoasm_x64_params_set(&params, param, val)
 
-#define EVOASM_X64_UNSET(param) \
-  evoasm_inst_params_unset(params.vals, (evoasm_bitmap_t *) &params.set, param)
+#define EVOASM_X64_PARAM_UNSET(param) \
+  evoasm_params_unset(&params, param)
 
 typedef enum {
   EVOASM_X64_ABI_SYSV
@@ -99,9 +100,12 @@ typedef enum {
 #include "gen/evoasm-x64-insts.h"
 
 static inline evoasm_success_t
-_evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_ctx_t *x64,
-                     evoasm_inst_param_val_t *param_vals, evoasm_bitmap_t *set_params) {
-  return inst->enc_func(x64, param_vals, set_params);
+_evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  evoasm_x64_enc_ctx_t enc_ctx = {
+    .params = &params,
+    .buf_ref = *buf_ref
+  };
+  return inst->enc_func(&enc_ctx);
 }
 
 extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
@@ -112,37 +116,21 @@ _evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
 }
 
 static inline evoasm_success_t
-_evoasm_x64_ctx_enc(evoasm_x64_ctx_t *x64, evoasm_x64_inst_id_t inst_id, evoasm_inst_param_val_t *param_vals,
-                    evoasm_bitmap_t *set_params) {
+_evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params) {
   evoasm_x64_inst_t *inst = _evoasm_x64_inst(inst_id);
-  return _evoasm_x64_inst_enc(inst, x64, param_vals, set_params);
+  return _evoasm_x64_inst_enc(inst, params);
 }
 
-typedef struct {
-  _EVOASM_INST_PARAMS_HEADER
-  evoasm_inst_param_val_t vals[EVOASM_X64_N_INST_PARAMS];
-} evoasm_x64_params_t;
-
-_Static_assert(EVOASM_X64_N_INST_PARAMS <= EVOASM_ARCH_MAX_PARAMS,
-                "Too much parameters. Redeclar EVOASM_ARCH_MAX_PARAMS and evoasm_arch_params_bitmap.");
-
-
 static inline int64_t
-evoasm_x64_disp_size(evoasm_x64_inst_params_t *params) {
-  unsigned disp = params->disp;
+evoasm_x64_disp_size(evoasm_x64_params_t *params) {
+  int32_t disp = (int32_t) params->disp;
   if(disp >= INT16_MIN && disp <= INT16_MAX) return EVOASM_X64_DISP_SIZE_16;
   if(disp >= INT32_MIN && disp <= INT32_MAX) return EVOASM_X64_DISP_SIZE_32;
   return EVOASM_X64_N_DISP_SIZES;
 }
 
-void
-evoasm_x64_ctx_destroy(evoasm_x64_ctx_t *x64_ctx);
+evoasm_success_t
+evoasm_x64_func_prolog(evoasm_buf_t *buf, evoasm_x64_abi_t abi);
 
 evoasm_success_t
-evoasm_x64_ctx_init(evoasm_x64_ctx_t *x64_ctx);
-
-evoasm_success_t
-evoasm_x64_func_prolog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, evoasm_x64_abi_t abi);
-
-evoasm_success_t
-evoasm_x64_func_epilog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, evoasm_x64_abi_t abi);
+evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi);
