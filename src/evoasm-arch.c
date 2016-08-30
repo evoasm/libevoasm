@@ -7,9 +7,22 @@
  */
 
 #include "evoasm-arch.h"
-#include "evoasm-util.h"
-#include <string.h>
-#include <inttypes.h>
 
 EVOASM_DECL_LOG_TAG("arch")
+
+evoasm_arch_info_t _evoasm_arch_infos[] = {
+    {
+        EVOASM_ARCH_X64,
+        EVOASM_X64_N_INSTS,
+        EVOASM_X64_N_PARAMS,
+        15,
+        0ull
+    }
+};
+
+evoasm_arch_info_t *
+evoasm_arch_info(evoasm_arch_id_t arch_id) {
+  return &_evoasm_arch_infos[arch_id];
+}
+
 

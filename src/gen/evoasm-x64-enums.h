@@ -7,6 +7,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#pragma once
+
 typedef enum evoasm_x64_feature_t {
   EVOASM_X64_FEATURE_ADX = 0,
   EVOASM_X64_FEATURE_SSE2 = 1,
@@ -45,6 +47,8 @@ typedef enum evoasm_x64_feature_t {
 } evoasm_x64_feature_t;
 #define EVOASM_X64_FEATURE_BITSIZE 6
 #define EVOASM_X64_FEATURE_BITSIZE_WITH_N 6
+#define EVOASM_X64_FEATURE_BITMASK 0x3f
+#define EVOASM_X64_FEATURE_BITMASK_WITH_N 0x3f
 
 
 typedef enum evoasm_x64_inst_flag_t {
@@ -59,6 +63,7 @@ typedef enum evoasm_x64_inst_flag_t {
 } evoasm_x64_inst_flag_t;
 #define EVOASM_X64_INST_FLAG_BITSIZE 8
 #define EVOASM_X64_INST_FLAG_ALL 255
+#define EVOASM_X64_INST_FLAG_BITMASK 0xff
 
 
 typedef enum evoasm_x64_exception_t {
@@ -90,6 +95,8 @@ typedef enum evoasm_x64_exception_t {
 } evoasm_x64_exception_t;
 #define EVOASM_X64_EXCEPTION_BITSIZE 5
 #define EVOASM_X64_EXCEPTION_BITSIZE_WITH_N 5
+#define EVOASM_X64_EXCEPTION_BITMASK 0x1f
+#define EVOASM_X64_EXCEPTION_BITMASK_WITH_N 0x1f
 
 
 typedef enum evoasm_x64_reg_type_t {
@@ -104,6 +111,8 @@ typedef enum evoasm_x64_reg_type_t {
 } evoasm_x64_reg_type_t;
 #define EVOASM_X64_REG_TYPE_BITSIZE 3
 #define EVOASM_X64_REG_TYPE_BITSIZE_WITH_N 3
+#define EVOASM_X64_REG_TYPE_BITMASK 0x7
+#define EVOASM_X64_REG_TYPE_BITMASK_WITH_N 0x7
 
 
 typedef enum evoasm_x64_reg_id_t {
@@ -176,6 +185,8 @@ typedef enum evoasm_x64_reg_id_t {
 } evoasm_x64_reg_id_t;
 #define EVOASM_X64_REG_BITSIZE 7
 #define EVOASM_X64_REG_BITSIZE_WITH_N 7
+#define EVOASM_X64_REG_BITMASK 0x7f
+#define EVOASM_X64_REG_BITMASK_WITH_N 0x7f
 
 
 typedef enum evoasm_x64_disp_size_t {
@@ -185,6 +196,8 @@ typedef enum evoasm_x64_disp_size_t {
 } evoasm_x64_disp_size_t;
 #define EVOASM_X64_DISP_SIZE_BITSIZE 1
 #define EVOASM_X64_DISP_SIZE_BITSIZE_WITH_N 2
+#define EVOASM_X64_DISP_SIZE_BITMASK 0x1
+#define EVOASM_X64_DISP_SIZE_BITMASK_WITH_N 0x3
 
 
 typedef enum evoasm_x64_addr_size_t {
@@ -194,6 +207,8 @@ typedef enum evoasm_x64_addr_size_t {
 } evoasm_x64_addr_size_t;
 #define EVOASM_X64_ADDR_SIZE_BITSIZE 1
 #define EVOASM_X64_ADDR_SIZE_BITSIZE_WITH_N 2
+#define EVOASM_X64_ADDR_SIZE_BITMASK 0x1
+#define EVOASM_X64_ADDR_SIZE_BITMASK_WITH_N 0x3
 
 
 typedef enum evoasm_x64_param_id_t {
@@ -225,12 +240,14 @@ typedef enum evoasm_x64_param_id_t {
   EVOASM_X64_PARAM_VEX_V = 25,
   EVOASM_X64_PARAM_IMM0 = EVOASM_X64_PARAM_IMM,
   EVOASM_X64_PARAM_IMM1 = EVOASM_X64_PARAM_DISP,
-  EVOASM_X64_PARAM_MOFFS = EVOASM_X64_PARAM_IMM0,
-  EVOASM_X64_PARAM_REL = EVOASM_X64_PARAM_IMM0,
+  EVOASM_X64_PARAM_MOFFS = EVOASM_X64_PARAM_IMM,
+  EVOASM_X64_PARAM_REL = EVOASM_X64_PARAM_IMM,
   EVOASM_X64_N_PARAMS
 } evoasm_x64_param_id_t;
 #define EVOASM_X64_PARAM_BITSIZE 5
 #define EVOASM_X64_PARAM_BITSIZE_WITH_N 5
+#define EVOASM_X64_PARAM_BITMASK 0x1f
+#define EVOASM_X64_PARAM_BITMASK_WITH_N 0x1f
 
 
 typedef enum evoasm_x64_operand_type_t {
@@ -243,6 +260,8 @@ typedef enum evoasm_x64_operand_type_t {
 } evoasm_x64_operand_type_t;
 #define EVOASM_X64_OPERAND_TYPE_BITSIZE 3
 #define EVOASM_X64_OPERAND_TYPE_BITSIZE_WITH_N 3
+#define EVOASM_X64_OPERAND_TYPE_BITMASK 0x7
+#define EVOASM_X64_OPERAND_TYPE_BITMASK_WITH_N 0x7
 
 
 typedef enum evoasm_x64_bit_mask_t {
@@ -253,6 +272,7 @@ typedef enum evoasm_x64_bit_mask_t {
 } evoasm_x64_bit_mask_t;
 #define EVOASM_X64_BIT_MASK_BITSIZE 4
 #define EVOASM_X64_BIT_MASK_ALL 15
+#define EVOASM_X64_BIT_MASK_BITMASK 0xf
 
 #define EVOASM_X64_BIT_MASK_0_63 (EVOASM_X64_BIT_MASK_0_31 | EVOASM_X64_BIT_MASK_32_63)
 #define EVOASM_X64_BIT_MASK_0_127 (EVOASM_X64_BIT_MASK_0_63 | EVOASM_X64_BIT_MASK_64_127)
@@ -1951,6 +1971,8 @@ typedef enum evoasm_x64_inst_id_t {
 } evoasm_x64_inst_id_t;
 #define EVOASM_X64_INST_BITSIZE 11
 #define EVOASM_X64_INST_BITSIZE_WITH_N 11
+#define EVOASM_X64_INST_BITMASK 0x7ff
+#define EVOASM_X64_INST_BITMASK_WITH_N 0x7ff
 
 
 #define EVOASM_X64_PARAM_IDX_BITSIZE 5

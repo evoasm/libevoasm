@@ -7,6 +7,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#pragma once
+
 static inline evoasm_x64_reg_type_t
 evoasm_x64_reg_type(evoasm_x64_reg_id_t reg) {
   switch(reg) {

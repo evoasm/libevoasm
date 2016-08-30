@@ -22,8 +22,8 @@ typedef struct {
     bool encode_rex : 1;
   } shared_vars;
   union {
-    evoasm_x64_params_t *params;
-    evoasm_x64_basic_params_t *basic_params;
+    evoasm_x64_params_t params;
+    evoasm_x64_basic_params_t basic_params;
   };
 } evoasm_x64_enc_ctx_t;
 
@@ -85,13 +85,22 @@ typedef struct {
 
 
 #define EVOASM_X64_ENC(inst) \
-  EVOASM_TRY(enc_failed, evoasm_x64_##inst, x64_ctx)
+  do { \
+    evoasm_x64_enc_ctx_t enc_ctx = { \
+      .params = params, \
+      .buf_ref = { \
+        .data = (buf)->data, \
+        .pos = &(buf->pos)  \
+      } \
+    }; \
+    EVOASM_TRY(enc_failed, evoasm_x64_##inst, &enc_ctx); \
+  } while(0);
 
-#define EVOASM_X64_PARAM_SET(param, val) \
-  evoasm_x64_params_set(&params, param, val)
+#define EVOASM_X64_SET(param, val) \
+  evoasm_x64_params_set_(&params, param, val)
 
-#define EVOASM_X64_PARAM_UNSET(param) \
-  evoasm_params_unset(&params, param)
+#define EVOASM_X64_UNSET(param) \
+  evoasm_x64_params_unset_(&params, param)
 
 typedef enum {
   EVOASM_X64_ABI_SYSV
@@ -102,8 +111,8 @@ typedef enum {
 static inline evoasm_success_t
 _evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
   evoasm_x64_enc_ctx_t enc_ctx = {
-    .params = &params,
-    .buf_ref = *buf_ref
+      .params = *params,
+      .buf_ref = *buf_ref
   };
   return inst->enc_func(&enc_ctx);
 }
@@ -116,9 +125,9 @@ _evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
 }
 
 static inline evoasm_success_t
-_evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params) {
+_evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
   evoasm_x64_inst_t *inst = _evoasm_x64_inst(inst_id);
-  return _evoasm_x64_inst_enc(inst, params);
+  return _evoasm_x64_inst_enc(inst, params, buf_ref);
 }
 
 static inline int64_t
