@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 #include "evoasm-bitmap.h"
-#include "evoasm-misc.h"
+#include "evoasm-domain.h"
 
 #define EVOASM_PARAM_VAL_FORMAT PRId64
 #define EVOASM_PARAM_FORMAT PRIu32

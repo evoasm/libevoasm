@@ -14,6 +14,7 @@
 #include "evoasm.h"
 #include "evoasm-buf.h"
 #include "evoasm-x64.h"
+#include "evoasm-domain.h"
 
 typedef double evoasm_loss_t;
 typedef uint8_t evoasm_adf_size_t;
@@ -130,7 +131,7 @@ typedef struct {
 
 
 typedef struct {
-  evoasm_arch_id_t arch_id;
+  evoasm_arch_info_t *arch_info;
   evoasm_buf_t *buf;
   evoasm_buf_t *body_buf;
   uint32_t index;
@@ -177,6 +178,7 @@ typedef struct {
   unsigned char *adfs_main;
   unsigned char *adfs_swap;
   unsigned char *adfs_aux;
+  evoasm_arch_info_t *arch_info;
 } evoasm_population_t;
 
 #define EVOASM_EXAMPLES_MAX_ARITY 8

@@ -24,8 +24,8 @@ set(SOURCE_FILES
         src/evoasm-error.h
         src/evoasm-log.c
         src/evoasm-log.h
-        src/evoasm-misc.c
-        src/evoasm-misc.h
+        src/evoasm-rand.c
+        src/evoasm-rand.h
         src/evoasm-param.c
         src/evoasm-param.h
         src/evoasm-search.c
@@ -36,6 +36,6 @@ set(SOURCE_FILES
         src/evoasm-x64.c
         src/evoasm-x64.h
         src/gen/evoasm-x64-misc.c
-        src/gen/evoasm-x64-insts.c)
+        src/gen/evoasm-x64-insts.c src/evoasm-domain.h src/evoasm-domain.c)
 
 add_library(evoasm SHARED ${SOURCE_FILES})

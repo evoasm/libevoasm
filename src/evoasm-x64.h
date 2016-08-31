@@ -12,6 +12,7 @@
 #include "evoasm-error.h"
 #include "evoasm-alloc.h"
 #include "evoasm-arch.h"
+#include "evoasm-domain.h"
 
 #include "gen/evoasm-x64-enums.h"
 #include "gen/evoasm-x64-params.h"
@@ -79,6 +80,7 @@ typedef struct {
   uint64_t features;
   evoasm_param_t *params;
   evoasm_x64_inst_enc_func_t enc_func;
+  evoasm_x64_inst_enc_func_t basic_enc_func;
   evoasm_x64_operand_t *operands;
   char *mnem;
 } evoasm_x64_inst_t;
@@ -97,10 +99,10 @@ typedef struct {
   } while(0);
 
 #define EVOASM_X64_SET(param, val) \
-  evoasm_x64_params_set_(&params, param, val)
+  _evoasm_x64_params_set(&params, param, val)
 
 #define EVOASM_X64_UNSET(param) \
-  evoasm_x64_params_unset_(&params, param)
+  _evoasm_x64_params_unset(&params, param)
 
 typedef enum {
   EVOASM_X64_ABI_SYSV
@@ -117,6 +119,15 @@ _evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoas
   return inst->enc_func(&enc_ctx);
 }
 
+static inline evoasm_success_t
+_evoasm_x64_inst_basic_enc(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  evoasm_x64_enc_ctx_t enc_ctx = {
+      .basic_params = *params,
+      .buf_ref = *buf_ref
+  };
+  return inst->basic_enc_func(&enc_ctx);
+}
+
 extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
 
 static inline evoasm_x64_inst_t *
@@ -131,7 +142,7 @@ _evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoas
 }
 
 static inline int64_t
-evoasm_x64_disp_size(evoasm_x64_params_t *params) {
+evoasm_x64_auto_disp_size(evoasm_x64_params_t *params) {
   int32_t disp = (int32_t) params->disp;
   if(disp >= INT16_MIN && disp <= INT16_MAX) return EVOASM_X64_DISP_SIZE_16;
   if(disp >= INT32_MIN && disp <= INT32_MAX) return EVOASM_X64_DISP_SIZE_32;
