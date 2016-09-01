@@ -198,7 +198,7 @@ evoasm_x64_operand_size_t evoasm_x64_operand_mem_size(evoasm_x64_operand_t *oper
 }
 
 evoasm_param_t *
-evoasm_x64_param(evoasm_x64_inst_t *inst, unsigned index) {
+evoasm_x64_inst_param(evoasm_x64_inst_t *inst, unsigned index) {
   return &inst->params[index];
 }
 

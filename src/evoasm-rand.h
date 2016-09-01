@@ -14,39 +14,24 @@
 
 typedef struct {
   uint64_t data[16];
-} evoasm_prng64_seed_t;
-
-typedef struct {
-  uint32_t data[4];
-} evoasm_prng32_seed_t;
+} evoasm_prng_seed_t;
 
 typedef struct evoasm_prng64 {
   /* xorshift1024star */
-  evoasm_prng64_seed_t s;
+  evoasm_prng_seed_t s;
   int p;
-} evoasm_prng64_t;
-
-typedef struct evoasm_prng32 {
-  /* xorshift128 */
-  evoasm_prng32_seed_t s;
-  int p;
-} evoasm_prng32_t;
+} evoasm_prng_t;
 
 void
-evoasm_prng64_init(evoasm_prng64_t *prng, evoasm_prng64_seed_t *seed);
+evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_seed_t *seed);
 
 void
-evoasm_prng64_destroy(evoasm_prng64_t *prng);
+evoasm_prng_destroy(evoasm_prng_t *prng);
 
-void
-evoasm_prng32_init(evoasm_prng32_t *prng, evoasm_prng32_seed_t *seed);
-
-void
-evoasm_prng32_destroy(evoasm_prng32_t *prng);
 
 /* From: https://en.wikipedia.org/wiki/Xorshift */
 static inline uint64_t
-evoasm_prng64_rand(evoasm_prng64_t *prng) {
+evoasm_prng_rand64(evoasm_prng_t *prng) {
   uint64_t *s = prng->s.data;
   const uint64_t s0 = s[prng->p];
   uint64_t s1 = s[prng->p = (prng->p + 1) & 15];
@@ -56,25 +41,23 @@ evoasm_prng64_rand(evoasm_prng64_t *prng) {
 }
 
 static inline uint32_t
-evoasm_prng32_rand(evoasm_prng32_t *prng) {
-  uint32_t *s = prng->s.data;
-  uint32_t t = s[0];
-  t ^= t << 11;
-  t ^= t >> 8;
-  s[0] = s[1]; s[1] = s[2]; s[2] = s[3];
-  s[3] ^= s[3] >> 19;
-  s[3] ^= t;
-  return s[3];
+evoasm_prng_rand32(evoasm_prng_t *prng) {
+  return (uint32_t) (evoasm_prng_rand64(prng) & UINT32_MAX);
+}
+
+static inline uint16_t
+evoasm_prng_rand16(evoasm_prng_t *prng) {
+  return (uint16_t) (evoasm_prng_rand64(prng) & UINT16_MAX);
+}
+
+static inline uint8_t
+evoasm_prng_rand8(evoasm_prng_t *prng) {
+  return (uint8_t) (evoasm_prng_rand64(prng) & UINT8_MAX);
 }
 
 static inline int64_t
-evoasm_prng64_rand_between(evoasm_prng64_t *prng, int64_t min, int64_t max) {
-  return min + (int64_t)(evoasm_prng64_rand(prng) % (uint64_t)(max - min + 1ll));
-}
-
-static inline int32_t
-evoasm_prng32_rand_between(evoasm_prng32_t *prng, int32_t min, int32_t max) {
-  return min + (int32_t)(evoasm_prng32_rand(prng) % (uint32_t)(max - min + 1ll));
+evoasm_prng_rand_between(evoasm_prng_t *prng, int64_t min, int64_t max) {
+  return min + (int64_t)(evoasm_prng_rand64(prng) % (uint64_t)(max - min + 1ll));
 }
 
 static inline int64_t

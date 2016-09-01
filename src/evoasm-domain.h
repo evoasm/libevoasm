@@ -59,27 +59,27 @@ _EVOASM_DECL_ENUM_DOMAIN_TYPE(16)
 typedef evoasm_enum16_domain_t evoasm_domain_t;
 
 static inline int64_t
-evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng64_t *prng, evoasm_prng32_t *prng) {
+evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
-      return evoasm_prng64_rand_between(prng, interval->min, interval->max);
+      return evoasm_prng_rand_between(prng, interval->min, interval->max);
     }
     case EVOASM_DOMAIN_TYPE_INT64: {
-      return (int64_t) evoasm_prng64_rand(prng);
+      return (int64_t) evoasm_prng_rand64(prng);
     }
     case EVOASM_DOMAIN_TYPE_INT32: {
-      return (int64_t) (int32_t) (evoasm_prng64_rand(prng) & UINT32_MAX);
+      return (int32_t) evoasm_prng_rand32(prng);
     }
     case EVOASM_DOMAIN_TYPE_INT16: {
-      return (int64_t) (int16_t) (evoasm_prng64_rand(prng) & UINT16_MAX);
+      return (int16_t) evoasm_prng_rand16(prng);
     }
     case EVOASM_DOMAIN_TYPE_INT8: {
-      return (int64_t) (int8_t) (evoasm_prng64_rand(prng) & UINT8_MAX);
+      return (int8_t) evoasm_prng_rand8(prng);
     }
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enm = (evoasm_enum_domain_t *) domain;
-      return enm->vals[evoasm_prng64_rand(prng) % enm->len];
+      return enm->vals[evoasm_prng_rand64(prng) % enm->len];
     }
     default:
       evoasm_assert_not_reached();

@@ -124,8 +124,7 @@ typedef struct {
   uint32_t mut_rate;
   evoasm_adf_input_t adf_input;
   evoasm_adf_output_t adf_output;
-  evoasm_prng64_seed_t seed64;
-  evoasm_prng32_seed_t seed32;
+  evoasm_prng_seed_t seed;
   evoasm_loss_t max_loss;
 } evoasm_search_params_t;
 
@@ -163,8 +162,7 @@ typedef struct {
 #define EVOASM_SEARCH_ELITE_SIZE 4
 
 typedef struct {
-  evoasm_prng64_t prng64;
-  evoasm_prng32_t prng32;
+  evoasm_prng_t prng;
   evoasm_loss_t best_loss;
   evoasm_buf_t buf;
   evoasm_buf_t body_buf;
