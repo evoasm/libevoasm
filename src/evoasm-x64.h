@@ -120,7 +120,7 @@ _evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoas
 }
 
 static inline evoasm_success_t
-_evoasm_x64_inst_basic_enc(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+_evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
   evoasm_x64_enc_ctx_t enc_ctx = {
       .basic_params = *params,
       .buf_ref = *buf_ref

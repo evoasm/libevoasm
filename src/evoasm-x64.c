@@ -152,8 +152,18 @@ cpuid_failed:
 }
 
 evoasm_x64_inst_t *
-evoasm_x64_inst(unsigned index) {
-  return _evoasm_x64_inst(index);
+evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
+  return _evoasm_x64_inst(inst_id);
+}
+
+evoasm_success_t
+evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  return _evoasm_x64_inst_enc(inst, params, buf_ref);
+}
+
+evoasm_success_t
+evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  return _evoasm_x64_inst_enc_basic(inst, params, buf_ref);
 }
 
 evoasm_x64_operand_t *

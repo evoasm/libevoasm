@@ -941,7 +941,7 @@ evoasm_adf_x64_emit_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_bu
     evoasm_x64_inst_t *inst = _evoasm_x64_inst(kernel_params->params[i].x64.inst);
     evoasm_x64_inst_t *x64_inst = (evoasm_x64_inst_t *) inst;
     adf->exception_mask = adf->exception_mask | x64_inst->exceptions;
-    EVOASM_TRY(error, _evoasm_x64_inst_basic_enc,
+    EVOASM_TRY(error, _evoasm_x64_inst_enc_basic,
                inst,
                &kernel_params->params[i].x64.params, &buf_ref);
   }
