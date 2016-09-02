@@ -29,10 +29,10 @@ typedef enum {
 } evoasm_arch_id_t;
 
 typedef struct {
-  evoasm_arch_id_t id : 8;
-  uint16_t n_insts;
+  uint8_t id;
   uint8_t n_params;
   uint8_t max_inst_len;
+  uint16_t n_insts;
   uint64_t features;
 } evoasm_arch_info_t;
 
@@ -56,10 +56,9 @@ typedef struct {
 
 _Static_assert(sizeof(evoasm_error_data_t) >= sizeof(evoasm_enc_error_data_t), "evoasm_enc_error_data_t exceeds evoasm_error_data_t size limit");
 
-
-
 evoasm_arch_info_t *
 evoasm_arch_info(evoasm_arch_id_t arch_id);
+
 
 #if 0
 static inline void

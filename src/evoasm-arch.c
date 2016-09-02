@@ -13,9 +13,9 @@ EVOASM_DECL_LOG_TAG("arch")
 evoasm_arch_info_t _evoasm_arch_infos[] = {
     {
         EVOASM_ARCH_X64,
-        EVOASM_X64_N_INSTS,
         EVOASM_X64_N_PARAMS,
         15,
+        EVOASM_X64_N_INSTS,
         0ull
     }
 };
@@ -24,5 +24,16 @@ evoasm_arch_info_t *
 evoasm_arch_info(evoasm_arch_id_t arch_id) {
   return &_evoasm_arch_infos[arch_id];
 }
+
+#define _EVOASM_ARCH_INFO_DEF_FIELD_READER(field, type) \
+type evoasm_arch_info_##field(evoasm_arch_info_t *arch_info) { \
+  return (type) arch_info->field; \
+}
+
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(id, evoasm_arch_id_t)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(n_params, unsigned)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(max_inst_len, unsigned)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(n_insts, unsigned)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(features, unsigned)
 
 
