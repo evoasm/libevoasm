@@ -7,6 +7,7 @@
  */
 
 #include "evoasm-x64.h"
+#include "evoasm.h"
 
 //static const char *_evoasm_log_tag = "x64";
 
@@ -22,7 +23,7 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
 };
 
 uint16_t
-evoasm_x64_insts(evoasm_x64_ctx_t *x64, uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
+evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
   uint16_t len = 0;
   unsigned i, j;
   bool search = (flags & EVOASM_X64_INSTS_FLAG_SEARCH) != 0;
@@ -74,24 +75,15 @@ skip:;
   return len;
 }
 
-static evoasm_arch_cls_t evoasm_x64_cls = {
-    EVOASM_ARCH_X64,
-    EVOASM_X64_N_INSTS,
-    EVOASM_X64_N_INST_PARAMS,
-    15
-};
-
 static evoasm_success_t
-evoasm_x64_func_prolog_or_epilog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, evoasm_x64_abi_t abi, bool prolog) {
-  evoasm_arch_ctx_t *arch_ctx = (evoasm_arch_ctx_t *) x64_ctx;
+evoasm_x64_func_prolog_or_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi, bool prolog) {
   unsigned i;
   size_t regs_len = EVOASM_ARY_LEN(evoasm_x64_sysv_callee_save_regs);
   evoasm_x64_params_t params = {0};
 
   for(i = 0; i < regs_len; i++) {
     evoasm_x64_reg_id_t reg = evoasm_x64_sysv_callee_save_regs[prolog ? i : (regs_len - 1 - i)];
-    evoasm_arch_ctx_write_access(arch_ctx, (evoasm_bitmap_t *) &arch_ctx->acc, reg);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
 
     if(prolog) {
       EVOASM_X64_ENC(push_r64);
@@ -99,12 +91,10 @@ evoasm_x64_func_prolog_or_epilog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, e
     else {
       EVOASM_X64_ENC(pop_r64);
     }
-    evoasm_arch_ctx_save(arch_ctx, buf);
   }
 
   if(!prolog) {
     EVOASM_X64_ENC(ret);
-    evoasm_arch_ctx_save(arch_ctx, buf);
   }
 
   return true;
@@ -114,23 +104,20 @@ evoasm_x64_func_prolog_or_epilog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, e
 }
 
 evoasm_success_t
-evoasm_x64_func_prolog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
-  return evoasm_x64_func_prolog_or_epilog(x64_ctx, buf, abi, true);
+evoasm_x64_func_prolog(evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
+  return evoasm_x64_func_prolog_or_epilog(buf, abi, true);
 }
 
 evoasm_success_t
-evoasm_x64_func_epilog(evoasm_x64_ctx_t *x64_ctx, evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
-  return evoasm_x64_func_prolog_or_epilog(x64_ctx, buf, abi, false);
+evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
+  return evoasm_x64_func_prolog_or_epilog(buf, abi, false);
 }
 
 evoasm_success_t
-evoasm_x64_ctx_init(evoasm_x64_ctx_t *x64_ctx) {
-  static evoasm_x64_ctx_t zero_x64 = {0};
-  evoasm_arch_ctx_t *arch_ctx = (evoasm_arch_ctx_t *) x64_ctx;
-  *x64_ctx = zero_x64;
-
-  evoasm_arch_ctx_init(arch_ctx, &evoasm_x64_cls);
-  EVOASM_TRY(cpuid_failed, evoasm_x64_ctx_load_cpuid, x64_ctx);
+evoasm_x64_init() {
+  extern evoasm_arch_info_t *_evoasm_arch_infos;
+  uint64_t features;
+  EVOASM_TRY(cpuid_failed, evoasm_x64_features, &features);
 
   evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_GP] = 8;
 
@@ -150,35 +137,18 @@ evoasm_x64_ctx_init(evoasm_x64_ctx_t *x64_ctx) {
   }
   else
 #endif
-  if(x64_ctx->features & EVOASM_X64_FEATURE_AVX2) {
+  if(features & EVOASM_X64_FEATURE_AVX2) {
     evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] = 32;
   } else {
     evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] = 16;
   }
+
+  _evoasm_arch_infos[EVOASM_ARCH_X64].features = features;
+
   return true;
 
 cpuid_failed:
-evoasm_arch_ctx_destroy(arch_ctx);
   return false;
-}
-
-
-uint64_t
-evoasm_x64_ctx_features(evoasm_x64_ctx_t *x64_ctx) {
-  return x64_ctx->features;
-}
-
-void
-evoasm_x64_ctx_destroy(evoasm_x64_ctx_t *x64_ctx) {
-  evoasm_arch_ctx_t *arch_ctx = (evoasm_arch_ctx_t *) x64_ctx;
-  evoasm_arch_ctx_destroy(arch_ctx);
-}
-
-evoasm_success_t
-evoasm_x64_ctx_enc(evoasm_x64_ctx_t *x64_ctx, evoasm_x64_inst_id_t inst_id, evoasm_inst_param_val_t *param_vals,
-                   evoasm_bitmap_t *set_params) {
-
-  return _evoasm_x64_ctx_enc(x64_ctx, inst_id, param_vals, set_params);
 }
 
 evoasm_x64_inst_t *
@@ -227,7 +197,7 @@ evoasm_x64_operand_size_t evoasm_x64_operand_mem_size(evoasm_x64_operand_t *oper
   return (evoasm_x64_operand_size_t) operand->size2;
 }
 
-evoasm_inst_param_t *
+evoasm_param_t *
 evoasm_x64_inst_param(evoasm_x64_inst_t *inst, unsigned index) {
   return &inst->params[index];
 }

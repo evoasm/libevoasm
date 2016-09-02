@@ -11,322 +11,302 @@
 static const char *_evoasm_log_tag = "x64";
 
 evoasm_success_t
-evoasm_x64_ctx_load_cpuid(evoasm_x64_ctx_t *x64_ctx) {
-  evoasm_buf_t buf;
+evoasm_x64_features(uint64_t *features) {
+  evoasm_buf_t buf_;
+  evoasm_buf_t *buf = &buf_;
   evoasm_x64_params_t params = {0};
   bool retval = true;
 
   uint32_t vals[3][2] = {0};
-  evoasm_arch_ctx_t *arch_ctx = (evoasm_arch_ctx_t *) x64_ctx;
 
   evoasm_debug("Running CPUID...");
 
-  EVOASM_TRY(alloc_failed, evoasm_buf_init, &buf, EVOASM_BUF_TYPE_MMAP, 512);
+  EVOASM_TRY(alloc_failed, evoasm_buf_init, buf, EVOASM_BUF_TYPE_MMAP, 512);
+  EVOASM_TRY(enc_failed, evoasm_x64_func_prolog,  buf, EVOASM_X64_ABI_SYSV);
 
-  EVOASM_TRY(enc_failed, evoasm_x64_func_prolog, x64_ctx, &buf, EVOASM_X64_ABI_SYSV);
 
-
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_A);
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, 1);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_A);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, 1);
   EVOASM_X64_ENC(mov_r32_imm32);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
 
   EVOASM_X64_ENC(cpuid);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
 
   {
-    evoasm_inst_param_val_t addr_imm;
-    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[0][0];
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_DI);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, addr_imm);
+    int64_t addr_imm;
+    addr_imm = (int64_t)(uintptr_t) &vals[0][0];
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
 
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG1, EVOASM_X64_REG_D);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG_BASE, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_D);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_DI);
     EVOASM_X64_ENC(mov_rm32_r32);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_ADDRESS_SIZE);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_REG_BASE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_ADDR_SIZE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_REG_BASE);
 
   }
 
   {
-    evoasm_inst_param_val_t addr_imm;
-    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[0][1];
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_DI);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, addr_imm);
+    int64_t addr_imm;
+    addr_imm = (int64_t)(uintptr_t) &vals[0][1];
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
 
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG1, EVOASM_X64_REG_C);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG_BASE, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_C);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_DI);
     EVOASM_X64_ENC(mov_rm32_r32);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_ADDRESS_SIZE);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_REG_BASE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_ADDR_SIZE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_REG_BASE);
 
   }
 
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_A);
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, 7);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_A);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, 7);
   EVOASM_X64_ENC(mov_r32_imm32);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_C);
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, 0);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_C);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, 0);
   EVOASM_X64_ENC(mov_r32_imm32);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
   EVOASM_X64_ENC(cpuid);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
 
   {
-    evoasm_inst_param_val_t addr_imm;
-    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[1][0];
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_DI);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, addr_imm);
+    int64_t addr_imm;
+    addr_imm = (int64_t)(uintptr_t) &vals[1][0];
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
 
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG1, EVOASM_X64_REG_B);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG_BASE, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_B);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_DI);
     EVOASM_X64_ENC(mov_rm32_r32);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_ADDRESS_SIZE);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_REG_BASE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_ADDR_SIZE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_REG_BASE);
 
   }
 
   {
-    evoasm_inst_param_val_t addr_imm;
-    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[1][1];
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_DI);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, addr_imm);
+    int64_t addr_imm;
+    addr_imm = (int64_t)(uintptr_t) &vals[1][1];
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
 
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG1, EVOASM_X64_REG_C);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG_BASE, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_C);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_DI);
     EVOASM_X64_ENC(mov_rm32_r32);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_ADDRESS_SIZE);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_REG_BASE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_ADDR_SIZE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_REG_BASE);
 
   }
 
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_A);
-  EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, 2147483649);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_A);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, 2147483649);
   EVOASM_X64_ENC(mov_r32_imm32);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
 
   EVOASM_X64_ENC(cpuid);
-  evoasm_arch_ctx_save(arch_ctx, &buf);
 
 
   {
-    evoasm_inst_param_val_t addr_imm;
-    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[2][0];
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_DI);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, addr_imm);
+    int64_t addr_imm;
+    addr_imm = (int64_t)(uintptr_t) &vals[2][0];
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
 
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG1, EVOASM_X64_REG_D);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG_BASE, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_D);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_DI);
     EVOASM_X64_ENC(mov_rm32_r32);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_ADDRESS_SIZE);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_REG_BASE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_ADDR_SIZE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_REG_BASE);
 
   }
 
   {
-    evoasm_inst_param_val_t addr_imm;
-    addr_imm = (evoasm_inst_param_val_t)(uintptr_t) &vals[2][1];
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG0, EVOASM_X64_REG_DI);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_IMM0, addr_imm);
+    int64_t addr_imm;
+    addr_imm = (int64_t)(uintptr_t) &vals[2][1];
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
 
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG1, EVOASM_X64_REG_C);
-    EVOASM_X64_SET(EVOASM_X64_INST_PARAM_REG_BASE, EVOASM_X64_REG_DI);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_C);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_DI);
     EVOASM_X64_ENC(mov_rm32_r32);
-    evoasm_arch_ctx_save(arch_ctx, &buf);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_ADDRESS_SIZE);
-    EVOASM_X64_UNSET(EVOASM_X64_INST_PARAM_REG_BASE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_ADDR_SIZE);
+    EVOASM_X64_UNSET(EVOASM_X64_PARAM_REG_BASE);
 
   }
 
-  EVOASM_TRY(enc_failed, evoasm_x64_func_epilog, x64_ctx, &buf, EVOASM_X64_ABI_SYSV);
+  EVOASM_TRY(enc_failed, evoasm_x64_func_epilog, buf, EVOASM_X64_ABI_SYSV);
 
-  /*evoasm_buf_dump(&buf, stderr);*/
+  /*evoasm_buf_dump(buf, stderr);*/
 
-  EVOASM_TRY(enc_failed, evoasm_buf_protect, &buf, EVOASM_MPROT_RX);
-  evoasm_buf_exec(&buf);
+  EVOASM_TRY(enc_failed, evoasm_buf_protect, buf, EVOASM_MPROT_RX);
+  evoasm_buf_exec(buf);
 
   if(vals[0][0] & (1ull << 8)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_CX8);
+    *features |= (1ull << EVOASM_X64_FEATURE_CX8);
     evoasm_info("Found support for CX8");
   } else {
     evoasm_info("Missing support for CX8");
   }
   if(vals[0][0] & (1ull << 15)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_CMOV);
+    *features |= (1ull << EVOASM_X64_FEATURE_CMOV);
     evoasm_info("Found support for CMOV");
   } else {
     evoasm_info("Missing support for CMOV");
   }
   if(vals[0][0] & (1ull << 23)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_MMX);
+    *features |= (1ull << EVOASM_X64_FEATURE_MMX);
     evoasm_info("Found support for MMX");
   } else {
     evoasm_info("Missing support for MMX");
   }
   if(vals[0][0] & (1ull << 25)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SSE);
+    *features |= (1ull << EVOASM_X64_FEATURE_SSE);
     evoasm_info("Found support for SSE");
   } else {
     evoasm_info("Missing support for SSE");
   }
   if(vals[0][0] & (1ull << 26)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SSE2);
+    *features |= (1ull << EVOASM_X64_FEATURE_SSE2);
     evoasm_info("Found support for SSE2");
   } else {
     evoasm_info("Missing support for SSE2");
   }
   if(vals[0][1] & (1ull << 0)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SSE3);
+    *features |= (1ull << EVOASM_X64_FEATURE_SSE3);
     evoasm_info("Found support for SSE3");
   } else {
     evoasm_info("Missing support for SSE3");
   }
   if(vals[0][1] & (1ull << 1)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_PCLMULQDQ);
+    *features |= (1ull << EVOASM_X64_FEATURE_PCLMULQDQ);
     evoasm_info("Found support for PCLMULQDQ");
   } else {
     evoasm_info("Missing support for PCLMULQDQ");
   }
   if(vals[0][1] & (1ull << 9)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SSSE3);
+    *features |= (1ull << EVOASM_X64_FEATURE_SSSE3);
     evoasm_info("Found support for SSSE3");
   } else {
     evoasm_info("Missing support for SSSE3");
   }
   if(vals[0][1] & (1ull << 12)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_FMA);
+    *features |= (1ull << EVOASM_X64_FEATURE_FMA);
     evoasm_info("Found support for FMA");
   } else {
     evoasm_info("Missing support for FMA");
   }
   if(vals[0][1] & (1ull << 13)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_CX16);
+    *features |= (1ull << EVOASM_X64_FEATURE_CX16);
     evoasm_info("Found support for CX16");
   } else {
     evoasm_info("Missing support for CX16");
   }
   if(vals[0][1] & (1ull << 19)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SSE4_1);
+    *features |= (1ull << EVOASM_X64_FEATURE_SSE4_1);
     evoasm_info("Found support for SSE4_1");
   } else {
     evoasm_info("Missing support for SSE4_1");
   }
   if(vals[0][1] & (1ull << 20)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SSE4_2);
+    *features |= (1ull << EVOASM_X64_FEATURE_SSE4_2);
     evoasm_info("Found support for SSE4_2");
   } else {
     evoasm_info("Missing support for SSE4_2");
   }
   if(vals[0][1] & (1ull << 22)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_MOVBE);
+    *features |= (1ull << EVOASM_X64_FEATURE_MOVBE);
     evoasm_info("Found support for MOVBE");
   } else {
     evoasm_info("Missing support for MOVBE");
   }
   if(vals[0][1] & (1ull << 23)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_POPCNT);
+    *features |= (1ull << EVOASM_X64_FEATURE_POPCNT);
     evoasm_info("Found support for POPCNT");
   } else {
     evoasm_info("Missing support for POPCNT");
   }
   if(vals[0][1] & (1ull << 25)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_AES);
+    *features |= (1ull << EVOASM_X64_FEATURE_AES);
     evoasm_info("Found support for AES");
   } else {
     evoasm_info("Missing support for AES");
   }
   if(vals[0][1] & (1ull << 28)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_AVX);
+    *features |= (1ull << EVOASM_X64_FEATURE_AVX);
     evoasm_info("Found support for AVX");
   } else {
     evoasm_info("Missing support for AVX");
   }
   if(vals[0][1] & (1ull << 29)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_F16C);
+    *features |= (1ull << EVOASM_X64_FEATURE_F16C);
     evoasm_info("Found support for F16C");
   } else {
     evoasm_info("Missing support for F16C");
   }
   if(vals[1][0] & (1ull << 3)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_BMI1);
+    *features |= (1ull << EVOASM_X64_FEATURE_BMI1);
     evoasm_info("Found support for BMI1");
   } else {
     evoasm_info("Missing support for BMI1");
   }
   if(vals[1][0] & (1ull << 5)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_AVX2);
+    *features |= (1ull << EVOASM_X64_FEATURE_AVX2);
     evoasm_info("Found support for AVX2");
   } else {
     evoasm_info("Missing support for AVX2");
   }
   if(vals[1][0] & (1ull << 8)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_BMI2);
+    *features |= (1ull << EVOASM_X64_FEATURE_BMI2);
     evoasm_info("Found support for BMI2");
   } else {
     evoasm_info("Missing support for BMI2");
   }
   if(vals[1][0] & (1ull << 11)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_RTM);
+    *features |= (1ull << EVOASM_X64_FEATURE_RTM);
     evoasm_info("Found support for RTM");
   } else {
     evoasm_info("Missing support for RTM");
   }
   if(vals[1][0] & (1ull << 18)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_RDSEED);
+    *features |= (1ull << EVOASM_X64_FEATURE_RDSEED);
     evoasm_info("Found support for RDSEED");
   } else {
     evoasm_info("Missing support for RDSEED");
   }
   if(vals[1][0] & (1ull << 19)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_ADX);
+    *features |= (1ull << EVOASM_X64_FEATURE_ADX);
     evoasm_info("Found support for ADX");
   } else {
     evoasm_info("Missing support for ADX");
   }
   if(vals[1][0] & (1ull << 23)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_CLFLUSHOPT);
+    *features |= (1ull << EVOASM_X64_FEATURE_CLFLUSHOPT);
     evoasm_info("Found support for CLFLUSHOPT");
   } else {
     evoasm_info("Missing support for CLFLUSHOPT");
   }
   if(vals[1][0] & (1ull << 28)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_SHA);
+    *features |= (1ull << EVOASM_X64_FEATURE_SHA);
     evoasm_info("Found support for SHA");
   } else {
     evoasm_info("Missing support for SHA");
   }
   if(vals[1][1] & (1ull << 0)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_PREFETCHWT1);
+    *features |= (1ull << EVOASM_X64_FEATURE_PREFETCHWT1);
     evoasm_info("Found support for PREFETCHWT1");
   } else {
     evoasm_info("Missing support for PREFETCHWT1");
   }
   if(vals[2][1] & (1ull << 0)) {
-    x64_ctx->features |= (1ull << EVOASM_X64_FEATURE_LAHF_LM);
+    *features |= (1ull << EVOASM_X64_FEATURE_LAHF_LM);
     evoasm_info("Found support for LAHF_LM");
   } else {
     evoasm_info("Missing support for LAHF_LM");
@@ -334,7 +314,7 @@ evoasm_x64_ctx_load_cpuid(evoasm_x64_ctx_t *x64_ctx) {
 
 
 cleanup:
-  EVOASM_TRY(destroy_failed, evoasm_buf_destroy, &buf);
+  EVOASM_TRY(destroy_failed, evoasm_buf_destroy, buf);
   return retval;
 enc_failed:
   retval = false;
@@ -345,88 +325,3 @@ alloc_failed:
   return false;
 }
 
-void evoasm_x64_inst_params_set(evoasm_x64_inst_params_t *params, evoasm_x64_inst_param_id_t param, evoasm_inst_param_val_t param_val) {
-  switch(param) {
-    case EVOASM_X64_INST_PARAM_REG0:
-      params->reg0 = param_val;
-      params->reg0_set = true;
-      break;
-    case EVOASM_X64_INST_PARAM_REG1:
-      params->reg1 = param_val;
-      params->reg1_set = true;
-      break;
-    case EVOASM_X64_INST_PARAM_REG2:
-      params->reg2 = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REG3:
-      params->reg3 = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_IMM:
-      params->imm = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_FORCE_REX:
-      params->force_rex = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REX_R:
-      params->rex_r = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REX_X:
-      params->rex_x = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REX_B:
-      params->rex_b = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_LEGACY_PREFIX_ORDER:
-      params->legacy_prefix_order = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_ADDR_SIZE:
-      params->addr_size = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REG_BASE:
-      params->reg_base = param_val;
-      params->reg_base_set = true;
-      break;
-    case EVOASM_X64_INST_PARAM_REG_INDEX:
-      params->reg_index = param_val;
-      params->reg_index_set = true;
-      break;
-    case EVOASM_X64_INST_PARAM_REX_W:
-      params->rex_w = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_DISP:
-      params->disp = param_val;
-      params->disp_set = true;
-      break;
-    case EVOASM_X64_INST_PARAM_SCALE:
-      params->scale = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_FORCE_SIB:
-      params->force_sib = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_DISP_SIZE:
-      params->disp_size = param_val;
-      params->disp_size_set = true;
-      break;
-    case EVOASM_X64_INST_PARAM_FORCE_DISP32:
-      params->force_disp32 = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REG0_HIGH_BYTE:
-      params->reg0_high_byte = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_REG1_HIGH_BYTE:
-      params->reg1_high_byte = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_FORCE_LONG_VEX:
-      params->force_long_vex = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_VEX_L:
-      params->vex_l = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_MODRM_REG:
-      params->modrm_reg = param_val;
-      break;
-    case EVOASM_X64_INST_PARAM_VEX_V:
-      params->vex_v = param_val;
-      break;
-  }
-}

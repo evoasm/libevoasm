@@ -9,13 +9,13 @@
 #include "evoasm-param.h"
 
 evoasm_domain_t *
-evoasm_inst_param_domain(evoasm_inst_param_t *inst_param) {
-  return inst_param->domain;
+evoasm_param_domain(evoasm_param_t *param) {
+  return param->domain;
 }
 
-evoasm_inst_param_id_t
-evoasm_inst_param_id(evoasm_inst_param_t *inst_param) {
-  return inst_param->id;
+evoasm_param_id_t
+evoasm_param_id(evoasm_param_t *param) {
+  return param->id;
 }
 
 

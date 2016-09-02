@@ -7,49 +7,33 @@
  */
 
 #include "evoasm-arch.h"
-#include "evoasm-util.h"
-#include <string.h>
-#include <inttypes.h>
 
 EVOASM_DECL_LOG_TAG("arch")
 
-void
-evoasm_arch_ctx_reset(evoasm_arch_ctx_t *arch_ctx) {
-  arch_ctx->buf_start = EVOASM_ARCH_BUF_CAPA / 2;
-  arch_ctx->buf_end   = EVOASM_ARCH_BUF_CAPA / 2;
+evoasm_arch_info_t _evoasm_arch_infos[] = {
+    {
+        EVOASM_ARCH_X64,
+        EVOASM_X64_N_PARAMS,
+        15,
+        EVOASM_X64_N_INSTS,
+        0ull
+    }
+};
+
+evoasm_arch_info_t *
+evoasm_arch_info(evoasm_arch_id_t arch_id) {
+  return &_evoasm_arch_infos[arch_id];
 }
 
-void
-evoasm_arch_ctx_init(evoasm_arch_ctx_t *arch_ctx, evoasm_arch_cls_t *cls) {
-  static evoasm_arch_ctx_t zero_arch = {0};
-  *arch_ctx = zero_arch;
-  evoasm_arch_ctx_reset(arch_ctx);
-  arch_ctx->cls = cls;
+#define _EVOASM_ARCH_INFO_DEF_FIELD_READER(field, type) \
+type evoasm_arch_info_##field(evoasm_arch_info_t *arch_info) { \
+  return (type) arch_info->field; \
 }
 
-void
-evoasm_arch_ctx_destroy(evoasm_arch_ctx_t *arch_ctx) {
-}
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(id, evoasm_arch_id_t)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(n_params, unsigned)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(max_inst_len, unsigned)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(n_insts, unsigned)
+_EVOASM_ARCH_INFO_DEF_FIELD_READER(features, unsigned)
 
-size_t
-evoasm_arch_ctx_save(evoasm_arch_ctx_t *arch_ctx, evoasm_buf_t *buf) {
-  size_t len = (size_t) (arch_ctx->buf_end - arch_ctx->buf_start);
 
-  memcpy(buf->data + buf->pos, arch_ctx->buf + arch_ctx->buf_start, len);
-  buf->pos += len;
-
-  evoasm_arch_ctx_reset(arch_ctx);
-
-  return len;
-}
-
-size_t
-evoasm_arch_ctx_save2(evoasm_arch_ctx_t *arch_ctx, uint8_t *buf) {
-  size_t len = (size_t) (arch_ctx->buf_end - arch_ctx->buf_start);
-
-  memcpy(buf, arch_ctx->buf + arch_ctx->buf_start, len);
-
-  evoasm_arch_ctx_reset(arch_ctx);
-
-  return len;
-}

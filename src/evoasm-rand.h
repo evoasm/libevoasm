@@ -1,0 +1,69 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ */
+
+#pragma once
+
+#include "evoasm-error.h"
+#include "evoasm-log.h"
+
+
+typedef struct {
+  uint64_t data[16];
+} evoasm_prng_seed_t;
+
+typedef struct evoasm_prng64 {
+  /* xorshift1024star */
+  evoasm_prng_seed_t s;
+  int p;
+} evoasm_prng_t;
+
+void
+evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_seed_t *seed);
+
+void
+evoasm_prng_destroy(evoasm_prng_t *prng);
+
+
+/* From: https://en.wikipedia.org/wiki/Xorshift */
+static inline uint64_t
+evoasm_prng_rand64(evoasm_prng_t *prng) {
+  uint64_t *s = prng->s.data;
+  const uint64_t s0 = s[prng->p];
+  uint64_t s1 = s[prng->p = (prng->p + 1) & 15];
+  s1 ^= s1 << 31; // a
+  s[prng->p] = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30); // b,c
+  return s[prng->p] * UINT64_C(1181783497276652981);
+}
+
+static inline uint32_t
+evoasm_prng_rand32(evoasm_prng_t *prng) {
+  return (uint32_t) (evoasm_prng_rand64(prng) & UINT32_MAX);
+}
+
+static inline uint16_t
+evoasm_prng_rand16(evoasm_prng_t *prng) {
+  return (uint16_t) (evoasm_prng_rand64(prng) & UINT16_MAX);
+}
+
+static inline uint8_t
+evoasm_prng_rand8(evoasm_prng_t *prng) {
+  return (uint8_t) (evoasm_prng_rand64(prng) & UINT8_MAX);
+}
+
+static inline int64_t
+evoasm_prng_rand_between(evoasm_prng_t *prng, int64_t min, int64_t max) {
+  return min + (int64_t)(evoasm_prng_rand64(prng) % (uint64_t)(max - min + 1ll));
+}
+
+static inline int64_t
+evoasm_log2(int64_t num) {
+  uint64_t log = 0;
+  while (num >>= 1) ++log;
+  return (int64_t)log;
+}
+

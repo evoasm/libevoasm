@@ -14,6 +14,7 @@
 #include "evoasm.h"
 #include "evoasm-buf.h"
 #include "evoasm-x64.h"
+#include "evoasm-domain.h"
 
 typedef double evoasm_loss_t;
 typedef uint8_t evoasm_adf_size_t;
@@ -53,9 +54,12 @@ typedef evoasm_adf_io_t evoasm_adf_input_t;
 #define EVOASM_ADF_OUTPUT_N_EXAMPLES(adf_output) EVOASM_ADF_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_output)
 
 typedef struct {
-  evoasm_inst_id_t inst;
-  evoasm_inst_params_bitmap_t set_params;
-  evoasm_inst_param_val_t param_vals[EVOASM_ARCH_MAX_PARAMS];
+  unsigned inst : EVOASM_X64_INST_BITSIZE;
+  evoasm_x64_basic_params_t params;
+} evoasm_x64_kernel_param_t;
+
+typedef union {
+  evoasm_x64_kernel_param_t x64;
 } evoasm_kernel_param_t;
 
 typedef struct {
@@ -107,7 +111,7 @@ typedef struct {
 
 typedef struct {
   evoasm_inst_id_t *insts;
-  evoasm_inst_param_id_t *params;
+  evoasm_param_id_t *params;
   evoasm_domain_t **domains;
   evoasm_adf_size_t min_adf_size;
   evoasm_adf_size_t max_adf_size;
@@ -120,14 +124,13 @@ typedef struct {
   uint32_t mut_rate;
   evoasm_adf_input_t adf_input;
   evoasm_adf_output_t adf_output;
-  evoasm_prng64_seed_t seed64;
-  evoasm_prng32_seed_t seed32;
+  evoasm_prng_seed_t seed;
   evoasm_loss_t max_loss;
 } evoasm_search_params_t;
 
 
 typedef struct {
-  evoasm_arch_ctx_t *arch_ctx;
+  evoasm_arch_info_t *arch_info;
   evoasm_buf_t *buf;
   evoasm_buf_t *body_buf;
   uint32_t index;
@@ -159,8 +162,7 @@ typedef struct {
 #define EVOASM_SEARCH_ELITE_SIZE 4
 
 typedef struct {
-  evoasm_prng64_t prng64;
-  evoasm_prng32_t prng32;
+  evoasm_prng_t prng;
   evoasm_loss_t best_loss;
   evoasm_buf_t buf;
   evoasm_buf_t body_buf;
@@ -174,6 +176,7 @@ typedef struct {
   unsigned char *adfs_main;
   unsigned char *adfs_swap;
   unsigned char *adfs_aux;
+  evoasm_arch_info_t *arch_info;
 } evoasm_population_t;
 
 #define EVOASM_EXAMPLES_MAX_ARITY 8
@@ -186,7 +189,7 @@ typedef struct {
 } evoasm_examples_t;
 
 typedef struct {
-  evoasm_arch_ctx_t *arch_ctx;
+  evoasm_arch_id_t arch_id;
   evoasm_population_t pop;
   evoasm_search_params_t params;
   evoasm_domain_t *domains;
@@ -194,7 +197,7 @@ typedef struct {
 
 bool
 evoasm_search_init(evoasm_search_t *search,
-                   evoasm_arch_ctx_t *arch, evoasm_search_params_t *params);
+                   evoasm_arch_id_t arch_id, evoasm_search_params_t *params);
 
 bool
 evoasm_search_destroy(evoasm_search_t *search);
