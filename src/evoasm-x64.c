@@ -115,7 +115,7 @@ evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
 
 evoasm_success_t
 evoasm_x64_init() {
-  extern evoasm_arch_info_t *_evoasm_arch_infos;
+  extern evoasm_arch_info_t _evoasm_arch_infos[EVOASM_N_ARCHS];
   uint64_t features;
   EVOASM_TRY(cpuid_failed, evoasm_x64_features, &features);
 
