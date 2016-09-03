@@ -24,4 +24,6 @@ void evoasm_##type##_free(evoasm_##type##_t *ptr) { evoasm_free(ptr); }
 _EVOASM_DEFINE_ALLOC_FREE_FUNCS(search)
 _EVOASM_DEFINE_ALLOC_FREE_FUNCS(adf)
 _EVOASM_DEFINE_ALLOC_FREE_FUNCS(buf_ref)
+_EVOASM_DEFINE_ALLOC_FREE_FUNCS(x64_params)
+_EVOASM_DEFINE_ALLOC_FREE_FUNCS(x64_basic_params)
 

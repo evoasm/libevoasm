@@ -232,3 +232,15 @@ evoasm_x64_inst_mnem(evoasm_x64_inst_t *inst) {
   return (const char *) inst->mnem;
 }
 
+void
+evoasm_x64_params_init(evoasm_x64_params_t *params) {
+  static evoasm_x64_params_t zero_params = {0};
+  *params = zero_params;
+}
+
+void
+evoasm_x64_basic_params_init(evoasm_x64_basic_params_t *params) {
+  static evoasm_x64_basic_params_t zero_params = {0};
+  *params = zero_params;
+}
+
