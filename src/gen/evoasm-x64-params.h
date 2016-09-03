@@ -42,8 +42,16 @@ typedef struct {
   uint64_t reg3 : 7;
   uint64_t reg_base : 7;
   uint64_t reg_index : 7;
-  uint64_t disp : 32;
-  uint64_t imm : 64;
+  union {
+    uint64_t imm1 : 8;
+    uint64_t disp : 32;
+  };
+  union {
+    uint64_t imm : 64;
+    uint64_t imm0 : 64;
+    uint64_t moffs : 64;
+    uint64_t rel : 64;
+  };
 } evoasm_x64_params_t;
 
 typedef struct {
@@ -53,7 +61,11 @@ typedef struct {
   uint64_t reg1 : 7;
   uint64_t reg2 : 7;
   uint64_t reg3 : 7;
-  uint64_t imm : 32;
+  union {
+    uint64_t imm : 32;
+    uint64_t imm0 : 32;
+    uint64_t rel : 32;
+  };
 } evoasm_x64_basic_params_t;
 
 static inline void _evoasm_x64_params_set(evoasm_x64_params_t * params, evoasm_x64_param_id_t param, int64_t param_val) {
@@ -74,6 +86,9 @@ static inline void _evoasm_x64_params_set(evoasm_x64_params_t * params, evoasm_x
       break;
     case EVOASM_X64_PARAM_IMM:
       params->imm = ((uint64_t) param_val) & 0xffffffffffffffff;
+      break;
+    case EVOASM_X64_PARAM_IMM0:
+      params->imm0 = ((uint64_t) param_val) & 0xffffffffffffffff;
       break;
     case EVOASM_X64_PARAM_FORCE_REX:
       params->force_rex = ((uint64_t) param_val) & 0x1;
@@ -133,6 +148,15 @@ static inline void _evoasm_x64_params_set(evoasm_x64_params_t * params, evoasm_x
     case EVOASM_X64_PARAM_FORCE_LONG_VEX:
       params->force_long_vex = ((uint64_t) param_val) & 0x1;
       break;
+    case EVOASM_X64_PARAM_REL:
+      params->rel = ((uint64_t) param_val) & 0xffffffffffffffff;
+      break;
+    case EVOASM_X64_PARAM_IMM1:
+      params->imm1 = ((uint64_t) param_val) & 0xff;
+      break;
+    case EVOASM_X64_PARAM_MOFFS:
+      params->moffs = ((uint64_t) param_val) & 0xffffffffffffffff;
+      break;
     case EVOASM_X64_PARAM_VEX_L:
       params->vex_l = ((uint64_t) param_val) & 0x1;
       break;
@@ -164,11 +188,17 @@ static inline void _evoasm_x64_basic_params_set(evoasm_x64_basic_params_t * para
     case EVOASM_X64_PARAM_IMM:
       params->imm = ((uint64_t) param_val) & 0xffffffff;
       break;
+    case EVOASM_X64_PARAM_IMM0:
+      params->imm0 = ((uint64_t) param_val) & 0xffffffff;
+      break;
     case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
       params->reg0_high_byte = ((uint64_t) param_val) & 0x1;
       break;
     case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
       params->reg1_high_byte = ((uint64_t) param_val) & 0x1;
+      break;
+    case EVOASM_X64_PARAM_REL:
+      params->rel = ((uint64_t) param_val) & 0xffffffff;
       break;
     default:
       evoasm_assert_not_reached();
@@ -186,6 +216,8 @@ static inline int64_t _evoasm_x64_params_get(evoasm_x64_params_t * params, evoas
       return (int64_t) params->reg3;
     case EVOASM_X64_PARAM_IMM:
       return (int64_t) params->imm;
+    case EVOASM_X64_PARAM_IMM0:
+      return (int64_t) params->imm0;
     case EVOASM_X64_PARAM_FORCE_REX:
       return (int64_t) params->force_rex;
     case EVOASM_X64_PARAM_REX_R:
@@ -222,6 +254,12 @@ static inline int64_t _evoasm_x64_params_get(evoasm_x64_params_t * params, evoas
       return (int64_t) params->reg1_high_byte;
     case EVOASM_X64_PARAM_FORCE_LONG_VEX:
       return (int64_t) params->force_long_vex;
+    case EVOASM_X64_PARAM_REL:
+      return (int64_t) params->rel;
+    case EVOASM_X64_PARAM_IMM1:
+      return (int64_t) params->imm1;
+    case EVOASM_X64_PARAM_MOFFS:
+      return (int64_t) params->moffs;
     case EVOASM_X64_PARAM_VEX_L:
       return (int64_t) params->vex_l;
     case EVOASM_X64_PARAM_MODRM_REG:
@@ -245,10 +283,14 @@ static inline int64_t _evoasm_x64_basic_params_get(evoasm_x64_basic_params_t * p
       return (int64_t) params->reg3;
     case EVOASM_X64_PARAM_IMM:
       return (int64_t) params->imm;
+    case EVOASM_X64_PARAM_IMM0:
+      return (int64_t) params->imm0;
     case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
       return (int64_t) params->reg0_high_byte;
     case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
       return (int64_t) params->reg1_high_byte;
+    case EVOASM_X64_PARAM_REL:
+      return (int64_t) params->rel;
     default:
       evoasm_assert_not_reached();
   }
@@ -271,6 +313,9 @@ static inline void _evoasm_x64_params_unset(evoasm_x64_params_t * params, evoasm
       break;
     case EVOASM_X64_PARAM_IMM:
       params->imm = 0;
+      break;
+    case EVOASM_X64_PARAM_IMM0:
+      params->imm0 = 0;
       break;
     case EVOASM_X64_PARAM_FORCE_REX:
       params->force_rex = 0;
@@ -330,6 +375,15 @@ static inline void _evoasm_x64_params_unset(evoasm_x64_params_t * params, evoasm
     case EVOASM_X64_PARAM_FORCE_LONG_VEX:
       params->force_long_vex = 0;
       break;
+    case EVOASM_X64_PARAM_REL:
+      params->rel = 0;
+      break;
+    case EVOASM_X64_PARAM_IMM1:
+      params->imm1 = 0;
+      break;
+    case EVOASM_X64_PARAM_MOFFS:
+      params->moffs = 0;
+      break;
     case EVOASM_X64_PARAM_VEX_L:
       params->vex_l = 0;
       break;
@@ -361,11 +415,17 @@ static inline void _evoasm_x64_basic_params_unset(evoasm_x64_basic_params_t * pa
     case EVOASM_X64_PARAM_IMM:
       params->imm = 0;
       break;
+    case EVOASM_X64_PARAM_IMM0:
+      params->imm0 = 0;
+      break;
     case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
       params->reg0_high_byte = 0;
       break;
     case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
       params->reg1_high_byte = 0;
+      break;
+    case EVOASM_X64_PARAM_REL:
+      params->rel = 0;
       break;
     default:
       evoasm_assert_not_reached();
