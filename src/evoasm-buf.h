@@ -60,12 +60,6 @@ evoasm_buf_clone(evoasm_buf_t * restrict buf, evoasm_buf_t * restrict cloned_buf
 
 
 static inline void
-evoasm_buf_ref_init(evoasm_buf_ref_t *buf_ref, evoasm_buf_t *buf) {
-  buf_ref->data = buf->data;
-  buf_ref->pos = &buf->pos;
-}
-
-static inline void
 evoasm_buf_ref_write8(evoasm_buf_ref_t *buf_ref, int64_t datum) {
   size_t pos = *buf_ref->pos;
   size_t new_pos = pos + 1;

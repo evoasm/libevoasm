@@ -141,3 +141,9 @@ uint8_t *
 evoasm_buf_data(evoasm_buf_t *buf) {
   return buf->data;
 }
+
+void
+evoasm_buf_ref_init(evoasm_buf_ref_t *buf_ref, uint8_t *data, size_t *pos) {
+  buf_ref->data = data;
+  buf_ref->pos = pos;
+}

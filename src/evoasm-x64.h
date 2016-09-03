@@ -141,6 +141,12 @@ _evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoas
   return _evoasm_x64_inst_enc(inst, params, buf_ref);
 }
 
+static inline evoasm_success_t
+_evoasm_x64_enc_basic(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  evoasm_x64_inst_t *inst = _evoasm_x64_inst(inst_id);
+  return _evoasm_x64_inst_enc_basic(inst, params, buf_ref);
+}
+
 static inline int64_t
 evoasm_x64_auto_disp_size(evoasm_x64_params_t *params) {
   int32_t disp = (int32_t) params->disp;

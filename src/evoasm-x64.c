@@ -166,6 +166,16 @@ evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *pa
   return _evoasm_x64_inst_enc_basic(inst, params, buf_ref);
 }
 
+evoasm_success_t
+evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  return _evoasm_x64_enc(inst_id, params, buf_ref);
+}
+
+evoasm_success_t
+evoasm_x64_enc_basic(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  return _evoasm_x64_enc_basic(inst_id, params, buf_ref);
+}
+
 evoasm_x64_operand_t *
 evoasm_x64_inst_operand(evoasm_x64_inst_t *inst, unsigned index) {
   return &inst->operands[index];
