@@ -174,31 +174,31 @@ static inline void _evoasm_x64_params_set(evoasm_x64_params_t * params, evoasm_x
 
 static inline void _evoasm_x64_basic_params_set(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param, int64_t param_val) {
   switch(param) {
-    case EVOASM_X64_PARAM_REG0:
+    case EVOASM_X64_BASIC_PARAM_REG0:
       params->reg0 = ((uint64_t) param_val) & 0x7f;
       break;
-    case EVOASM_X64_PARAM_REG1:
+    case EVOASM_X64_BASIC_PARAM_REG1:
       params->reg1 = ((uint64_t) param_val) & 0x7f;
       break;
-    case EVOASM_X64_PARAM_REG2:
+    case EVOASM_X64_BASIC_PARAM_REG2:
       params->reg2 = ((uint64_t) param_val) & 0x7f;
       break;
-    case EVOASM_X64_PARAM_REG3:
+    case EVOASM_X64_BASIC_PARAM_REG3:
       params->reg3 = ((uint64_t) param_val) & 0x7f;
       break;
-    case EVOASM_X64_PARAM_IMM:
+    case EVOASM_X64_BASIC_PARAM_IMM:
       params->imm = ((uint64_t) param_val) & 0xffffffff;
       break;
-    case EVOASM_X64_PARAM_IMM0:
+    case EVOASM_X64_BASIC_PARAM_IMM0:
       params->imm0 = ((uint64_t) param_val) & 0xffffffff;
       break;
-    case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+    case EVOASM_X64_BASIC_PARAM_REG0_HIGH_BYTE:
       params->reg0_high_byte = ((uint64_t) param_val) & 0x1;
       break;
-    case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
+    case EVOASM_X64_BASIC_PARAM_REG1_HIGH_BYTE:
       params->reg1_high_byte = ((uint64_t) param_val) & 0x1;
       break;
-    case EVOASM_X64_PARAM_REL:
+    case EVOASM_X64_BASIC_PARAM_REL:
       params->rel = ((uint64_t) param_val) & 0xffffffff;
       break;
     default:
@@ -274,23 +274,23 @@ static inline int64_t _evoasm_x64_params_get(evoasm_x64_params_t * params, evoas
 
 static inline int64_t _evoasm_x64_basic_params_get(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param) {
   switch(param) {
-    case EVOASM_X64_PARAM_REG0:
+    case EVOASM_X64_BASIC_PARAM_REG0:
       return (int64_t) params->reg0;
-    case EVOASM_X64_PARAM_REG1:
+    case EVOASM_X64_BASIC_PARAM_REG1:
       return (int64_t) params->reg1;
-    case EVOASM_X64_PARAM_REG2:
+    case EVOASM_X64_BASIC_PARAM_REG2:
       return (int64_t) params->reg2;
-    case EVOASM_X64_PARAM_REG3:
+    case EVOASM_X64_BASIC_PARAM_REG3:
       return (int64_t) params->reg3;
-    case EVOASM_X64_PARAM_IMM:
+    case EVOASM_X64_BASIC_PARAM_IMM:
       return (int64_t) params->imm;
-    case EVOASM_X64_PARAM_IMM0:
+    case EVOASM_X64_BASIC_PARAM_IMM0:
       return (int64_t) params->imm0;
-    case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+    case EVOASM_X64_BASIC_PARAM_REG0_HIGH_BYTE:
       return (int64_t) params->reg0_high_byte;
-    case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
+    case EVOASM_X64_BASIC_PARAM_REG1_HIGH_BYTE:
       return (int64_t) params->reg1_high_byte;
-    case EVOASM_X64_PARAM_REL:
+    case EVOASM_X64_BASIC_PARAM_REL:
       return (int64_t) params->rel;
     default:
       evoasm_assert_not_reached();
@@ -401,31 +401,31 @@ static inline void _evoasm_x64_params_unset(evoasm_x64_params_t * params, evoasm
 
 static inline void _evoasm_x64_basic_params_unset(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param) {
   switch(param) {
-    case EVOASM_X64_PARAM_REG0:
+    case EVOASM_X64_BASIC_PARAM_REG0:
       params->reg0 = 0;
       break;
-    case EVOASM_X64_PARAM_REG1:
+    case EVOASM_X64_BASIC_PARAM_REG1:
       params->reg1 = 0;
       break;
-    case EVOASM_X64_PARAM_REG2:
+    case EVOASM_X64_BASIC_PARAM_REG2:
       params->reg2 = 0;
       break;
-    case EVOASM_X64_PARAM_REG3:
+    case EVOASM_X64_BASIC_PARAM_REG3:
       params->reg3 = 0;
       break;
-    case EVOASM_X64_PARAM_IMM:
+    case EVOASM_X64_BASIC_PARAM_IMM:
       params->imm = 0;
       break;
-    case EVOASM_X64_PARAM_IMM0:
+    case EVOASM_X64_BASIC_PARAM_IMM0:
       params->imm0 = 0;
       break;
-    case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+    case EVOASM_X64_BASIC_PARAM_REG0_HIGH_BYTE:
       params->reg0_high_byte = 0;
       break;
-    case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
+    case EVOASM_X64_BASIC_PARAM_REG1_HIGH_BYTE:
       params->reg1_high_byte = 0;
       break;
-    case EVOASM_X64_PARAM_REL:
+    case EVOASM_X64_BASIC_PARAM_REL:
       params->rel = 0;
       break;
     default:
