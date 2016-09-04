@@ -10,6 +10,7 @@
 #pragma once
 
 #include "evoasm-x64-params.h"
+#include "evoasm-util.h"
 
 typedef struct {
   uint64_t addr_size : 1;
@@ -42,16 +43,16 @@ typedef struct {
   uint64_t reg3 : 7;
   uint64_t reg_base : 7;
   uint64_t reg_index : 7;
-  union {
+  evoasm_pack(union {
     uint64_t imm1 : 8;
     uint64_t disp : 32;
-  };
-  union {
+  });
+  evoasm_pack(union {
     uint64_t imm : 64;
     uint64_t imm0 : 64;
     uint64_t moffs : 64;
     uint64_t rel : 64;
-  };
+  });
 } evoasm_x64_params_t;
 
 typedef struct {
@@ -61,11 +62,11 @@ typedef struct {
   uint64_t reg1 : 7;
   uint64_t reg2 : 7;
   uint64_t reg3 : 7;
-  union {
+  evoasm_pack(union {
     uint64_t imm : 32;
     uint64_t imm0 : 32;
     uint64_t rel : 32;
-  };
+  });
 } evoasm_x64_basic_params_t;
 
 static inline void _evoasm_x64_params_set(evoasm_x64_params_t * params, evoasm_x64_param_id_t param, int64_t param_val) {
