@@ -150,7 +150,7 @@ _evoasm_x64_enc_basic(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *p
 static inline int64_t
 evoasm_x64_auto_disp_size(evoasm_x64_params_t *params) {
   int32_t disp = (int32_t) params->disp;
-  if(disp >= INT16_MIN && disp <= INT16_MAX) return EVOASM_X64_DISP_SIZE_16;
+  if(disp >= INT8_MIN && disp <= INT8_MAX) return EVOASM_X64_DISP_SIZE_8;
   if(disp >= INT32_MIN && disp <= INT32_MAX) return EVOASM_X64_DISP_SIZE_32;
   return EVOASM_X64_N_DISP_SIZES;
 }

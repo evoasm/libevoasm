@@ -15,8 +15,6 @@
 typedef struct {
   uint64_t addr_size : 1;
   uint64_t disp_set : 1;
-  uint64_t disp_size : 1;
-  uint64_t disp_size_set : 1;
   uint64_t force_disp32 : 1;
   uint64_t force_long_vex : 1;
   uint64_t force_rex : 1;
@@ -133,10 +131,6 @@ static inline void _evoasm_x64_params_set(evoasm_x64_params_t * params, evoasm_x
     case EVOASM_X64_PARAM_FORCE_SIB:
       params->force_sib = ((uint64_t) param_val) & 0x1;
       break;
-    case EVOASM_X64_PARAM_DISP_SIZE:
-      params->disp_size = ((uint64_t) param_val) & 0x1;
-      params->disp_size_set = true;
-      break;
     case EVOASM_X64_PARAM_FORCE_DISP32:
       params->force_disp32 = ((uint64_t) param_val) & 0x1;
       break;
@@ -245,8 +239,6 @@ static inline int64_t _evoasm_x64_params_get(evoasm_x64_params_t * params, evoas
       return (int64_t) params->scale;
     case EVOASM_X64_PARAM_FORCE_SIB:
       return (int64_t) params->force_sib;
-    case EVOASM_X64_PARAM_DISP_SIZE:
-      return (int64_t) params->disp_size;
     case EVOASM_X64_PARAM_FORCE_DISP32:
       return (int64_t) params->force_disp32;
     case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
@@ -360,10 +352,6 @@ static inline void _evoasm_x64_params_unset(evoasm_x64_params_t * params, evoasm
     case EVOASM_X64_PARAM_FORCE_SIB:
       params->force_sib = 0;
       break;
-    case EVOASM_X64_PARAM_DISP_SIZE:
-      params->disp_size = 0;
-      params->disp_size_set = false;
-      break;
     case EVOASM_X64_PARAM_FORCE_DISP32:
       params->force_disp32 = 0;
       break;
@@ -433,3 +421,5 @@ static inline void _evoasm_x64_basic_params_unset(evoasm_x64_basic_params_t * pa
   }
 }
 
+
+_Static_assert(sizeof(evoasm_x64_basic_params_t) <= sizeof(uint64_t), "basic parameters should bit into 64 bits");
