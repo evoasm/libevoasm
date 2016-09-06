@@ -213,6 +213,10 @@ evoasm_x64_operand_size_t evoasm_x64_operand_reg_size(evoasm_x64_operand_t *oper
   return (evoasm_x64_operand_size_t) operand->size1;
 }
 
+evoasm_x64_operand_size_t evoasm_x64_operand_index_reg_size(evoasm_x64_operand_t *operand) {
+  return (evoasm_x64_operand_size_t) operand->size1;
+}
+
 evoasm_x64_operand_size_t evoasm_x64_operand_mem_size(evoasm_x64_operand_t *operand) {
   return (evoasm_x64_operand_size_t) operand->size2;
 }

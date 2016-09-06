@@ -162,15 +162,15 @@ _evoasm_population_destroy(evoasm_population_t *pop, bool free_buf, bool free_bo
 
   if(free_buf) EVOASM_TRY(buf_free_failed, evoasm_buf_destroy, &pop->buf);
 
-  cleanup:
+cleanup:
   if(free_body_buf) EVOASM_TRY(body_buf_failed, evoasm_buf_destroy, &pop->body_buf);
   return retval;
 
-  buf_free_failed:
+buf_free_failed:
   retval = false;
   goto cleanup;
 
-  body_buf_failed:
+body_buf_failed:
   return false;
 }
 
@@ -219,18 +219,18 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
 
   return true;
 
-  adfs_alloc_failed:
+adfs_alloc_failed:
   return false;
 
-  buf_alloc_failed:
+buf_alloc_failed:
   _evoasm_population_destroy(pop, false, false);
   return false;
 
-  body_buf_alloc_failed:
+body_buf_alloc_failed:
   _evoasm_population_destroy(pop, true, false);
   return false;
 
-  prot_failed:
+prot_failed:
   _evoasm_population_destroy(pop, true, true);
   return false;
 }
@@ -284,7 +284,7 @@ evoasm_adf_x64_emit_output_store(evoasm_adf_t *adf,
 
   return true;
 
-  enc_failed:
+enc_failed:
   return false;
 }
 
@@ -293,7 +293,7 @@ static void evoasm_search_x64_seed_kernel_param(evoasm_search_t *search, evoasm_
   int64_t inst_idx = evoasm_prng_rand_between(&search->pop.prng, 0, search->params.insts_len - 1);
   evoasm_inst_id_t inst = search->params.insts[inst_idx];
 
-  kernel_param->inst = (unsigned)inst & EVOASM_X64_INST_BITMASK;
+  kernel_param->inst = (unsigned) inst & EVOASM_X64_INST_BITMASK;
 
   /* set parameters */
   for(i = 0; i < search->params.params_len; i++) {
@@ -325,8 +325,8 @@ evoasm_search_seed_kernel(evoasm_search_t *search, evoasm_kernel_params_t *kerne
   unsigned i;
 
   evoasm_kernel_size_t kernel_size = (evoasm_kernel_size_t) evoasm_prng_rand_between(&search->pop.prng,
-                                                                                       search->params.min_kernel_size,
-                                                                                       search->params.max_kernel_size);
+                                                                                     search->params.min_kernel_size,
+                                                                                     search->params.max_kernel_size);
 
   assert(kernel_size > 0);
   kernel_params->size = kernel_size;
@@ -384,7 +384,7 @@ evoasm_adf_x64_emit_rflags_reset(evoasm_adf_t *adf) {
   EVOASM_X64_ENC(popfq);
 
   return true;
-  enc_failed:
+enc_failed:
   return false;
 }
 
@@ -404,7 +404,7 @@ evoasm_search_x64_emit_mxcsr_reset(evoasm_search_t *search, evoasm_buf_t *buf) {
   EVOASM_X64_ENC(ldmxcsr_m32);
 
   return true;
-  enc_failed:
+enc_failed:
   return false;
 }
 
@@ -455,12 +455,11 @@ evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
 }
 
 static void
-evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t*reg_write_acc,
+evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t *reg_write_acc,
                                 evoasm_x64_operand_t *op, evoasm_kernel_param_t *param) {
   if(reg_write_acc->size < EVOASM_X64_N_OPERAND_SIZES) {
     reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size1);
-  }
-  else {
+  } else {
     reg_write_acc->size = op->size1;
   }
 
@@ -492,8 +491,7 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
         uncovered_acc = reg_write_acc->size < op->size1;
       }
     }
-  }
-  else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
+  } else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
     unsigned mask;
     if(op->size1 == EVOASM_X64_OPERAND_SIZE_128) {
       mask = EVOASM_X64_BIT_MASK_0_127;
@@ -540,8 +538,7 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
           } else if(op->written) {
             kernel->reg_info.x64[op->reg_id].written = true;
           }
-        }
-        else {
+        } else {
           evoasm_x64_reg_id_t reg_id = evoasm_op_x64_reg_id(op, param);
           evoasm_kernel_x64_reg_info_t *reg_info = &kernel->reg_info.x64[reg_id];
           evoasm_x64_reg_write_acc_t *reg_write_acc = &reg_write_accs[reg_id];
@@ -680,8 +677,8 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
   }
   return true;
 
-  error:
-  enc_failed:
+error:
+enc_failed:
   return false;
 }
 
@@ -721,20 +718,17 @@ evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
         EVOASM_X64_ENC(mov_r64_rm64);
-      }
-      else if(output_reg_type == EVOASM_X64_REG_TYPE_XMM &&
-              input_reg_type == EVOASM_X64_REG_TYPE_XMM) {
+      } else if(output_reg_type == EVOASM_X64_REG_TYPE_XMM &&
+                input_reg_type == EVOASM_X64_REG_TYPE_XMM) {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
         if(adf->arch_info->features & EVOASM_X64_FEATURE_AVX) {
           EVOASM_X64_ENC(vmovdqa_ymm_ymmm256);
-        }
-        else {
+        } else {
           EVOASM_X64_ENC(movdqa_xmm_xmmm128);
         }
-      }
-      else if(output_reg_type == EVOASM_X64_REG_TYPE_GP &&
-              input_reg_type == EVOASM_X64_REG_TYPE_XMM) {
+      } else if(output_reg_type == EVOASM_X64_REG_TYPE_GP &&
+                input_reg_type == EVOASM_X64_REG_TYPE_XMM) {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
         if(adf->arch_info->features & EVOASM_X64_FEATURE_AVX) {
@@ -742,19 +736,16 @@ evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
         } else {
           EVOASM_X64_ENC(movq_xmm_rm64);
         }
-      }
-      else if(output_reg_type == EVOASM_X64_REG_TYPE_XMM &&
-              input_reg_type == EVOASM_X64_REG_TYPE_GP) {
+      } else if(output_reg_type == EVOASM_X64_REG_TYPE_XMM &&
+                input_reg_type == EVOASM_X64_REG_TYPE_GP) {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
         if(adf->arch_info->features & EVOASM_X64_FEATURE_AVX) {
           EVOASM_X64_ENC(vmovq_rm64_xmm);
-        }
-        else {
+        } else {
           EVOASM_X64_ENC(movq_rm64_xmm);
         }
-      }
-      else {
+      } else {
         evoasm_assert_not_reached();
       }
     }
@@ -763,7 +754,7 @@ evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
 
   return true;
 
-  enc_failed:
+enc_failed:
   return false;
 }
 
@@ -802,52 +793,52 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
   }
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_ZF].written) {
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JE_JZ_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JE_REL32;
     jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JNS_REL32;
 
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JBE_JNA_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JBE_REL32;
     jbe = true;
 
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JLE_JNG_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JLE_REL32;
     jle = true;
   }
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_CF].written) {
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JB_JC_JNAE_REL32;
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JAE_JNB_JNC_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JB_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JAE_REL32;
 
     if(!jbe) {
-      jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JBE_JNA_REL32;
+      jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JBE_REL32;
     }
   }
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_ZF].written &&
      kernel->reg_info.x64[EVOASM_X64_REG_CF].written) {
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JA_JNBE_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JA_REL32;
   }
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_SF].written &&
      kernel->reg_info.x64[EVOASM_X64_REG_OF].written) {
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JL_JNGE_REL32;
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JGE_JNL_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JL_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JGE_REL32;
 
     if(!jle) {
-      jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JLE_JNG_REL32;
+      jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JLE_REL32;
     }
 
     if(kernel->reg_info.x64[EVOASM_X64_REG_ZF].written) {
-      jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JG_JNLE_REL32;
+      jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JG_REL32;
     }
   }
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_CF].written) {
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JB_JC_JNAE_REL32;
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JAE_JNB_JNC_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JB_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JAE_REL32;
   }
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_PF].written) {
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JP_JPE_REL32;
-    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JNP_JPO_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JP_REL32;
+    jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JNP_REL32;
   }
 
 #if 0
@@ -883,7 +874,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
       EVOASM_X64_ENC(cmp_rm32_imm32);
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);
-      EVOASM_X64_ENC(jge_jnl_rel32);
+      EVOASM_X64_ENC(jge_rel32);
 
       counter_phi = _EVOASM_BUF_PHI_GET(buf);
       assert(*counter_phi == 0xdeadbeef);
@@ -909,7 +900,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
     _EVOASM_BUF_PHI_SET(counter_phi, _EVOASM_BUF_POS_ADDR(buf));
   }
 
-  next_trans:
+next_trans:
 
   if(next_kernel != NULL) {
     EVOASM_TRY(error, evoasm_adf_x64_emit_kernel_transition, adf,
@@ -920,8 +911,8 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
 
   return true;
 
-  error:
-  enc_failed:
+error:
+enc_failed:
   return false;
 }
 
@@ -946,7 +937,7 @@ evoasm_adf_x64_emit_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_bu
                &kernel_params->params[i].x64.params, &buf_ref);
   }
   return true;
-  error:
+error:
   return false;
 }
 
@@ -999,7 +990,7 @@ evoasm_adf_x64_emit_adf_kernels(evoasm_adf_t *adf, bool set_io_mapping) {
   }
 
   return true;
-  error:
+error:
   return false;
 }
 
@@ -1027,7 +1018,7 @@ evoasm_adf_x64_emit_io_load_store(evoasm_adf_t *adf,
   EVOASM_TRY(error, evoasm_x64_func_epilog, adf->buf, EVOASM_X64_ABI_SYSV);
   return true;
 
-  error:
+error:
   return false;
 }
 
@@ -1053,7 +1044,7 @@ evoasm_adf_x64_emit(evoasm_adf_t *adf,
 
   return true;
 
-  error:
+error:
   return false;
 }
 
@@ -1271,8 +1262,7 @@ evoasm_adf_calc_stable_matching(evoasm_adf_t *adf,
       if(inv_matching[best_index] == UINT_FAST8_MAX) {
         inv_matching[best_index] = unmatched_index;
         matching[unmatched_index] = best_index;
-      }
-      else {
+      } else {
         if(dist_mat[inv_matching[best_index] * width + best_index] > best_dist) {
           matching[inv_matching[best_index]] = UINT_FAST8_MAX;
           inv_matching[best_index] = unmatched_index;
@@ -1282,8 +1272,7 @@ evoasm_adf_calc_stable_matching(evoasm_adf_t *adf,
           dist_mat[unmatched_index * width + i] = INFINITY;
         }
       }
-    }
-    else {
+    } else {
       evoasm_adf_log_dist_dist_mat(adf,
                                    kernel,
                                    height,
@@ -1343,8 +1332,7 @@ evoasm_adf_assess(evoasm_adf_t *adf,
     } else {
       loss = INFINITY;
     }
-  }
-  else {
+  } else {
     for(i = 0; i < n_examples; i++) {
       evoasm_adf_update_dist_mat(adf, kernel, output, height, i, dist_mat, EVOASM_METRIC_ABSDIFF);
     }
@@ -1403,7 +1391,7 @@ evoasm_adf_load_output(evoasm_adf_t *adf,
     }
     evoasm_fatal("adf output reg %d not found in kernel output regs", adf->output_regs[i]);
     evoasm_assert_not_reached();
-    next:;
+next:;
   }
 
   for(i = 0; i < n_examples; i++) {
@@ -1709,7 +1697,7 @@ evoasm_adf_eliminate_introns(evoasm_adf_t *adf) {
   }
 
   return true;
-  error:
+error:
   return false;
 }
 
@@ -1777,7 +1765,7 @@ evoasm_search_eval_population(evoasm_search_t *search, unsigned char *adfs,
   }
 
   retval = true;
-  done:
+done:
   evoasm_signal_context_uninstall(&signal_ctx);
   return retval;
 }
@@ -1815,7 +1803,7 @@ evoasm_search_select_parents(evoasm_search_t *search, uint32_t *parents) {
       }
     }
   }
-  done:;
+done:;
 }
 
 static void
@@ -1863,9 +1851,9 @@ evoasm_search_crossover_kernel(evoasm_search_t *search, evoasm_kernel_params_t *
 
   /* offset for shorter parent */
   crossover_point = (unsigned) evoasm_prng_rand_between(&search->pop.prng,
-                                                          0, child_size - parent_b->size);
+                                                        0, child_size - parent_b->size);
   crossover_len = (unsigned) evoasm_prng_rand_between(&search->pop.prng,
-                                                        0, parent_b->size);
+                                                      0, parent_b->size);
 
 
   for(i = 0; i < child_size; i++) {
@@ -1902,7 +1890,7 @@ evoasm_search_crossover_adf(evoasm_search_t *search, evoasm_adf_params_t *parent
 
   child_size = (evoasm_adf_size_t)
       evoasm_prng_rand_between(&search->pop.prng,
-                                 parent_b->size, parent_a->size);
+                               parent_b->size, parent_a->size);
 
   assert(child_size > 0);
   assert(child_size >= parent_b->size);
@@ -1986,8 +1974,7 @@ evoasm_search_population_loss(evoasm_search_t *search, unsigned *n_inf) {
     double loss = search->pop.losses[i];
     if(loss != INFINITY) {
       pop_loss += scale * loss;
-    }
-    else {
+    } else {
       (*n_inf)++;
     }
   }
@@ -2107,17 +2094,15 @@ evoasm_search_start(evoasm_search_t *search,
       evoasm_info("starting aux search");
       if(!evoasm_search_start_(search, 1, cycle, &search->pop.adfs_aux, progress_func, goal_func, user_data)) {
         evoasm_search_merge(search);
-      }
-      else {
+      } else {
         goto done;
       }
-    }
-    else {
+    } else {
       goto done;
     }
   }
 
-  done:;
+done:;
 }
 
 static bool
@@ -2173,7 +2158,7 @@ evoasm_search_params_valid(evoasm_search_params_t *search_params) {
 
   return true;
 
-  fail:
+fail:
   return false;
 }
 
@@ -2233,7 +2218,7 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_id_t arch_id, evoasm_sea
       }
       /* not found */
       inst_domain->type = EVOASM_N_DOMAIN_TYPES;
-      found:;
+found:;
     }
   }
 
@@ -2248,9 +2233,9 @@ evoasm_search_init(evoasm_search_t *search, evoasm_arch_id_t arch_id, evoasm_sea
   assert(search->params.min_adf_size <= search->params.max_adf_size);
 
   return true;
-  fail:
+fail:
   return false;
-  empty_domain:
+empty_domain:
   evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
                    NULL, "Empty domain");
   return false;
@@ -2268,7 +2253,7 @@ evoasm_search_destroy(evoasm_search_t *search) {
   EVOASM_TRY(error, evoasm_population_destroy, &search->pop);
 
   return true;
-  error:
+error:
   return false;
 }
 
@@ -2350,13 +2335,13 @@ evoasm_adf_clone(evoasm_adf_t *adf, evoasm_adf_t *cloned_adf) {
 
   return true;
 
-  error_free_params:
+error_free_params:
   free_params = true;
-  error_free_body_buf:
+error_free_body_buf:
   free_body_buf = true;
-  error_free_buf:
+error_free_buf:
   free_buf = true;
-  error:
+error:
   (void) evoasm_adf_destroy_(cloned_adf, free_buf, free_body_buf, free_params, i);
   return false;
 }
@@ -2371,8 +2356,7 @@ evoasm_buf_t *
 evoasm_adf_buf(evoasm_adf_t *adf, bool body) {
   if(body) {
     return adf->body_buf;
-  }
-  else {
+  } else {
     return adf->buf;
   }
 }
