@@ -231,6 +231,11 @@ evoasm_x64_inst_n_params(evoasm_x64_inst_t *inst) {
   return inst->n_params;
 }
 
+bool
+evoasm_x64_inst_basic(evoasm_x64_inst_t *inst) {
+  return inst->basic_enc_func != NULL;
+}
+
 const char *
 evoasm_x64_inst_mnem(evoasm_x64_inst_t *inst) {
   return (const char *) inst->mnem;
