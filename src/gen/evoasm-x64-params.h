@@ -55,7 +55,9 @@ typedef struct {
 
 typedef struct {
   uint64_t reg0_high_byte : 1;
+  uint64_t reg0_set : 1;
   uint64_t reg1_high_byte : 1;
+  uint64_t reg1_set : 1;
   uint64_t reg0 : 7;
   uint64_t reg1 : 7;
   uint64_t reg2 : 7;
@@ -170,9 +172,11 @@ static inline void _evoasm_x64_basic_params_set(evoasm_x64_basic_params_t * para
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       params->reg0 = ((uint64_t) param_val) & 0x7f;
+      params->reg0_set = true;
       break;
     case EVOASM_X64_BASIC_PARAM_REG1:
       params->reg1 = ((uint64_t) param_val) & 0x7f;
+      params->reg1_set = true;
       break;
     case EVOASM_X64_BASIC_PARAM_REG2:
       params->reg2 = ((uint64_t) param_val) & 0x7f;
@@ -391,9 +395,11 @@ static inline void _evoasm_x64_basic_params_unset(evoasm_x64_basic_params_t * pa
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       params->reg0 = 0;
+      params->reg0_set = false;
       break;
     case EVOASM_X64_BASIC_PARAM_REG1:
       params->reg1 = 0;
+      params->reg1_set = false;
       break;
     case EVOASM_X64_BASIC_PARAM_REG2:
       params->reg2 = 0;
