@@ -37,7 +37,7 @@ typedef enum {
 
 typedef enum {
   EVOASM_ERROR_TYPE_INVALID,
-  EVOASM_ERROR_TYPE_ARGUMENT,
+  EVOASM_ERROR_TYPE_ARG,
   EVOASM_ERROR_TYPE_MEMORY,
   EVOASM_ERROR_TYPE_ENC,
 } evoasm_error_type_t;

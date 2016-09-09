@@ -186,10 +186,7 @@ evoasm_x64_inst_n_operands(evoasm_x64_inst_t *inst) {
   return inst->n_operands;
 }
 
-#define _EVOASM_X64_OPERAND_DEF_FIELD_READER(field, type) \
-type evoasm_x64_operand_##field(evoasm_x64_operand_t *operand) { \
-  return (type) operand->field; \
-}
+#define _EVOASM_X64_OPERAND_DEF_FIELD_READER(field, type) _EVOASM_DEF_FIELD_READER(x64_operand, field, type)
 
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(read, bool)
 _EVOASM_X64_OPERAND_DEF_FIELD_READER(written, bool)
@@ -253,3 +250,5 @@ evoasm_x64_basic_params_init(evoasm_x64_basic_params_t *params) {
   *params = zero_params;
 }
 
+_EVOASM_DEF_ALLOC_FREE_FUNCS(x64_params)
+_EVOASM_DEF_ALLOC_FREE_FUNCS(x64_basic_params)

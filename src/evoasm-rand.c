@@ -12,6 +12,18 @@
 
 EVOASM_DECL_LOG_TAG("rand")
 
+_EVOASM_DEF_ALLOC_FREE_FUNCS(prng_seed)
+
+void
+evoasm_prng_seed_set(evoasm_prng_seed_t *prng_seed, unsigned index, uint64_t value) {
+  prng_seed->data[index] = value;
+}
+
+uint64_t
+evoasm_prng_seed_get(evoasm_prng_seed_t *prng_seed, unsigned index, uint64_t value) {
+  return prng_seed->data[index];
+}
+
 void
 evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_seed_t *seed) {
   prng->s = *seed;

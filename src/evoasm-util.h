@@ -8,15 +8,6 @@
 
 #pragma once
 
-#define EVOASM_INT8_MAX  INT8_MAX
-#define EVOASM_INT8_MIN  INT8_MIN
-#define EVOASM_INT16_MAX INT16_MAX
-#define EVOASM_INT16_MIN INT16_MIN
-#define EVOASM_INT32_MAX INT32_MAX
-#define EVOASM_INT32_MIN INT32_MIN
-#define EVOASM_INT64_MAX INT64_MAX
-#define EVOASM_INT64_MIN INT64_MIN
-
 
 #define EVOASM_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define EVOASM_MIN(a,b) (((a) < (b)) ? (a) : (b))
@@ -48,3 +39,41 @@
 #else
 # define evoasm_check_return
 #endif
+
+#define _EVOASM_DEF_ALLOC_FUNC(type) \
+  evoasm_##type##_t *evoasm_##type##_alloc() { return evoasm_malloc(sizeof(evoasm_##type##_t)); }
+
+#define _EVOASM_DEF_FREE_FUNC(type) \
+  void evoasm_##type##_free(evoasm_##type##_t *ptr) { evoasm_free(ptr); }
+
+#define _EVOASM_DEF_ALLOC_FREE_FUNCS(type) \
+  _EVOASM_DEF_ALLOC_FUNC(type) \
+  _EVOASM_DEF_FREE_FUNC(type) \
+
+#define _EVOASM_DEF_UNREF_REF_FUNCS(type) \
+  void evoasm_##type##_unref(evoasm_##type##_t *ptr) { \
+    if(ptr->refc == 1) { evoasm_##type##_destroy(ptr); evoasm_##type##_free(ptr);} \
+    else { ptr->refc--;} \
+  } \
+  void evoasm_##type##_ref(evoasm_##type##_t *ptr) { ptr->refc++; }
+
+#define _EVOASM_DEF_ZERO_INIT_FUNC(type) \
+  void evoasm_##type##_init(evoasm_##type##_t *ptr) {\
+    static evoasm_##type##_t zero = {0}; \
+    *ptr = zero; \
+    ptr->refc = 1; \
+  }
+
+#define _EVOASM_DEF_FIELD_READER(type, field, field_type) \
+  field_type evoasm_##type##_##field(evoasm_##type##_t *ptr) { \
+    return (field_type) ptr->field; \
+  }
+
+#define _EVOASM_DEF_FIELD_WRITER(type, field, field_type) \
+  void evoasm_##type##_set_##field(evoasm_##type##_t *ptr, field_type value) { \
+    ptr->field = value; \
+  }
+
+#define _EVOASM_DEF_FIELD_ACCESSOR(type, field, field_type) \
+  _EVOASM_DEF_FIELD_READER(type, field, field_type) \
+  _EVOASM_DEF_FIELD_WRITER(type, field, field_type)

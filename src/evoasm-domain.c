@@ -5,8 +5,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <inttypes.h>
+
 #include "evoasm-domain.h"
-#include "evoasm-param.h"
+#include "evoasm-alloc.h"
 
 EVOASM_DECL_LOG_TAG("domain")
 
@@ -57,6 +58,8 @@ evoasm_enum_domain_val(evoasm_enum_domain_t *enum_domain, unsigned index) {
   return enum_domain->vals[index];
 }
 
+_EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
+
 evoasm_success_t
 evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
   va_list args;
@@ -73,7 +76,7 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
       enum_domain->len = (uint16_t) len;
 
       if(len > EVOASM_ENUM_DOMAIN_LEN_MAX) {
-        evoasm_set_error(EVOASM_ERROR_TYPE_ARGUMENT, EVOASM_ERROR_CODE_NONE,
+        evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                          NULL, "Exceeded maximum enumeration domain length (%d > %d)",
                          enum_domain->len, EVOASM_ENUM_DOMAIN_LEN_MAX);
         return false;
