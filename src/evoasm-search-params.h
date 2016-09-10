@@ -10,6 +10,7 @@
 
 #include "evoasm-domain.h"
 #include "evoasm-param.h"
+#include "evoasm.h"
 
 typedef uint8_t evoasm_adf_size_t;
 typedef double evoasm_loss_t;
@@ -37,9 +38,8 @@ typedef union {
 typedef struct {
   uint8_t arity;
   uint16_t len;
-  uint16_t refc;
   evoasm_example_type_t types[EVOASM_ADF_IO_MAX_ARITY];
-  evoasm_example_val_t *vals;
+  evoasm_example_val_t vals[1];
 } evoasm_adf_io_t;
 
 #define EVOASM_ADF_OUTPUT_MAX_ARITY EVOASM_ADF_IO_MAX_ARITY
@@ -51,6 +51,8 @@ typedef evoasm_adf_io_t evoasm_adf_input_t;
 #define EVOASM_ADF_INPUT_N_EXAMPLES(adf_input) EVOASM_ADF_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_input)
 #define EVOASM_ADF_OUTPUT_N_EXAMPLES(adf_output) EVOASM_ADF_IO_N_EXAMPLES((evoasm_adf_io_t *)adf_output)
 
+evoasm_adf_io_t *
+evoasm_adf_io_alloc(uint16_t len);
 
 void
 evoasm_adf_io_destroy(evoasm_adf_io_t *adf_io);
@@ -61,23 +63,6 @@ evoasm_adf_io_destroy(evoasm_adf_io_t *adf_io);
 #define EVOASM_SEARCH_PARAMS_MAX_PARAMS 32
 
 typedef struct {
-  uint16_t len;
-  uint16_t refc;
-  uint16_t ids[];
-} evoasm_search_insts_t;
-
-void
-evoasm_search_insts_ref(evoasm_search_insts_t *search_insts);
-
-
-void
-evoasm_adf_io_ref(evoasm_adf_io_t *adf_io);
-
-void
-evoasm_adf_io_unref(evoasm_adf_io_t *adf_io);
-
-typedef struct {
-  evoasm_search_insts_t *insts;
   evoasm_param_id_t param_ids[EVOASM_SEARCH_PARAMS_MAX_PARAMS];
   evoasm_domain_t *domains[EVOASM_SEARCH_PARAMS_MAX_PARAMS];
   evoasm_adf_size_t min_adf_size;
@@ -92,14 +77,11 @@ typedef struct {
   evoasm_adf_output_t *adf_output;
   evoasm_prng_seed_t seed;
   evoasm_loss_t max_loss;
-  uint16_t refc;
+  /* no other architecture should have more instruction
+   * that that */
+  uint16_t n_insts;
+  evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];
 } evoasm_search_params_t;
-
-void
-evoasm_search_params_ref(evoasm_search_params_t *search_params);
-
-void
-evoasm_search_params_unref(evoasm_search_params_t *search_params);
 
 bool
 evoasm_search_params_valid(evoasm_search_params_t *search_params);

@@ -50,18 +50,10 @@
   _EVOASM_DEF_ALLOC_FUNC(type) \
   _EVOASM_DEF_FREE_FUNC(type) \
 
-#define _EVOASM_DEF_UNREF_REF_FUNCS(type) \
-  void evoasm_##type##_unref(evoasm_##type##_t *ptr) { \
-    if(ptr->refc == 1) { evoasm_##type##_destroy(ptr); evoasm_##type##_free(ptr);} \
-    else { ptr->refc--;} \
-  } \
-  void evoasm_##type##_ref(evoasm_##type##_t *ptr) { ptr->refc++; }
-
 #define _EVOASM_DEF_ZERO_INIT_FUNC(type) \
   void evoasm_##type##_init(evoasm_##type##_t *ptr) {\
     static evoasm_##type##_t zero = {0}; \
     *ptr = zero; \
-    ptr->refc = 1; \
   }
 
 #define _EVOASM_DEF_FIELD_READER(type, field, field_type) \

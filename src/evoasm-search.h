@@ -165,10 +165,9 @@ evoasm_search_start(evoasm_search_t *search,
                     evoasm_search_goal_func_t result_func,
                     void *user_data);
 
-bool
+evoasm_adf_output_t *
 evoasm_adf_run(evoasm_adf_t *adf,
-               evoasm_adf_input_t *input,
-               evoasm_adf_output_t *output);
+               evoasm_adf_input_t *input);
 
 
 evoasm_success_t
