@@ -23,6 +23,9 @@ evoasm_prng_init(evoasm_prng_t *prng, ...) {
   for(i = 0; i < EVOASM_PRNG_SEED_LEN; i++) {
     prng->state.data[i] = va_arg(args, uint64_t);
   }
+
+  prng->p = 0;
+
   va_end(args);
 }
 
