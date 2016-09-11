@@ -22,59 +22,6 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
     EVOASM_X64_REG_15,
 };
 
-uint16_t
-evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
-  uint16_t len = 0;
-  unsigned i, j;
-  bool search = (flags & EVOASM_X64_INSTS_FLAG_SEARCH) != 0;
-
-  for(i = 0; i < EVOASM_X64_N_INSTS; i++) {
-    if(search && (i == EVOASM_X64_INST_CRC32_R32_RM8 ||
-                  i == EVOASM_X64_INST_CRC32_R32_RM16 ||
-                  i == EVOASM_X64_INST_CRC32_R32_RM32 ||
-                  i == EVOASM_X64_INST_CRC32_R64_RM8 ||
-                  i == EVOASM_X64_INST_CRC32_R64_RM64 ||
-                  i == EVOASM_X64_INST_CPUID ||
-                  i == EVOASM_X64_INST_RDRAND_R16 ||
-                  i == EVOASM_X64_INST_RDRAND_R32 ||
-                  i == EVOASM_X64_INST_RDRAND_R64 ||
-                  i == EVOASM_X64_INST_RDSEED_R16 ||
-                  i == EVOASM_X64_INST_RDSEED_R32 ||
-                  i == EVOASM_X64_INST_RDSEED_R64 ||
-                  i == EVOASM_X64_INST_AESDEC_XMM_XMMM128 ||
-                  i == EVOASM_X64_INST_AESDECLAST_XMM_XMMM128 ||
-                  i == EVOASM_X64_INST_AESENC_XMM_XMMM128 ||
-                  i == EVOASM_X64_INST_AESENCLAST_XMM_XMMM128 ||
-                  i == EVOASM_X64_INST_AESIMC_XMM_XMMM128 ||
-                  i == EVOASM_X64_INST_AESKEYGENASSIST_XMM_XMMM128_IMM8)) goto skip;
-
-    const evoasm_x64_inst_t *inst = &_EVOASM_X64_INSTS_VAR_NAME[i];
-
-    if((inst->features & ~features) != 0) goto skip;
-
-    if(search && inst->n_operands == 0) goto skip;
-    
-    for(j = 0; j < inst->n_operands; j++) {
-      evoasm_x64_operand_t *operand = &inst->operands[j];
-
-      if(((1ull << operand->type) & operand_types) == 0) goto skip;
-
-      if(operand->type == EVOASM_X64_OPERAND_TYPE_REG ||
-         operand->type == EVOASM_X64_OPERAND_TYPE_RM) {
-        if((flags & EVOASM_X64_INSTS_FLAG_SEARCH) &&
-           (operand->reg_id == EVOASM_X64_REG_SP ||
-            operand->reg_id == EVOASM_X64_REG_IP)) goto skip;
-
-        if(((1ull << operand->reg_type) & reg_types) == 0) goto skip;
-      }
-    }
-    
-    insts[len++] = (evoasm_x64_inst_id_t) i;
-skip:;
-  }
-  return len;
-}
-
 static evoasm_success_t
 evoasm_x64_func_prolog_or_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi, bool prolog) {
   unsigned i;
@@ -248,6 +195,61 @@ void
 evoasm_x64_basic_params_init(evoasm_x64_basic_params_t *params) {
   static evoasm_x64_basic_params_t zero_params = {0};
   *params = zero_params;
+}
+
+uint16_t
+evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
+  uint16_t len = 0;
+  unsigned i, j;
+  bool search = (flags & EVOASM_X64_INSTS_FLAG_SEARCH) != 0;
+
+  for(i = 0; i < EVOASM_X64_N_INSTS; i++) {
+    if(search && (i == EVOASM_X64_INST_CRC32_R32_RM8 ||
+                  i == EVOASM_X64_INST_CRC32_R32_RM16 ||
+                  i == EVOASM_X64_INST_CRC32_R32_RM32 ||
+                  i == EVOASM_X64_INST_CRC32_R64_RM8 ||
+                  i == EVOASM_X64_INST_CRC32_R64_RM64 ||
+                  i == EVOASM_X64_INST_CPUID ||
+                  i == EVOASM_X64_INST_RDRAND_R16 ||
+                  i == EVOASM_X64_INST_RDRAND_R32 ||
+                  i == EVOASM_X64_INST_RDRAND_R64 ||
+                  i == EVOASM_X64_INST_RDSEED_R16 ||
+                  i == EVOASM_X64_INST_RDSEED_R32 ||
+                  i == EVOASM_X64_INST_RDSEED_R64 ||
+                  i == EVOASM_X64_INST_AESDEC_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESDECLAST_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESENC_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESENCLAST_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESIMC_XMM_XMMM128 ||
+                  i == EVOASM_X64_INST_AESKEYGENASSIST_XMM_XMMM128_IMM8)) goto skip;
+
+    evoasm_x64_inst_t *inst = (evoasm_x64_inst_t *) &_EVOASM_X64_INSTS_VAR_NAME[i];
+
+    if(search && !evoasm_x64_inst_basic(inst)) goto skip;
+
+    if((inst->features & ~features) != 0) goto skip;
+
+    if(search && inst->n_operands == 0) goto skip;
+
+    for(j = 0; j < inst->n_operands; j++) {
+      evoasm_x64_operand_t *operand = &inst->operands[j];
+
+      if(((1ull << operand->type) & operand_types) == 0) goto skip;
+
+      if(operand->type == EVOASM_X64_OPERAND_TYPE_REG ||
+         operand->type == EVOASM_X64_OPERAND_TYPE_RM) {
+        if((flags & EVOASM_X64_INSTS_FLAG_SEARCH) &&
+           (operand->reg_id == EVOASM_X64_REG_SP ||
+            operand->reg_id == EVOASM_X64_REG_IP)) goto skip;
+
+        if(((1ull << operand->reg_type) & reg_types) == 0) goto skip;
+      }
+    }
+
+    insts[len++] = (evoasm_x64_inst_id_t) i;
+skip:;
+  }
+  return len;
 }
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(x64_params)
