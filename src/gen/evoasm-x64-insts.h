@@ -1235,7 +1235,6 @@ evoasm_success_t evoasm_x64_vrcpps_xmm_xmmm128(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_vrcpps_ymm_ymmm256(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_rcpss_xmm_xmmm32(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_vrcpss_xmm_xmm_xmmm32(evoasm_x64_enc_ctx_t *ctx);
-evoasm_success_t evoasm_x64_rdpid_r64(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_rdrand_r16(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_rdrand_r32(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_rdrand_r64(evoasm_x64_enc_ctx_t *ctx);
