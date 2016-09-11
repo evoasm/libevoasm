@@ -23,6 +23,7 @@ evoasm_success_t
 evoasm_adf_io_init(evoasm_adf_io_t *adf_io, uint8_t arity, ...) {
   va_list args;
   unsigned i;
+  bool retval = true;
   adf_io->arity = arity;
 
   va_start(args, arity);
@@ -54,13 +55,17 @@ evoasm_adf_io_init(evoasm_adf_io_t *adf_io, uint8_t arity, ...) {
                          NULL, "Example value type mismatch (previously %s, now %s)",
                          _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
         evoasm_free(adf_io);
-        return false;
+        retval = false;
+        goto done;
       }
     }
     adf_io->types[type_idx] = type;
   }
 
-  return true;
+
+done:
+  va_end(args);
+  return retval;
 }
 
 double
@@ -103,12 +108,7 @@ _EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(mut_rate, uint32_t)
 _EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(max_loss, evoasm_loss_t)
 _EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(n_insts, uint16_t)
 _EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(n_params, uint8_t)
-
-evoasm_prng_seed_t *
-evoasm_search_params_seed(evoasm_search_params_t *search_params) {
-  return &search_params->seed;
-}
-
+_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(prng, evoasm_prng_t *)
 
 evoasm_param_id_t
 evoasm_search_params_param(evoasm_search_params_t *search_params, unsigned index) {

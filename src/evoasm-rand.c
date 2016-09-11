@@ -12,24 +12,46 @@
 
 EVOASM_DECL_LOG_TAG("rand")
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(prng_seed)
+_EVOASM_DEF_ALLOC_FREE_FUNCS(prng)
 
 void
-evoasm_prng_seed_set(evoasm_prng_seed_t *prng_seed, unsigned index, uint64_t value) {
-  prng_seed->data[index] = value;
-}
+evoasm_prng_init(evoasm_prng_t *prng, ...) {
+  va_list args;
+  unsigned i;
+  va_start(args, prng);
 
-uint64_t
-evoasm_prng_seed_get(evoasm_prng_seed_t *prng_seed, unsigned index, uint64_t value) {
-  return prng_seed->data[index];
-}
-
-void
-evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_seed_t *seed) {
-  prng->s = *seed;
+  for(i = 0; i < EVOASM_PRNG_SEED_LEN; i++) {
+    prng->state.data[i] = va_arg(args, uint64_t);
+  }
+  va_end(args);
 }
 
 void
 evoasm_prng_destroy(evoasm_prng_t *prng) {
+}
+
+uint64_t
+evoasm_prng_rand64(evoasm_prng_t *prng) {
+  return _evoasm_prng_rand64(prng);
+}
+
+uint32_t
+evoasm_prng_rand32(evoasm_prng_t *prng) {
+  return _evoasm_prng_rand32(prng);
+}
+
+uint16_t
+evoasm_prng_rand16(evoasm_prng_t *prng) {
+  return _evoasm_prng_rand16(prng);
+}
+
+uint8_t
+evoasm_prng_rand8(evoasm_prng_t *prng) {
+  return _evoasm_prng_rand8(prng);
+}
+
+int64_t
+evoasm_prng_rand_between(evoasm_prng_t *prng, int64_t min, int64_t max) {
+  return _evoasm_prng_rand_between(prng, min, max);
 }
 

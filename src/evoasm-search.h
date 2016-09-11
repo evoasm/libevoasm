@@ -111,7 +111,6 @@ typedef struct {
 #define EVOASM_SEARCH_ELITE_SIZE 4
 
 typedef struct {
-  evoasm_prng_t prng;
   evoasm_loss_t best_loss;
   evoasm_buf_t buf;
   evoasm_buf_t body_buf;

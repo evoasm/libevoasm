@@ -75,7 +75,7 @@ typedef struct {
   uint32_t mut_rate;
   evoasm_adf_input_t *adf_input;
   evoasm_adf_output_t *adf_output;
-  evoasm_prng_seed_t seed;
+  evoasm_prng_t *prng;
   evoasm_loss_t max_loss;
   /* no other architecture should have more instruction
    * that that */

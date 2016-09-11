@@ -8,6 +8,7 @@
 
 #include "evoasm-domain.h"
 #include "evoasm-alloc.h"
+#include "evoasm-param.h"
 
 EVOASM_DECL_LOG_TAG("domain")
 
@@ -71,7 +72,7 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
       unsigned len = va_arg(args, unsigned);
-      int64_t *vals = va_arg(args, int64_t *);
+      unsigned i;
 
       enum_domain->len = (uint16_t) len;
 
@@ -82,7 +83,9 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
         return false;
       }
 
-      memcpy(enum_domain->vals, vals, sizeof(int64_t) * len);
+      for(i = 0; i < len; i++) {
+        enum_domain->vals[i] = va_arg(args, int64_t);
+      }
       break;
     }
     case EVOASM_DOMAIN_TYPE_RANGE: {

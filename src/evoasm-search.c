@@ -155,7 +155,6 @@ static bool
 _evoasm_population_destroy(evoasm_population_t *pop, bool free_buf, bool free_body_buf) {
   bool retval = true;
 
-  evoasm_prng_destroy(&pop->prng);
   evoasm_free(pop->adfs);
   evoasm_free(pop->losses);
   evoasm_free(pop->output_vals);
@@ -209,8 +208,6 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
   }
   pop->elite_pos = 0;
   pop->best_loss = INFINITY;
-
-  evoasm_prng_init(&pop->prng, &search->params->seed);
 
   EVOASM_TRY(buf_alloc_failed, evoasm_buf_init, &pop->buf, EVOASM_BUF_TYPE_MMAP, buf_size);
   EVOASM_TRY(body_buf_alloc_failed, evoasm_buf_init, &pop->body_buf, EVOASM_BUF_TYPE_MALLOC, body_buf_size);
@@ -291,7 +288,7 @@ enc_failed:
 
 static void evoasm_search_x64_seed_kernel_param(evoasm_search_t *search, evoasm_x64_kernel_param_t *kernel_param) {
   unsigned i;
-  int64_t inst_idx = evoasm_prng_rand_between(&search->pop.prng, 0, search->params->n_insts - 1);
+  int64_t inst_idx = _evoasm_prng_rand_between(search->params->prng, 0, search->params->n_insts - 1);
   evoasm_inst_id_t inst = search->params->inst_ids[inst_idx];
 
   kernel_param->inst = (unsigned) inst & EVOASM_X64_INST_BITMASK;
@@ -303,7 +300,7 @@ static void evoasm_search_x64_seed_kernel_param(evoasm_search_t *search, evoasm_
       evoasm_param_id_t param_id = search->params->param_ids[i];
       evoasm_param_val_t param_val;
 
-      param_val = (evoasm_param_val_t) evoasm_domain_rand(domain, &search->pop.prng);
+      param_val = (evoasm_param_val_t) evoasm_domain_rand(domain, search->params->prng);
       _evoasm_x64_basic_params_set(&kernel_param->params, param_id, param_val);
     }
   }
@@ -325,15 +322,15 @@ evoasm_search_seed_kernel(evoasm_search_t *search, evoasm_kernel_params_t *kerne
                           evoasm_adf_size_t adf_size) {
   unsigned i;
 
-  evoasm_kernel_size_t kernel_size = (evoasm_kernel_size_t) evoasm_prng_rand_between(&search->pop.prng,
-                                                                                     search->params->min_kernel_size,
-                                                                                     search->params->max_kernel_size);
+  evoasm_kernel_size_t kernel_size = (evoasm_kernel_size_t) _evoasm_prng_rand_between(search->params->prng,
+                                                                                      search->params->min_kernel_size,
+                                                                                      search->params->max_kernel_size);
 
   assert(kernel_size > 0);
   kernel_params->size = kernel_size;
-  kernel_params->jmp_selector = (uint8_t) evoasm_prng_rand8(&search->pop.prng);
+  kernel_params->jmp_selector = (uint8_t) _evoasm_prng_rand8(search->params->prng);
   kernel_params->alt_succ_idx = (evoasm_kernel_size_t)
-      evoasm_prng_rand_between(&search->pop.prng, 0, adf_size - 1);
+      _evoasm_prng_rand_between(search->params->prng, 0, adf_size - 1);
 
   for(i = 0; i < kernel_size; i++) {
     evoasm_search_seed_kernel_param(search, &kernel_params->params[i]);
@@ -346,9 +343,9 @@ evoasm_search_seed_adf(evoasm_search_t *search, unsigned char *adfs, unsigned ad
   unsigned i;
 
   evoasm_adf_params_t *adf_params = _EVOASM_SEARCH_ADF_PARAMS(search, adfs, adf_index);
-  evoasm_adf_size_t adf_size = (evoasm_adf_size_t) evoasm_prng_rand_between(&search->pop.prng,
-                                                                            search->params->min_adf_size,
-                                                                            search->params->max_adf_size);
+  evoasm_adf_size_t adf_size = (evoasm_adf_size_t) _evoasm_prng_rand_between(search->params->prng,
+                                                                             search->params->min_adf_size,
+                                                                             search->params->max_adf_size);
 
   assert(adf_size > 0);
   adf_params->size = adf_size;
@@ -1781,7 +1778,7 @@ evoasm_search_select_parents(evoasm_search_t *search, uint32_t *parents) {
   j = 0;
   while(true) {
     for(i = 0; i < search->params->pop_size; i++) {
-      uint32_t r = evoasm_prng_rand32(&search->pop.prng);
+      uint32_t r = _evoasm_prng_rand32(search->params->prng);
       if(n >= search->params->pop_size) goto done;
       if(r < UINT32_MAX * ((search->pop.best_loss + 1.0) / (search->pop.losses[i] + 1.0))) {
         parents[n++] = i;
@@ -1799,11 +1796,11 @@ done:;
 
 static void
 evoasm_search_mutate_kernel(evoasm_search_t *search, evoasm_kernel_params_t *child) {
-  uint32_t r = evoasm_prng_rand32(&search->pop.prng);
+  uint32_t r = _evoasm_prng_rand32(search->params->prng);
   evoasm_debug("mutating child: %u < %u", r, search->params->mut_rate);
   if(r < search->params->mut_rate) {
 
-    r = evoasm_prng_rand32(&search->pop.prng);
+    r = _evoasm_prng_rand32(search->params->prng);
     if(child->size > search->params->min_kernel_size && r < UINT32_MAX / 16) {
       uint32_t index = r % child->size;
 
@@ -1814,7 +1811,7 @@ evoasm_search_mutate_kernel(evoasm_search_t *search, evoasm_kernel_params_t *chi
       child->size--;
     }
 
-    r = evoasm_prng_rand32(&search->pop.prng);
+    r = _evoasm_prng_rand32(search->params->prng);
     {
       evoasm_kernel_param_t *param = child->params + (r % child->size);
       evoasm_search_seed_kernel_param(search, param);
@@ -1834,17 +1831,17 @@ evoasm_search_crossover_kernel(evoasm_search_t *search, evoasm_kernel_params_t *
   assert(parent_a->size >= parent_b->size);
 
   child_size = (evoasm_kernel_size_t)
-      evoasm_prng_rand_between(&search->pop.prng,
-                               parent_b->size, parent_a->size);
+      _evoasm_prng_rand_between(search->params->prng,
+                                parent_b->size, parent_a->size);
 
   assert(child_size > 0);
   assert(child_size >= parent_b->size);
 
   /* offset for shorter parent */
-  crossover_point = (unsigned) evoasm_prng_rand_between(&search->pop.prng,
-                                                        0, child_size - parent_b->size);
-  crossover_len = (unsigned) evoasm_prng_rand_between(&search->pop.prng,
-                                                      0, parent_b->size);
+  crossover_point = (unsigned) _evoasm_prng_rand_between(search->params->prng,
+                                                         0, child_size - parent_b->size);
+  crossover_len = (unsigned) _evoasm_prng_rand_between(search->params->prng,
+                                                       0, parent_b->size);
 
 
   for(i = 0; i < child_size; i++) {
@@ -1880,8 +1877,8 @@ evoasm_search_crossover_adf(evoasm_search_t *search, evoasm_adf_params_t *parent
   assert(parent_b->size > 0);
 
   child_size = (evoasm_adf_size_t)
-      evoasm_prng_rand_between(&search->pop.prng,
-                               parent_b->size, parent_a->size);
+      _evoasm_prng_rand_between(search->params->prng,
+                                parent_b->size, parent_a->size);
 
   assert(child_size > 0);
   assert(child_size >= parent_b->size);
