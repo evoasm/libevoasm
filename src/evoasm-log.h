@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-typedef uint8_t evoasm_log_level_t;
+typedef int evoasm_log_level_t;
 #define EVOASM_LOG_LEVEL_TRACE   0
 #define EVOASM_LOG_LEVEL_DEBUG   1
 #define EVOASM_LOG_LEVEL_INFO    2

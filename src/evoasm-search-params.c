@@ -51,7 +51,7 @@ evoasm_adf_io_init(evoasm_adf_io_t *adf_io, uint8_t arity, ...) {
       evoasm_example_type_t prev_type = adf_io->types[type_idx];
 
       if(prev_type != type) {
-        evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+        evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                          NULL, "Example value type mismatch (previously %s, now %s)",
                          _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
         evoasm_free(adf_io);
@@ -191,49 +191,49 @@ bool
 evoasm_search_params_valid(evoasm_search_params_t *search_params) {
 
   if(search_params->max_adf_size > EVOASM_ADF_MAX_SIZE) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Program size cannot exceed %d", EVOASM_ADF_MAX_SIZE);
     goto fail;
   }
 
   if(search_params->n_params == 0) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No parameters given");
     goto fail;
   }
 
   if(search_params->n_insts == 0) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No instructions given");
     goto fail;
   }
 
   if(search_params->adf_input == NULL || search_params->adf_input->len == 0) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No input values given");
     goto fail;
   }
 
   if(search_params->adf_output == NULL || search_params->adf_output->len == 0) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No output values given");
     goto fail;
   }
 
   if(search_params->pop_size == 0) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Population size cannot be zero");
     goto fail;
   }
 
   if(search_params->min_adf_size == 0 || search_params->min_adf_size > search_params->max_adf_size) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Invalid ADF size");
     goto fail;
   }
 
   if(search_params->min_kernel_size == 0 || search_params->min_kernel_size > search_params->max_kernel_size) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Invalid kernel size");
     goto fail;
   }

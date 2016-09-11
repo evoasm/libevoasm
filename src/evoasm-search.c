@@ -1422,14 +1422,14 @@ evoasm_adf_run(evoasm_adf_t *adf,
   evoasm_adf_output_t *output;
 
   if(input->arity != adf->_input.arity) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE, NULL,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
                      "example arity mismatch (%d for %d)", input->arity, adf->_input.arity);
     return NULL;
   }
 
   for(i = 0; i < input->arity; i++) {
     if(input->types[i] != adf->_input.types[i]) {
-      evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE, NULL,
+      evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
                        "example type mismatch (%d != %d)", input->types[i], adf->_input.types[i]);
       return NULL;
     }
@@ -2153,7 +2153,7 @@ found:;
 fail:
   return false;
 empty_domain:
-  evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+  evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                    NULL, "Empty domain");
   return false;
 }

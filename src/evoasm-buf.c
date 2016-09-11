@@ -120,7 +120,7 @@ size_t
 evoasm_buf_append(evoasm_buf_t * restrict dst, evoasm_buf_t * restrict src) {
   size_t free = dst->capa - dst->pos;
   if(src->pos > free) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
       NULL, "buffer does not fit (need %zu bytes but only %zu free)", src->pos, free);
     return src->pos - (dst->capa - dst->pos);
   }
