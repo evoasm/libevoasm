@@ -179,6 +179,10 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
   uint32_t pop_size = search->params->pop_size;
   unsigned i;
 
+
+  static evoasm_population_t zero_pop = {0};
+  *pop = zero_pop;
+
   pop->arch_info = evoasm_arch_info(search->arch_id);
 
   /* FIXME: find a way to calculate tighter bound */
@@ -186,9 +190,6 @@ evoasm_population_init(evoasm_population_t *pop, evoasm_search_t *search) {
                                    pop->arch_info->max_inst_len);
   size_t buf_size =
       EVOASM_ADF_INPUT_N_EXAMPLES(search->params->adf_input) * (body_buf_size + EVOASM_SEARCH_PROLOG_EPILOG_SIZE);
-
-  static evoasm_population_t zero_pop = {0};
-  *pop = zero_pop;
 
   size_t adf_size = _EVOASM_ADF_SIZE(search->params->max_adf_size, search->params->max_kernel_size);
 
@@ -311,6 +312,7 @@ evoasm_search_seed_kernel_param(evoasm_search_t *search, evoasm_kernel_param_t *
   switch(search->arch_id) {
     case EVOASM_ARCH_X64: {
       evoasm_search_x64_seed_kernel_param(search, &kernel_param->x64);
+      break;
     }
     default:
       evoasm_assert_not_reached();
