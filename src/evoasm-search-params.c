@@ -208,13 +208,13 @@ evoasm_search_params_valid(evoasm_search_params_t *search_params) {
     goto fail;
   }
 
-  if(search_params->adf_input->len == 0) {
+  if(search_params->adf_input == NULL || search_params->adf_input->len == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                     NULL, "No _input values given");
+                     NULL, "No input values given");
     goto fail;
   }
 
-  if(search_params->adf_output->len == 0) {
+  if(search_params->adf_output == NULL || search_params->adf_output->len == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                      NULL, "No output values given");
     goto fail;
