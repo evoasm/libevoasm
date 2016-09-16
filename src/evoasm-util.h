@@ -46,9 +46,20 @@
 #define _EVOASM_DEF_FREE_FUNC(type) \
   void evoasm_##type##_free(evoasm_##type##_t *ptr) { evoasm_free(ptr); }
 
+#define _EVOASM_DECL_ALLOC_FUNC(type) \
+  evoasm_##type##_t *evoasm_##type##_alloc();
+
+#define _EVOASM_DECL_FREE_FUNC(type) \
+  void evoasm_##type##_free(evoasm_##type##_t *ptr);
+
 #define _EVOASM_DEF_ALLOC_FREE_FUNCS(type) \
   _EVOASM_DEF_ALLOC_FUNC(type) \
   _EVOASM_DEF_FREE_FUNC(type) \
+
+
+#define _EVOASM_DECL_ALLOC_FREE_FUNCS(type) \
+  _EVOASM_DECL_ALLOC_FUNC(type) \
+  _EVOASM_DECL_FREE_FUNC(type) \
 
 #define _EVOASM_DEF_ZERO_INIT_FUNC(type) \
   void evoasm_##type##_init(evoasm_##type##_t *ptr) {\

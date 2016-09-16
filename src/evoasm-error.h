@@ -38,6 +38,7 @@ typedef enum {
   EVOASM_ERROR_TYPE_ARG,
   EVOASM_ERROR_TYPE_MEMORY,
   EVOASM_ERROR_TYPE_ENC,
+  EVOASM_ERROR_TYPE_RUNTIME,
 } evoasm_error_type_t;
 
 typedef struct {

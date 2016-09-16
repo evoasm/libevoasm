@@ -2,7 +2,7 @@
 // Created by jap on 9/9/16.
 //
 
-#include "evoasm-search-params.h"
+#include "evoasm-deme-params.h"
 #include "evoasm-alloc.h"
 
 static const char * const _evoasm_example_type_names[] = {
@@ -93,42 +93,42 @@ _EVOASM_DEF_FREE_FUNC(adf_io)
 _EVOASM_DEF_FIELD_READER(adf_io, arity, uint8_t)
 _EVOASM_DEF_FIELD_READER(adf_io, len, uint16_t)
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(search_params)
-_EVOASM_DEF_ZERO_INIT_FUNC(search_params)
+_EVOASM_DEF_ALLOC_FREE_FUNCS(deme_params)
+_EVOASM_DEF_ZERO_INIT_FUNC(deme_params)
 
-#define _EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(field, type) _EVOASM_DEF_FIELD_ACCESSOR(search_params, field, type)
+#define _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(field, type) _EVOASM_DEF_FIELD_ACCESSOR(deme_params, field, type)
 
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(min_adf_size, evoasm_adf_size_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(max_adf_size, evoasm_adf_size_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(min_kernel_size, evoasm_kernel_size_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(max_kernel_size, evoasm_kernel_size_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(recur_limit, uint32_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(pop_size, uint32_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(mut_rate, uint32_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(max_loss, evoasm_loss_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(n_insts, uint16_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(n_params, uint8_t)
-_EVOASM_SEARCH_PARAMS_DEF_FIELD_ACCESSOR(prng, evoasm_prng_t *)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(min_adf_size, evoasm_adf_size_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_adf_size, evoasm_adf_size_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(min_kernel_size, evoasm_kernel_size_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_kernel_size, evoasm_kernel_size_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(recur_limit, uint32_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(pop_size, uint32_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(mut_rate, uint32_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_loss, evoasm_loss_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_insts, uint16_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_params, uint8_t)
+_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(prng, evoasm_prng_t *)
 
 evoasm_param_id_t
-evoasm_search_params_param(evoasm_search_params_t *search_params, unsigned index) {
-  return search_params->param_ids[index];
+evoasm_deme_params_param(evoasm_deme_params_t *deme_params, unsigned index) {
+  return deme_params->param_ids[index];
 }
 
 static evoasm_domain_t **
-evoasm_search_params_find_domain(evoasm_search_params_t *search_params, evoasm_param_id_t param_id) {
+evoasm_deme_params_find_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id) {
   unsigned i;
-  for(i = 0; i < search_params->n_params; i++) {
-    if(search_params->param_ids[i] == param_id) {
-      return &search_params->domains[i];
+  for(i = 0; i < deme_params->n_params; i++) {
+    if(deme_params->param_ids[i] == param_id) {
+      return &deme_params->domains[i];
     }
   }
   return NULL;
 }
 
 bool
-evoasm_search_params_set_domain(evoasm_search_params_t *search_params, evoasm_param_id_t param_id, evoasm_domain_t *domain) {
-  evoasm_domain_t **domain_ptr = evoasm_search_params_find_domain(search_params, param_id);
+evoasm_deme_params_set_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id, evoasm_domain_t *domain) {
+  evoasm_domain_t **domain_ptr = evoasm_deme_params_find_domain(deme_params, param_id);
   if(domain_ptr) {
     *domain_ptr = domain;
     return true;
@@ -139,8 +139,8 @@ evoasm_search_params_set_domain(evoasm_search_params_t *search_params, evoasm_pa
 }
 
 evoasm_domain_t *
-evoasm_search_params_domain(evoasm_search_params_t *search_params, evoasm_param_id_t param_id) {
-  evoasm_domain_t **domain_ptr = evoasm_search_params_find_domain(search_params, param_id);
+evoasm_deme_params_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id) {
+  evoasm_domain_t **domain_ptr = evoasm_deme_params_find_domain(deme_params, param_id);
   if(domain_ptr) {
     return *domain_ptr;
   } else {
@@ -151,88 +151,88 @@ evoasm_search_params_domain(evoasm_search_params_t *search_params, evoasm_param_
 
 
 void
-evoasm_search_params_set_param(evoasm_search_params_t *search_params, unsigned index, evoasm_param_id_t param) {
-  search_params->param_ids[index] = param;
+evoasm_deme_params_set_param(evoasm_deme_params_t *deme_params, unsigned index, evoasm_param_id_t param) {
+  deme_params->param_ids[index] = param;
 }
 
 uint8_t
-evoasm_search_n_params(evoasm_search_params_t *search_params) {
-  return search_params->n_params;
+evoasm_search_n_params(evoasm_deme_params_t *deme_params) {
+  return deme_params->n_params;
 }
 
 void
-evoasm_search_params_set_inst(evoasm_search_params_t *search_params, unsigned index, evoasm_inst_id_t inst_id) {
-  search_params->inst_ids[index] = inst_id;
+evoasm_deme_params_set_inst(evoasm_deme_params_t *deme_params, unsigned index, evoasm_inst_id_t inst_id) {
+  deme_params->inst_ids[index] = inst_id;
 }
 
 evoasm_inst_id_t
-evoasm_search_params_inst(evoasm_search_params_t *search_params, unsigned index) {
-  return search_params->inst_ids[index];
+evoasm_deme_params_inst(evoasm_deme_params_t *deme_params, unsigned index) {
+  return deme_params->inst_ids[index];
 }
 
 void
-evoasm_search_params_destroy(evoasm_search_params_t *search_params) {
+evoasm_deme_params_destroy(evoasm_deme_params_t *deme_params) {
 }
 
 void
-evoasm_search_params_set_adf_input(evoasm_search_params_t *search_params, evoasm_adf_io_t *adf_io) {
-  search_params->adf_input = adf_io;
+evoasm_deme_params_set_adf_input(evoasm_deme_params_t *deme_params, evoasm_adf_io_t *adf_io) {
+  deme_params->adf_input = adf_io;
 }
 
 void
-evoasm_search_params_set_adf_output(evoasm_search_params_t *search_params, evoasm_adf_io_t *adf_io) {
-  search_params->adf_output = adf_io;
+evoasm_deme_params_set_adf_output(evoasm_deme_params_t *deme_params, evoasm_adf_io_t *adf_io) {
+  deme_params->adf_output = adf_io;
 }
 
-_EVOASM_DEF_FIELD_READER(search_params, adf_input, evoasm_adf_io_t *)
-_EVOASM_DEF_FIELD_READER(search_params, adf_output, evoasm_adf_io_t *)
+_EVOASM_DEF_FIELD_READER(deme_params, adf_input, evoasm_adf_io_t *)
+_EVOASM_DEF_FIELD_READER(deme_params, adf_output, evoasm_adf_io_t *)
 
 bool
-evoasm_search_params_valid(evoasm_search_params_t *search_params) {
+evoasm_deme_params_valid(evoasm_deme_params_t *deme_params) {
 
-  if(search_params->max_adf_size > EVOASM_ADF_MAX_SIZE) {
+  if(deme_params->max_adf_size > EVOASM_ADF_MAX_SIZE) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Program size cannot exceed %d", EVOASM_ADF_MAX_SIZE);
     goto fail;
   }
 
-  if(search_params->n_params == 0) {
+  if(deme_params->n_params == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No parameters given");
     goto fail;
   }
 
-  if(search_params->n_insts == 0) {
+  if(deme_params->n_insts == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No instructions given");
     goto fail;
   }
 
-  if(search_params->adf_input == NULL || search_params->adf_input->len == 0) {
+  if(deme_params->adf_input == NULL || deme_params->adf_input->len == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No input values given");
     goto fail;
   }
 
-  if(search_params->adf_output == NULL || search_params->adf_output->len == 0) {
+  if(deme_params->adf_output == NULL || deme_params->adf_output->len == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No output values given");
     goto fail;
   }
 
-  if(search_params->pop_size == 0) {
+  if(deme_params->size == 0) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Population size cannot be zero");
     goto fail;
   }
 
-  if(search_params->min_adf_size == 0 || search_params->min_adf_size > search_params->max_adf_size) {
+  if(deme_params->min_adf_size == 0 || deme_params->min_adf_size > deme_params->max_adf_size) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Invalid ADF size");
     goto fail;
   }
 
-  if(search_params->min_kernel_size == 0 || search_params->min_kernel_size > search_params->max_kernel_size) {
+  if(deme_params->min_kernel_size == 0 || deme_params->min_kernel_size > deme_params->max_kernel_size) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Invalid kernel size");
     goto fail;

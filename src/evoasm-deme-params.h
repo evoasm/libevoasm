@@ -60,18 +60,18 @@ evoasm_adf_io_destroy(evoasm_adf_io_t *adf_io);
 #define evoasm_adf_output_destroy(adf_output) \
   evoasm_adf_io_destroy((evoasm_adf_io *)adf_output)
 
-#define EVOASM_SEARCH_PARAMS_MAX_PARAMS 32
+#define EVOASM_DEME_PARAMS_MAX_PARAMS 32
 
 typedef struct {
-  evoasm_param_id_t param_ids[EVOASM_SEARCH_PARAMS_MAX_PARAMS];
-  evoasm_domain_t *domains[EVOASM_SEARCH_PARAMS_MAX_PARAMS];
+  evoasm_param_id_t param_ids[EVOASM_DEME_PARAMS_MAX_PARAMS];
+  evoasm_domain_t *domains[EVOASM_DEME_PARAMS_MAX_PARAMS];
   evoasm_adf_size_t min_adf_size;
   evoasm_adf_size_t max_adf_size;
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
   uint8_t n_params;
-  uint32_t pop_size;
+  uint32_t size;
   uint32_t mut_rate;
   evoasm_adf_input_t *adf_input;
   evoasm_adf_output_t *adf_output;
@@ -81,7 +81,7 @@ typedef struct {
    * that that */
   uint16_t n_insts;
   evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];
-} evoasm_search_params_t;
+} evoasm_deme_params_t;
 
 bool
-evoasm_search_params_valid(evoasm_search_params_t *search_params);
+evoasm_deme_params_valid(evoasm_deme_params_t *deme_params);

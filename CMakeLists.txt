@@ -13,6 +13,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DEVOASM_MIN_LOG_LEVEL=EVOASM_LO
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCE_FILES
+        src/tinycthread.c
         src/evoasm-alloc.c
         src/evoasm-alloc.h
         src/evoasm-arch.c
@@ -36,6 +37,6 @@ set(SOURCE_FILES
         src/evoasm-x64.c
         src/evoasm-x64.h
         src/gen/evoasm-x64-misc.c
-        src/gen/evoasm-x64-insts.c src/evoasm-domain.h src/evoasm-domain.c src/evoasm-search-params.h src/evoasm-search-params.c)
+        src/gen/evoasm-x64-insts.c src/evoasm-domain.h src/evoasm-domain.c src/evoasm-deme-params.h src/evoasm-deme-params.c src/evoasm-adf.c src/evoasm-adf.h src/evoasm-deme.c src/evoasm-deme.h)
 
 add_library(evoasm SHARED ${SOURCE_FILES})
