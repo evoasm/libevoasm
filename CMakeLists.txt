@@ -29,14 +29,30 @@ set(SOURCE_FILES
         src/evoasm-rand.h
         src/evoasm-param.c
         src/evoasm-param.h
-        src/evoasm-search.c
-        src/evoasm-search.h
+        src/evoasm-island-model.c
+        src/evoasm-island-model.h
         src/evoasm-util.h
         src/evoasm.c
         src/evoasm.h
         src/evoasm-x64.c
         src/evoasm-x64.h
         src/gen/evoasm-x64-misc.c
-        src/gen/evoasm-x64-insts.c src/evoasm-domain.h src/evoasm-domain.c src/evoasm-deme-params.h src/evoasm-deme-params.c src/evoasm-adf.c src/evoasm-adf.h src/evoasm-deme.c src/evoasm-deme.h)
+        src/gen/evoasm-x64-insts.c
+        src/evoasm-domain.h
+        src/evoasm-domain.c
+        src/evoasm-deme-params.h
+        src/evoasm-deme-params.c
+        src/evoasm-adf-deme-params.h
+        src/evoasm-adf-deme-params.c
+        src/evoasm-adf.c
+        src/evoasm-adf.h
+        src/evoasm-deme.c
+        src/evoasm-deme.h
+        src/evoasm-adf-deme.c
+        src/evoasm-adf-deme.h
+        src/evoasm-signal.c
+        src/evoasm-signal.h
+        src/evoasm-adf-io.c
+        src/evoasm-adf-io.h)
 
 add_library(evoasm SHARED ${SOURCE_FILES})

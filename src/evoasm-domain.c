@@ -10,7 +10,7 @@
 #include "evoasm-alloc.h"
 #include "evoasm-param.h"
 
-EVOASM_DECL_LOG_TAG("domain")
+EVOASM_DEF_LOG_TAG("domain")
 
 void
 evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {

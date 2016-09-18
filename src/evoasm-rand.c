@@ -10,23 +10,14 @@
 #include "evoasm-util.h"
 #include "evoasm-rand.h"
 
-EVOASM_DECL_LOG_TAG("rand")
+EVOASM_DEF_LOG_TAG("rand")
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(prng)
 
 void
-evoasm_prng_init(evoasm_prng_t *prng, ...) {
-  va_list args;
-  unsigned i;
-  va_start(args, prng);
-
-  for(i = 0; i < EVOASM_PRNG_SEED_LEN; i++) {
-    prng->state.data[i] = va_arg(args, uint64_t);
-  }
-
+evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_state_t *seed) {
+  prng->state = *seed;
   prng->p = 0;
-
-  va_end(args);
 }
 
 void

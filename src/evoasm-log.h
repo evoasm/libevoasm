@@ -34,7 +34,7 @@ extern FILE *          _evoasm_log_file;
 #  define EVOASM_LOG_ATTRS
 #endif
 
-#define EVOASM_DECL_LOG_TAG(tag) evoasm_used static const char *_evoasm_log_tag = tag;
+#define EVOASM_DEF_LOG_TAG(tag) evoasm_used static const char *_evoasm_log_tag = tag;
 #define EVOASM_LOG_TAG _evoasm_log_tag
 
 void

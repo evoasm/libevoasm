@@ -8,7 +8,7 @@
 
 #include "evoasm-arch.h"
 
-EVOASM_DECL_LOG_TAG("arch")
+EVOASM_DEF_LOG_TAG("arch")
 
 evoasm_arch_info_t _evoasm_arch_infos[] = {
     {

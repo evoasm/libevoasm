@@ -12,7 +12,7 @@
 #include "evoasm-alloc.h"
 #include "evoasm-util.h"
 
-EVOASM_DECL_LOG_TAG("buf")
+EVOASM_DEF_LOG_TAG("buf")
 
 static evoasm_success_t
 evoasm_buf_init_mmap(evoasm_buf_t *buf, size_t size) {

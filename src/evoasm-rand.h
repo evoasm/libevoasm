@@ -24,7 +24,7 @@ typedef struct evoasm_prng64 {
 } evoasm_prng_t;
 
 void
-evoasm_prng_init(evoasm_prng_t *prng, ...);
+evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_state_t *seed);
 
 void
 evoasm_prng_destroy(evoasm_prng_t *prng);

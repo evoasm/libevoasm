@@ -6,14 +6,18 @@
  * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
  */
 
-#include "evoasm.h"
-#include "evoasm-log.h"
-#include "evoasm-island-model.h"
-#include "evoasm-x64.h"
+#pragma once
 
-void
-evoasm_init(int argc, const char **argv, FILE *log_file) {
-  if(log_file == NULL) log_file = stderr;
-  _evoasm_log_file = log_file;
-}
+#include "evoasm-adf-deme-params.h"
+#include "evoasm-adf.h"
+#include "evoasm-deme.h"
+
+typedef struct {
+  evoasm_deme_t deme;
+  evoasm_buf_t buf;
+  evoasm_buf_t body_buf;
+  evoasm_arch_info_t *arch_info;
+  evoasm_adf_io_val_t *output_vals;
+} evoasm_adf_deme_t;
+
 
