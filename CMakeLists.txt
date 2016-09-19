@@ -1,19 +1,18 @@
-cmake_minimum_required(VERSION 3.0)
-project(libevoasm C)
+cmake_minimum_required(VERSION 3.1)
+project(evoasm C)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}\
-    -std=c11\
     -pedantic -fstrict-aliasing\
     -Wextra -Wall -Wno-unused-label -Wuninitialized\
     -Wswitch-default  -Wstrict-aliasing=3 -Wunreachable-code\
     -Wundef -Wpointer-arith -Wwrite-strings -Wconversion -Winit-self -Wno-unused-parameter")
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DEVOASM_MIN_LOG_LEVEL=EVOASM_LOG_LEVEL_DEBUG")
+set(CMAKE_C_STANDARD 11)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCE_FILES
-        src/tinycthread.c
         src/evoasm-alloc.c
         src/evoasm-alloc.h
         src/evoasm-arch.c
@@ -52,7 +51,12 @@ set(SOURCE_FILES
         src/evoasm-adf-deme.h
         src/evoasm-signal.c
         src/evoasm-signal.h
+        src/evoasm-threads.c
+        src/evoasm-threads.h
         src/evoasm-adf-io.c
         src/evoasm-adf-io.h)
 
+find_package(Threads)
 add_library(evoasm SHARED ${SOURCE_FILES})
+target_link_libraries(evoasm ${CMAKE_THREAD_LIBS_INIT})
+

@@ -9,24 +9,31 @@
 #pragma once
 
 #include "evoasm-deme-params.h"
-#include "evoasm-adf.h"
 
 typedef struct {
-
+  void *dummy;
 } evoasm_indiv_t;
 
 struct evoasm_deme_s;
 
 typedef evoasm_success_t (*evoasm_deme_seed_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv);
+
 typedef evoasm_success_t (*evoasm_deme_eval_setup_func)(struct evoasm_deme_s *deme);
+
 typedef evoasm_success_t (*evoasm_deme_eval_teardown_func)(struct evoasm_deme_s *deme);
-typedef evoasm_success_t (*evoasm_deme_eval_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv, evoasm_loss_t *loss);
-typedef evoasm_success_t (*evoasm_deme_extract_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv, evoasm_indiv_t *dst_indiv);
+
+typedef evoasm_success_t (*evoasm_deme_eval_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
+                                                        evoasm_loss_t *loss);
+
+typedef evoasm_success_t (*evoasm_deme_extract_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
+                                                           evoasm_indiv_t *dst_indiv);
+
 typedef evoasm_success_t (*evoasm_deme_crossover_func)(struct evoasm_deme_s *deme,
                                                        evoasm_indiv_t *parent_a,
                                                        evoasm_indiv_t *parent_b,
                                                        evoasm_indiv_t *child_a,
                                                        evoasm_indiv_t *child_b);
+
 
 typedef struct {
   evoasm_deme_seed_indiv_func seed_indiv_func;
@@ -46,15 +53,24 @@ typedef struct evoasm_deme_s {
   uint64_t *error_counters;
   uint64_t error_counter;
   size_t indiv_size;
-  uint32_t  n_examples;
+  uint32_t n_examples;
   unsigned char *indivs;
   unsigned char *main_indivs;
   unsigned char *swap_indivs;
   evoasm_domain_t *domains;
 
-  evoasm_deme_cls_t *cls;
+  const evoasm_deme_cls_t *cls;
 } evoasm_deme_t;
 
+typedef enum {
+  EVOASM_RESULT_FUNC_CONTINUE,
+  EVOASM_RESULT_FUNC_STOP
+} evoasm_result_func_retval_t;
+
+typedef evoasm_result_func_retval_t (*evoasm_deme_result_func)(evoasm_deme_t *deme,
+                                        const evoasm_indiv_t *indiv,
+                                        evoasm_loss_t loss,
+                                        void *user_data);
 
 evoasm_success_t
 evoasm_deme_init(evoasm_deme_t *deme,
@@ -64,11 +80,17 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  uint32_t n_examples);
 
 evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme);
+evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
+                 evoasm_loss_t max_loss, void *user_data);
 
 void
 evoasm_deme_new_gen(evoasm_deme_t *deme);
 
+evoasm_indiv_t *
+evoasm_deme_indiv(evoasm_deme_t *deme, uint32_t idx);
+
+size_t
+evoasm_deme_indiv_size(evoasm_deme_t *deme);
 
 evoasm_loss_t
 evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed);
@@ -82,5 +104,8 @@ evoasm_deme_select(evoasm_deme_t *deme, uint32_t *idxs, unsigned n_idxs);
 void
 evoasm_deme_destroy(evoasm_deme_t *deme);
 
-evoasm_indiv_t *
-evoasm_deme_best_indiv(evoasm_deme_t *deme, evoasm_loss_t max_loss);
+void
+evoasm_deme_inject(evoasm_deme_t *deme, evoasm_indiv_t *indiv, size_t indiv_size, evoasm_loss_t loss);
+
+evoasm_loss_t
+evoasm_deme_indiv_loss(evoasm_deme_t *deme, uint32_t idx);

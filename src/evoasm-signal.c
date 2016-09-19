@@ -10,8 +10,7 @@
 
 #include <stdatomic.h>
 
-#if (defined(__linux__) || defined(__unix__) || defined(__unix) || \
-    (defined(__APPLE__) && defined(__MACH__)))
+#ifdef EVOASM_UNIX
 
 #define _EVOASM_SIGNAL_EXCEPTION_SET(exc) (_evoasm_signal_ctx.exception_mask & (1 << exc))
 
@@ -59,7 +58,7 @@ evoasm_signal_install(evoasm_arch_id_t arch_id, uint64_t exception_mask) {
   sigemptyset(&action.sa_mask);
   action.sa_flags = SA_SIGINFO;
 
-  if(sigaction(SIGFPE, &action, &_evoasm_signal_ctx.prev_action) < 0) {
+  if(sigaction(SIGFPE, &action, (struct sigaction *) &_evoasm_signal_ctx.prev_action) < 0) {
     perror("sigaction");
     exit(1);
   }
@@ -74,9 +73,9 @@ evoasm_signal_set_exception_mask(uint64_t exception_mask) {
   atomic_signal_fence(memory_order_release);
 }
 
-static void
+void
 evoasm_signal_uninstall() {
-  if(sigaction(SIGFPE, &_evoasm_signal_ctx.prev_action, NULL) < 0) {
+  if(sigaction(SIGFPE, (struct sigaction *) &_evoasm_signal_ctx.prev_action, NULL) < 0) {
     perror("sigaction");
     exit(1);
   }

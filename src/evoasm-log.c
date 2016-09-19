@@ -6,15 +6,11 @@
  * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
  */
 
-#define _DEFAULT_SOURCE
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <alloca.h>
 
 #ifdef _WIN32
 #include <io.h>

@@ -8,6 +8,7 @@
 
 #include "evoasm-signal.h"
 #include "evoasm-adf.h"
+#include "evoasm-arch.h"
 
 
 EVOASM_DEF_LOG_TAG("adf")
@@ -62,7 +63,6 @@ evoasm_adf_clone(evoasm_adf_t *adf, evoasm_adf_t *cloned_adf) {
   bool free_buf = false, free_body_buf = false, free_params = false;
 
   *cloned_adf = *adf;
-  cloned_adf->index = 0;
   cloned_adf->reset_rflags = false;
   cloned_adf->_input.len = 0;
   cloned_adf->_output.len = 0;
@@ -291,32 +291,6 @@ typedef struct {
 } evoasm_x64_reg_write_acc_t;
 
 
-static bool
-evoasm_kernel_param_x64_writes_p(evoasm_kernel_param_t *param, evoasm_reg_id_t reg_id,
-                                 evoasm_x64_reg_write_acc_t *reg_write_acc) {
-  evoasm_x64_inst_t *x64_inst = _evoasm_x64_inst((evoasm_x64_inst_id_t) param->x64.inst);
-  unsigned i;
-
-  for(i = 0; i < x64_inst->n_operands; i++) {
-    evoasm_x64_operand_t *op = &x64_inst->operands[i];
-    evoasm_x64_reg_id_t op_reg_id = evoasm_op_x64_reg_id(op, param);
-
-    if(op->written && op_reg_id == reg_id && evoasm_x64_reg_write_acc_is_dirty_read(reg_write_acc, op, param)) {
-      evoasm_x64_reg_write_acc_update(reg_write_acc, op, param);
-      return true;
-    }
-  }
-  return false;
-}
-
-static void
-evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
-  static evoasm_x64_reg_write_acc_t zero_reg_write_acc = {0};
-  *reg_write_acc = zero_reg_write_acc;
-
-  reg_write_acc->size = EVOASM_X64_N_OPERAND_SIZES;
-}
-
 static void
 evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t *reg_write_acc,
                                 evoasm_x64_operand_t *op, evoasm_kernel_param_t *param) {
@@ -369,6 +343,32 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
   return uncovered_acc;
 }
 
+static bool
+evoasm_kernel_param_x64_writes_p(evoasm_kernel_param_t *param, evoasm_reg_id_t reg_id,
+                                 evoasm_x64_reg_write_acc_t *reg_write_acc) {
+  evoasm_x64_inst_t *x64_inst = _evoasm_x64_inst((evoasm_x64_inst_id_t) param->x64.inst);
+  unsigned i;
+
+  for(i = 0; i < x64_inst->n_operands; i++) {
+    evoasm_x64_operand_t *op = &x64_inst->operands[i];
+    evoasm_x64_reg_id_t op_reg_id = evoasm_op_x64_reg_id(op, param);
+
+    if(op->written && op_reg_id == reg_id && evoasm_x64_reg_write_acc_is_dirty_read(reg_write_acc, op, param)) {
+      evoasm_x64_reg_write_acc_update(reg_write_acc, op, param);
+      return true;
+    }
+  }
+  return false;
+}
+
+
+static void
+evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
+  static evoasm_x64_reg_write_acc_t zero_reg_write_acc = {0};
+  *reg_write_acc = zero_reg_write_acc;
+
+  reg_write_acc->size = EVOASM_X64_N_OPERAND_SIZES;
+}
 
 static void
 evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
@@ -643,7 +643,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
   uint32_t *branch_phi = NULL;
   uint32_t *counter_phi = NULL;
 
-  if(adf->deme_params->recur_limit == 0) goto next_trans;
+  if(adf->recur_limit == 0) goto next_trans;
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_OF].written) {
     jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JO_REL32;
@@ -733,7 +733,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
       EVOASM_X64_ENC(mov_r64_imm64);
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, _EVOASM_X64_REG_TMP);
-      EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, adf->deme_params->recur_limit);
+      EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, adf->recur_limit);
       EVOASM_X64_ENC(cmp_rm32_imm32);
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);

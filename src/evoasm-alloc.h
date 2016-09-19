@@ -8,13 +8,9 @@
 
 #pragma once
 
-#if defined(__linux__) || defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#  if !defined(_DEFAULT_SOURCE)
-#    define _DEFAULT_SOURCE
-#  endif
-#  if defined(__linux__) && !defined(_GNU_SOURCE)
-#    define _GNU_SOURCE
-#  endif
+#include "evoasm-util.h"
+
+#ifdef EVOASM_UNIX
 #  include <unistd.h>
 #  include <sys/mman.h>
 #  if !defined(MAP_ANONYMOUS) && defined(MAP_ANON)

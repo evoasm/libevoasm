@@ -11,9 +11,7 @@ _EVOASM_DEF_ZERO_INIT_FUNC(deme_params)
 
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(size, uint32_t)
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(mut_rate, uint32_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_loss, evoasm_loss_t)
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_params, uint8_t)
-
 
 static evoasm_domain_t **
 evoasm_deme_params_find_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id) {
@@ -70,7 +68,7 @@ evoasm_deme_params_seed(evoasm_deme_params_t *deme_params, unsigned index) {
 
 void
 evoasm_deme_params_set_seed(evoasm_deme_params_t *deme_params, unsigned index, uint64_t seed) {
-  deme_params->param_ids[index] = seed;
+  deme_params->seed.data[index] = seed;
 }
 
 void

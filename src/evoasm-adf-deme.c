@@ -224,7 +224,7 @@ evoasm_adf_deme_eval_adf(evoasm_adf_deme_t *adf_deme,
       evoasm_buf_exec(adf->buf);
       *loss = evoasm_adf_assess(adf, params->adf_output);
     } else {
-      evoasm_debug("adf %p signaled", adf);
+      evoasm_debug("adf %p signaled", (void *) adf);
       *loss = INFINITY;
     }
   }
@@ -243,10 +243,11 @@ static evoasm_success_t
 evoasm_adf_deme_eval_teardown(evoasm_deme_t *deme) {
   evoasm_adf_deme_t *adf_deme = (evoasm_adf_deme_t *) deme;
   evoasm_signal_install((evoasm_arch_id_t) adf_deme->arch_info->id, 0);
+  return true;
 }
 
 
-static evoasm_success_t bool
+static evoasm_success_t
 evoasm_adf_eval_adf_params(evoasm_adf_deme_t *adf_deme, evoasm_adf_params_t *adf_params, evoasm_loss_t *loss) {
   evoasm_adf_deme_params_t *params = evoasm_adf_deme_params(adf_deme);
   bool retval = true;

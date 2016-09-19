@@ -80,3 +80,7 @@
 #define _EVOASM_DEF_FIELD_ACCESSOR(type, field, field_type) \
   _EVOASM_DEF_FIELD_READER(type, field, field_type) \
   _EVOASM_DEF_FIELD_WRITER(type, field, field_type)
+
+#if defined(__linux__) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
+#define EVOASM_UNIX
+#endif

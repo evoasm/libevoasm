@@ -71,13 +71,32 @@ evoasm_deme_indiv(evoasm_deme_t *deme, uint32_t idx) {
   return evoasm_deme_indiv_(deme, idx, deme->main_indivs);
 }
 
-evoasm_indiv_t *
-evoasm_deme_best_indiv(evoasm_deme_t *deme, evoasm_loss_t max_loss) {
-  if(deme->best_loss < max_loss) {
-    return evoasm_deme_indiv(deme, deme->best_indiv_idx);
-  } else {
-    return NULL;
+evoasm_loss_t
+evoasm_deme_indiv_loss(evoasm_deme_t *deme, uint32_t idx) {
+  return deme->losses[idx];
+}
+
+size_t
+evoasm_deme_indiv_size(evoasm_deme_t *deme) {
+  return deme->indiv_size;
+}
+
+void
+evoasm_deme_inject(evoasm_deme_t *deme, evoasm_indiv_t *indiv, size_t indiv_size, evoasm_loss_t loss) {
+  unsigned i;
+
+  while(true) {
+    for(i = 0; i < deme->params->size; i++) {
+      uint32_t r = _evoasm_prng_rand32(&deme->prng);
+      if(r > UINT32_MAX * ((deme->best_loss + 1.0) / (deme->losses[i] + 1.0))) {
+        goto done;
+      }
+    }
   }
+done:;
+  assert(indiv_size <= deme->indiv_size);
+  memcpy(evoasm_deme_indiv(deme, i), indiv, indiv_size);
+  deme->losses[i] = loss;
 }
 
 void
@@ -91,7 +110,8 @@ evoasm_deme_seed(evoasm_deme_t *deme) {
 
 
 evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme) {
+evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
+                 evoasm_loss_t max_loss, void *user_data) {
   unsigned i, j;
   bool retval;
   uint32_t n_examples = deme->n_examples;
@@ -120,20 +140,26 @@ evoasm_deme_eval(evoasm_deme_t *deme) {
       deme->best_indiv_idx = i;
       evoasm_debug("adf %d has best loss %lf", i, loss);
     }
-#if 0
-    if(EVOASM_UNLIKELY(loss / n_examples <= max_loss)) {
-      evoasm_info("individual %d has best loss %lf", i, loss);
 
+    if(EVOASM_UNLIKELY(loss / n_examples <= max_loss)) {
+      evoasm_info("individual %d has best norm. loss %lf", i, loss);
+
+      if(result_func(deme, indiv, loss, user_data)) {
+        retval = true;
+        goto done;
+      }
+
+      /*
       deme->extract_indiv_func(indiv, best_indiv)
       evoasm_adf_clone(&adf, found_adf);
       found_adf->_output = *deme->params->adf_output;
       found_adf->_input = *deme->params->adf_input;
       *best_loss = loss;
+       */
 
       retval = true;
       goto done;
     }
-#endif
   }
 
   retval = true;

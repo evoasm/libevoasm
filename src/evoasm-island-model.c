@@ -8,31 +8,39 @@
 
 #include <stdatomic.h>
 #include "evoasm-island-model.h"
-#include "evoasm-adf-deme.h"
-#include "evoasm-deme-params.h"
 
 #define EVOASM_SEARCH_CONVERGENCE_THRESHOLD 0.03
 
 EVOASM_DEF_LOG_TAG("model")
 
-static void
+static evoasm_success_t
 evoasm_island_emigrate(evoasm_island_t *island) {
 
   unsigned i;
   for(i = 0; i < island->n_immigr_islands; i++) {
     evoasm_island_t *immigr_island = island->immigr_islands[i];
+    unsigned emigr_size = (unsigned) island->params->emigr_rate * island->deme->params->size;
+    uint32_t *emigr_selection = evoasm_alloca(sizeof(uint32_t) * emigr_size);
 
-    unsigned selection_size =  island->params->emigr_rate * island->deme->params->size;
-    uint32_t *selection = evoasm_alloca(sizeof(uint32_t) * selection_size);
+    EVOASM_TRY(failed, evoasm_rwlock_rdlock, &island->rwlock);
+    evoasm_deme_select(island->deme, emigr_selection, emigr_size);
 
-    evoasm_deme_select(island->deme, selection, selection_size);
+    unsigned j;
 
-
-    mtx_lock(&immigr_island->mtx);
-
-    mtx_unlock(&immigr_island->mtx);
+    EVOASM_TRY(failed, evoasm_rwlock_wrlock, &immigr_island->rwlock);
+    for(j = 0; j < emigr_size; j++) {
+      evoasm_indiv_t *emigr_indiv = evoasm_deme_indiv(island->deme, emigr_selection[j]);
+      evoasm_loss_t emigr_loss = evoasm_deme_indiv_loss(island->deme, emigr_selection[i]);
+      evoasm_deme_inject(island->deme, emigr_indiv, emigr_size, emigr_loss);
+    }
+    EVOASM_TRY(failed, evoasm_rwlock_unlock, &immigr_island->rwlock);
+    EVOASM_TRY(failed, evoasm_rwlock_unlock, &island->rwlock);
   }
 
+  return true;
+
+failed:
+  return false;
 }
 
 static void
@@ -43,26 +51,37 @@ evoasm_island_model_stop(struct evoasm_island_model_s *island_model) {
   }
 }
 
+static bool
+island_result_func(evoasm_deme_t *deme, const evoasm_indiv_t *indiv, evoasm_loss_t loss, void *user_data) {
+  evoasm_island_t *island = (evoasm_island_t *) user_data;
+  bool retval;
+
+  EVOASM_TRY(failed, evoasm_mutex_lock, &island->model->result_mutex);
+  retval = island->model->result_func(island->model, indiv, loss, island->model->user_data);
+  EVOASM_TRY(failed, evoasm_mutex_unlock, &island->model->result_mutex);
+
+  return retval;
+
+failed:
+  /* stop search */
+  return true;
+}
+
 static evoasm_success_t
 evoasm_island_start_(evoasm_island_t *island,
-                     unsigned cycle,
-                     evoasm_island_progress_func_t progress_func,
-                     void *user_data) {
+                     unsigned cycle) {
   unsigned gen;
-  unsigned ups = 0;
+  unsigned regress = 0;
 
-  evoasm_adf_t *adf = evoasm_adf_alloc();
-  evoasm_loss_t adf_loss = NAN;
+  evoasm_island_model_t *island_model = island->model;
   evoasm_loss_t last_deme_loss = 0.0;
 
   for(gen = 0;; gen++) {
-    if(!evoasm_deme_eval(island->deme)) {
-      return false;
-    }
 
-    evoasm_indiv_t *best_indiv = evoasm_deme_best_indiv(island->deme, island->params->max_loss);
-    if(best_indiv) {
-      evoasm_island_model_stop(island->model);
+    EVOASM_TRY(failed, evoasm_rwlock_rdlock, &island->rwlock);
+    if(!evoasm_deme_eval(island->deme, island_result_func, island->params->max_loss, island)) {
+      evoasm_rwlock_unlock(&island->rwlock);
+      return false;
     }
 
     if(gen % 256 == 0) {
@@ -70,33 +89,42 @@ evoasm_island_start_(evoasm_island_t *island,
       evoasm_loss_t deme_loss = evoasm_deme_loss(island->deme, &n_inf, true);
       evoasm_info("norm. deme loss: %g/%u\n\n", deme_loss, n_inf);
 
-      if(progress_func != NULL) {
-        progress_func(deme_idx, cycle, gen, deme_loss, n_inf, user_data);
+      if(island_model->progress_func != NULL) {
+        EVOASM_TRY(failed, evoasm_mutex_lock, &island_model->progress_mutex);
+        island_model->progress_func(island_model, island, cycle, gen,
+                                    deme_loss, n_inf,
+                                    island_model->user_data);
+        EVOASM_TRY(failed, evoasm_mutex_unlock, &island_model->progress_mutex);
       }
 
       if(gen > 0) {
         if(last_deme_loss <= deme_loss) {
-          ups++;
+          regress++;
         }
       }
 
       last_deme_loss = deme_loss;
 
-      if(ups >= 3) {
+      if(regress >= 3) {
         evoasm_info("reached convergence\n");
-        *converged = true;
         return true;
       }
     }
+    EVOASM_TRY(failed, evoasm_rwlock_unlock, &island->rwlock);
 
-    if(gen % 16 == 0) {
-      evoasm_island_model_migrate(island->model, island);
+    if(gen % island->params->emigr_freq == 0) {
+      evoasm_island_emigrate(island);
     }
 
-    mtx_lock(&island->mtx);
+    EVOASM_TRY(failed, evoasm_rwlock_wrlock, &island->rwlock);
     evoasm_deme_new_gen(island->deme);
-    mtx_unlock(&island->mtx);
+    EVOASM_TRY(failed, evoasm_rwlock_unlock, &island->rwlock);
   }
+
+  return true;
+
+failed:
+  return false;
 }
 
 #if 0
@@ -117,79 +145,98 @@ evoasm_island_model_merge(evoasm_island_model_t *model) {
 }
 #endif
 
-int
-deme_thrd_func(void *arg) {
+void *
+island_thread_func(void *arg) {
   unsigned cycle;
   evoasm_island_t *island = arg;
 
   for(cycle = 0;; cycle++) {
+    evoasm_rwlock_wrlock(&island->rwlock);
     evoasm_deme_seed(island->deme);
-    if(!evoasm_island_start_(island, 0, cycle, data->progress_func, data->goal_func, data->user_data)) {
+    evoasm_rwlock_unlock(&island->rwlock);
+
+    if(!evoasm_island_start_(island, cycle)) {
       island->error = *evoasm_last_error();
       return false;
     }
   }
 
-  return true;
+done:
+  return NULL;
 }
 
 evoasm_success_t
 evoasm_island_model_start(evoasm_island_model_t *island_model,
-                    evoasm_island_progress_func_t progress_func,
-                    evoasm_island_model_goal_func_t goal_func,
-                    void *user_data) {
+                          evoasm_island_model_progress_func_t progress_func,
+                          evoasm_island_model_result_func_t goal_func,
+                          void *user_data) {
 
   unsigned i;
-  bool retval = true;
-
-  _evoasm_island_thrd_data_t *data = evoasm_alloca(island_model->n_islands * sizeof(_evoasm_island_thrd_data_t));
 
   for(i = 0; i < island_model->n_islands; i++) {
-    if(thrd_create(&island_model->islands[i].thrd, deme_thrd_func, &island_model->islands[i]) != thrd_success) {
-      evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, NULL,
-                       "thread creation failed");
-      goto thrd_create_failed;
-    }
+    EVOASM_TRY(thread_create_failed, evoasm_thread_create,
+               &island_model->islands[i].thread,
+               island_thread_func, &island_model->islands[i]);
   }
-
-thrd_create_failed:;
-  return retval;
-}
-
-static evoasm_success_t
-evoasm_island_init(evoasm_island_t *island, evoasm_adf_deme_t *deme, evoasm_island_model_t *island_model) {
-  if(mtx_init(&island->mtx, mtx_plain) != thrd_success) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, NULL,
-                     "mutex initialization failed");
-    goto mtx_init_failed;
-  }
-
-  island->deme = deme;
-  island->model = island_model;
 
   return true;
 
-mtx_init_failed:
+thread_create_failed:;
+  evoasm_island_model_stop(island_model);
+  return false;
+}
+
+static evoasm_success_t
+evoasm_island_init(evoasm_island_t *island, evoasm_deme_t *deme, evoasm_island_model_t *island_model) {
+  EVOASM_TRY(rwlock_init_failed, evoasm_rwlock_init, &island->rwlock);
+
+  island->deme = deme;
+  island->model = island_model;
+  return true;
+
+rwlock_init_failed:
   return false;
 }
 
 static void
-evoasm_island_ctx_destroy(evoasm_island_t *deme_ctx) {
-  mtx_destroy(&deme_ctx->mtx);
+evoasm_island_destroy(evoasm_island_t *deme_ctx) {
+  evoasm_rwlock_destroy(&deme_ctx->rwlock);
+}
+
+static void
+evoasm_island_model_destroy_(evoasm_island_model_t *island_model, unsigned n_demes) {
+  unsigned i;
+
+  evoasm_mutex_destroy(&island_model->result_mutex);
+  evoasm_mutex_destroy(&island_model->progress_mutex);
+
+  for(i = 0; i < n_demes; i++) {
+    evoasm_island_destroy(&island_model->islands[i]);
+  }
+  evoasm_free(island_model->islands);
 }
 
 evoasm_success_t
 evoasm_island_model_init(evoasm_island_model_t *island_model,
-                   evoasm_island_model_params_t *params,
-                   uint16_t n_demes,
-                   ...) {
+                         evoasm_island_model_params_t *params,
+                         evoasm_island_model_result_func_t result_func,
+                         evoasm_island_model_progress_func_t progress_func,
+                         void *user_data,
+                         uint16_t n_demes,
+                         ...) {
   va_list args;
   unsigned i;
   bool retval = true;
 
   va_start(args, n_demes);
 
+  EVOASM_TRY(mutex1_init_failed, evoasm_mutex_init, &island_model->result_mutex);
+  EVOASM_TRY(mutex2_init_failed, evoasm_mutex_init, &island_model->progress_mutex);
+
   island_model->n_islands = n_demes;
+  island_model->progress_func = progress_func;
+  island_model->result_func = result_func;
+  island_model->user_data = user_data;
 
   island_model->islands = evoasm_calloc(n_demes, sizeof(evoasm_island_t *));
   if(!island_model->islands) {
@@ -197,7 +244,7 @@ evoasm_island_model_init(evoasm_island_model_t *island_model,
   }
 
   for(i = 0; i < n_demes; i++) {
-    evoasm_adf_deme_t *deme = va_arg(args, evoasm_adf_deme_t *);
+    evoasm_deme_t *deme = va_arg(args, evoasm_deme_t *);
     if(!evoasm_island_init(&island_model->islands[i], deme, island_model)) {
       goto island_init_failed;
     }
@@ -208,6 +255,10 @@ evoasm_island_model_init(evoasm_island_model_t *island_model,
 island_init_failed:
   evoasm_island_model_destroy_(island_model, i);
 alloc_failed:
+  evoasm_mutex_destroy(&island_model->progress_mutex);
+mutex2_init_failed:
+  evoasm_mutex_destroy(&island_model->result_mutex);
+mutex1_init_failed:
   retval = false;
 done:
   va_end(args);
@@ -218,11 +269,11 @@ evoasm_success_t
 evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island) {
   if(island->n_immigr_islands == EVOASM_ISLAND_MAX_IMMIGR_ISLANDS) {
     evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, NULL,
-                     "maximum number of neighbors exceeded");
+                     "maximum number of immigration islands exceeded");
     return false;
   }
 
-  if(evoasm_deme_adf_params_size(immigr_island) < evoasm_deme_adf_params_size(island->deme)) {
+  if(evoasm_deme_indiv_size(immigr_island->deme) < evoasm_deme_indiv_size(island->deme)) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
                      "island demes incompatible");
     return false;
@@ -231,17 +282,6 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
   island->immigr_islands[island->n_immigr_islands++] = immigr_island;
 
   return true;
-}
-
-
-static void
-evoasm_island_model_destroy_(evoasm_island_model_t *island_model, unsigned n_demes) {
-  unsigned i;
-
-  for(i = 0; i < n_demes; i++) {
-    evoasm_island_ctx_destroy(&island_model->islands[i]);
-  }
-  evoasm_free(island_model->islands);
 }
 
 void

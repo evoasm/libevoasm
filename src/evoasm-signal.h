@@ -8,17 +8,11 @@
 
 #pragma once
 
-#if !defined(_DEFAULT_SOURCE)
-#  define _DEFAULT_SOURCE
-#endif
+#include "evoasm-util.h"
+#include "evoasm-arch.h"
+#include <stdint.h>
 
-#if defined(__linux__) && !defined(_GNU_SOURCE)
-#  define _GNU_SOURCE
-#endif
-
-
-#if (defined(__linux__) || defined(__unix__) || defined(__unix) || \
-    (defined(__APPLE__) && defined(__MACH__)))
+#ifdef EVOASM_UNIX
 
 #include <setjmp.h>
 #include <signal.h>
