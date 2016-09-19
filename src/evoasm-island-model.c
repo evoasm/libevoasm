@@ -22,24 +22,24 @@ evoasm_island_emigrate(evoasm_island_t *island) {
     unsigned emigr_size = (unsigned) island->params->emigr_rate * island->deme->params->size;
     uint32_t *emigr_selection = evoasm_alloca(sizeof(uint32_t) * emigr_size);
 
-    EVOASM_TRY(failed, evoasm_rwlock_rdlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_rdlock, &island->rwlock);
     evoasm_deme_select(island->deme, emigr_selection, emigr_size);
 
     unsigned j;
 
-    EVOASM_TRY(failed, evoasm_rwlock_wrlock, &immigr_island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_wrlock, &immigr_island->rwlock);
     for(j = 0; j < emigr_size; j++) {
       evoasm_indiv_t *emigr_indiv = evoasm_deme_indiv(island->deme, emigr_selection[j]);
       evoasm_loss_t emigr_loss = evoasm_deme_indiv_loss(island->deme, emigr_selection[i]);
       evoasm_deme_inject(island->deme, emigr_indiv, emigr_size, emigr_loss);
     }
-    EVOASM_TRY(failed, evoasm_rwlock_unlock, &immigr_island->rwlock);
-    EVOASM_TRY(failed, evoasm_rwlock_unlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_unlock, &immigr_island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
   }
 
   return true;
 
-failed:
+error:
   return false;
 }
 
@@ -51,20 +51,31 @@ evoasm_island_model_stop(struct evoasm_island_model_s *island_model) {
   }
 }
 
-static bool
+static evoasm_deme_result_func_retval_t
 island_result_func(evoasm_deme_t *deme, const evoasm_indiv_t *indiv, evoasm_loss_t loss, void *user_data) {
   evoasm_island_t *island = (evoasm_island_t *) user_data;
-  bool retval;
+  evoasm_deme_result_func_retval_t retval;
 
-  EVOASM_TRY(failed, evoasm_mutex_lock, &island->model->result_mutex);
-  retval = island->model->result_func(island->model, indiv, loss, island->model->user_data);
-  EVOASM_TRY(failed, evoasm_mutex_unlock, &island->model->result_mutex);
+  EVOASM_TRY(error, evoasm_mutex_lock, &island->model->result_mutex);
+  evoasm_island_model_result_func_retval_t island_model_retval =
+      island->model->result_func(island->model, indiv, loss, island->model->user_data);
+
+  switch(island_model_retval) {
+    case EVOASM_ISLAND_MODEL_RESULT_FUNC_RETVAL_CONTINUE:
+      retval = EVOASM_DEME_RESULT_FUNC_RETVAL_CONTINUE;
+      break;
+    case EVOASM_ISLAND_MODEL_RESULT_FUNC_RETVAL_STOP:
+      retval = EVOASM_DEME_RESULT_FUNC_RETVAL_STOP;
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
+  EVOASM_TRY(error, evoasm_mutex_unlock, &island->model->result_mutex);
 
   return retval;
 
-failed:
-  /* stop search */
-  return true;
+error:
+  return EVOASM_ISLAND_MODEL_RESULT_FUNC_RETVAL_STOP;
 }
 
 static evoasm_success_t
@@ -78,9 +89,10 @@ evoasm_island_start_(evoasm_island_t *island,
 
   for(gen = 0;; gen++) {
 
-    EVOASM_TRY(failed, evoasm_rwlock_rdlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_rdlock, &island->rwlock);
     if(!evoasm_deme_eval(island->deme, island_result_func, island->params->max_loss, island)) {
-      evoasm_rwlock_unlock(&island->rwlock);
+      bool r = evoasm_rwlock_unlock(&island->rwlock);
+      (void) r;
       return false;
     }
 
@@ -90,11 +102,11 @@ evoasm_island_start_(evoasm_island_t *island,
       evoasm_info("norm. deme loss: %g/%u\n\n", deme_loss, n_inf);
 
       if(island_model->progress_func != NULL) {
-        EVOASM_TRY(failed, evoasm_mutex_lock, &island_model->progress_mutex);
+        EVOASM_TRY(error, evoasm_mutex_lock, &island_model->progress_mutex);
         island_model->progress_func(island_model, island, cycle, gen,
                                     deme_loss, n_inf,
                                     island_model->user_data);
-        EVOASM_TRY(failed, evoasm_mutex_unlock, &island_model->progress_mutex);
+        EVOASM_TRY(error, evoasm_mutex_unlock, &island_model->progress_mutex);
       }
 
       if(gen > 0) {
@@ -110,20 +122,20 @@ evoasm_island_start_(evoasm_island_t *island,
         return true;
       }
     }
-    EVOASM_TRY(failed, evoasm_rwlock_unlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
 
     if(gen % island->params->emigr_freq == 0) {
-      evoasm_island_emigrate(island);
+      EVOASM_TRY(error, evoasm_island_emigrate, island);
     }
 
-    EVOASM_TRY(failed, evoasm_rwlock_wrlock, &island->rwlock);
-    evoasm_deme_new_gen(island->deme);
-    EVOASM_TRY(failed, evoasm_rwlock_unlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_rwlock_wrlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_deme_new_gen, island->deme);
+    EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
   }
 
   return true;
 
-failed:
+error:
   return false;
 }
 
@@ -151,16 +163,15 @@ island_thread_func(void *arg) {
   evoasm_island_t *island = arg;
 
   for(cycle = 0;; cycle++) {
-    evoasm_rwlock_wrlock(&island->rwlock);
-    evoasm_deme_seed(island->deme);
-    evoasm_rwlock_unlock(&island->rwlock);
-
-    if(!evoasm_island_start_(island, cycle)) {
-      island->error = *evoasm_last_error();
-      return false;
-    }
+    EVOASM_TRY(error, evoasm_rwlock_wrlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_deme_seed, island->deme);
+    EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
+    EVOASM_TRY(error, evoasm_island_start_, island, cycle);
   }
 
+error:
+  island->error = *evoasm_last_error();
+  island->errored = true;
 done:
   return NULL;
 }
@@ -198,22 +209,32 @@ rwlock_init_failed:
   return false;
 }
 
-static void
+static evoasm_success_t
 evoasm_island_destroy(evoasm_island_t *deme_ctx) {
-  evoasm_rwlock_destroy(&deme_ctx->rwlock);
+  bool retval = true;
+
+  if(!evoasm_rwlock_destroy(&deme_ctx->rwlock)) retval = false;
+
+  return retval;
 }
 
-static void
-evoasm_island_model_destroy_(evoasm_island_model_t *island_model, unsigned n_demes) {
+static evoasm_success_t
+evoasm_island_model_destroy_(evoasm_island_model_t *island_model, bool destroy_result_mutex,
+                            bool destroy_progress_mutex, bool free_islands, unsigned destroy_n_islands) {
   unsigned i;
+  bool retval = true;
 
-  evoasm_mutex_destroy(&island_model->result_mutex);
-  evoasm_mutex_destroy(&island_model->progress_mutex);
+  if(!evoasm_mutex_destroy(&island_model->result_mutex)) retval = false;
+  if(!evoasm_mutex_destroy(&island_model->progress_mutex)) retval = false;
 
-  for(i = 0; i < n_demes; i++) {
-    evoasm_island_destroy(&island_model->islands[i]);
+  if(free_islands) {
+    for(i = 0; i < destroy_n_islands; i++) {
+      if(!evoasm_island_destroy(&island_model->islands[i])) retval = false;
+    }
+    evoasm_free(island_model->islands);
   }
-  evoasm_free(island_model->islands);
+
+  return retval;
 }
 
 evoasm_success_t
@@ -228,10 +249,18 @@ evoasm_island_model_init(evoasm_island_model_t *island_model,
   unsigned i;
   bool retval = true;
 
+  bool destroy_result_mutex = false;
+  bool destroy_progress_mutex = false;
+  bool free_islands = false;
+  unsigned destroy_n_islands = 0;
+
   va_start(args, n_demes);
 
-  EVOASM_TRY(mutex1_init_failed, evoasm_mutex_init, &island_model->result_mutex);
-  EVOASM_TRY(mutex2_init_failed, evoasm_mutex_init, &island_model->progress_mutex);
+  if(!evoasm_mutex_init(&island_model->result_mutex)) goto error;
+  destroy_result_mutex = true;
+
+  if(!evoasm_mutex_init(&island_model->progress_mutex)) goto error;
+  destroy_progress_mutex = true;
 
   island_model->n_islands = n_demes;
   island_model->progress_func = progress_func;
@@ -239,27 +268,21 @@ evoasm_island_model_init(evoasm_island_model_t *island_model,
   island_model->user_data = user_data;
 
   island_model->islands = evoasm_calloc(n_demes, sizeof(evoasm_island_t *));
-  if(!island_model->islands) {
-    goto alloc_failed;
-  }
+  if(!island_model->islands) goto error;
+  free_islands = true;
 
   for(i = 0; i < n_demes; i++) {
     evoasm_deme_t *deme = va_arg(args, evoasm_deme_t *);
-    if(!evoasm_island_init(&island_model->islands[i], deme, island_model)) {
-      goto island_init_failed;
-    }
+    if(!evoasm_island_init(&island_model->islands[i], deme, island_model)) goto error;
+    destroy_n_islands = i;
   }
 
   goto done;
 
-island_init_failed:
-  evoasm_island_model_destroy_(island_model, i);
-alloc_failed:
-  evoasm_mutex_destroy(&island_model->progress_mutex);
-mutex2_init_failed:
-  evoasm_mutex_destroy(&island_model->result_mutex);
-mutex1_init_failed:
+error:
   retval = false;
+  bool r = evoasm_island_model_destroy_(island_model, destroy_result_mutex, destroy_progress_mutex, free_islands, destroy_n_islands);
+  (void) r;
 done:
   va_end(args);
   return retval;
@@ -284,9 +307,9 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
   return true;
 }
 
-void
+evoasm_success_t
 evoasm_island_model_destroy(evoasm_island_model_t *island_model) {
-  evoasm_island_model_destroy_(island_model, island_model->n_islands);
+  return evoasm_island_model_destroy_(island_model, island_model->n_islands, false, NULL, 0);
 }
 
 

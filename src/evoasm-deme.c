@@ -24,7 +24,6 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  uint32_t n_examples) {
 
   uint32_t deme_len = params->size;
-  unsigned i;
 
   static evoasm_deme_t zero_deme = {0};
   *deme = zero_deme;
@@ -99,20 +98,23 @@ done:;
   deme->losses[i] = loss;
 }
 
-void
+evoasm_success_t
 evoasm_deme_seed(evoasm_deme_t *deme) {
   unsigned i;
 
   for(i = 0; i < deme->params->size; i++) {
-    deme->cls->seed_indiv_func(deme, evoasm_deme_indiv(deme, i));
+    if(!deme->cls->seed_indiv_func(deme, evoasm_deme_indiv(deme, i))) {
+      return false;
+    }
   }
+  return true;
 }
 
 
 evoasm_success_t
 evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
                  evoasm_loss_t max_loss, void *user_data) {
-  unsigned i, j;
+  unsigned i;
   bool retval;
   uint32_t n_examples = deme->n_examples;
 
@@ -144,7 +146,7 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
     if(EVOASM_UNLIKELY(loss / n_examples <= max_loss)) {
       evoasm_info("individual %d has best norm. loss %lf", i, loss);
 
-      if(result_func(deme, indiv, loss, user_data)) {
+      if(result_func(deme, indiv, loss, user_data) == EVOASM_DEME_RESULT_FUNC_RETVAL_STOP) {
         retval = true;
         goto done;
       }
@@ -240,7 +242,7 @@ evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed) {
   return deme_loss;
 }
 
-void
+evoasm_success_t
 evoasm_deme_new_gen(evoasm_deme_t *deme) {
   uint32_t *parents = alloca(deme->params->size * sizeof(uint32_t));
   evoasm_deme_select(deme, parents, deme->params->size);
@@ -270,6 +272,6 @@ evoasm_deme_new_gen(evoasm_deme_t *deme) {
   }
 #endif
 
-  evoasm_deme_combine_parents(deme, parents);
+  return evoasm_deme_combine_parents(deme, parents);
 }
 

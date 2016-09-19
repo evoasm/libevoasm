@@ -63,11 +63,11 @@ typedef struct evoasm_deme_s {
 } evoasm_deme_t;
 
 typedef enum {
-  EVOASM_RESULT_FUNC_CONTINUE,
-  EVOASM_RESULT_FUNC_STOP
-} evoasm_result_func_retval_t;
+  EVOASM_DEME_RESULT_FUNC_RETVAL_CONTINUE,
+  EVOASM_DEME_RESULT_FUNC_RETVAL_STOP
+} evoasm_deme_result_func_retval_t;
 
-typedef evoasm_result_func_retval_t (*evoasm_deme_result_func)(evoasm_deme_t *deme,
+typedef evoasm_deme_result_func_retval_t (*evoasm_deme_result_func)(evoasm_deme_t *deme,
                                         const evoasm_indiv_t *indiv,
                                         evoasm_loss_t loss,
                                         void *user_data);
@@ -83,7 +83,7 @@ evoasm_success_t
 evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
                  evoasm_loss_t max_loss, void *user_data);
 
-void
+evoasm_success_t
 evoasm_deme_new_gen(evoasm_deme_t *deme);
 
 evoasm_indiv_t *
@@ -95,7 +95,7 @@ evoasm_deme_indiv_size(evoasm_deme_t *deme);
 evoasm_loss_t
 evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed);
 
-void
+evoasm_success_t
 evoasm_deme_seed(evoasm_deme_t *deme);
 
 void

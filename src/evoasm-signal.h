@@ -18,13 +18,13 @@
 #include <signal.h>
 
 typedef struct  {
-  uint64_t exception_mask;
+  volatile uint64_t exception_mask;
+  volatile evoasm_arch_id_t arch_id;
   sigjmp_buf env;
   struct sigaction prev_action;
-  evoasm_arch_id_t arch_id;
 } evoasm_signal_ctx_t;
 
-extern _Thread_local volatile evoasm_signal_ctx_t _evoasm_signal_ctx;
+extern _Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
 
 #define EVOASM_SIGNAL_TRY() (sigsetjmp(_evoasm_signal_ctx.env, 1) == 0)
 #else

@@ -250,7 +250,6 @@ evoasm_adf_deme_eval_teardown(evoasm_deme_t *deme) {
 static evoasm_success_t
 evoasm_adf_eval_adf_params(evoasm_adf_deme_t *adf_deme, evoasm_adf_params_t *adf_params, evoasm_loss_t *loss) {
   evoasm_adf_deme_params_t *params = evoasm_adf_deme_params(adf_deme);
-  bool retval = true;
 
   /* encode solution */
   evoasm_adf_t adf = {

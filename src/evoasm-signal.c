@@ -14,13 +14,11 @@
 
 #define _EVOASM_SIGNAL_EXCEPTION_SET(exc) (_evoasm_signal_ctx.exception_mask & (1 << exc))
 
-_Thread_local volatile evoasm_signal_ctx_t _evoasm_signal_ctx;
+_Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
 
 static void
 _evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
   bool handle = false;
-
-  atomic_signal_fence(memory_order_acquire);
 
   switch(_evoasm_signal_ctx.arch_id) {
     case EVOASM_ARCH_X64: {
@@ -41,7 +39,7 @@ _evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
   }
 
   if(handle) {
-    siglongjmp(*((jmp_buf *) &_evoasm_signal_ctx.env), 1);
+    siglongjmp(_evoasm_signal_ctx.env, 1);
   } else {
     raise(sig);
   }
@@ -51,31 +49,27 @@ void
 evoasm_signal_install(evoasm_arch_id_t arch_id, uint64_t exception_mask) {
   struct sigaction action = {0};
 
-  _evoasm_signal_ctx.arch_id = arch_id;
+  _evoasm_signal_ctx.arch_id = (volatile evoasm_arch_id_t) arch_id;
   _evoasm_signal_ctx.exception_mask = exception_mask;
 
   action.sa_sigaction = _evoasm_signal_handler;
   sigemptyset(&action.sa_mask);
   action.sa_flags = SA_SIGINFO;
 
-  if(sigaction(SIGFPE, &action, (struct sigaction *) &_evoasm_signal_ctx.prev_action) < 0) {
+  if(sigaction(SIGFPE, &action, &_evoasm_signal_ctx.prev_action) < 0) {
     perror("sigaction");
     exit(1);
   }
-
-  atomic_signal_fence(memory_order_release);
 }
 
 void
 evoasm_signal_set_exception_mask(uint64_t exception_mask) {
   _evoasm_signal_ctx.exception_mask = exception_mask;
-
-  atomic_signal_fence(memory_order_release);
 }
 
 void
 evoasm_signal_uninstall() {
-  if(sigaction(SIGFPE, (struct sigaction *) &_evoasm_signal_ctx.prev_action, NULL) < 0) {
+  if(sigaction(SIGFPE, &_evoasm_signal_ctx.prev_action, NULL) < 0) {
     perror("sigaction");
     exit(1);
   }

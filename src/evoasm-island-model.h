@@ -44,9 +44,16 @@ typedef struct evoasm_island_s {
   uint8_t n_immigr_islands;
   atomic_bool cancel;
   evoasm_error_t error;
+  bool errored;
 } evoasm_island_t;
 
-typedef bool (*evoasm_island_model_result_func_t)(struct evoasm_island_model_s *island_model,
+typedef enum {
+  EVOASM_ISLAND_MODEL_RESULT_FUNC_RETVAL_CONTINUE,
+  EVOASM_ISLAND_MODEL_RESULT_FUNC_RETVAL_STOP
+} evoasm_island_model_result_func_retval_t;
+
+
+typedef evoasm_island_model_result_func_retval_t (*evoasm_island_model_result_func_t)(struct evoasm_island_model_s *island_model,
                                                   const evoasm_indiv_t *indiv,
                                                   evoasm_loss_t loss, void *user_data);
 
@@ -71,7 +78,7 @@ typedef struct evoasm_island_model_s {
 } evoasm_island_model_t;
 
 
-void
+evoasm_success_t
 evoasm_island_model_destroy(evoasm_island_model_t *island_model);
 
 
