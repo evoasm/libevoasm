@@ -52,12 +52,17 @@ typedef enum {
   EVOASM_ISLAND_MODEL_RESULT_FUNC_RETVAL_STOP
 } evoasm_island_model_result_func_retval_t;
 
+typedef enum {
+  EVOASM_ISLAND_MODEL_PROGRESS_FUNC_RETVAL_CONTINUE,
+  EVOASM_ISLAND_MODEL_PROGRESS_FUNC_RETVAL_STOP
+} evoasm_island_model_progress_func_retval_t;
+
 
 typedef evoasm_island_model_result_func_retval_t (*evoasm_island_model_result_func_t)(struct evoasm_island_model_s *island_model,
                                                   const evoasm_indiv_t *indiv,
                                                   evoasm_loss_t loss, void *user_data);
 
-typedef bool (*evoasm_island_model_progress_func_t)(struct evoasm_island_model_s *island_model,
+typedef evoasm_island_model_progress_func_retval_t (*evoasm_island_model_progress_func_t)(struct evoasm_island_model_s *island_model,
                                                     evoasm_island_t *island,
                                                     unsigned cycle,
                                                     unsigned gen,
