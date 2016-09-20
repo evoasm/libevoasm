@@ -140,7 +140,7 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
     if(loss <= deme->best_loss) {
       deme->best_loss = loss;
       deme->best_indiv_idx = i;
-      evoasm_debug("adf %d has best loss %lf", i, loss);
+      evoasm_debug("program %d has best loss %lf", i, loss);
     }
 
     if(EVOASM_UNLIKELY(loss / n_examples <= max_loss)) {
@@ -153,9 +153,9 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
 
       /*
       deme->extract_indiv_func(indiv, best_indiv)
-      evoasm_adf_clone(&adf, found_adf);
-      found_adf->_output = *deme->params->adf_output;
-      found_adf->_input = *deme->params->adf_input;
+      evoasm_program_clone(&program, found_program);
+      found_program->_output = *deme->params->program_output;
+      found_program->_input = *deme->params->program_input;
       *best_loss = loss;
        */
 
@@ -267,8 +267,8 @@ evoasm_deme_new_gen(evoasm_deme_t *deme) {
 
   unsigned i;
   for(i = 0; i < deme->params->size; i++) {
-    evoasm_adf_params_t *adf_params = _EVOASM_SEARCH_ADF_PARAMS(deme, deme->deme.indivs, parents[i]);
-    assert(adf_params->size > 0);
+    evoasm_program_params_t *program_params = _EVOASM_SEARCH_PROGRAM_PARAMS(deme, deme->deme.indivs, parents[i]);
+    assert(program_params->size > 0);
   }
 #endif
 

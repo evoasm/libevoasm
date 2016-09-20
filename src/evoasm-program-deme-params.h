@@ -9,23 +9,23 @@
 #pragma once
 
 #include "evoasm-deme-params.h"
-#include "evoasm-adf-io.h"
+#include "evoasm-program-io.h"
 #include "evoasm-domain.h"
 #include "evoasm-param.h"
-#include "evoasm-adf.h"
+#include "evoasm-program.h"
 
 typedef struct {
   evoasm_deme_params_t deme_params;
-  evoasm_adf_size_t min_adf_size;
-  evoasm_adf_size_t max_adf_size;
+  evoasm_program_size_t min_program_size;
+  evoasm_program_size_t max_program_size;
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
   uint16_t n_insts;
-  evoasm_adf_input_t *adf_input;
-  evoasm_adf_output_t *adf_output;
+  evoasm_program_input_t *program_input;
+  evoasm_program_output_t *program_output;
   evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];
-} evoasm_adf_deme_params_t;
+} evoasm_program_deme_params_t;
 
 bool
-evoasm_adf_deme_params_valid(evoasm_adf_deme_params_t *adf_deme_params);
+evoasm_program_deme_params_valid(evoasm_program_deme_params_t *program_deme_params);

@@ -28,6 +28,8 @@ set(SOURCE_FILES
         src/evoasm-rand.h
         src/evoasm-param.c
         src/evoasm-param.h
+        src/evoasm-island.c
+        src/evoasm-island.h
         src/evoasm-island-model.c
         src/evoasm-island-model.h
         src/evoasm-util.h
@@ -41,20 +43,20 @@ set(SOURCE_FILES
         src/evoasm-domain.c
         src/evoasm-deme-params.h
         src/evoasm-deme-params.c
-        src/evoasm-adf-deme-params.h
-        src/evoasm-adf-deme-params.c
-        src/evoasm-adf.c
-        src/evoasm-adf.h
+        src/evoasm-program-deme-params.h
+        src/evoasm-program-deme-params.c
+        src/evoasm-program.c
+        src/evoasm-program.h
         src/evoasm-deme.c
         src/evoasm-deme.h
-        src/evoasm-adf-deme.c
-        src/evoasm-adf-deme.h
+        src/evoasm-program-deme.c
+        src/evoasm-program-deme.h
         src/evoasm-signal.c
         src/evoasm-signal.h
         src/evoasm-threads.c
         src/evoasm-threads.h
-        src/evoasm-adf-io.c
-        src/evoasm-adf-io.h)
+        src/evoasm-program-io.c
+        src/evoasm-program-io.h)
 
 find_package(Threads)
 add_library(evoasm SHARED ${SOURCE_FILES})

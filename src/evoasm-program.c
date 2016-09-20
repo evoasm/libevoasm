@@ -7,18 +7,18 @@
  */
 
 #include "evoasm-signal.h"
-#include "evoasm-adf.h"
+#include "evoasm-program.h"
 #include "evoasm-arch.h"
 
 
-EVOASM_DEF_LOG_TAG("adf")
+EVOASM_DEF_LOG_TAG("program")
 
 static inline double
-evoasm_adf_io_val_to_dbl(evoasm_adf_io_val_t io_val, evoasm_adf_io_val_type_t example_type) {
+evoasm_program_io_val_to_dbl(evoasm_program_io_val_t io_val, evoasm_program_io_val_type_t example_type) {
   switch(example_type) {
-    case EVOASM_ADF_IO_VAL_TYPE_F64:
+    case EVOASM_PROGRAM_IO_VAL_TYPE_F64:
       return io_val.f64;
-    case EVOASM_ADF_IO_VAL_TYPE_I64:
+    case EVOASM_PROGRAM_IO_VAL_TYPE_I64:
       return (double) io_val.i64;
     default:
       evoasm_fatal("unsupported example type %d", example_type);
@@ -27,30 +27,30 @@ evoasm_adf_io_val_to_dbl(evoasm_adf_io_val_t io_val, evoasm_adf_io_val_type_t ex
 }
 
 static bool
-evoasm_adf_destroy_(evoasm_adf_t *adf, bool free_buf, bool free_body_buf,
+evoasm_program_destroy_(evoasm_program_t *program, bool free_buf, bool free_body_buf,
                     bool free_params, unsigned free_n_kernels) {
 
   unsigned i;
   bool retval = true;
 
-  for(i = 0; i < adf->params->size; i++) {
+  for(i = 0; i < program->params->size; i++) {
     if(i < free_n_kernels) {
-      evoasm_free(adf->kernels[i].params);
+      evoasm_free(program->kernels[i].params);
     }
   }
 
   if(free_params) {
-    evoasm_free(adf->params);
+    evoasm_free(program->params);
   }
 
   if(free_buf) {
-    if(!evoasm_buf_destroy(adf->buf)) {
+    if(!evoasm_buf_destroy(program->buf)) {
       retval = false;
     }
   }
 
   if(free_body_buf) {
-    if(!evoasm_buf_destroy(adf->body_buf)) {
+    if(!evoasm_buf_destroy(program->body_buf)) {
       retval = false;
     }
   }
@@ -58,38 +58,38 @@ evoasm_adf_destroy_(evoasm_adf_t *adf, bool free_buf, bool free_body_buf,
 }
 
 evoasm_success_t
-evoasm_adf_clone(evoasm_adf_t *adf, evoasm_adf_t *cloned_adf) {
+evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program) {
   unsigned i = 0;
   bool free_buf = false, free_body_buf = false, free_params = false;
 
-  *cloned_adf = *adf;
-  cloned_adf->reset_rflags = false;
-  cloned_adf->_input.len = 0;
-  cloned_adf->_output.len = 0;
-  cloned_adf->output_vals = NULL;
+  *cloned_program = *program;
+  cloned_program->reset_rflags = false;
+  cloned_program->_input.len = 0;
+  cloned_program->_output.len = 0;
+  cloned_program->output_vals = NULL;
 
-  /* memory addresses in original buffer point to memory in original adf,
+  /* memory addresses in original buffer point to memory in original program,
    * we need to reemit assembly, this is done in a lazy fashion */
-  cloned_adf->need_emit = true;
+  cloned_program->need_emit = true;
 
-  EVOASM_TRY(error, evoasm_buf_clone, adf->buf, &cloned_adf->_buf);
-  EVOASM_TRY(error_free_buf, evoasm_buf_clone, adf->body_buf, &cloned_adf->_body_buf);
+  EVOASM_TRY(error, evoasm_buf_clone, program->buf, &cloned_program->_buf);
+  EVOASM_TRY(error_free_buf, evoasm_buf_clone, program->body_buf, &cloned_program->_body_buf);
 
-  cloned_adf->buf = &cloned_adf->_buf;
-  cloned_adf->body_buf = &cloned_adf->_body_buf;
+  cloned_program->buf = &cloned_program->_buf;
+  cloned_program->body_buf = &cloned_program->_body_buf;
 
-  size_t adf_params_size = sizeof(evoasm_adf_params_t);
-  cloned_adf->params = evoasm_malloc(adf_params_size);
+  size_t program_params_size = sizeof(evoasm_program_params_t);
+  cloned_program->params = evoasm_malloc(program_params_size);
 
-  if(!cloned_adf->params) {
+  if(!cloned_program->params) {
     goto error_free_body_buf;
   }
 
-  memcpy(cloned_adf->params, adf->params, adf_params_size);
+  memcpy(cloned_program->params, program->params, program_params_size);
 
-  for(; i < adf->params->size; i++) {
-    evoasm_kernel_t *orig_kernel = &adf->kernels[i];
-    evoasm_kernel_t *cloned_kernel = &cloned_adf->kernels[i];
+  for(; i < program->params->size; i++) {
+    evoasm_kernel_t *orig_kernel = &program->kernels[i];
+    evoasm_kernel_t *cloned_kernel = &cloned_program->kernels[i];
     *cloned_kernel = *orig_kernel;
 
     size_t params_size = sizeof(evoasm_kernel_params_t) + orig_kernel->params->size * sizeof(evoasm_kernel_param_t);
@@ -109,44 +109,44 @@ error_free_body_buf:
 error_free_buf:
   free_buf = true;
 error:
-  (void) evoasm_adf_destroy_(cloned_adf, free_buf, free_body_buf, free_params, i);
+  (void) evoasm_program_destroy_(cloned_program, free_buf, free_body_buf, free_params, i);
   return false;
 }
 
 evoasm_success_t
-evoasm_adf_destroy(evoasm_adf_t *adf) {
-  return evoasm_adf_destroy_(adf, true, true, true, UINT_MAX);
+evoasm_program_destroy(evoasm_program_t *program) {
+  return evoasm_program_destroy_(program, true, true, true, UINT_MAX);
 }
 
 evoasm_buf_t *
-evoasm_adf_buf(evoasm_adf_t *adf, bool body) {
+evoasm_program_buf(evoasm_program_t *program, bool body) {
   if(body) {
-    return adf->body_buf;
+    return program->body_buf;
   } else {
-    return adf->buf;
+    return program->buf;
   }
 }
 
-evoasm_adf_size_t
-evoasm_adf_size(evoasm_adf_t *adf) {
-  return adf->params->size;
+evoasm_program_size_t
+evoasm_program_size(evoasm_program_t *program) {
+  return program->params->size;
 }
 
 size_t
-evoasm_adf_kernel_code(evoasm_adf_t *adf, unsigned kernel_idx, const uint8_t **code) {
-  evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
+evoasm_program_kernel_code(evoasm_program_t *program, unsigned kernel_idx, const uint8_t **code) {
+  evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   size_t len = (size_t) kernel->buf_end - kernel->buf_start;
-  *code = adf->body_buf->data + kernel->buf_start;
+  *code = program->body_buf->data + kernel->buf_start;
   return len;
 }
 
 size_t
-evoasm_adf_code(evoasm_adf_t *adf, bool frame, const uint8_t **code) {
+evoasm_program_code(evoasm_program_t *program, bool frame, const uint8_t **code) {
   evoasm_buf_t *buf;
   if(frame) {
-    buf = adf->buf;
+    buf = program->buf;
   } else {
-    buf = adf->body_buf;
+    buf = program->body_buf;
   }
   *code = buf->data;
   return buf->pos;
@@ -154,16 +154,16 @@ evoasm_adf_code(evoasm_adf_t *adf, bool frame, const uint8_t **code) {
 
 
 unsigned
-evoasm_adf_kernel_alt_succ(evoasm_adf_t *adf, unsigned kernel_idx) {
-  evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
+evoasm_program_kernel_alt_succ(evoasm_program_t *program, unsigned kernel_idx) {
+  evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   return kernel->params->alt_succ_idx;
 }
 
 
 bool
-evoasm_adf_is_input_reg(evoasm_adf_t *adf, unsigned kernel_idx, evoasm_reg_id_t reg_id) {
-  evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
-  switch(adf->arch_info->id) {
+evoasm_program_is_input_reg(evoasm_program_t *program, unsigned kernel_idx, evoasm_reg_id_t reg_id) {
+  evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
+  switch(program->arch_info->id) {
     case EVOASM_ARCH_X64:
       return kernel->reg_info.x64[reg_id].input;
     default:
@@ -172,9 +172,9 @@ evoasm_adf_is_input_reg(evoasm_adf_t *adf, unsigned kernel_idx, evoasm_reg_id_t 
 }
 
 bool
-evoasm_adf_is_output_reg(evoasm_adf_t *adf, unsigned kernel_idx, evoasm_reg_id_t reg_id) {
-  evoasm_kernel_t *kernel = &adf->kernels[kernel_idx];
-  switch(adf->arch_info->id) {
+evoasm_program_is_output_reg(evoasm_program_t *program, unsigned kernel_idx, evoasm_reg_id_t reg_id) {
+  evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
+  switch(program->arch_info->id) {
     case EVOASM_ARCH_X64:
       return kernel->reg_info.x64[reg_id].output;
     default:
@@ -185,9 +185,9 @@ evoasm_adf_is_output_reg(evoasm_adf_t *adf, unsigned kernel_idx, evoasm_reg_id_t
 #define _EVOASM_X64_REG_TMP EVOASM_X64_REG_14
 
 static evoasm_success_t
-evoasm_adf_x64_emit_rflags_reset(evoasm_adf_t *adf) {
+evoasm_program_x64_emit_rflags_reset(evoasm_program_t *program) {
   evoasm_x64_params_t params = {0};
-  evoasm_buf_t *buf = adf->buf;
+  evoasm_buf_t *buf = program->buf;
 
   evoasm_debug("emitting RFLAGS reset");
   EVOASM_X64_ENC(pushfq);
@@ -202,10 +202,10 @@ enc_failed:
 }
 
 static evoasm_success_t
-evoasm_adf_x64_emit_mxcsr_reset(evoasm_adf_t *adf) {
+evoasm_program_x64_emit_mxcsr_reset(evoasm_program_t *program) {
   static uint32_t default_mxcsr_val = 0x1f80;
   evoasm_x64_params_t params = {0};
-  evoasm_buf_t *buf = adf->buf;
+  evoasm_buf_t *buf = program->buf;
 
   evoasm_param_val_t addr_imm = (evoasm_param_val_t) (uintptr_t) &default_mxcsr_val;
   evoasm_x64_reg_id_t reg_tmp0 = _EVOASM_X64_REG_TMP;
@@ -225,17 +225,17 @@ enc_failed:
 
 
 static evoasm_success_t
-evoasm_adf_x64_emit_output_store(evoasm_adf_t *adf,
+evoasm_program_x64_emit_output_store(evoasm_program_t *program,
                                  unsigned example_index) {
 
   evoasm_x64_params_t params = {0};
-  evoasm_kernel_t *kernel = &adf->kernels[adf->params->size - 1];
-  evoasm_buf_t *buf = adf->buf;
+  evoasm_kernel_t *kernel = &program->kernels[program->params->size - 1];
+  evoasm_buf_t *buf = program->buf;
   unsigned i;
 
   for(i = 0; i < kernel->n_output_regs; i++) {
     evoasm_x64_reg_id_t reg_id = kernel->output_regs.x64[i];
-    evoasm_adf_io_val_t *val_addr = &adf->output_vals[(example_index * kernel->n_output_regs) + i];
+    evoasm_program_io_val_t *val_addr = &program->output_vals[(example_index * kernel->n_output_regs) + i];
     evoasm_x64_reg_type_t reg_type = evoasm_x64_reg_type(reg_id);
 
     evoasm_param_val_t addr_imm = (evoasm_param_val_t) (uintptr_t) val_addr;
@@ -371,7 +371,7 @@ evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
 }
 
 static void
-evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
+evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel) {
   unsigned i, j;
 
   /* NOTE: output register are register that are written to
@@ -397,7 +397,7 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
 
         if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
           if(op->read) {
-            adf->reset_rflags = true;
+            program->reset_rflags = true;
           } else if(op->written) {
             kernel->reg_info.x64[op->reg_id].written = true;
           }
@@ -449,28 +449,28 @@ evoasm_adf_x64_prepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
 }
 
 static void
-evoasm_adf_x64_prepare(evoasm_adf_t *adf) {
+evoasm_program_x64_prepare(evoasm_program_t *program) {
   unsigned i;
-  for(i = 0; i < adf->params->size; i++) {
-    evoasm_kernel_t *kernel = &adf->kernels[i];
-    evoasm_adf_x64_prepare_kernel(adf, kernel);
+  for(i = 0; i < program->params->size; i++) {
+    evoasm_kernel_t *kernel = &program->kernels[i];
+    evoasm_program_x64_prepare_kernel(program, kernel);
   }
 
 }
 
 static evoasm_success_t
-evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
+evoasm_program_x64_emit_input_load(evoasm_program_t *program,
                                evoasm_kernel_t *kernel,
-                               evoasm_adf_io_val_t *input_vals,
-                               evoasm_adf_io_val_type_t *types,
+                               evoasm_program_io_val_t *input_vals,
+                               evoasm_program_io_val_type_t *types,
                                unsigned in_arity,
                                bool set_io_mapping) {
 
 
-  evoasm_adf_io_val_t *loaded_example = NULL;
+  evoasm_program_io_val_t *loaded_example = NULL;
   evoasm_x64_reg_id_t input_reg_id;
   unsigned input_reg_idx;
-  evoasm_buf_t *buf = adf->buf;
+  evoasm_buf_t *buf = program->buf;
 
   evoasm_debug("n _input regs %d", kernel->n_input_regs);
 #if 1
@@ -491,12 +491,12 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
 
     if(set_io_mapping) {
       example_idx = input_reg_idx % in_arity;
-      adf->reg_inputs.x64[input_reg_id] = (uint8_t) example_idx;
+      program->reg_inputs.x64[input_reg_id] = (uint8_t) example_idx;
     } else {
-      example_idx = adf->reg_inputs.x64[input_reg_id];
+      example_idx = program->reg_inputs.x64[input_reg_id];
     }
 
-    evoasm_adf_io_val_t *example = &input_vals[example_idx];
+    evoasm_program_io_val_t *example = &input_vals[example_idx];
     evoasm_x64_params_t params = {0};
     evoasm_x64_reg_type_t reg_type = evoasm_x64_reg_type(input_reg_id);
 
@@ -535,8 +535,8 @@ evoasm_adf_x64_emit_input_load(evoasm_adf_t *adf,
     input_reg_idx++;
   }
 
-  if(adf->reset_rflags) {
-    EVOASM_TRY(error, evoasm_adf_x64_emit_rflags_reset, adf);
+  if(program->reset_rflags) {
+    EVOASM_TRY(error, evoasm_program_x64_emit_rflags_reset, program);
   }
   return true;
 
@@ -546,7 +546,7 @@ enc_failed:
 }
 
 static evoasm_success_t
-evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
+evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
                                       evoasm_kernel_t *kernel,
                                       evoasm_kernel_t *target_kernel,
                                       evoasm_buf_t *buf,
@@ -585,7 +585,7 @@ evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
                 input_reg_type == EVOASM_X64_REG_TYPE_XMM) {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
-        if(adf->arch_info->features & EVOASM_X64_FEATURE_AVX) {
+        if(program->arch_info->features & EVOASM_X64_FEATURE_AVX) {
           EVOASM_X64_ENC(vmovdqa_ymm_ymmm256);
         } else {
           EVOASM_X64_ENC(movdqa_xmm_xmmm128);
@@ -594,7 +594,7 @@ evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
                 input_reg_type == EVOASM_X64_REG_TYPE_XMM) {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
-        if(adf->arch_info->features & EVOASM_X64_FEATURE_AVX) {
+        if(program->arch_info->features & EVOASM_X64_FEATURE_AVX) {
           EVOASM_X64_ENC(vmovq_xmm_rm64);
         } else {
           EVOASM_X64_ENC(movq_xmm_rm64);
@@ -603,7 +603,7 @@ evoasm_adf_x64_emit_kernel_transition(evoasm_adf_t *adf,
                 input_reg_type == EVOASM_X64_REG_TYPE_GP) {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, output_reg_id);
-        if(adf->arch_info->features & EVOASM_X64_FEATURE_AVX) {
+        if(program->arch_info->features & EVOASM_X64_FEATURE_AVX) {
           EVOASM_X64_ENC(vmovq_rm64_xmm);
         } else {
           EVOASM_X64_ENC(movq_rm64_xmm);
@@ -627,7 +627,7 @@ do { (*(label) = (uint32_t)((uint8_t *)(val) - ((uint8_t *)(label) + 4)));} whil
 #define _EVOASM_BUF_POS_ADDR(buf) (buf->data + buf->pos)
 
 static evoasm_success_t
-evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
+evoasm_program_x64_emit_kernel_transitions(evoasm_program_t *program,
                                        evoasm_kernel_t *kernel,
                                        evoasm_kernel_t *next_kernel,
                                        evoasm_kernel_t *branch_kernel,
@@ -643,7 +643,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
   uint32_t *branch_phi = NULL;
   uint32_t *counter_phi = NULL;
 
-  if(adf->recur_limit == 0) goto next_trans;
+  if(program->recur_limit == 0) goto next_trans;
 
   if(kernel->reg_info.x64[EVOASM_X64_REG_OF].written) {
     jmp_insts[jmp_insts_len++] = EVOASM_X64_INST_JO_REL32;
@@ -725,7 +725,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
     if(branch_kernel->idx <= kernel->idx) {
       /* back jump, guard with counter */
 
-      uint32_t *counter = &adf->recur_counters[kernel->idx];
+      uint32_t *counter = &program->recur_counters[kernel->idx];
       uintptr_t addr_imm = (uintptr_t) counter;
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, _EVOASM_X64_REG_TMP);
@@ -733,7 +733,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
       EVOASM_X64_ENC(mov_r64_imm64);
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, _EVOASM_X64_REG_TMP);
-      EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, adf->recur_limit);
+      EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, program->recur_limit);
       EVOASM_X64_ENC(cmp_rm32_imm32);
 
       EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);
@@ -745,7 +745,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
       EVOASM_X64_ENC(inc_rm32);
     }
 
-    EVOASM_TRY(error, evoasm_adf_x64_emit_kernel_transition, adf,
+    EVOASM_TRY(error, evoasm_program_x64_emit_kernel_transition, program,
                kernel, branch_kernel, buf, 1, set_io_mapping);
 
     EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);
@@ -766,7 +766,7 @@ evoasm_adf_x64_emit_kernel_transitions(evoasm_adf_t *adf,
 next_trans:
 
   if(next_kernel != NULL) {
-    EVOASM_TRY(error, evoasm_adf_x64_emit_kernel_transition, adf,
+    EVOASM_TRY(error, evoasm_program_x64_emit_kernel_transition, program,
                kernel, next_kernel, buf, 0, set_io_mapping);
   }
 
@@ -781,7 +781,7 @@ enc_failed:
 
 
 static evoasm_success_t
-evoasm_adf_x64_emit_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_buf_t *buf) {
+evoasm_program_x64_emit_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel, evoasm_buf_t *buf) {
   unsigned i;
   evoasm_buf_ref_t buf_ref = {
       .data = buf->data,
@@ -794,7 +794,7 @@ evoasm_adf_x64_emit_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_bu
   for(i = 0; i < kernel_params->size; i++) {
     evoasm_x64_inst_t *inst = _evoasm_x64_inst((evoasm_x64_inst_id_t) kernel_params->params[i].x64.inst);
     evoasm_x64_inst_t *x64_inst = (evoasm_x64_inst_t *) inst;
-    adf->exception_mask = adf->exception_mask | x64_inst->exceptions;
+    program->exception_mask = program->exception_mask | x64_inst->exceptions;
     EVOASM_TRY(error, _evoasm_x64_inst_enc_basic,
                inst,
                &kernel_params->params[i].x64.params, &buf_ref);
@@ -806,37 +806,37 @@ error:
 
 
 static evoasm_success_t
-evoasm_adf_x64_emit_adf_kernels(evoasm_adf_t *adf, bool set_io_mapping) {
+evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_mapping) {
   unsigned i;
-  evoasm_buf_t *buf = adf->body_buf;
-  evoasm_adf_params_t *adf_params = adf->params;
+  evoasm_buf_t *buf = program->body_buf;
+  evoasm_program_params_t *program_params = program->params;
   evoasm_kernel_t *kernel, *next_kernel, *branch_kernel;
-  unsigned size = adf_params->size;
-  uint32_t *branch_phis[EVOASM_ADF_MAX_SIZE] = {0};
-  uint8_t *kernel_addrs[EVOASM_ADF_MAX_SIZE];
+  unsigned size = program_params->size;
+  uint32_t *branch_phis[EVOASM_PROGRAM_MAX_SIZE] = {0};
+  uint8_t *kernel_addrs[EVOASM_PROGRAM_MAX_SIZE];
 
   evoasm_buf_reset(buf);
 
   assert(size > 0);
 
   for(i = 0; i < size; i++) {
-    kernel = &adf->kernels[i];
+    kernel = &program->kernels[i];
 
     kernel_addrs[i] = buf->data + buf->pos;
     kernel->buf_start = (uint16_t) buf->pos;
 
-    EVOASM_TRY(error, evoasm_adf_x64_emit_kernel, adf, kernel, buf);
+    EVOASM_TRY(error, evoasm_program_x64_emit_kernel, program, kernel, buf);
 
     if(i < size - 1) {
-      next_kernel = &adf->kernels[i + 1];
+      next_kernel = &program->kernels[i + 1];
     } else {
       next_kernel = NULL;
     }
 
-    assert(kernel->params->alt_succ_idx < adf->params->size);
-    branch_kernel = &adf->kernels[kernel->params->alt_succ_idx];
+    assert(kernel->params->alt_succ_idx < program->params->size);
+    branch_kernel = &program->kernels[kernel->params->alt_succ_idx];
 
-    EVOASM_TRY(error, evoasm_adf_x64_emit_kernel_transitions, adf, kernel,
+    EVOASM_TRY(error, evoasm_program_x64_emit_kernel_transitions, program, kernel,
                next_kernel, branch_kernel, buf, &branch_phis[i], set_io_mapping);
 
     kernel->buf_end = (uint16_t) buf->pos;
@@ -845,7 +845,7 @@ evoasm_adf_x64_emit_adf_kernels(evoasm_adf_t *adf, bool set_io_mapping) {
   for(i = 0; i < size; i++) {
     uint32_t *branch_phi = branch_phis[i];
     if(branch_phi != NULL) {
-      kernel = &adf->kernels[i];
+      kernel = &program->kernels[i];
       uint8_t *branch_kernel_addr = kernel_addrs[kernel->params->alt_succ_idx];
       assert(*branch_phi == 0xdeadbeef);
       _EVOASM_BUF_PHI_SET(branch_phi, branch_kernel_addr);
@@ -858,27 +858,27 @@ error:
 }
 
 static evoasm_success_t
-evoasm_adf_x64_emit_io_load_store(evoasm_adf_t *adf,
-                                  evoasm_adf_input_t *input,
+evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
+                                  evoasm_program_input_t *input,
                                   bool io_mapping) {
   unsigned i;
-  unsigned n_examples = EVOASM_ADF_INPUT_N_EXAMPLES(input);
-  evoasm_kernel_t *kernel = &adf->kernels[0];
+  unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
+  evoasm_kernel_t *kernel = &program->kernels[0];
 
-  evoasm_buf_reset(adf->buf);
-  EVOASM_TRY(error, evoasm_x64_func_prolog, adf->buf, EVOASM_X64_ABI_SYSV);
+  evoasm_buf_reset(program->buf);
+  EVOASM_TRY(error, evoasm_x64_func_prolog, program->buf, EVOASM_X64_ABI_SYSV);
 
   for(i = 0; i < n_examples; i++) {
-    evoasm_adf_io_val_t *input_vals = input->vals + i * input->arity;
-    EVOASM_TRY(error, evoasm_adf_x64_emit_input_load, adf, kernel, input_vals, input->types, input->arity, io_mapping);
+    evoasm_program_io_val_t *input_vals = input->vals + i * input->arity;
+    EVOASM_TRY(error, evoasm_program_x64_emit_input_load, program, kernel, input_vals, input->types, input->arity, io_mapping);
     {
-      size_t r = evoasm_buf_append(adf->buf, adf->body_buf);
+      size_t r = evoasm_buf_append(program->buf, program->body_buf);
       assert(r == 0);
     }
-    EVOASM_TRY(error, evoasm_adf_x64_emit_output_store, adf, i);
+    EVOASM_TRY(error, evoasm_program_x64_emit_output_store, program, i);
   }
 
-  EVOASM_TRY(error, evoasm_x64_func_epilog, adf->buf, EVOASM_X64_ABI_SYSV);
+  EVOASM_TRY(error, evoasm_x64_func_epilog, program->buf, EVOASM_X64_ABI_SYSV);
   return true;
 
 error:
@@ -886,23 +886,23 @@ error:
 }
 
 static evoasm_success_t
-evoasm_adf_x64_emit(evoasm_adf_t *adf,
-                    evoasm_adf_input_t *input,
+evoasm_program_x64_emit(evoasm_program_t *program,
+                    evoasm_program_input_t *input,
                     bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping) {
 
   if(prepare) {
-    evoasm_adf_x64_prepare(adf);
+    evoasm_program_x64_prepare(program);
   }
 
   if(emit_kernels) {
-    EVOASM_TRY(error, evoasm_adf_x64_emit_adf_kernels, adf, set_io_mapping);
+    EVOASM_TRY(error, evoasm_program_x64_emit_program_kernels, program, set_io_mapping);
   }
 
   if(emit_io_load_store) {
-    EVOASM_TRY(error, evoasm_adf_x64_emit_io_load_store, adf, input, set_io_mapping);
+    EVOASM_TRY(error, evoasm_program_x64_emit_io_load_store, program, input, set_io_mapping);
   }
 
-  evoasm_buf_log(adf->buf, EVOASM_LOG_LEVEL_DEBUG);
+  evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
 
 
   return true;
@@ -918,25 +918,25 @@ typedef enum {
 } evoasm_metric;
 
 static inline void
-evoasm_adf_update_dist_mat(evoasm_adf_t *adf,
+evoasm_program_update_dist_mat(evoasm_program_t *program,
                            evoasm_kernel_t *kernel,
-                           evoasm_adf_output_t *output,
+                           evoasm_program_output_t *output,
                            unsigned height,
                            unsigned example_index,
                            double *dist_mat,
                            evoasm_metric metric) {
   unsigned i, j;
   unsigned width = kernel->n_output_regs;
-  evoasm_adf_io_val_t *io_vals = output->vals + example_index * output->arity;
+  evoasm_program_io_val_t *io_vals = output->vals + example_index * output->arity;
 
   for(i = 0; i < height; i++) {
-    evoasm_adf_io_val_t io_val = io_vals[i];
-    evoasm_adf_io_val_type_t example_type = output->types[i];
-    double io_val_dbl = evoasm_adf_io_val_to_dbl(io_val, example_type);
+    evoasm_program_io_val_t io_val = io_vals[i];
+    evoasm_program_io_val_type_t example_type = output->types[i];
+    double io_val_dbl = evoasm_program_io_val_to_dbl(io_val, example_type);
 
     for(j = 0; j < width; j++) {
-      evoasm_adf_io_val_t output_val = adf->output_vals[example_index * width + j];
-      //uint8_t output_size = adf->output_sizes[j];
+      evoasm_program_io_val_t output_val = program->output_vals[example_index * width + j];
+      //uint8_t output_size = program->output_sizes[j];
       //switch(output_size) {
       //
       //}
@@ -946,7 +946,7 @@ evoasm_adf_update_dist_mat(evoasm_adf_t *adf,
       // hold the correct answer (e.g. lower 8 or 16 bits etc.).
       // For now we use the example output type and assume signedness.
       // This needs to be fixed.
-      double output_val_dbl = evoasm_adf_io_val_to_dbl(output_val, example_type);
+      double output_val_dbl = evoasm_program_io_val_to_dbl(output_val, example_type);
 
       switch(metric) {
         default:
@@ -961,13 +961,13 @@ evoasm_adf_update_dist_mat(evoasm_adf_t *adf,
 }
 
 static void
-evoasm_adf_log_adf_output(evoasm_adf_t *adf,
+evoasm_program_log_program_output(evoasm_program_t *program,
                           evoasm_kernel_t *kernel,
-                          evoasm_adf_output_t *output,
+                          evoasm_program_output_t *output,
                           uint_fast8_t *const matching,
                           evoasm_log_level_t log_level) {
 
-  unsigned n_examples = EVOASM_ADF_OUTPUT_N_EXAMPLES(output);
+  unsigned n_examples = EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(output);
   unsigned height = output->arity;
   unsigned width = kernel->n_output_regs;
   unsigned i, j, k;
@@ -975,7 +975,7 @@ evoasm_adf_log_adf_output(evoasm_adf_t *adf,
   evoasm_log(log_level, EVOASM_LOG_TAG, "OUTPUT MATRICES:\n");
 
   for(i = 0; i < width; i++) {
-    evoasm_log(log_level, EVOASM_LOG_TAG, " %d  ", adf->output_regs[i]);
+    evoasm_log(log_level, EVOASM_LOG_TAG, " %d  ", program->output_regs[i]);
   }
 
   evoasm_log(log_level, EVOASM_LOG_TAG, " \n\n ");
@@ -984,7 +984,7 @@ evoasm_adf_log_adf_output(evoasm_adf_t *adf,
     for(j = 0; j < height; j++) {
       for(k = 0; k < width; k++) {
         bool matched = matching[j] == k;
-        evoasm_adf_io_val_t val = adf->output_vals[i * width + k];
+        evoasm_program_io_val_t val = program->output_vals[i * width + k];
 
         if(matched) {
           evoasm_log(log_level, EVOASM_LOG_TAG, " \x1b[1m ");
@@ -1001,7 +1001,7 @@ evoasm_adf_log_adf_output(evoasm_adf_t *adf,
 }
 
 static void
-evoasm_adf_log_dist_dist_mat(evoasm_adf_t *adf,
+evoasm_program_log_dist_dist_mat(evoasm_program_t *program,
                              evoasm_kernel_t *kernel,
                              unsigned height,
                              double *dist_mat,
@@ -1029,7 +1029,7 @@ evoasm_adf_log_dist_dist_mat(evoasm_adf_t *adf,
 
 
 static inline bool
-evoasm_adf_match(evoasm_adf_t *adf,
+evoasm_program_match(evoasm_program_t *program,
                  unsigned width,
                  double *dist_mat,
                  uint_fast8_t *matching) {
@@ -1050,7 +1050,7 @@ evoasm_adf_match(evoasm_adf_t *adf,
     *matching = best_index;
     return true;
   } else {
-    /*evoasm_adf_log_dist_dist_mat(adf,
+    /*evoasm_program_log_dist_dist_mat(program,
                                   1,
                                   dist_mat,
                                   matching,
@@ -1064,7 +1064,7 @@ evoasm_adf_match(evoasm_adf_t *adf,
 }
 
 static inline void
-evoasm_adf_calc_stable_matching(evoasm_adf_t *adf,
+evoasm_program_calc_stable_matching(evoasm_program_t *program,
                                 evoasm_kernel_t *kernel,
                                 unsigned height,
                                 double *dist_mat,
@@ -1122,7 +1122,7 @@ evoasm_adf_calc_stable_matching(evoasm_adf_t *adf,
         }
       }
     } else {
-      evoasm_adf_log_dist_dist_mat(adf,
+      evoasm_program_log_dist_dist_mat(program,
                                    kernel,
                                    height,
                                    dist_mat,
@@ -1135,7 +1135,7 @@ evoasm_adf_calc_stable_matching(evoasm_adf_t *adf,
 
 
 static inline evoasm_loss_t
-evoasm_adf_calc_loss(evoasm_adf_t *adf,
+evoasm_program_calc_loss(evoasm_program_t *program,
                      evoasm_kernel_t *kernel,
                      unsigned height,
                      double *dist_mat,
@@ -1153,13 +1153,13 @@ evoasm_adf_calc_loss(evoasm_adf_t *adf,
 }
 
 evoasm_loss_t
-evoasm_adf_assess(evoasm_adf_t *adf,
-                  evoasm_adf_output_t *output) {
+evoasm_program_assess(evoasm_program_t *program,
+                  evoasm_program_output_t *output) {
 
   unsigned i;
-  unsigned n_examples = EVOASM_ADF_OUTPUT_N_EXAMPLES(output);
+  unsigned n_examples = EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(output);
   unsigned height = output->arity;
-  evoasm_kernel_t *kernel = &adf->kernels[adf->params->size - 1];
+  evoasm_kernel_t *kernel = &program->kernels[program->params->size - 1];
   unsigned width = kernel->n_output_regs;
   size_t dist_mat_len = (size_t) (width * height);
   double *dist_mat = evoasm_alloca(dist_mat_len * sizeof(double));
@@ -1173,28 +1173,28 @@ evoasm_adf_assess(evoasm_adf_t *adf,
   if(height == 1) {
     /* COMMON FAST-PATH */
     for(i = 0; i < n_examples; i++) {
-      evoasm_adf_update_dist_mat(adf, kernel, output, 1, i, dist_mat, EVOASM_METRIC_ABSDIFF);
+      evoasm_program_update_dist_mat(program, kernel, output, 1, i, dist_mat, EVOASM_METRIC_ABSDIFF);
     }
 
-    if(evoasm_adf_match(adf, width, dist_mat, matching)) {
-      loss = evoasm_adf_calc_loss(adf, kernel, 1, dist_mat, matching);
+    if(evoasm_program_match(program, width, dist_mat, matching)) {
+      loss = evoasm_program_calc_loss(program, kernel, 1, dist_mat, matching);
     } else {
       loss = INFINITY;
     }
   } else {
     for(i = 0; i < n_examples; i++) {
-      evoasm_adf_update_dist_mat(adf, kernel, output, height, i, dist_mat, EVOASM_METRIC_ABSDIFF);
+      evoasm_program_update_dist_mat(program, kernel, output, height, i, dist_mat, EVOASM_METRIC_ABSDIFF);
     }
 
-    evoasm_adf_calc_stable_matching(adf, kernel, height, dist_mat, matching);
-    loss = evoasm_adf_calc_loss(adf, kernel, height, dist_mat, matching);
+    evoasm_program_calc_stable_matching(program, kernel, height, dist_mat, matching);
+    loss = evoasm_program_calc_loss(program, kernel, height, dist_mat, matching);
   }
 
 
   for(i = 0; i < height; i++) {
-    switch(adf->arch_info->id) {
+    switch(program->arch_info->id) {
       case EVOASM_ARCH_X64: {
-        adf->output_regs[i] = kernel->output_regs.x64[matching[i]];
+        program->output_regs[i] = kernel->output_regs.x64[matching[i]];
         break;
       }
       default:
@@ -1204,7 +1204,7 @@ evoasm_adf_assess(evoasm_adf_t *adf,
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
   if(loss == 0.0) {
-    evoasm_adf_log_adf_output(adf,
+    evoasm_program_log_program_output(program,
                               kernel,
                               output,
                               matching,
@@ -1215,35 +1215,35 @@ evoasm_adf_assess(evoasm_adf_t *adf,
   return loss;
 }
 
-static evoasm_adf_output_t *
-evoasm_adf_load_output(evoasm_adf_t *adf,
+static evoasm_program_output_t *
+evoasm_program_load_output(evoasm_program_t *program,
                        evoasm_kernel_t *kernel,
-                       evoasm_adf_input_t *input) {
+                       evoasm_program_input_t *input) {
 
   unsigned i, j;
   unsigned width = kernel->n_output_regs;
-  evoasm_adf_output_t *output = &adf->_output;
+  evoasm_program_output_t *output = &program->_output;
   unsigned height = output->arity;
-  unsigned n_examples = EVOASM_ADF_INPUT_N_EXAMPLES(input);
+  unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
   uint_fast8_t *matching = evoasm_alloca(height * sizeof(uint_fast8_t));
 
-  evoasm_adf_output_t *load_output = evoasm_adf_io_alloc((uint16_t) (EVOASM_ADF_INPUT_N_EXAMPLES(input) * height));
+  evoasm_program_output_t *load_output = evoasm_program_io_alloc((uint16_t) (EVOASM_PROGRAM_INPUT_N_EXAMPLES(input) * height));
 
   for(i = 0; i < height; i++) {
     for(j = 0; j < kernel->n_output_regs; j++) {
-      if(adf->output_regs[i] == kernel->output_regs.x64[j]) {
+      if(program->output_regs[i] == kernel->output_regs.x64[j]) {
         matching[i] = (uint_fast8_t) j;
         goto next;
       }
     }
-    evoasm_fatal("adf output reg %d not found in kernel output regs", adf->output_regs[i]);
+    evoasm_fatal("program output reg %d not found in kernel output regs", program->output_regs[i]);
     evoasm_assert_not_reached();
 next:;
   }
 
   for(i = 0; i < n_examples; i++) {
     for(j = 0; j < height; j++) {
-      load_output->vals[i * height + j] = adf->output_vals[i * width + matching[j]];
+      load_output->vals[i * height + j] = program->output_vals[i * width + matching[j]];
     }
   }
 
@@ -1252,7 +1252,7 @@ next:;
 
 //#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_INFO
 
-  evoasm_adf_log_adf_output(adf,
+  evoasm_program_log_program_output(program,
                             kernel,
                             load_output,
                             matching,
@@ -1261,49 +1261,49 @@ next:;
   return load_output;
 }
 
-evoasm_adf_output_t *
-evoasm_adf_run(evoasm_adf_t *adf,
-               evoasm_adf_input_t *input) {
+evoasm_program_output_t *
+evoasm_program_run(evoasm_program_t *program,
+               evoasm_program_input_t *input) {
   unsigned i;
-  evoasm_kernel_t *kernel = &adf->kernels[adf->params->size - 1];
-  evoasm_adf_output_t *output;
+  evoasm_kernel_t *kernel = &program->kernels[program->params->size - 1];
+  evoasm_program_output_t *output;
 
-  if(input->arity != adf->_input.arity) {
+  if(input->arity != program->_input.arity) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
-                     "example arity mismatch (%d for %d)", input->arity, adf->_input.arity);
+                     "example arity mismatch (%d for %d)", input->arity, program->_input.arity);
     return NULL;
   }
 
   for(i = 0; i < input->arity; i++) {
-    if(input->types[i] != adf->_input.types[i]) {
+    if(input->types[i] != program->_input.types[i]) {
       evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
-                       "example type mismatch (%d != %d)", input->types[i], adf->_input.types[i]);
+                       "example type mismatch (%d != %d)", input->types[i], program->_input.types[i]);
       return NULL;
     }
   }
 
-  adf->output_vals = evoasm_alloca(EVOASM_ADF_OUTPUT_VALS_SIZE(input));
+  program->output_vals = evoasm_alloca(EVOASM_PROGRAM_OUTPUT_VALS_SIZE(input));
 
-  if(!evoasm_adf_emit(adf, input, false, adf->need_emit, true, false)) {
+  if(!evoasm_program_emit(program, input, false, program->need_emit, true, false)) {
     return NULL;
   }
 
-  adf->need_emit = false;
+  program->need_emit = false;
 
   if(kernel->n_output_regs == 0) {
     return NULL;
   }
 
-  evoasm_buf_log(adf->buf, EVOASM_LOG_LEVEL_DEBUG);
-  evoasm_signal_install((evoasm_arch_id_t) adf->arch_info->id, adf->exception_mask);
+  evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
+  evoasm_signal_install((evoasm_arch_id_t) program->arch_info->id, program->exception_mask);
 
-  if(!evoasm_buf_protect(adf->buf, EVOASM_MPROT_RX)) {
+  if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_RX)) {
     evoasm_assert_not_reached();
   }
 
   if(EVOASM_SIGNAL_TRY()) {
-    evoasm_buf_exec(adf->buf);
-    output = evoasm_adf_load_output(adf,
+    evoasm_buf_exec(program->buf);
+    output = evoasm_program_load_output(program,
                                     kernel,
                                     input);
   } else {
@@ -1311,24 +1311,24 @@ evoasm_adf_run(evoasm_adf_t *adf,
     output = NULL;
   }
 
-  if(!evoasm_buf_protect(adf->buf, EVOASM_MPROT_RW)) {
+  if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_RW)) {
     evoasm_assert_not_reached();
   }
 
   evoasm_signal_uninstall();
 
-  adf->output_vals = NULL;
+  program->output_vals = NULL;
 
   return output;
 }
 
 evoasm_success_t
-evoasm_adf_emit(evoasm_adf_t *adf,
-                evoasm_adf_input_t *input,
+evoasm_program_emit(evoasm_program_t *program,
+                evoasm_program_input_t *input,
                 bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping) {
-  switch(adf->arch_info->id) {
+  switch(program->arch_info->id) {
     case EVOASM_ARCH_X64: {
-      return evoasm_adf_x64_emit(adf, input,
+      return evoasm_program_x64_emit(program, input,
                                  prepare, emit_kernels, emit_io_load_store, set_io_mapping);
       break;
     }
@@ -1338,7 +1338,7 @@ evoasm_adf_emit(evoasm_adf_t *adf,
 }
 
 static void
-evoasm_adf_unprepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
+evoasm_program_unprepare_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel) {
   kernel->n_input_regs = 0;
   kernel->n_output_regs = 0;
 
@@ -1347,15 +1347,15 @@ evoasm_adf_unprepare_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel) {
 }
 
 static void
-evoasm_adf_unprepare(evoasm_adf_t *adf) {
+evoasm_program_unprepare(evoasm_program_t *program) {
   unsigned i;
-  for(i = 0; i < adf->params->size; i++) {
-    evoasm_adf_unprepare_kernel(adf, &adf->kernels[i]);
+  for(i = 0; i < program->params->size; i++) {
+    evoasm_program_unprepare_kernel(program, &program->kernels[i]);
   }
 }
 
 static unsigned
-evoasm_adf_x64_find_writers_(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id,
+evoasm_program_x64_find_writers_(evoasm_program_t *program, evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id,
                              unsigned index, unsigned *writers) {
   unsigned len = 0;
   unsigned i, j;
@@ -1375,10 +1375,10 @@ evoasm_adf_x64_find_writers_(evoasm_adf_t *adf, evoasm_kernel_t *kernel, evoasm_
 }
 
 static unsigned
-evoasm_adf_x64_find_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
+evoasm_program_x64_find_writers(evoasm_program_t *program, evoasm_kernel_t *kernel,
                             evoasm_reg_id_t reg_id, unsigned index, unsigned *writers) {
 
-  return evoasm_adf_x64_find_writers_(adf, kernel, reg_id, index, writers);
+  return evoasm_program_x64_find_writers_(program, kernel, reg_id, index, writers);
 }
 
 
@@ -1386,17 +1386,17 @@ typedef evoasm_bitmap1024_t evoasm_mark_bitmap;
 
 typedef struct {
   bool change;
-  evoasm_bitmap512_t inst_bitmaps[EVOASM_ADF_MAX_SIZE];
-  evoasm_bitmap256_t output_reg_bitmaps[EVOASM_ADF_MAX_SIZE];
-} _evoasm_adf_intron_elimination_ctx;
+  evoasm_bitmap512_t inst_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
+  evoasm_bitmap256_t output_reg_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
+} _evoasm_program_intron_elimination_ctx;
 
 static void
-evoasm_adf_x64_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
-                            evoasm_reg_id_t reg_id, unsigned index, _evoasm_adf_intron_elimination_ctx *ctx) {
+evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kernel,
+                            evoasm_reg_id_t reg_id, unsigned index, _evoasm_program_intron_elimination_ctx *ctx) {
   unsigned i, j, k, l;
   unsigned writers[16];
 
-  unsigned writers_len = evoasm_adf_x64_find_writers(adf, kernel, reg_id, index, writers);
+  unsigned writers_len = evoasm_program_x64_find_writers(program, kernel, reg_id, index, writers);
 
   if(writers_len > 0) {
     for(i = 0; i < writers_len; i++) {
@@ -1415,14 +1415,14 @@ evoasm_adf_x64_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
 
         if(op->read) {
           if(writer_idx > 0) {
-            evoasm_adf_x64_mark_writers(adf, kernel, op_reg_id, writer_idx - 1, ctx);
+            evoasm_program_x64_mark_writers(program, kernel, op_reg_id, writer_idx - 1, ctx);
           }
 
           if(kernel->reg_info.x64[op_reg_id].input) {
             unsigned trans_kernels_idcs[] = {(unsigned) (kernel->idx + 1),
                                              kernel->params->alt_succ_idx};
             for(k = 0; k < EVOASM_ARY_LEN(trans_kernels_idcs); k++) {
-              //evoasm_kernel_t *trans_kernel = &adf->kernels[trans_kernels_idcs[k]];
+              //evoasm_kernel_t *trans_kernel = &program->kernels[trans_kernels_idcs[k]];
               for(l = 0; l < EVOASM_X64_N_REGS; l++) {
                 if(kernel->reg_info.x64[l].trans_regs[k] == op_reg_id) {
                   evoasm_bitmap_set((evoasm_bitmap_t *) &ctx->output_reg_bitmaps[trans_kernels_idcs[k]], l);
@@ -1438,11 +1438,11 @@ evoasm_adf_x64_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
 }
 
 static void
-evoasm_adf_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
-                        evoasm_reg_id_t reg_id, unsigned index, _evoasm_adf_intron_elimination_ctx *ctx) {
-  switch(adf->arch_info->id) {
+evoasm_program_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kernel,
+                        evoasm_reg_id_t reg_id, unsigned index, _evoasm_program_intron_elimination_ctx *ctx) {
+  switch(program->arch_info->id) {
     case EVOASM_ARCH_X64: {
-      evoasm_adf_x64_mark_writers(adf, kernel, reg_id, index, ctx);
+      evoasm_program_x64_mark_writers(program, kernel, reg_id, index, ctx);
       break;
     }
     default:
@@ -1451,13 +1451,13 @@ evoasm_adf_mark_writers(evoasm_adf_t *adf, evoasm_kernel_t *kernel,
 }
 
 static evoasm_success_t
-evoasm_adf_mark_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, _evoasm_adf_intron_elimination_ctx *ctx) {
+evoasm_program_mark_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel, _evoasm_program_intron_elimination_ctx *ctx) {
   unsigned i;
 
   for(i = 0; i < EVOASM_X64_N_REGS; i++) {
     evoasm_bitmap_t *bitmap = (evoasm_bitmap_t *) &ctx->output_reg_bitmaps[kernel->idx];
     if(evoasm_bitmap_get(bitmap, i)) {
-      evoasm_adf_mark_writers(adf, kernel, (evoasm_reg_id_t) i, (unsigned) (kernel->params->size - 1), ctx);
+      evoasm_program_mark_writers(program, kernel, (evoasm_reg_id_t) i, (unsigned) (kernel->params->size - 1), ctx);
     }
   }
 
@@ -1465,17 +1465,17 @@ evoasm_adf_mark_kernel(evoasm_adf_t *adf, evoasm_kernel_t *kernel, _evoasm_adf_i
 }
 
 evoasm_success_t
-evoasm_adf_eliminate_introns(evoasm_adf_t *adf) {
+evoasm_program_eliminate_introns(evoasm_program_t *program) {
   unsigned i, j;
-  unsigned last_kernel_idx = (unsigned) (adf->params->size - 1);
-  //evoasm_kernel_t *last_kernel = &adf->kernels[last_kernel_idx];
+  unsigned last_kernel_idx = (unsigned) (program->params->size - 1);
+  //evoasm_kernel_t *last_kernel = &program->kernels[last_kernel_idx];
 
-  _evoasm_adf_intron_elimination_ctx ctx = {0};
+  _evoasm_program_intron_elimination_ctx ctx = {0};
 
   {
     evoasm_bitmap_t *output_bitmap = (evoasm_bitmap_t *) &ctx.output_reg_bitmaps[last_kernel_idx];
-    for(i = 0; i < adf->_output.arity; i++) {
-      evoasm_bitmap_set(output_bitmap, adf->output_regs[i]);
+    for(i = 0; i < program->_output.arity; i++) {
+      evoasm_bitmap_set(output_bitmap, program->output_regs[i]);
     }
   }
 
@@ -1484,14 +1484,14 @@ evoasm_adf_eliminate_introns(evoasm_adf_t *adf) {
     ctx.change = false;
     for(i = 0; i <= last_kernel_idx; i++) {
       j = last_kernel_idx - i;
-      EVOASM_TRY(error, evoasm_adf_mark_kernel, adf,
-                 &adf->kernels[j], &ctx);
+      EVOASM_TRY(error, evoasm_program_mark_kernel, program,
+                 &program->kernels[j], &ctx);
     }
   } while(ctx.change);
 
   /* sweep */
   for(i = 0; i <= last_kernel_idx; i++) {
-    evoasm_kernel_t *kernel = &adf->kernels[i];
+    evoasm_kernel_t *kernel = &program->kernels[i];
     unsigned k;
     evoasm_bitmap_t *inst_bitmap = (evoasm_bitmap_t *) &ctx.inst_bitmaps[i];
 
@@ -1500,14 +1500,14 @@ evoasm_adf_eliminate_introns(evoasm_adf_t *adf) {
         kernel->params->params[k++] = kernel->params->params[j];
       }
     }
-    kernel->params->size = (evoasm_adf_size_t) k;
+    kernel->params->size = (evoasm_program_size_t) k;
   }
 
-  /* adf is already prepared, must be reset before doing it again */
-  evoasm_adf_unprepare(adf);
+  /* program is already prepared, must be reset before doing it again */
+  evoasm_program_unprepare(program);
 
   /* reemit, but keep previous mappings */
-  if(!evoasm_adf_emit(adf, NULL, true, true, false, false)) {
+  if(!evoasm_program_emit(program, NULL, true, true, false, false)) {
     return false;
   }
 
@@ -1516,4 +1516,4 @@ error:
   return false;
 }
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(adf)
+_EVOASM_DEF_ALLOC_FREE_FUNCS(program)

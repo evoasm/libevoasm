@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "evoasm-adf-deme-params.h"
-#include "evoasm-adf.h"
+#include "evoasm-program-deme-params.h"
+#include "evoasm-program.h"
 #include "evoasm-deme.h"
 
 typedef struct {
@@ -17,7 +17,7 @@ typedef struct {
   evoasm_buf_t buf;
   evoasm_buf_t body_buf;
   evoasm_arch_info_t *arch_info;
-  evoasm_adf_io_val_t *output_vals;
-} evoasm_adf_deme_t;
+  evoasm_program_io_val_t *output_vals;
+} evoasm_program_deme_t;
 
 
