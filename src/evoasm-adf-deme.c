@@ -438,7 +438,8 @@ static const evoasm_deme_cls_t _evoasm_adf_deme_cls = {
     .eval_setup_func = evoasm_adf_deme_eval_setup,
     .eval_teardown_func = evoasm_adf_deme_eval_teardown,
     .eval_indiv_func = evoasm_adf_deme_eval_indiv,
-    .crossover_func = evoasm_adf_deme_crossover
+    .crossover_func = evoasm_adf_deme_crossover,
+    .type = EVOASM_DEME_TYPE_ADF
 };
 
 static evoasm_success_t

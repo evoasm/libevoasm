@@ -8,6 +8,7 @@
 
 #include <stdatomic.h>
 #include "evoasm-island-model.h"
+#include "evoasm-deme.h"
 
 #define EVOASM_SEARCH_CONVERGENCE_THRESHOLD 0.03
 
@@ -317,7 +318,8 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
     return false;
   }
 
-  if(evoasm_deme_indiv_size(immigr_island->deme) < evoasm_deme_indiv_size(island->deme)) {
+  if(immigr_island->deme->cls->type != island->deme->cls->type ||
+      evoasm_deme_indiv_size(immigr_island->deme) < evoasm_deme_indiv_size(island->deme)) {
     evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
                      "island demes incompatible");
     return false;

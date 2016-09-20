@@ -16,32 +16,38 @@ typedef struct {
 
 struct evoasm_deme_s;
 
-typedef evoasm_success_t (*evoasm_deme_seed_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv);
+typedef evoasm_success_t (*evoasm_deme_seed_indiv_func_t)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv);
 
-typedef evoasm_success_t (*evoasm_deme_eval_setup_func)(struct evoasm_deme_s *deme);
+typedef evoasm_success_t (*evoasm_deme_eval_setup_func_t)(struct evoasm_deme_s *deme);
 
-typedef evoasm_success_t (*evoasm_deme_eval_teardown_func)(struct evoasm_deme_s *deme);
+typedef evoasm_success_t (*evoasm_deme_eval_teardown_func_t)(struct evoasm_deme_s *deme);
 
-typedef evoasm_success_t (*evoasm_deme_eval_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
+typedef evoasm_success_t (*evoasm_deme_eval_indiv_func_t)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
                                                         evoasm_loss_t *loss);
 
-typedef evoasm_success_t (*evoasm_deme_extract_indiv_func)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
+typedef evoasm_success_t (*evoasm_deme_extract_indiv_func_t)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
                                                            evoasm_indiv_t *dst_indiv);
 
-typedef evoasm_success_t (*evoasm_deme_crossover_func)(struct evoasm_deme_s *deme,
+typedef evoasm_success_t (*evoasm_deme_crossover_func_t)(struct evoasm_deme_s *deme,
                                                        evoasm_indiv_t *parent_a,
                                                        evoasm_indiv_t *parent_b,
                                                        evoasm_indiv_t *child_a,
                                                        evoasm_indiv_t *child_b);
 
 
+typedef enum {
+  EVOASM_DEME_TYPE_BASE,
+  EVOASM_DEME_TYPE_ADF
+} evoasm_deme_type_t;
+
 typedef struct {
-  evoasm_deme_seed_indiv_func seed_indiv_func;
-  evoasm_deme_eval_setup_func eval_setup_func;
-  evoasm_deme_eval_teardown_func eval_teardown_func;
-  evoasm_deme_eval_indiv_func eval_indiv_func;
-  evoasm_deme_extract_indiv_func extract_indiv_func;
-  evoasm_deme_crossover_func crossover_func;
+  evoasm_deme_seed_indiv_func_t seed_indiv_func;
+  evoasm_deme_eval_setup_func_t eval_setup_func;
+  evoasm_deme_eval_teardown_func_t eval_teardown_func;
+  evoasm_deme_eval_indiv_func_t eval_indiv_func;
+  evoasm_deme_extract_indiv_func_t extract_indiv_func;
+  evoasm_deme_crossover_func_t crossover_func;
+  evoasm_deme_type_t type;
 } evoasm_deme_cls_t;
 
 typedef struct evoasm_deme_s {
