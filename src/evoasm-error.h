@@ -65,6 +65,9 @@ evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code
 evoasm_error_t *
 evoasm_last_error();
 
+void
+evoasm_set_last_error(evoasm_error_t *error);
+
 extern _Thread_local evoasm_error_t _evoasm_last_error;
 
 #define EVOASM_TRY(label, func, ...) \
@@ -72,7 +75,7 @@ extern _Thread_local evoasm_error_t _evoasm_last_error;
 
 #define evoasm_success_t evoasm_check_return bool
 
-#define evoasm_set_error(type, code, data, ...) \
+#define evoasm_error(type, code, data, ...) \
   evoasm_error_set(&_evoasm_last_error, (type), (code), (data),\
                    __FILE__, __LINE__, __VA_ARGS__)
 

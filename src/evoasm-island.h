@@ -18,7 +18,7 @@
 #define EVOASM_ISLAND_MAX_IMMIGR_ISLANDS 8
 
 typedef struct {
-  float emigr_rate;
+  double emigr_rate;
   uint16_t emigr_freq;
   evoasm_loss_t max_loss;
 } evoasm_island_params_t;
@@ -33,8 +33,6 @@ typedef struct evoasm_island_s {
   evoasm_island_params_t *params;
   uint8_t n_immigr_islands;
   atomic_bool cancelled;
-  evoasm_error_t error;
-  bool errored;
   struct evoasm_island_model_s *model;
   struct evoasm_island_s *next;
 } evoasm_island_t;

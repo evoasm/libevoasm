@@ -84,3 +84,6 @@
 #if defined(__linux__) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
 #define EVOASM_UNIX
 #endif
+
+#define EVOASM_CB_CONTINUE true
+#define EVOASM_CB_STOP false

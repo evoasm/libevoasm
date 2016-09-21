@@ -98,7 +98,7 @@ fail:
   return false;
 
 empty_domain:
-  evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
+  evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                    NULL, "Empty domain");
   return false;
 }
@@ -149,7 +149,7 @@ evoasm_program_deme_seed_kernel_param(evoasm_program_deme_t *deme, evoasm_kernel
 
 static void
 evoasm_program_deme_seed_kernel(evoasm_program_deme_t *program_deme, evoasm_kernel_params_t *kernel_params,
-                            evoasm_program_size_t program_size) {
+                            evoasm_kernel_count_t program_size) {
   unsigned i;
 
   evoasm_prng_t *prng = &program_deme->deme.prng;
@@ -176,12 +176,12 @@ evoasm_program_deme_seed_program(evoasm_program_deme_t *program_deme, evoasm_pro
 
   evoasm_prng_t *prng = &program_deme->deme.prng;
   evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
-  evoasm_program_size_t program_size = (evoasm_program_size_t) _evoasm_prng_rand_between(prng,
-                                                                             params->min_program_size,
-                                                                             params->max_program_size);
+  evoasm_kernel_count_t program_size = (evoasm_kernel_count_t) _evoasm_prng_rand_between(prng,
+                                                                             params->min_kernel_count,
+                                                                             params->max_kernel_count);
 
   assert(program_size > 0);
-  program_params->size = program_size;
+  program_params->kernel_count = program_size;
 
   for(i = 0; i < program_size; i++) {
     evoasm_kernel_params_t *kernel_params = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(program_params,
@@ -203,7 +203,7 @@ evoasm_program_deme_eval_program(evoasm_program_deme_t *program_deme,
                          evoasm_program_t *program,
                          evoasm_loss_t *loss) {
 
-  evoasm_kernel_t *kernel = &program->kernels[program->params->size - 1];
+  evoasm_kernel_t *kernel = &program->kernels[program->params->kernel_count - 1];
   evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
 
   if(!evoasm_program_emit(program, params->program_input, true, true, true, true)) {
@@ -224,7 +224,7 @@ evoasm_program_deme_eval_program(evoasm_program_deme_t *program_deme,
       evoasm_buf_exec(program->buf);
       *loss = evoasm_program_assess(program, params->program_output);
     } else {
-      evoasm_debug("program %p signaled", (void *) program);
+      evoasm_log_debug("program %p signaled", (void *) program);
       *loss = INFINITY;
     }
   }
@@ -263,10 +263,10 @@ evoasm_program_eval_program_params(evoasm_program_deme_t *program_deme, evoasm_p
   program.output_vals = program_deme->output_vals;
 
   unsigned i;
-  for(i = 0; i < program_params->size; i++) {
+  for(i = 0; i < program_params->kernel_count; i++) {
     evoasm_kernel_t *kernel = &program.kernels[i];
     kernel->params = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(program_params, params->max_kernel_size, i);
-    kernel->idx = (evoasm_program_size_t) i;
+    kernel->idx = (evoasm_kernel_count_t) i;
   }
 
   return evoasm_program_deme_eval_program(program_deme, &program, loss);
@@ -286,7 +286,7 @@ evoasm_program_deme_mutate_kernel(evoasm_program_deme_t *program_deme, evoasm_ke
   uint32_t mut_rate = program_deme->deme.params->mut_rate;
 
   uint32_t r = _evoasm_prng_rand32(prng);
-  evoasm_debug("mutating child: %u < %u", r, mut_rate);
+  evoasm_log_debug("mutating child: %u < %u", r, mut_rate);
   if(r < mut_rate) {
 
     r = _evoasm_prng_rand32(prng);
@@ -360,29 +360,29 @@ evoasm_program_deme_crossover_program_param(evoasm_program_deme_t *program_deme,
                                     evoasm_program_params_t *child) {
 
   /* NOTE: parent_a must be the longer parent, i.e. parent_size_a >= parent_size_b */
-  evoasm_program_size_t child_size;
+  evoasm_kernel_count_t child_size;
   unsigned i;
 
   evoasm_prng_t *prng = &program_deme->deme.prng;
   evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
   unsigned max_kernel_size = params->max_kernel_size;
 
-  assert(parent_a->size >= parent_b->size);
-  assert(parent_a->size > 0);
-  assert(parent_b->size > 0);
+  assert(parent_a->kernel_count >= parent_b->kernel_count);
+  assert(parent_a->kernel_count > 0);
+  assert(parent_b->kernel_count > 0);
 
-  child_size = (evoasm_program_size_t)
+  child_size = (evoasm_kernel_count_t)
       _evoasm_prng_rand_between(prng,
-                                parent_b->size, parent_a->size);
+                                parent_b->kernel_count, parent_a->kernel_count);
 
   assert(child_size > 0);
-  assert(child_size >= parent_b->size);
+  assert(child_size >= parent_b->kernel_count);
 
 
   for(i = 0; i < child_size; i++) {
     evoasm_kernel_params_t *kernel_child = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(child, max_kernel_size, i);
 
-    if(i < parent_b->size) {
+    if(i < parent_b->kernel_count) {
       evoasm_kernel_params_t *kernel_parent_a = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(parent_a, max_kernel_size, i);
       evoasm_kernel_params_t *kernel_parent_b = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(parent_b, max_kernel_size, i);
 
@@ -398,14 +398,14 @@ evoasm_program_deme_crossover_program_param(evoasm_program_deme_t *program_deme,
       evoasm_program_deme_mutate_kernel(program_deme, kernel_child);
     }
   }
-  child->size = child_size;
+  child->kernel_count = child_size;
 }
 
 static evoasm_success_t
 evoasm_program_deme_crossover_program_params(evoasm_program_deme_t *deme, evoasm_program_params_t *parent_a, evoasm_program_params_t *parent_b,
                           evoasm_program_params_t *child_a, evoasm_program_params_t *child_b) {
 
-  if(parent_a->size < parent_b->size) {
+  if(parent_a->kernel_count < parent_b->kernel_count) {
     evoasm_program_params_t *t = parent_a;
     parent_a = parent_b;
     parent_b = t;
@@ -445,12 +445,8 @@ static const evoasm_deme_cls_t _evoasm_program_deme_cls = {
 evoasm_success_t
 evoasm_program_deme_init(evoasm_program_deme_t *program_deme, evoasm_arch_id_t arch_id, evoasm_program_deme_params_t *params) {
 
-  if(!evoasm_program_deme_params_valid(params)) {
-    return false;
-  }
-
   unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(params->program_input);
-  size_t indiv_size = EVOASM_PROGRAM_PARAMS_SIZE(params->max_program_size, params->max_kernel_size);
+  size_t indiv_size = EVOASM_PROGRAM_PARAMS_SIZE(params->max_kernel_count, params->max_kernel_size);
 
   if(!evoasm_deme_init(&program_deme->deme, (evoasm_deme_params_t *) params, &_evoasm_program_deme_cls, indiv_size,
                        n_examples)) {
@@ -462,7 +458,7 @@ evoasm_program_deme_init(evoasm_program_deme_t *program_deme, evoasm_arch_id_t a
   if(!program_deme->output_vals) goto alloc_failed;
 
   /* FIXME: find a way to calculate tighter bound */
-  size_t body_buf_size = (size_t) (2 * params->max_program_size * params->max_kernel_size *
+  size_t body_buf_size = (size_t) (2 * params->max_kernel_count * params->max_kernel_size *
                                    program_deme->arch_info->max_inst_len);
   size_t buf_size = n_examples * (body_buf_size + EVOASM_SEARCH_PROLOG_EPILOG_SIZE);
 

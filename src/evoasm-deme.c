@@ -23,6 +23,11 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  size_t indiv_size,
                  uint32_t n_examples) {
 
+
+  if(!evoasm_deme_params_valid(params)) {
+    return false;
+  }
+
   uint32_t deme_len = params->size;
 
   static evoasm_deme_t zero_deme = {0};
@@ -112,7 +117,7 @@ evoasm_deme_seed(evoasm_deme_t *deme) {
 
 
 evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
+evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_cb_t result_cb,
                  evoasm_loss_t max_loss, void *user_data) {
   unsigned i;
   bool retval;
@@ -135,18 +140,18 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
 
     deme->losses[i] = loss;
 
-    evoasm_debug("individual %d has loss %lf", i, loss);
+    evoasm_log_debug("individual %d has loss %lf", i, loss);
 
     if(loss <= deme->best_loss) {
       deme->best_loss = loss;
       deme->best_indiv_idx = i;
-      evoasm_debug("program %d has best loss %lf", i, loss);
+      evoasm_log_debug("program %d has best loss %lf", i, loss);
     }
 
     if(EVOASM_UNLIKELY(loss / n_examples <= max_loss)) {
-      evoasm_info("individual %d has best norm. loss %lf", i, loss);
+      evoasm_log_info("individual %d has best norm. loss %lf", i, loss);
 
-      if(result_func(deme, indiv, loss, user_data) == EVOASM_DEME_RESULT_FUNC_RETVAL_STOP) {
+      if(result_cb(deme, indiv, loss, user_data) == EVOASM_CB_STOP) {
         retval = true;
         goto done;
       }
@@ -249,10 +254,10 @@ evoasm_deme_new_gen(evoasm_deme_t *deme) {
 
 #if 0
   {
-    double scale = 1.0 / deme->params->size;
+    double scale = 1.0 / deme->params->kernel_count;
     double deme_loss = 0.0;
     unsigned n_inf = 0;
-    for(i = 0; i < deme->params->size; i++) {
+    for(i = 0; i < deme->params->kernel_count; i++) {
       double loss = deme->deme.losses[parents[i]];
       if(loss != INFINITY) {
         deme_loss += scale * loss;
@@ -262,13 +267,13 @@ evoasm_deme_new_gen(evoasm_deme_t *deme) {
       }
     }
 
-    evoasm_info("deme selected loss: %g/%u", deme_loss, n_inf);
+    evoasm_log_info("deme selected loss: %g/%u", deme_loss, n_inf);
   }
 
   unsigned i;
-  for(i = 0; i < deme->params->size; i++) {
+  for(i = 0; i < deme->params->kernel_count; i++) {
     evoasm_program_params_t *program_params = _EVOASM_SEARCH_PROGRAM_PARAMS(deme, deme->deme.indivs, parents[i]);
-    assert(program_params->size > 0);
+    assert(program_params->kernel_count > 0);
   }
 #endif
 

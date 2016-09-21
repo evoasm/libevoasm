@@ -16,8 +16,8 @@
 
 typedef struct {
   evoasm_deme_params_t deme_params;
-  evoasm_program_size_t min_program_size;
-  evoasm_program_size_t max_program_size;
+  evoasm_kernel_count_t min_kernel_count;
+  evoasm_kernel_count_t max_kernel_count;
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
@@ -27,5 +27,3 @@ typedef struct {
   evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];
 } evoasm_program_deme_params_t;
 
-bool
-evoasm_program_deme_params_valid(evoasm_program_deme_params_t *program_deme_params);

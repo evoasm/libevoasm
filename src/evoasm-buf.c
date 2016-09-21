@@ -18,7 +18,7 @@ static evoasm_success_t
 evoasm_buf_init_mmap(evoasm_buf_t *buf, size_t size) {
   uint8_t *mem;
 
-  //size = EVOASM_ALIGN_UP(size, evoasm_page_size());
+  //kernel_count = EVOASM_ALIGN_UP(kernel_count, evoasm_page_size());
   mem = evoasm_mmap(size, NULL);
 
   if(mem) {
@@ -121,7 +121,7 @@ size_t
 evoasm_buf_append(evoasm_buf_t * restrict dst, evoasm_buf_t * restrict src) {
   size_t free = dst->capa - dst->pos;
   if(src->pos > free) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
       NULL, "buffer does not fit (need %zu bytes but only %zu free)", src->pos, free);
     return src->pos - (dst->capa - dst->pos);
   }

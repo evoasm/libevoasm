@@ -9,89 +9,10 @@
 #pragma once
 
 #include "evoasm-util.h"
-#include "evoasm-error.h"
 
 #ifdef EVOASM_UNIX
-
-#include <pthread.h>
-
-typedef struct {
-  pthread_mutex_t mutex;
-} evoasm_mutex_t;
-
-typedef struct {
-  pthread_rwlock_t rwlock;
-} evoasm_rwlock_t;
-
-typedef struct {
-  pthread_t thread;
-} evoasm_thread_t;
-
-typedef void *(*evoasm_thread_func_t)(void *);
-
-#define _EVOASM_THREADS_DEF_PTHREAD_WRAPPER_INIT_FUNC(type, name, msg) \
-  static inline evoasm_success_t \
-  evoasm_##type##_##name(evoasm_##type##_t *ptr) { \
-    int errno = pthread_##type##_##name(&ptr->type, NULL); \
-    if(errno) { \
-      evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, \
-                       NULL, msg ": %s", strerror(errno)); \
-      return false; \
-    } \
-    return true; \
-  }
-
-#define _EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(type, name, msg) \
-  static inline evoasm_success_t \
-  evoasm_##type##_##name(evoasm_##type##_t *ptr) { \
-    int errno = pthread_##type##_##name(&ptr->type); \
-    if(errno) { \
-      evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, \
-                       NULL, msg ": %s", strerror(errno)); \
-      return false; \
-    } \
-    return true; \
-  }
-
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_INIT_FUNC(mutex, init, "rwlock initialization failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(mutex, destroy, "rwlock destruction failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(mutex, lock, "locking rwlock failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(mutex, unlock, "unlocking rwlock failed")
-
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_INIT_FUNC(rwlock, init, "rwlock initialization failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(rwlock, destroy, "rwlock destruction failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(rwlock, rdlock, "read-locking rwlock failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(rwlock, wrlock, "write-locking rwlock failed")
-_EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC(rwlock, unlock, "unlocking rwlock failed")
-
-static inline evoasm_success_t
-evoasm_thread_create(evoasm_thread_t *thread, evoasm_thread_func_t thread_func, void *arg) {
-  int errno = pthread_create(&thread->thread, NULL /* attrs */,
-                             thread_func, arg);
-
-  if(errno) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES,
-                     NULL, "creating thread failed: %s", strerror(errno));
-    return false;
-  }
-  return true;
-}
-
-static inline evoasm_success_t
-evoasm_thread_join(evoasm_thread_t *thread, void **retval) {
-  int errno = pthread_join(thread->thread, retval);
-
-  if(errno) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES,
-                     NULL, "joining thread failed: %s", strerror(errno));
-    return false;
-  }
-  return true;
-}
-
-#undef _EVOASM_THREADS_DEF_PTHREAD_WRAPPER_INIT_FUNC
-#undef _EVOASM_THREADS_DEF_PTHREAD_WRAPPER_FUNC
-
+#include "evoasm-pthread.h"
 #else
 #error
 #endif
+

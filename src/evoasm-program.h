@@ -21,7 +21,7 @@ typedef union {
   evoasm_x64_kernel_param_t x64;
 } evoasm_kernel_param_t;
 
-typedef uint8_t evoasm_program_size_t;
+typedef uint8_t evoasm_kernel_count_t;
 
 #define EVOASM_KERNEL_SIZE_MAX UINT8_MAX
 typedef uint8_t evoasm_kernel_size_t;
@@ -38,7 +38,7 @@ typedef struct {
 } evoasm_kernel_params_t;
 
 typedef struct {
-  evoasm_program_size_t size;
+  evoasm_kernel_count_t kernel_count;
 } evoasm_program_params_t;
 
 #define EVOASM_KERNEL_MAX_OUTPUT_REGS 254

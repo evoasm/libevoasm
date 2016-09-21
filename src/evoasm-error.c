@@ -32,6 +32,11 @@ evoasm_last_error() {
 }
 
 void
+evoasm_set_last_error(evoasm_error_t *error) {
+  _evoasm_last_error = *error;
+}
+
+void
 evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code,
                 void *error_data, const char *file,
                 unsigned line, const char *format, ...) {

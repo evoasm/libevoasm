@@ -41,37 +41,37 @@ void
 evoasm_log(evoasm_log_level_t level, const char *tag, const char *format, ...) EVOASM_LOG_ATTRS;
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_TRACE
-#  define evoasm_trace(...) evoasm_log(EVOASM_LOG_LEVEL_TRACE, EVOASM_LOG_TAG, __VA_ARGS__)
+#  define evoasm_log_trace(...) evoasm_log(EVOASM_LOG_LEVEL_TRACE, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
-#  define evoasm_trace(...)
+#  define evoasm_log_trace(...)
 #endif
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
-#  define evoasm_debug(...) evoasm_log(EVOASM_LOG_LEVEL_DEBUG, EVOASM_LOG_TAG, __VA_ARGS__)
+#  define evoasm_log_debug(...) evoasm_log(EVOASM_LOG_LEVEL_DEBUG, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
-#  define evoasm_debug(...)
+#  define evoasm_log_debug(...)
 #endif
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_INFO
-#  define evoasm_info(...) evoasm_log(EVOASM_LOG_LEVEL_INFO, EVOASM_LOG_TAG, __VA_ARGS__)
+#  define evoasm_log_info(...) evoasm_log(EVOASM_LOG_LEVEL_INFO, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
-#  define evoasm_info(...)
+#  define evoasm_log_info(...)
 #endif
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_WARN
-#  define evoasm_warn(...) evoasm_log(EVOASM_LOG_LEVEL_WARN, EVOASM_LOG_TAG, __VA_ARGS__)
+#  define evoasm_log_warn(...) evoasm_log(EVOASM_LOG_LEVEL_WARN, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
-#  define evoasm_warn(...)
+#  define evoasm_log_warn(...)
 #endif
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_ERROR
-#  define evoasm_error(...) evoasm_log(EVOASM_LOG_LEVEL_ERROR, EVOASM_LOG_TAG, __VA_ARGS__)
+#  define evoasm_log_error(...) evoasm_log(EVOASM_LOG_LEVEL_ERROR, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
-#  define evoasm_error_t(...)
+#  define evoasm_log_error(...)
 #endif
 
 #if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_FATAL
-#  define evoasm_fatal(...) evoasm_log(EVOASM_LOG_LEVEL_FATAL, EVOASM_LOG_TAG, __VA_ARGS__)
+#  define evoasm_log_fatal(...) evoasm_log(EVOASM_LOG_LEVEL_FATAL, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
-#  define evoasm_fatal(...)
+#  define evoasm_log_fatal(...)
 #endif

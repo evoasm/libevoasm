@@ -54,7 +54,7 @@ typedef struct {
   evoasm_enc_error_data_t data;
 } evoasm_enc_error_t;
 
-_Static_assert(sizeof(evoasm_error_data_t) >= sizeof(evoasm_enc_error_data_t), "evoasm_enc_error_data_t exceeds evoasm_error_data_t size limit");
+_Static_assert(sizeof(evoasm_error_data_t) >= sizeof(evoasm_enc_error_data_t), "evoasm_enc_error_data_t exceeds evoasm_error_data_t kernel_count limit");
 
 evoasm_arch_info_t *
 evoasm_arch_info(evoasm_arch_id_t arch_id);
@@ -80,7 +80,7 @@ _evoasm_enc_ctx_read_access(evoasm_buf_ref_t *arch_id, evoasm_bitmap_t *acc, evo
       .inst = (uint16_t) inst,
       .arch = arch_id
     };
-    evoasm_set_error(EVOASM_ERROR_TYPE_ENC, EVOASM_ENC_ERROR_CODE_INVALID_ACCESS, &error_data, file, line, "read access violation");
+    evoasm_error(EVOASM_ERROR_TYPE_ENC, EVOASM_ENC_ERROR_CODE_INVALID_ACCESS, &error_data, file, line, "read access violation");
     return false;
   }
   return true;

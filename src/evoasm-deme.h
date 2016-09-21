@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "evoasm-error.h"
 #include "evoasm-deme-params.h"
 
 typedef struct {
@@ -23,13 +24,13 @@ typedef evoasm_success_t (*evoasm_deme_eval_setup_func_t)(struct evoasm_deme_s *
 typedef evoasm_success_t (*evoasm_deme_eval_teardown_func_t)(struct evoasm_deme_s *deme);
 
 typedef evoasm_success_t (*evoasm_deme_eval_indiv_func_t)(struct evoasm_deme_s *deme, evoasm_indiv_t *indiv,
-                                                        evoasm_loss_t *loss);
+                                                          evoasm_loss_t *loss);
 
 typedef evoasm_success_t (*evoasm_deme_crossover_func_t)(struct evoasm_deme_s *deme,
-                                                       evoasm_indiv_t *parent_a,
-                                                       evoasm_indiv_t *parent_b,
-                                                       evoasm_indiv_t *child_a,
-                                                       evoasm_indiv_t *child_b);
+                                                         evoasm_indiv_t *parent_a,
+                                                         evoasm_indiv_t *parent_b,
+                                                         evoasm_indiv_t *child_a,
+                                                         evoasm_indiv_t *child_b);
 
 
 typedef enum {
@@ -60,16 +61,12 @@ typedef struct evoasm_deme_s {
   unsigned char *main_indivs;
   unsigned char *swap_indivs;
   evoasm_domain_t *domains;
-
+  evoasm_loss_t max_loss;
   const evoasm_deme_cls_t *cls;
 } evoasm_deme_t;
 
-typedef enum {
-  EVOASM_DEME_RESULT_FUNC_RETVAL_CONTINUE,
-  EVOASM_DEME_RESULT_FUNC_RETVAL_STOP
-} evoasm_deme_result_func_retval_t;
 
-typedef evoasm_deme_result_func_retval_t (*evoasm_deme_result_func)(evoasm_deme_t *deme,
+typedef bool (*evoasm_deme_result_cb_t)(evoasm_deme_t *deme,
                                         const evoasm_indiv_t *indiv,
                                         evoasm_loss_t loss,
                                         void *user_data);
@@ -82,7 +79,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  uint32_t n_examples);
 
 evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_func result_func,
+evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_cb_t result_cb,
                  evoasm_loss_t max_loss, void *user_data);
 
 evoasm_success_t

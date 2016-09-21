@@ -54,6 +54,7 @@ set(SOURCE_FILES
         src/evoasm-signal.c
         src/evoasm-signal.h
         src/evoasm-threads.c
+        src/evoasm-pthread.h
         src/evoasm-threads.h
         src/evoasm-program-io.c
         src/evoasm-program-io.h)
