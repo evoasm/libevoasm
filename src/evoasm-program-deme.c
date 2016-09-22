@@ -424,7 +424,7 @@ evoasm_program_deme_crossover(evoasm_deme_t *deme,
                                        (evoasm_program_params_t *) parent_a,
                                        (evoasm_program_params_t *) parent_b,
                                        (evoasm_program_params_t *) child_a,
-                                       (evoasm_program_params_t *) child_a);
+                                       (evoasm_program_params_t *) child_b);
 }
 
 static const evoasm_deme_cls_t _evoasm_program_deme_cls = {

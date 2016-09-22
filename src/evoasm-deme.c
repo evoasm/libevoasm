@@ -144,12 +144,12 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_loss_t max_loss, evoasm_deme_result
 
     deme->losses[i] = loss;
 
-    evoasm_log_debug("individual %d has loss %lf", i, loss);
+    evoasm_log_info("individual %d has loss %lf", i, loss);
 
     if(loss <= deme->best_loss) {
       deme->best_loss = loss;
       deme->best_indiv_idx = i;
-      evoasm_log_debug("program %d has best loss %lf", i, loss);
+      evoasm_log_info("program %d has best loss %lf", i, loss);
     }
 
     if(EVOASM_UNLIKELY(loss / n_examples <= max_loss)) {
