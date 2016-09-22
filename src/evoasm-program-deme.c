@@ -445,6 +445,10 @@ static const evoasm_deme_cls_t _evoasm_program_deme_cls = {
 evoasm_success_t
 evoasm_program_deme_init(evoasm_program_deme_t *program_deme, evoasm_arch_id_t arch_id, evoasm_program_deme_params_t *params) {
 
+  if(!evoasm_program_deme_params_valid(params)) {
+    return false;
+  }
+
   unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(params->program_input);
   size_t indiv_size = EVOASM_PROGRAM_PARAMS_SIZE(params->max_kernel_count, params->max_kernel_size);
 

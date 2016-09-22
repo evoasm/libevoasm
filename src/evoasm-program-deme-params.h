@@ -27,3 +27,5 @@ typedef struct {
   evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];
 } evoasm_program_deme_params_t;
 
+bool
+evoasm_program_deme_params_valid(evoasm_program_deme_params_t *program_deme_params);

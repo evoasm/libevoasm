@@ -17,15 +17,22 @@ _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(min_kernel_size, evoasm_kernel_size_t)
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_kernel_size, evoasm_kernel_size_t)
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(recur_limit, uint32_t)
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_insts, uint16_t)
+_EVOASM_DEF_FIELD_READER(program_deme_params, program_input, evoasm_program_io_t *)
+_EVOASM_DEF_FIELD_READER(program_deme_params, program_output, evoasm_program_io_t *)
 
 void
 evoasm_program_deme_params_set_inst(evoasm_program_deme_params_t *program_deme_params, unsigned index, evoasm_inst_id_t inst_id) {
   program_deme_params->inst_ids[index] = inst_id;
 }
 
-static bool
-evoasm_program_deme_params_valid(evoasm_deme_params_t *deme_params) {
-  evoasm_program_deme_params_t *program_deme_params = (evoasm_program_deme_params_t *) deme_params;
+evoasm_inst_id_t
+evoasm_program_deme_params_inst(evoasm_program_deme_params_t *program_deme_params, unsigned index) {
+  return program_deme_params->inst_ids[index];
+}
+
+bool
+evoasm_program_deme_params_valid(evoasm_program_deme_params_t *program_deme_params) {
+  if(!evoasm_deme_params_valid(&program_deme_params->deme_params)) goto fail;
 
   if(program_deme_params->max_kernel_count > EVOASM_PROGRAM_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
@@ -69,16 +76,6 @@ fail:
   return false;
 }
 
-static const evoasm_deme_params_cls_t _evoasm_program_deme_params_cls = {
-    .valid_func = evoasm_program_deme_params_valid
-};
-
-evoasm_inst_id_t
-evoasm_program_deme_params_inst(evoasm_program_deme_params_t *program_deme_params, unsigned index) {
-  evoasm_deme_params_init(&program_deme_params->deme_params, &_evoasm_program_deme_params_cls);
-  return program_deme_params->inst_ids[index];
-}
-
 void
 evoasm_program_deme_params_destroy(evoasm_program_deme_params_t *program_deme_params) {
 }
@@ -92,7 +89,4 @@ void
 evoasm_program_deme_params_set_program_output(evoasm_program_deme_params_t *program_deme_params, evoasm_program_io_t *program_io) {
   program_deme_params->program_output = program_io;
 }
-
-_EVOASM_DEF_FIELD_READER(program_deme_params, program_input, evoasm_program_io_t *)
-_EVOASM_DEF_FIELD_READER(program_deme_params, program_output, evoasm_program_io_t *)
 

@@ -222,8 +222,8 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island_params)
 _EVOASM_DEF_ZERO_INIT_FUNC(island_params)
 
-_EVOASM_DEF_FIELD_ACCESSOR(island_params, emigr_rate, double);
-_EVOASM_DEF_FIELD_ACCESSOR(island_params, emigr_freq, uint16_t);
-_EVOASM_DEF_FIELD_ACCESSOR(island_params, max_loss, evoasm_loss_t);
+_EVOASM_DEF_FIELD_ACCESSOR(island_params, emigr_rate, double)
+_EVOASM_DEF_FIELD_ACCESSOR(island_params, emigr_freq, uint16_t)
+_EVOASM_DEF_FIELD_ACCESSOR(island_params, max_loss, evoasm_loss_t)
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island)

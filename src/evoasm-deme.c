@@ -23,11 +23,6 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  size_t indiv_size,
                  uint32_t n_examples) {
 
-
-  if(!evoasm_deme_params_valid(params)) {
-    return false;
-  }
-
   uint32_t deme_len = params->size;
 
   static evoasm_deme_t zero_deme = {0};

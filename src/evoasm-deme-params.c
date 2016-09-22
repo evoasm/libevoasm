@@ -22,14 +22,6 @@ evoasm_deme_params_set_mut_rate(evoasm_deme_params_t *deme_params, double mut_ra
   deme_params->mut_rate = (uint32_t)(EVOASM_CLAMP(mut_rate, 0.0, 1.0) * UINT32_MAX);
 }
 
-void
-evoasm_deme_params_init(evoasm_deme_params_t *deme_params, const evoasm_deme_params_cls_t *cls) {
-  static evoasm_deme_params_t zero_deme_params = {0};
-
-  *deme_params = zero_deme_params;
-  deme_params->cls = cls;
-}
-
 static evoasm_domain_t **
 evoasm_deme_params_find_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id) {
   unsigned i;
@@ -95,7 +87,6 @@ evoasm_deme_params_destroy(evoasm_deme_params_t *deme_params) {
 
 bool
 evoasm_deme_params_valid(evoasm_deme_params_t *deme_params) {
-
   if(deme_params->n_params == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "No parameters given");
@@ -106,10 +97,6 @@ evoasm_deme_params_valid(evoasm_deme_params_t *deme_params) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
                      NULL, "Population size cannot be zero");
     goto fail;
-  }
-
-  if(deme_params->cls) {
-    return deme_params->cls->valid_func(deme_params);
   }
 
 fail:
