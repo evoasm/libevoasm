@@ -107,6 +107,8 @@ evoasm_deme_seed(evoasm_deme_t *deme) {
       return false;
     }
   }
+
+  deme->seeded = true;
   return true;
 }
 
@@ -117,6 +119,13 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_loss_t max_loss, evoasm_deme_result
   unsigned i;
   bool retval;
   uint32_t n_examples = deme->n_examples;
+
+  if(!deme->seeded) {
+    retval = false;
+    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES,
+                 NULL, "not seeded");
+    goto done;
+  }
 
   if(!deme->cls->eval_setup_func(deme)) {
     retval = false;

@@ -52,11 +52,12 @@ typedef struct evoasm_deme_s {
   evoasm_prng_t prng;
   evoasm_loss_t best_loss;
   uint32_t best_indiv_idx;
+  uint32_t n_examples;
+  bool seeded : 1;
   evoasm_loss_t *losses;
   uint64_t *error_counters;
   uint64_t error_counter;
   size_t indiv_size;
-  uint32_t n_examples;
   unsigned char *indivs;
   unsigned char *main_indivs;
   unsigned char *swap_indivs;

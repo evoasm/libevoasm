@@ -60,13 +60,13 @@ evoasm_program_deme_params_valid(evoasm_program_deme_params_t *program_deme_para
 
   if(program_deme_params->min_kernel_count == 0 || program_deme_params->min_kernel_count > program_deme_params->max_kernel_count) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
-                 NULL, "Invalid PROGRAM kernel_count");
+                 NULL, "Invalid kernel count");
     goto fail;
   }
 
   if(program_deme_params->min_kernel_size == 0 || program_deme_params->min_kernel_size > program_deme_params->max_kernel_size) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
-                 NULL, "Invalid kernel kernel_count");
+                 NULL, "Invalid kernel size");
     goto fail;
   }
 
