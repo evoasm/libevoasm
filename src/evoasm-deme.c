@@ -232,7 +232,7 @@ evoasm_deme_combine_parents(evoasm_deme_t *deme, uint32_t *parents) {
 }
 
 evoasm_loss_t
-evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed) {
+evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool per_example) {
   unsigned i;
   double scale = 1.0 / deme->params->size;
   double deme_loss = 0.0;
@@ -246,7 +246,7 @@ evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed) {
     }
   }
 
-  if(normed) deme_loss /= deme->params->size;
+  if(per_example) deme_loss /= deme->n_examples;
 
   return deme_loss;
 }

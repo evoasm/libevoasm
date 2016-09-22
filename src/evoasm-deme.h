@@ -93,7 +93,7 @@ size_t
 evoasm_deme_indiv_size(evoasm_deme_t *deme);
 
 evoasm_loss_t
-evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed);
+evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool per_example);
 
 evoasm_success_t
 evoasm_deme_seed(evoasm_deme_t *deme);
