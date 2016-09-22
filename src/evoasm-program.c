@@ -128,7 +128,7 @@ evoasm_program_buf(evoasm_program_t *program, bool body) {
 }
 
 evoasm_kernel_count_t
-evoasm_program_size(evoasm_program_t *program) {
+evoasm_program_kernel_count(evoasm_program_t *program) {
   return program->params->kernel_count;
 }
 

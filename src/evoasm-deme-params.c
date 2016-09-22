@@ -3,14 +3,24 @@
 //
 
 #include "evoasm-deme-params.h"
+#include "evoasm-util.h"
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(deme_params)
 
 #define _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(field, type) _EVOASM_DEF_FIELD_ACCESSOR(deme_params, field, type)
 
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(size, uint32_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(mut_rate, uint32_t)
 _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_params, uint8_t)
+
+double
+evoasm_deme_params_mut_rate(evoasm_deme_params_t *deme_params) {
+  return EVOASM_CLAMP(deme_params->mut_rate / (double) UINT32_MAX, 0.0, 1.0);
+}
+
+void
+evoasm_deme_params_set_mut_rate(evoasm_deme_params_t *deme_params, double mut_rate) {
+  deme_params->mut_rate = (uint32_t)(EVOASM_CLAMP(mut_rate, 0.0, 1.0) * UINT32_MAX);
+}
 
 void
 evoasm_deme_params_init(evoasm_deme_params_t *deme_params, const evoasm_deme_params_cls_t *cls) {
@@ -94,11 +104,13 @@ evoasm_deme_params_valid(evoasm_deme_params_t *deme_params) {
 
   if(deme_params->size == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
-                     NULL, "Population kernel_count cannot be zero");
+                     NULL, "Population size cannot be zero");
     goto fail;
   }
 
-  return deme_params->cls->valid_func(deme_params);
+  if(deme_params->cls) {
+    return deme_params->cls->valid_func(deme_params);
+  }
 
 fail:
   return false;
