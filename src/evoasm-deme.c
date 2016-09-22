@@ -252,7 +252,7 @@ evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool normed) {
 }
 
 evoasm_success_t
-evoasm_deme_new_gen(evoasm_deme_t *deme) {
+evoasm_deme_next_gen(evoasm_deme_t *deme) {
   uint32_t *parents = alloca(deme->params->size * sizeof(uint32_t));
   evoasm_deme_select(deme, parents, deme->params->size);
 

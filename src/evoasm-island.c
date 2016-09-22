@@ -100,7 +100,7 @@ evoasm_island_cycle(evoasm_island_t *island,
     }
 
     EVOASM_TRY(error, evoasm_rwlock_wrlock, &island->rwlock);
-    EVOASM_TRY(error_unlock, evoasm_deme_new_gen, island->deme);
+    EVOASM_TRY(error_unlock, evoasm_deme_next_gen, island->deme);
     EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
   }
 
