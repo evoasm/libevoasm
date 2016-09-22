@@ -165,4 +165,5 @@ evoasm_island_model_destroy(evoasm_island_model_t *island_model) {
 }
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island_model)
+_EVOASM_DEF_ZERO_INIT_FUNC(island_model_params)
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island_model_params)

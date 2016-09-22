@@ -489,3 +489,5 @@ prot_failed:
   evoasm_program_deme_destroy_(program_deme, true, true);
   return false;
 }
+
+_EVOASM_DEF_ALLOC_FREE_FUNCS(program_deme)
