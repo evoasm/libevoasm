@@ -79,8 +79,8 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  uint32_t n_examples);
 
 evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme, evoasm_deme_result_cb_t result_cb,
-                 evoasm_loss_t max_loss, void *user_data);
+evoasm_deme_eval(evoasm_deme_t *deme, evoasm_loss_t max_loss, evoasm_deme_result_cb_t result_cb,
+                 void *user_data);
 
 evoasm_success_t
 evoasm_deme_new_gen(evoasm_deme_t *deme);

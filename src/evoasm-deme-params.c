@@ -99,6 +99,8 @@ evoasm_deme_params_valid(evoasm_deme_params_t *deme_params) {
     goto fail;
   }
 
+  return true;
+
 fail:
   return false;
 }

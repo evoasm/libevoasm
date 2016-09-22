@@ -70,7 +70,7 @@ evoasm_island_cycle(evoasm_island_t *island,
   for(gen = 0;; gen++) {
 
     EVOASM_TRY(error, evoasm_rwlock_rdlock, &island->rwlock);
-    EVOASM_TRY(error_unlock, evoasm_deme_eval, island->deme, island_result_func, island->params->max_loss, island);
+    EVOASM_TRY(error_unlock, evoasm_deme_eval, island->deme, island->params->max_loss, island_result_func, island);
 
     if(gen % 256 == 0) {
       unsigned n_inf;
