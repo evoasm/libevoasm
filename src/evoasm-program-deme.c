@@ -143,7 +143,7 @@ evoasm_program_deme_seed_kernel_param(evoasm_program_deme_t *deme, evoasm_kernel
 
 static void
 evoasm_program_deme_seed_kernel(evoasm_program_deme_t *program_deme, evoasm_kernel_params_t *kernel_params,
-                            evoasm_kernel_count_t program_size) {
+                            evoasm_kernel_count_t kernel_count) {
   unsigned i;
 
   evoasm_prng_t *prng = &program_deme->deme.prng;
@@ -157,7 +157,7 @@ evoasm_program_deme_seed_kernel(evoasm_program_deme_t *program_deme, evoasm_kern
   kernel_params->size = kernel_size;
   kernel_params->jmp_selector = (uint8_t) _evoasm_prng_rand8(prng);
   kernel_params->alt_succ_idx = (evoasm_kernel_size_t)
-      _evoasm_prng_rand_between(prng, 0, program_size - 1);
+      _evoasm_prng_rand_between(prng, 0, kernel_count - 1);
 
   for(i = 0; i < kernel_size; i++) {
     evoasm_program_deme_seed_kernel_param(program_deme, &kernel_params->params[i]);
