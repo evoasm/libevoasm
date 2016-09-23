@@ -15,10 +15,10 @@
 typedef struct {
   unsigned inst : EVOASM_X64_INST_BITSIZE;
   evoasm_x64_basic_params_t params;
-} evoasm_x64_kernel_param_t;
+} evoasm_kernel_param_x64_t;
 
 typedef union {
-  evoasm_x64_kernel_param_t x64;
+  evoasm_kernel_param_x64_t x64;
 } evoasm_kernel_param_t;
 
 typedef uint8_t evoasm_kernel_count_t;
@@ -39,6 +39,7 @@ typedef struct {
 
 typedef struct {
   evoasm_kernel_count_t kernel_count;
+  void *_[];
 } evoasm_program_params_t;
 
 #define EVOASM_KERNEL_MAX_OUTPUT_REGS 254

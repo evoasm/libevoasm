@@ -105,7 +105,7 @@ evoasm_program_deme_destroy(evoasm_program_deme_t *deme) {
 
 
 static void
-evoasm_program_deme_x64_seed_kernel_param(evoasm_program_deme_t *program_deme, evoasm_x64_kernel_param_t *kernel_param) {
+evoasm_program_deme_x64_seed_kernel_param(evoasm_program_deme_t *program_deme, evoasm_kernel_param_x64_t *kernel_param) {
   unsigned i;
   unsigned n_params = program_deme->deme.params->n_params;
   evoasm_prng_t *prng = &program_deme->deme.prng;
