@@ -240,6 +240,30 @@ evoasm_program_deme_eval_teardown(evoasm_deme_t *deme) {
   return true;
 }
 
+static inline void
+evoasm_program_deme_init_program(evoasm_program_deme_t *program_deme, evoasm_program_t *program,
+                                evoasm_program_params_t *program_params) {
+
+  evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
+
+  /* encode solution */
+  evoasm_program_t program_ = {
+      .params = program_params,
+      .recur_limit = params->recur_limit,
+      .buf = &program_deme->buf,
+      .body_buf = &program_deme->body_buf,
+      .arch_info = program_deme->arch_info,
+  };
+
+  unsigned i;
+  for(i = 0; i < program_params->kernel_count; i++) {
+    evoasm_kernel_t *kernel = &program_.kernels[i];
+    kernel->params = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(program_params, params->max_kernel_size, i);
+    kernel->idx = (evoasm_kernel_count_t) i;
+  }
+
+  *program = program_;
+}
 
 evoasm_success_t
 evoasm_program_deme_get_program(evoasm_program_deme_t *program_deme, evoasm_program_params_t *program_params,
@@ -247,40 +271,20 @@ evoasm_program_deme_get_program(evoasm_program_deme_t *program_deme, evoasm_prog
 
   evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
 
-  evoasm_program_t program_ = {
-      .params = program_params,
-      .recur_limit = params->recur_limit,
-      .buf = &program_deme->buf,
-      .body_buf = &program_deme->body_buf,
-      .arch_info = program_deme->arch_info,
-      ._output = *params->program_output,
-      ._input = *params->program_input
-  };
+  evoasm_program_t program_;
+  evoasm_program_deme_init_program(program_deme, &program_, program_params);
+  program_._output = *params->program_output;
+  program_._input = *params->program_input;
 
   return evoasm_program_clone(&program_, program);
 }
 
 static evoasm_success_t
 evoasm_program_deme_eval_program_params(evoasm_program_deme_t *program_deme, evoasm_program_params_t *program_params, evoasm_loss_t *loss) {
-  evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
 
-  /* encode solution */
-  evoasm_program_t program = {
-      .params = program_params,
-      .recur_limit = params->recur_limit,
-      .buf = &program_deme->buf,
-      .body_buf = &program_deme->body_buf,
-      .arch_info = program_deme->arch_info,
-  };
-
+  evoasm_program_t program;
+  evoasm_program_deme_init_program(program_deme, &program, program_params);
   program.output_vals = program_deme->output_vals;
-
-  unsigned i;
-  for(i = 0; i < program_params->kernel_count; i++) {
-    evoasm_kernel_t *kernel = &program.kernels[i];
-    kernel->params = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(program_params, params->max_kernel_size, i);
-    kernel->idx = (evoasm_kernel_count_t) i;
-  }
 
   return evoasm_program_deme_eval_program(program_deme, &program, loss);
 }
