@@ -40,22 +40,22 @@ evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
 
 
 void
-evoasm_domain_min_max(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
-  _evoasm_domain_min_max(domain, min, max);
+evoasm_domain_get_bounds(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
+  _evoasm_domain_get_bounds(domain, min, max);
 }
 
 evoasm_domain_type_t
-evoasm_domain_type(evoasm_domain_t *domain) {
-  return domain->type;
+evoasm_domain_get_type(evoasm_domain_t *domain) {
+  return (evoasm_domain_type_t) domain->type;
 }
 
 unsigned
-evoasm_enum_domain_len(evoasm_enum_domain_t *enum_domain) {
+evoasm_enum_domain_get_len(evoasm_enum_domain_t *enum_domain) {
   return enum_domain->len;
 }
 
 int64_t
-evoasm_enum_domain_val(evoasm_enum_domain_t *enum_domain, unsigned index) {
+evoasm_enum_domain_get_val(evoasm_enum_domain_t *enum_domain, unsigned index) {
   return enum_domain->vals[index];
 }
 

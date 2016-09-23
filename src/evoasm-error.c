@@ -27,7 +27,7 @@ evoasm_error_setv(evoasm_error_t *error, unsigned error_type, unsigned error_cod
 }
 
 evoasm_error_t *
-evoasm_last_error() {
+evoasm_get_last_error() {
   return &_evoasm_last_error;
 }
 
@@ -48,9 +48,9 @@ evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code
   va_end(args);
 }
 
-_EVOASM_DEF_FIELD_READER(error, type, evoasm_error_type_t)
-_EVOASM_DEF_FIELD_READER(error, code, evoasm_error_code_t)
-_EVOASM_DEF_FIELD_READER(error, line, uint32_t)
-_EVOASM_DEF_FIELD_READER(error, filename, char *)
-_EVOASM_DEF_FIELD_READER(error, msg, char *)
+_EVOASM_DEF_GETTER(error, type, evoasm_error_type_t)
+_EVOASM_DEF_GETTER(error, code, evoasm_error_code_t)
+_EVOASM_DEF_GETTER(error, line, uint32_t)
+_EVOASM_DEF_GETTER(error, filename, char *)
+_EVOASM_DEF_GETTER(error, msg, char *)
 

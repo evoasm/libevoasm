@@ -35,13 +35,13 @@ evoasm_island_model_wait(evoasm_island_model_t *island_model) {
 
 static void
 evoasm_island_model_error(evoasm_island_model_t *island_model) {
-  evoasm_error_t error = *evoasm_last_error();
-  if(!evoasm_mutex_lock(island_model->error_mutex)) {}
+  evoasm_error_t error = *evoasm_get_last_error();
+  if(!evoasm_mutex_lock(&island_model->error_mutex)) {}
   if(island_model->errored) return;
   island_model->errored = true;
   island_model->error = error;
   evoasm_island_model_stop(island_model);
-  if(!evoasm_mutex_unlock(island_model->error_mutex)) {}
+  if(!evoasm_mutex_unlock(&island_model->error_mutex)) {}
 }
 
 static void *
@@ -62,11 +62,11 @@ evoasm_island_model_call_progress_cb(struct evoasm_island_model_s *island_model,
   bool retval;
 
   if(island_model->progress_cb != NULL) {
-    EVOASM_TRY(error, evoasm_mutex_lock, island_model->progress_mutex);
+    EVOASM_TRY(error, evoasm_mutex_lock, &island_model->progress_mutex);
     retval = island_model->progress_cb(island_model, island, cycle, gen,
                                        loss, n_inf,
                                        island_model->result_user_data);
-    EVOASM_TRY(error, evoasm_mutex_unlock, island_model->progress_mutex);
+    EVOASM_TRY(error, evoasm_mutex_unlock, &island_model->progress_mutex);
   }
 
   return retval;
@@ -81,9 +81,9 @@ evoasm_island_model_call_result_cb(evoasm_island_model_t *island_model, const ev
                                    evoasm_loss_t loss) {
   bool retval;
 
-  EVOASM_TRY(error, evoasm_mutex_lock, island_model->result_mutex);
+  EVOASM_TRY(error, evoasm_mutex_lock, &island_model->result_mutex);
   retval = island_model->result_cb(island_model, indiv, loss, island_model->result_user_data);
-  EVOASM_TRY(error, evoasm_mutex_unlock, island_model->result_mutex);
+  EVOASM_TRY(error, evoasm_mutex_unlock, &island_model->result_mutex);
 
   return retval;
 
@@ -126,6 +126,26 @@ evoasm_island_model_add_island(evoasm_island_model_t *island_model,
   island_model->n_islands++;
 }
 
+static evoasm_success_t
+evoasm_island_model_destroy_(evoasm_island_model_t *island_model,
+                             evoasm_mutex_t *error_mutex,
+                             evoasm_mutex_t *progress_mutex,
+                             evoasm_mutex_t *result_mutex) {
+  bool retval = true;
+
+  if(error_mutex) {
+    if(!evoasm_mutex_destroy(error_mutex)) retval = false;
+  }
+  if(progress_mutex) {
+    if(!evoasm_mutex_destroy(progress_mutex)) retval = false;
+  }
+  if(result_mutex) {
+    if(!evoasm_mutex_destroy(result_mutex)) retval = false;
+  }
+
+  return retval;
+}
+
 evoasm_success_t
 evoasm_island_model_init(evoasm_island_model_t *island_model,
                          evoasm_island_model_params_t *params) {
@@ -134,34 +154,35 @@ evoasm_island_model_init(evoasm_island_model_t *island_model,
   static evoasm_island_model_t zero_island_model = {0};
   *island_model = zero_island_model;
 
-  if(!evoasm_mutex_init(&island_model->result_mutex_)) goto error;
-  island_model->result_mutex = &island_model->result_mutex_;
+  evoasm_mutex_t *result_mutex = NULL;
+  evoasm_mutex_t *progress_mutex = NULL;
+  evoasm_mutex_t *error_mutex = NULL;
 
-  if(!evoasm_mutex_init(&island_model->progress_mutex_)) goto error;
-  island_model->progress_mutex = &island_model->progress_mutex_;
+  if(!evoasm_mutex_init(&island_model->result_mutex)) goto error;
+  result_mutex = &island_model->result_mutex;
 
-  if(!evoasm_mutex_init(&island_model->error_mutex_)) goto error;
-  island_model->error_mutex = &island_model->error_mutex_;
+  if(!evoasm_mutex_init(&island_model->progress_mutex)) goto error;
+  progress_mutex = &island_model->progress_mutex;
+
+  if(!evoasm_mutex_init(&island_model->error_mutex)) goto error;
+  error_mutex = &island_model->error_mutex;
 
   goto done;
 
 error:
   retval = false;
-  bool r = evoasm_island_model_destroy(island_model);
+  bool r = evoasm_island_model_destroy_(island_model, error_mutex, progress_mutex, result_mutex);
   (void) r;
 done:
   return retval;
 }
 
+
 evoasm_success_t
 evoasm_island_model_destroy(evoasm_island_model_t *island_model) {
-  bool retval = true;
-
-  if(!evoasm_mutex_destroy(island_model->error_mutex)) retval = false;
-  if(!evoasm_mutex_destroy(island_model->progress_mutex)) retval = false;
-  if(!evoasm_mutex_destroy(island_model->result_mutex)) retval = false;
-
-  return retval;
+  return evoasm_island_model_destroy_(island_model, &island_model->error_mutex,
+                                      &island_model->progress_mutex,
+                                      &island_model->result_mutex);
 }
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island_model)

@@ -9,16 +9,16 @@
 _EVOASM_DEF_ALLOC_FREE_FUNCS(program_deme_params)
 _EVOASM_DEF_ZERO_INIT_FUNC(program_deme_params)
 
-#define _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(field, type) _EVOASM_DEF_FIELD_ACCESSOR(program_deme_params, field, type)
+#define _EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(field, type) _EVOASM_DEF_GETTER_SETTER(program_deme_params, field, type)
 
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(min_kernel_count, evoasm_kernel_count_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_kernel_count, evoasm_kernel_count_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(min_kernel_size, evoasm_kernel_size_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(max_kernel_size, evoasm_kernel_size_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(recur_limit, uint32_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_insts, uint16_t)
-_EVOASM_DEF_FIELD_READER(program_deme_params, program_input, evoasm_program_io_t *)
-_EVOASM_DEF_FIELD_READER(program_deme_params, program_output, evoasm_program_io_t *)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(min_kernel_count, evoasm_kernel_count_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(max_kernel_count, evoasm_kernel_count_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(min_kernel_size, evoasm_kernel_size_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(max_kernel_size, evoasm_kernel_size_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(recur_limit, uint32_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(n_insts, uint16_t)
+_EVOASM_DEF_GETTER(program_deme_params, program_input, evoasm_program_io_t *)
+_EVOASM_DEF_GETTER(program_deme_params, program_output, evoasm_program_io_t *)
 
 void
 evoasm_program_deme_params_set_inst(evoasm_program_deme_params_t *program_deme_params, unsigned index, evoasm_inst_id_t inst_id) {
@@ -26,7 +26,7 @@ evoasm_program_deme_params_set_inst(evoasm_program_deme_params_t *program_deme_p
 }
 
 evoasm_inst_id_t
-evoasm_program_deme_params_inst(evoasm_program_deme_params_t *program_deme_params, unsigned index) {
+evoasm_program_deme_params_get_inst(evoasm_program_deme_params_t *program_deme_params, unsigned index) {
   return program_deme_params->inst_ids[index];
 }
 

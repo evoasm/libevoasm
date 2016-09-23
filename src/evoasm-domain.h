@@ -119,7 +119,7 @@ evoasm_domain_clone(evoasm_domain_t *restrict domain, evoasm_domain_t *restrict 
 }
 
 static inline void
-_evoasm_domain_min_max(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
+_evoasm_domain_get_bounds(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
@@ -199,7 +199,7 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
 
   int64_t min1, max1, min2, max2;
 
-  _evoasm_domain_min_max(domain2, &min2, &max2);
+  _evoasm_domain_get_bounds(domain2, &min2, &max2);
 
   if(domain1->type == EVOASM_DOMAIN_TYPE_ENUM) {
     unsigned i;
@@ -215,7 +215,7 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
   } else {
     evoasm_range_domain_t *range_domain_dst = (evoasm_range_domain_t *) domain_dst;
 
-    _evoasm_domain_min_max(domain1, &min1, &max1);
+    _evoasm_domain_get_bounds(domain1, &min1, &max1);
     range_domain_dst->min = EVOASM_MAX(min1, min2);
     range_domain_dst->max = EVOASM_MIN(max1, max2);
   }
@@ -243,7 +243,7 @@ evoasm_domain_contains(evoasm_domain_t *domain, int64_t val) {
 }
 
 static inline bool
-evoasm_domain_empty(evoasm_domain_t *domain) {
+evoasm_domain_is_empty(evoasm_domain_t *domain) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM:
       return ((evoasm_enum_domain_t *) domain)->len == 0;

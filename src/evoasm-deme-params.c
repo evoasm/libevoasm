@@ -7,13 +7,13 @@
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(deme_params)
 
-#define _EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(field, type) _EVOASM_DEF_FIELD_ACCESSOR(deme_params, field, type)
+#define _EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(field, type) _EVOASM_DEF_GETTER_SETTER(deme_params, field, type)
 
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(size, uint32_t)
-_EVOASM_DEME_PARAMS_DEF_FIELD_ACCESSOR(n_params, uint8_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(size, uint32_t)
+_EVOASM_DEME_PARAMS_DEF_GETTER_SETTER(n_params, uint8_t)
 
 double
-evoasm_deme_params_mut_rate(evoasm_deme_params_t *deme_params) {
+evoasm_deme_params_get_mut_rate(evoasm_deme_params_t *deme_params) {
   return EVOASM_CLAMP(deme_params->mut_rate / (double) UINT32_MAX, 0.0, 1.0);
 }
 
@@ -46,7 +46,7 @@ evoasm_deme_params_set_domain(evoasm_deme_params_t *deme_params, evoasm_param_id
 }
 
 evoasm_domain_t *
-evoasm_deme_params_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id) {
+evoasm_deme_params_get_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t param_id) {
   evoasm_domain_t **domain_ptr = evoasm_deme_params_find_domain(deme_params, param_id);
   if(domain_ptr) {
     return *domain_ptr;
@@ -56,7 +56,7 @@ evoasm_deme_params_domain(evoasm_deme_params_t *deme_params, evoasm_param_id_t p
 }
 
 evoasm_param_id_t
-evoasm_deme_params_param(evoasm_deme_params_t *deme_params, unsigned index) {
+evoasm_deme_params_get_param(evoasm_deme_params_t *deme_params, unsigned index) {
   return deme_params->param_ids[index];
 }
 
@@ -66,12 +66,12 @@ evoasm_deme_params_set_param(evoasm_deme_params_t *deme_params, unsigned index, 
 }
 
 uint8_t
-evoasm_search_n_params(evoasm_deme_params_t *deme_params) {
+evoasm_search_get_n_params(evoasm_deme_params_t *deme_params) {
   return deme_params->n_params;
 }
 
 uint64_t
-evoasm_deme_params_seed(evoasm_deme_params_t *deme_params, unsigned index) {
+evoasm_deme_params_get_seed(evoasm_deme_params_t *deme_params, unsigned index) {
   return deme_params->seed.data[index];
 }
 

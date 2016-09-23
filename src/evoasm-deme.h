@@ -87,13 +87,16 @@ evoasm_success_t
 evoasm_deme_next_gen(evoasm_deme_t *deme);
 
 evoasm_indiv_t *
-evoasm_deme_indiv(evoasm_deme_t *deme, uint32_t idx);
-
-size_t
-evoasm_deme_indiv_size(evoasm_deme_t *deme);
+evoasm_deme_get_indiv(evoasm_deme_t *deme, uint32_t idx);
 
 evoasm_loss_t
-evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool per_example);
+evoasm_deme_get_indiv_loss(evoasm_deme_t *deme, uint32_t idx);
+
+size_t
+evoasm_deme_get_indiv_size(evoasm_deme_t *deme);
+
+evoasm_loss_t
+evoasm_deme_get_loss(evoasm_deme_t *deme, unsigned *n_inf, bool per_example);
 
 evoasm_success_t
 evoasm_deme_seed(evoasm_deme_t *deme);
@@ -107,5 +110,3 @@ evoasm_deme_destroy(evoasm_deme_t *deme);
 void
 evoasm_deme_inject(evoasm_deme_t *deme, evoasm_indiv_t *indiv, size_t indiv_size, evoasm_loss_t loss);
 
-evoasm_loss_t
-evoasm_deme_indiv_loss(evoasm_deme_t *deme, uint32_t idx);

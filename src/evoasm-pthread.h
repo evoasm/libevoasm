@@ -47,17 +47,10 @@ typedef void *(*evoasm_thread_func_t)(void *);
     _EVOASM_PTHREAD_WRAPPER_FUNC_BODY(type, name, msg) \
   }
 
-#define _EVOASM_PTHREAD_DEF_WRAPPER_DESTROY_FUNC(type, msg) \
-  static inline evoasm_success_t \
-  evoasm_##type##_##destroy(evoasm_##type##_t *ptr) { \
-    if(ptr == NULL) return true; \
-    int errno = pthread_##type##_##destroy(&ptr->type); \
-    _EVOASM_PTHREAD_WRAPPER_FUNC_BODY(type, name, msg) \
-  }
 
 _EVOASM_PTHREAD_DEF_WRAPPER_INIT_FUNC(mutex, init, "rwlock initialization failed")
 
-_EVOASM_PTHREAD_DEF_WRAPPER_DESTROY_FUNC(mutex, "rwlock destruction failed")
+_EVOASM_PTHREAD_DEF_WRAPPER_FUNC(mutex, destroy, "rwlock destruction failed")
 
 _EVOASM_PTHREAD_DEF_WRAPPER_FUNC(mutex, lock, "locking rwlock failed")
 
@@ -65,7 +58,7 @@ _EVOASM_PTHREAD_DEF_WRAPPER_FUNC(mutex, unlock, "unlocking rwlock failed")
 
 _EVOASM_PTHREAD_DEF_WRAPPER_INIT_FUNC(rwlock, init, "rwlock initialization failed")
 
-_EVOASM_PTHREAD_DEF_WRAPPER_DESTROY_FUNC(rwlock, "rwlock destruction failed")
+_EVOASM_PTHREAD_DEF_WRAPPER_FUNC(rwlock, destroy, "rwlock destruction failed")
 
 _EVOASM_PTHREAD_DEF_WRAPPER_FUNC(rwlock, rdlock, "read-locking rwlock failed")
 
@@ -99,6 +92,5 @@ evoasm_thread_join(evoasm_thread_t *thread, void **retval) {
 }
 
 #undef _EVOASM_PTHREAD_DEF_WRAPPER_INIT_FUNC
-#undef _EVOASM_PTHREAD_DEF_WRAPPER_DESTROY_FUNC
 #undef _EVOASM_PTHREAD_DEF_WRAPPER_FUNC
 #undef _EVOASM_PTHREAD_WRAPPER_FUNC_BODY

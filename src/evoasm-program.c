@@ -27,29 +27,24 @@ evoasm_program_io_val_to_dbl(evoasm_program_io_val_t io_val, evoasm_program_io_v
 }
 
 static bool
-evoasm_program_destroy_(evoasm_program_t *program, bool free_buf, bool free_body_buf,
-                    bool free_params, unsigned free_n_kernels) {
+evoasm_program_destroy_(evoasm_program_t *program, unsigned free_n_kernels) {
 
   unsigned i;
   bool retval = true;
 
-  for(i = 0; i < program->params->kernel_count; i++) {
-    if(i < free_n_kernels) {
-      evoasm_free(program->kernels[i].params);
-    }
+  for(i = 0; i < free_n_kernels; i++) {
+    evoasm_free(program->kernels[i].params);
   }
 
-  if(free_params) {
-    evoasm_free(program->params);
-  }
+  evoasm_free(program->params);
 
-  if(free_buf) {
+  if(program->buf) {
     if(!evoasm_buf_destroy(program->buf)) {
       retval = false;
     }
   }
 
-  if(free_body_buf) {
+  if(program->body_buf) {
     if(!evoasm_buf_destroy(program->body_buf)) {
       retval = false;
     }
@@ -60,29 +55,29 @@ evoasm_program_destroy_(evoasm_program_t *program, bool free_buf, bool free_body
 evoasm_success_t
 evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program) {
   unsigned i = 0;
-  bool free_buf = false, free_body_buf = false, free_params = false;
 
   *cloned_program = *program;
   cloned_program->reset_rflags = false;
   cloned_program->_input.len = 0;
   cloned_program->_output.len = 0;
   cloned_program->output_vals = NULL;
+  cloned_program->buf = NULL;
+  cloned_program->body_buf = NULL;
 
   /* memory addresses in original buffer point to memory in original program,
    * we need to reemit assembly, this is done in a lazy fashion */
   cloned_program->need_emit = true;
 
   EVOASM_TRY(error, evoasm_buf_clone, program->buf, &cloned_program->_buf);
-  EVOASM_TRY(error_free_buf, evoasm_buf_clone, program->body_buf, &cloned_program->_body_buf);
-
   cloned_program->buf = &cloned_program->_buf;
+  EVOASM_TRY(error, evoasm_buf_clone, program->body_buf, &cloned_program->_body_buf);
   cloned_program->body_buf = &cloned_program->_body_buf;
 
   size_t program_params_size = sizeof(evoasm_program_params_t);
   cloned_program->params = evoasm_malloc(program_params_size);
 
   if(!cloned_program->params) {
-    goto error_free_body_buf;
+    goto error;
   }
 
   memcpy(cloned_program->params, program->params, program_params_size);
@@ -95,31 +90,25 @@ evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program
     size_t params_size = sizeof(evoasm_kernel_params_t) + orig_kernel->params->size * sizeof(evoasm_kernel_param_t);
     cloned_kernel->params = evoasm_malloc(params_size);
     if(!cloned_kernel->params) {
-      goto error_free_params;
+      goto error;
     }
     memcpy(cloned_kernel->params, orig_kernel->params, params_size);
   }
 
   return true;
 
-error_free_params:
-  free_params = true;
-error_free_body_buf:
-  free_body_buf = true;
-error_free_buf:
-  free_buf = true;
 error:
-  (void) evoasm_program_destroy_(cloned_program, free_buf, free_body_buf, free_params, i);
+  (void) evoasm_program_destroy_(cloned_program, i);
   return false;
 }
 
 evoasm_success_t
 evoasm_program_destroy(evoasm_program_t *program) {
-  return evoasm_program_destroy_(program, true, true, true, UINT_MAX);
+  return evoasm_program_destroy_(program, program->params->kernel_count);
 }
 
 evoasm_buf_t *
-evoasm_program_buf(evoasm_program_t *program, bool body) {
+evoasm_program_get_buf(evoasm_program_t *program, bool body) {
   if(body) {
     return program->body_buf;
   } else {
@@ -128,12 +117,12 @@ evoasm_program_buf(evoasm_program_t *program, bool body) {
 }
 
 evoasm_kernel_count_t
-evoasm_program_kernel_count(evoasm_program_t *program) {
+evoasm_program_get_kernel_count(evoasm_program_t *program) {
   return program->params->kernel_count;
 }
 
 size_t
-evoasm_program_kernel_code(evoasm_program_t *program, unsigned kernel_idx, const uint8_t **code) {
+evoasm_program_get_kernel_code(evoasm_program_t *program, unsigned kernel_idx, const uint8_t **code) {
   evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   size_t len = (size_t) kernel->buf_end - kernel->buf_start;
   *code = program->body_buf->data + kernel->buf_start;
@@ -141,7 +130,7 @@ evoasm_program_kernel_code(evoasm_program_t *program, unsigned kernel_idx, const
 }
 
 size_t
-evoasm_program_code(evoasm_program_t *program, bool frame, const uint8_t **code) {
+evoasm_program_get_code(evoasm_program_t *program, bool frame, const uint8_t **code) {
   evoasm_buf_t *buf;
   if(frame) {
     buf = program->buf;
@@ -154,7 +143,7 @@ evoasm_program_code(evoasm_program_t *program, bool frame, const uint8_t **code)
 
 
 unsigned
-evoasm_program_kernel_alt_succ(evoasm_program_t *program, unsigned kernel_idx) {
+evoasm_program_get_kernel_alt_succ(evoasm_program_t *program, unsigned kernel_idx) {
   evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   return kernel->params->alt_succ_idx;
 }
@@ -344,8 +333,8 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
 }
 
 static bool
-evoasm_kernel_param_x64_writes_p(evoasm_kernel_param_t *param, evoasm_reg_id_t reg_id,
-                                 evoasm_x64_reg_write_acc_t *reg_write_acc) {
+evoasm_kernel_param_x64_is_writer(evoasm_kernel_param_t *param, evoasm_reg_id_t reg_id,
+                                  evoasm_x64_reg_write_acc_t *reg_write_acc) {
   evoasm_x64_inst_t *x64_inst = _evoasm_x64_inst((evoasm_x64_inst_id_t) param->x64.inst);
   unsigned i;
 
@@ -1367,7 +1356,7 @@ evoasm_program_x64_find_writers_(evoasm_program_t *program, evoasm_kernel_t *ker
     evoasm_x64_reg_write_acc_t reg_write_acc;
     evoasm_x64_reg_write_acc_init(&reg_write_acc);
 
-    if(evoasm_kernel_param_x64_writes_p(param, reg_id, &reg_write_acc)) {
+    if(evoasm_kernel_param_x64_is_writer(param, reg_id, &reg_write_acc)) {
       writers[len++] = j;
     }
   }
@@ -1380,9 +1369,6 @@ evoasm_program_x64_find_writers(evoasm_program_t *program, evoasm_kernel_t *kern
 
   return evoasm_program_x64_find_writers_(program, kernel, reg_id, index, writers);
 }
-
-
-typedef evoasm_bitmap1024_t evoasm_mark_bitmap;
 
 typedef struct {
   bool change;

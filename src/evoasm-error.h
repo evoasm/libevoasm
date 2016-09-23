@@ -63,7 +63,7 @@ evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code
 
 
 evoasm_error_t *
-evoasm_last_error();
+evoasm_get_last_error();
 
 void
 evoasm_set_last_error(evoasm_error_t *error);

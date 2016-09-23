@@ -56,7 +56,6 @@
   _EVOASM_DEF_ALLOC_FUNC(type) \
   _EVOASM_DEF_FREE_FUNC(type) \
 
-
 #define _EVOASM_DECL_ALLOC_FREE_FUNCS(type) \
   _EVOASM_DECL_ALLOC_FUNC(type) \
   _EVOASM_DECL_FREE_FUNC(type) \
@@ -67,19 +66,24 @@
     *ptr = zero; \
   }
 
-#define _EVOASM_DEF_FIELD_READER(type, field, field_type) \
-  field_type evoasm_##type##_##field(evoasm_##type##_t *ptr) { \
+#define _EVOASM_DEF_GETTER(type, field, field_type) \
+  field_type evoasm_##type##_get_##field(evoasm_##type##_t *ptr) { \
     return (field_type) ptr->field; \
   }
 
-#define _EVOASM_DEF_FIELD_WRITER(type, field, field_type) \
+#define _EVOASM_DEF_BOOL_GETTER(type, field) \
+  bool evoasm_##type##_is_##field(evoasm_##type##_t *ptr) { \
+    return ptr->field; \
+  }
+
+#define _EVOASM_DEF_SETTER(type, field, field_type) \
   void evoasm_##type##_set_##field(evoasm_##type##_t *ptr, field_type value) { \
     ptr->field = value; \
   }
 
-#define _EVOASM_DEF_FIELD_ACCESSOR(type, field, field_type) \
-  _EVOASM_DEF_FIELD_READER(type, field, field_type) \
-  _EVOASM_DEF_FIELD_WRITER(type, field, field_type)
+#define _EVOASM_DEF_GETTER_SETTER(type, field, field_type) \
+  _EVOASM_DEF_GETTER(type, field, field_type) \
+  _EVOASM_DEF_SETTER(type, field, field_type)
 
 #if defined(__linux__) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
 #define EVOASM_UNIX

@@ -124,64 +124,66 @@ evoasm_x64_enc_basic(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *pa
 }
 
 evoasm_x64_operand_t *
-evoasm_x64_inst_operand(evoasm_x64_inst_t *inst, unsigned index) {
+evoasm_x64_inst_get_operand(evoasm_x64_inst_t *inst, unsigned index) {
   return &inst->operands[index];
 }
 
 unsigned
-evoasm_x64_inst_n_operands(evoasm_x64_inst_t *inst) {
+evoasm_x64_inst_get_n_operands(evoasm_x64_inst_t *inst) {
   return inst->n_operands;
 }
 
-#define _EVOASM_X64_OPERAND_DEF_FIELD_READER(field, type) _EVOASM_DEF_FIELD_READER(x64_operand, field, type)
+#define _EVOASM_X64_OPERAND_DEF_GETTER(field, type) _EVOASM_DEF_GETTER(x64_operand, field, type)
+#define _EVOASM_X64_OPERAND_DEF_BOOL_GETTER(field) _EVOASM_DEF_BOOL_GETTER(x64_operand, field)
 
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(read, bool)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(written, bool)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(write_mask, evoasm_x64_bit_mask_t)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(cond_written, bool)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(implicit, bool)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(mnem, bool)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(type, evoasm_x64_operand_type_t)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_type, evoasm_x64_reg_type_t)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(reg_id, evoasm_x64_reg_id_t)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(imm, int8_t)
-_EVOASM_X64_OPERAND_DEF_FIELD_READER(param_idx, unsigned)
+_EVOASM_X64_OPERAND_DEF_BOOL_GETTER(read)
+_EVOASM_X64_OPERAND_DEF_BOOL_GETTER(written)
+_EVOASM_X64_OPERAND_DEF_BOOL_GETTER(implicit)
+_EVOASM_X64_OPERAND_DEF_BOOL_GETTER(cond_written)
+_EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
 
-evoasm_x64_operand_size_t evoasm_x64_operand_size(evoasm_x64_operand_t *operand) {
+_EVOASM_X64_OPERAND_DEF_GETTER(write_mask, evoasm_x64_bit_mask_t)
+_EVOASM_X64_OPERAND_DEF_GETTER(type, evoasm_x64_operand_type_t)
+_EVOASM_X64_OPERAND_DEF_GETTER(reg_type, evoasm_x64_reg_type_t)
+_EVOASM_X64_OPERAND_DEF_GETTER(reg_id, evoasm_x64_reg_id_t)
+_EVOASM_X64_OPERAND_DEF_GETTER(imm, int8_t)
+_EVOASM_X64_OPERAND_DEF_GETTER(param_idx, unsigned)
+
+evoasm_x64_operand_size_t evoasm_x64_operand_get_size(evoasm_x64_operand_t *operand) {
   if(operand->size1 < EVOASM_X64_N_OPERAND_SIZES) return operand->size1;
   if(operand->size2 < EVOASM_X64_N_OPERAND_SIZES) return operand->size2;
   return EVOASM_X64_N_OPERAND_SIZES;
 }
 
-evoasm_x64_operand_size_t evoasm_x64_operand_reg_size(evoasm_x64_operand_t *operand) {
+evoasm_x64_operand_size_t evoasm_x64_operand_get_reg_size(evoasm_x64_operand_t *operand) {
   return (evoasm_x64_operand_size_t) operand->size1;
 }
 
-evoasm_x64_operand_size_t evoasm_x64_operand_index_reg_size(evoasm_x64_operand_t *operand) {
+evoasm_x64_operand_size_t evoasm_x64_operand_get_index_reg_size(evoasm_x64_operand_t *operand) {
   return (evoasm_x64_operand_size_t) operand->size1;
 }
 
-evoasm_x64_operand_size_t evoasm_x64_operand_mem_size(evoasm_x64_operand_t *operand) {
+evoasm_x64_operand_size_t evoasm_x64_operand_get_mem_size(evoasm_x64_operand_t *operand) {
   return (evoasm_x64_operand_size_t) operand->size2;
 }
 
 evoasm_param_t *
-evoasm_x64_inst_param(evoasm_x64_inst_t *inst, unsigned index) {
+evoasm_x64_inst_get_param(evoasm_x64_inst_t *inst, unsigned index) {
   return &inst->params[index];
 }
 
 unsigned
-evoasm_x64_inst_n_params(evoasm_x64_inst_t *inst) {
+evoasm_x64_inst_get_n_params(evoasm_x64_inst_t *inst) {
   return inst->n_params;
 }
 
 bool
-evoasm_x64_inst_basic(evoasm_x64_inst_t *inst) {
+evoasm_x64_inst_is_basic(evoasm_x64_inst_t *inst) {
   return inst->basic_enc_func != NULL;
 }
 
 const char *
-evoasm_x64_inst_mnem(evoasm_x64_inst_t *inst) {
+evoasm_x64_inst_get_mnem(evoasm_x64_inst_t *inst) {
   return (const char *) inst->mnem;
 }
 
@@ -225,7 +227,7 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
 
     evoasm_x64_inst_t *inst = (evoasm_x64_inst_t *) &_EVOASM_X64_INSTS_VAR_NAME[i];
 
-    if(search && !evoasm_x64_inst_basic(inst)) goto skip;
+    if(search && !evoasm_x64_inst_is_basic(inst)) goto skip;
 
     if((inst->features & ~features) != 0) goto skip;
 

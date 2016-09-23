@@ -39,12 +39,9 @@ typedef struct evoasm_island_model_s {
   uint16_t n_islands;
   evoasm_island_t *first_island;
   evoasm_island_model_params_t *params;
-  evoasm_mutex_t *result_mutex;
-  evoasm_mutex_t result_mutex_;
-  evoasm_mutex_t *progress_mutex;
-  evoasm_mutex_t progress_mutex_;
-  evoasm_mutex_t *error_mutex;
-  evoasm_mutex_t error_mutex_;
+  evoasm_mutex_t result_mutex;
+  evoasm_mutex_t progress_mutex;
+  evoasm_mutex_t error_mutex;
   evoasm_island_model_result_cb_t result_cb;
   evoasm_island_model_progress_cb_t progress_cb;
   void *result_user_data;

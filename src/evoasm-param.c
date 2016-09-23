@@ -8,14 +8,6 @@
 
 #include "evoasm-param.h"
 
-evoasm_domain_t *
-evoasm_param_domain(evoasm_param_t *param) {
-  return param->domain;
-}
-
-evoasm_param_id_t
-evoasm_param_id(evoasm_param_t *param) {
-  return param->id;
-}
-
+_EVOASM_DEF_GETTER(param, domain, evoasm_domain_t *)
+_EVOASM_DEF_GETTER(param, id, evoasm_param_id_t)
 

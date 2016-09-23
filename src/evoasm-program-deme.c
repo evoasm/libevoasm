@@ -64,11 +64,11 @@ evoasm_program_deme_init_domains(evoasm_program_deme_t *program_deme) {
         if(param->id == param_id) {
           evoasm_domain_t *user_domain = params->deme_params.domains[param_id];
           if(user_domain != NULL) {
-            if(evoasm_domain_empty(user_domain)) goto empty_domain;
+            if(evoasm_domain_is_empty(user_domain)) goto empty_domain;
 
             evoasm_domain_clone(user_domain, &cloned_domain);
             evoasm_domain_intersect(&cloned_domain, param->domain, inst_domain);
-            if(evoasm_domain_empty(inst_domain)) goto empty_domain;
+            if(evoasm_domain_is_empty(inst_domain)) goto empty_domain;
           } else {
             evoasm_domain_clone(param->domain, inst_domain);
           }
@@ -241,8 +241,27 @@ evoasm_program_deme_eval_teardown(evoasm_deme_t *deme) {
 }
 
 
+evoasm_success_t
+evoasm_program_deme_get_program(evoasm_program_deme_t *program_deme, evoasm_program_params_t *program_params,
+                               evoasm_program_t *program) {
+
+  evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
+
+  evoasm_program_t program_ = {
+      .params = program_params,
+      .recur_limit = params->recur_limit,
+      .buf = &program_deme->buf,
+      .body_buf = &program_deme->body_buf,
+      .arch_info = program_deme->arch_info,
+      ._output = *params->program_output,
+      ._input = *params->program_input
+  };
+
+  return evoasm_program_clone(&program_, program);
+}
+
 static evoasm_success_t
-evoasm_program_eval_program_params(evoasm_program_deme_t *program_deme, evoasm_program_params_t *program_params, evoasm_loss_t *loss) {
+evoasm_program_deme_eval_program_params(evoasm_program_deme_t *program_deme, evoasm_program_params_t *program_params, evoasm_loss_t *loss) {
   evoasm_program_deme_params_t *params = evoasm_program_deme_params(program_deme);
 
   /* encode solution */
@@ -268,7 +287,7 @@ evoasm_program_eval_program_params(evoasm_program_deme_t *program_deme, evoasm_p
 
 static evoasm_success_t
 evoasm_program_deme_eval_indiv(evoasm_deme_t *deme, evoasm_indiv_t *indiv, evoasm_loss_t *loss) {
-  return evoasm_program_eval_program_params((evoasm_program_deme_t *) deme, (evoasm_program_params_t *) indiv, loss);
+  return evoasm_program_deme_eval_program_params((evoasm_program_deme_t *) deme, (evoasm_program_params_t *) indiv, loss);
 }
 
 
@@ -451,7 +470,7 @@ evoasm_program_deme_init(evoasm_program_deme_t *program_deme, evoasm_arch_id_t a
     return false;
   }
 
-  program_deme->arch_info = evoasm_arch_info(arch_id);
+  program_deme->arch_info = evoasm_get_arch_info(arch_id);
   program_deme->output_vals = evoasm_malloc(EVOASM_PROGRAM_OUTPUT_VALS_SIZE(params->program_input));
   if(!program_deme->output_vals) goto alloc_failed;
 

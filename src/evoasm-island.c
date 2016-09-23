@@ -26,8 +26,8 @@ evoasm_island_emigrate(evoasm_island_t *island) {
 
     EVOASM_TRY(error, evoasm_rwlock_wrlock, &immigr_island->rwlock);
     for(j = 0; j < emigr_size; j++) {
-      evoasm_indiv_t *emigr_indiv = evoasm_deme_indiv(island->deme, emigr_selection[j]);
-      evoasm_loss_t emigr_loss = evoasm_deme_indiv_loss(island->deme, emigr_selection[i]);
+      evoasm_indiv_t *emigr_indiv = evoasm_deme_get_indiv(island->deme, emigr_selection[j]);
+      evoasm_loss_t emigr_loss = evoasm_deme_get_indiv_loss(island->deme, emigr_selection[i]);
       evoasm_deme_inject(island->deme, emigr_indiv, emigr_size, emigr_loss);
     }
     EVOASM_TRY(error, evoasm_rwlock_unlock, &immigr_island->rwlock);
@@ -74,7 +74,7 @@ evoasm_island_cycle(evoasm_island_t *island,
 
     if(gen % 256 == 0) {
       unsigned n_inf;
-      evoasm_loss_t deme_loss = evoasm_deme_loss(island->deme, &n_inf, true);
+      evoasm_loss_t deme_loss = evoasm_deme_get_loss(island->deme, &n_inf, true);
       evoasm_log_info("norm. deme loss: %g/%u\n\n", deme_loss, n_inf);
 
       EVOASM_TRY(error_unlock, evoasm_island_model_call_progress_cb,
@@ -208,7 +208,7 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
   }
 
   if(immigr_island->deme->cls->type != island->deme->cls->type ||
-     evoasm_deme_indiv_size(immigr_island->deme) < evoasm_deme_indiv_size(island->deme)) {
+      evoasm_deme_get_indiv_size(immigr_island->deme) < evoasm_deme_get_indiv_size(island->deme)) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
                      "island demes incompatible");
     return false;
@@ -222,8 +222,8 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island_params)
 _EVOASM_DEF_ZERO_INIT_FUNC(island_params)
 
-_EVOASM_DEF_FIELD_ACCESSOR(island_params, emigr_rate, double)
-_EVOASM_DEF_FIELD_ACCESSOR(island_params, emigr_freq, uint16_t)
-_EVOASM_DEF_FIELD_ACCESSOR(island_params, max_loss, evoasm_loss_t)
+_EVOASM_DEF_GETTER_SETTER(island_params, emigr_rate, double)
+_EVOASM_DEF_GETTER_SETTER(island_params, emigr_freq, uint16_t)
+_EVOASM_DEF_GETTER_SETTER(island_params, max_loss, evoasm_loss_t)
 
 _EVOASM_DEF_ALLOC_FREE_FUNCS(island)

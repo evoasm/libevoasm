@@ -74,12 +74,12 @@ done:
 }
 
 double
-evoasm_program_io_value_f64(evoasm_program_io_t *program_io, unsigned idx) {
+evoasm_program_io_get_value_f64(evoasm_program_io_t *program_io, unsigned idx) {
   return program_io->vals[idx].f64;
 }
 
 int64_t
-evoasm_program_io_value_i64(evoasm_program_io_t *program_io, unsigned idx) {
+evoasm_program_io_get_value_i64(evoasm_program_io_t *program_io, unsigned idx) {
   return program_io->vals[idx].i64;
 }
 
@@ -89,12 +89,12 @@ evoasm_program_io_destroy(evoasm_program_io_t *program_io) {
 }
 
 evoasm_program_io_val_type_t
-evoasm_program_io_type(evoasm_program_io_t *program_io, unsigned idx) {
+evoasm_program_io_get_type(evoasm_program_io_t *program_io, unsigned idx) {
   return program_io->types[idx % program_io->arity];
 }
 
 _EVOASM_DEF_FREE_FUNC(program_io)
 
-_EVOASM_DEF_FIELD_READER(program_io, arity, uint8_t)
-_EVOASM_DEF_FIELD_READER(program_io, len, uint16_t)
+_EVOASM_DEF_GETTER(program_io, arity, uint8_t)
+_EVOASM_DEF_GETTER(program_io, len, uint16_t)
 

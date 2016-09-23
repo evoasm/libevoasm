@@ -66,17 +66,17 @@ evoasm_deme_indiv_(evoasm_deme_t *deme, uint32_t idx, unsigned char *ptr) {
 }
 
 evoasm_indiv_t *
-evoasm_deme_indiv(evoasm_deme_t *deme, uint32_t idx) {
+evoasm_deme_get_indiv(evoasm_deme_t *deme, uint32_t idx) {
   return evoasm_deme_indiv_(deme, idx, deme->main_indivs);
 }
 
 evoasm_loss_t
-evoasm_deme_indiv_loss(evoasm_deme_t *deme, uint32_t idx) {
+evoasm_deme_get_indiv_loss(evoasm_deme_t *deme, uint32_t idx) {
   return deme->losses[idx];
 }
 
 size_t
-evoasm_deme_indiv_size(evoasm_deme_t *deme) {
+evoasm_deme_get_indiv_size(evoasm_deme_t *deme) {
   return deme->indiv_size;
 }
 
@@ -94,7 +94,7 @@ evoasm_deme_inject(evoasm_deme_t *deme, evoasm_indiv_t *indiv, size_t indiv_size
   }
 done:;
   assert(indiv_size <= deme->indiv_size);
-  memcpy(evoasm_deme_indiv(deme, i), indiv, indiv_size);
+  memcpy(evoasm_deme_get_indiv(deme, i), indiv, indiv_size);
   deme->losses[i] = loss;
 }
 
@@ -103,7 +103,7 @@ evoasm_deme_seed(evoasm_deme_t *deme) {
   unsigned i;
 
   for(i = 0; i < deme->params->size; i++) {
-    if(!deme->cls->seed_indiv_func(deme, evoasm_deme_indiv(deme, i))) {
+    if(!deme->cls->seed_indiv_func(deme, evoasm_deme_get_indiv(deme, i))) {
       return false;
     }
   }
@@ -135,7 +135,7 @@ evoasm_deme_eval(evoasm_deme_t *deme, evoasm_loss_t max_loss, evoasm_deme_result
   for(i = 0; i < deme->params->size; i++) {
     evoasm_loss_t loss;
 
-    evoasm_indiv_t *indiv = evoasm_deme_indiv(deme, i);
+    evoasm_indiv_t *indiv = evoasm_deme_get_indiv(deme, i);
 
     if(!deme->cls->eval_indiv_func(deme, indiv, &loss)) {
       retval = false;
@@ -211,9 +211,9 @@ evoasm_deme_combine_parents(evoasm_deme_t *deme, uint32_t *parents) {
   unsigned i;
 
   for(i = 0; i < deme->params->size; i += 2) {
-    evoasm_indiv_t *parent_a_ = evoasm_deme_indiv(deme, parents[i]);
+    evoasm_indiv_t *parent_a_ = evoasm_deme_get_indiv(deme, parents[i]);
     evoasm_indiv_t *parent_a =  evoasm_deme_indiv_(deme, 0, deme->swap_indivs);
-    evoasm_indiv_t *parent_b_ = evoasm_deme_indiv(deme, parents[i + 1]);
+    evoasm_indiv_t *parent_b_ = evoasm_deme_get_indiv(deme, parents[i + 1]);
     evoasm_indiv_t *parent_b = evoasm_deme_indiv_(deme, 1, deme->swap_indivs);
 
     // save parents into swap space
@@ -232,7 +232,7 @@ evoasm_deme_combine_parents(evoasm_deme_t *deme, uint32_t *parents) {
 }
 
 evoasm_loss_t
-evoasm_deme_loss(evoasm_deme_t *deme, unsigned *n_inf, bool per_example) {
+evoasm_deme_get_loss(evoasm_deme_t *deme, unsigned *n_inf, bool per_example) {
   unsigned i;
   double scale = 1.0 / deme->params->size;
   double deme_loss = 0.0;
