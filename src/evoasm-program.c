@@ -116,7 +116,7 @@ evoasm_program_get_buf(evoasm_program_t *program, bool body) {
   }
 }
 
-evoasm_kernel_count_t
+evoasm_program_size_t
 evoasm_program_get_kernel_count(evoasm_program_t *program) {
   return program->params->kernel_count;
 }
@@ -1486,7 +1486,7 @@ evoasm_program_eliminate_introns(evoasm_program_t *program) {
         kernel->params->params[k++] = kernel->params->params[j];
       }
     }
-    kernel->params->size = (evoasm_kernel_count_t) k;
+    kernel->params->size = (evoasm_program_size_t) k;
   }
 
   /* program is already prepared, must be reset before doing it again */

@@ -41,16 +41,16 @@ set(SOURCE_FILES
         src/gen/evoasm-x64-insts.c
         src/evoasm-domain.h
         src/evoasm-domain.c
-        src/evoasm-deme-params.h
-        src/evoasm-deme-params.c
-        src/evoasm-program-deme-params.h
-        src/evoasm-program-deme-params.c
+        src/evoasm-pop-params.h
+        src/evoasm-pop-params.c
+        src/evoasm-program-pop-params.h
+        src/evoasm-program-pop-params.c
         src/evoasm-program.c
         src/evoasm-program.h
-        src/evoasm-deme.c
-        src/evoasm-deme.h
-        src/evoasm-program-deme.c
-        src/evoasm-program-deme.h
+        src/evoasm-pop.c
+        src/evoasm-pop.h
+        src/evoasm-program-pop.c
+        src/evoasm-program-pop.h
         src/evoasm-signal.c
         src/evoasm-signal.h
         src/evoasm-threads.c

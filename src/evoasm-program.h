@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "evoasm-deme-params.h"
+#include "evoasm-pop-params.h"
 #include "evoasm-x64.h"
 #include "evoasm-program-io.h"
 
@@ -21,7 +21,7 @@ typedef union {
   evoasm_kernel_param_x64_t x64;
 } evoasm_kernel_param_t;
 
-typedef uint8_t evoasm_kernel_count_t;
+typedef uint8_t evoasm_program_size_t;
 
 #define EVOASM_KERNEL_SIZE_MAX UINT8_MAX
 typedef uint8_t evoasm_kernel_size_t;
@@ -38,7 +38,7 @@ typedef struct {
 } evoasm_kernel_params_t;
 
 typedef struct {
-  evoasm_kernel_count_t kernel_count;
+  evoasm_program_size_t kernel_count;
   void *_[];
 } evoasm_program_params_t;
 
@@ -82,10 +82,11 @@ typedef enum {
 } evoasm_program_emit_flags_t;
 
 
+#define EVOASM_PROGRAM_OUTPUT_VALS_LEN(io) \
+  ((size_t)EVOASM_PROGRAM_IO_N_EXAMPLES(io) * (size_t)EVOASM_KERNEL_MAX_OUTPUT_REGS)
+
 #define EVOASM_PROGRAM_OUTPUT_VALS_SIZE(io) \
-      ((size_t)EVOASM_PROGRAM_IO_N_EXAMPLES(io) * \
-       (size_t)EVOASM_KERNEL_MAX_OUTPUT_REGS * \
-       sizeof(evoasm_program_io_val_t))
+  (EVOASM_PROGRAM_OUTPUT_VALS_LEN(io) * sizeof(evoasm_program_io_val_t))
 
 #define EVOASM_KERNEL_PARAMS_SIZE(max_kernel_size) \
    (sizeof(evoasm_kernel_params_t) + \

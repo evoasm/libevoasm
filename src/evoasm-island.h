@@ -13,7 +13,7 @@
 #include <stdatomic.h>
 
 #include "evoasm-threads.h"
-#include "evoasm-deme.h"
+#include "evoasm-pop.h"
 
 #define EVOASM_ISLAND_MAX_IMMIGR_ISLANDS 8
 
@@ -28,7 +28,7 @@ struct evoasm_island_model_s;
 typedef struct evoasm_island_s {
   evoasm_rwlock_t rwlock;
   evoasm_thread_t thread;
-  evoasm_deme_t *deme;
+  evoasm_pop_t *pop;
   struct evoasm_island_s *immigr_islands[EVOASM_ISLAND_MAX_IMMIGR_ISLANDS];
   evoasm_island_params_t *params;
   uint8_t n_immigr_islands;

@@ -16,19 +16,19 @@ evoasm_island_emigrate(evoasm_island_t *island) {
   unsigned i;
   for(i = 0; i < island->n_immigr_islands; i++) {
     evoasm_island_t *immigr_island = island->immigr_islands[i];
-    unsigned emigr_size = (unsigned) island->params->emigr_rate * island->deme->params->size;
+    unsigned emigr_size = (unsigned) island->params->emigr_rate * island->pop->params->size;
     uint32_t *emigr_selection = evoasm_alloca(sizeof(uint32_t) * emigr_size);
 
     EVOASM_TRY(error, evoasm_rwlock_rdlock, &island->rwlock);
-    evoasm_deme_select(island->deme, emigr_selection, emigr_size);
+    evoasm_pop_select(island->pop, emigr_selection, emigr_size);
 
     unsigned j;
 
     EVOASM_TRY(error, evoasm_rwlock_wrlock, &immigr_island->rwlock);
     for(j = 0; j < emigr_size; j++) {
-      evoasm_indiv_t *emigr_indiv = evoasm_deme_get_indiv(island->deme, emigr_selection[j]);
-      evoasm_loss_t emigr_loss = evoasm_deme_get_indiv_loss(island->deme, emigr_selection[i]);
-      evoasm_deme_inject(island->deme, emigr_indiv, emigr_size, emigr_loss);
+      evoasm_indiv_t *emigr_indiv = evoasm_pop_get_indiv(island->pop, emigr_selection[j]);
+      evoasm_loss_t emigr_loss = evoasm_pop_get_indiv_loss(island->pop, emigr_selection[i]);
+      evoasm_pop_inject(island->pop, emigr_indiv, emigr_size, emigr_loss);
     }
     EVOASM_TRY(error, evoasm_rwlock_unlock, &immigr_island->rwlock);
     EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
@@ -51,7 +51,7 @@ evoasm_island_model_call_result_cb(struct evoasm_island_model_s *island_model, c
                                    evoasm_loss_t loss);
 
 static bool
-island_result_func(evoasm_deme_t *deme, const evoasm_indiv_t *indiv, evoasm_loss_t loss, void *user_data) {
+island_result_func(evoasm_pop_t *pop, const evoasm_indiv_t *indiv, evoasm_loss_t loss, void *user_data) {
   evoasm_island_t *island = (evoasm_island_t *) user_data;
   return evoasm_island_model_call_result_cb(island->model, indiv, loss);
 }
@@ -65,28 +65,28 @@ evoasm_island_cycle(evoasm_island_t *island,
   bool unlock_at_exit = false;
 
   struct evoasm_island_model_s *island_model = island->model;
-  evoasm_loss_t last_deme_loss = 0.0;
+  evoasm_loss_t last_pop_loss = 0.0;
 
   for(gen = 0;; gen++) {
 
     EVOASM_TRY(error, evoasm_rwlock_rdlock, &island->rwlock);
-    EVOASM_TRY(error_unlock, evoasm_deme_eval, island->deme, island->params->max_loss, island_result_func, island);
+    EVOASM_TRY(error_unlock, evoasm_pop_eval, island->pop, island->params->max_loss, island_result_func, island);
 
     if(gen % 256 == 0) {
       unsigned n_inf;
-      evoasm_loss_t deme_loss = evoasm_deme_get_loss(island->deme, &n_inf, true);
-      evoasm_log_info("norm. deme loss: %g/%u\n\n", deme_loss, n_inf);
+      evoasm_loss_t pop_loss = evoasm_pop_get_loss(island->pop, &n_inf, true);
+      evoasm_log_info("norm. pop loss: %g/%u\n\n", pop_loss, n_inf);
 
       EVOASM_TRY(error_unlock, evoasm_island_model_call_progress_cb,
-                 island_model, island, cycle, gen, deme_loss, n_inf);
+                 island_model, island, cycle, gen, pop_loss, n_inf);
 
       if(gen > 0) {
-        if(last_deme_loss <= deme_loss) {
+        if(last_pop_loss <= pop_loss) {
           regress++;
         }
       }
 
-      last_deme_loss = deme_loss;
+      last_pop_loss = pop_loss;
 
       if(regress >= 3) {
         evoasm_log_info("reached convergence\n");
@@ -100,7 +100,7 @@ evoasm_island_cycle(evoasm_island_t *island,
     }
 
     EVOASM_TRY(error, evoasm_rwlock_wrlock, &island->rwlock);
-    EVOASM_TRY(error_unlock, evoasm_deme_next_gen, island->deme);
+    EVOASM_TRY(error_unlock, evoasm_pop_next_gen, island->pop);
     EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
   }
 
@@ -131,13 +131,13 @@ evoasm_island_model_merge(evoasm_island_model_t *model) {
   evoasm_log_info("merging\n");
 
   for(i = 0; i < model->params->kernel_count; i++) {
-    evoasm_program_params_t *parent_a = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->deme.programs_main, i);
-    evoasm_program_params_t *parent_b = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->deme.programs_aux, i);
+    evoasm_program_params_t *parent_a = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_main, i);
+    evoasm_program_params_t *parent_b = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_aux, i);
 
-    evoasm_program_params_t *child = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->deme.programs_swap, i);
+    evoasm_program_params_t *child = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_swap, i);
     evoasm_island_model_crossover(model, parent_a, parent_b, child, NULL);
   }
-  evoasm_deme_swap(&model->deme, &model->deme.programs_main);
+  evoasm_pop_swap(&model->pop, &model->pop.programs_main);
 }
 #endif
 
@@ -151,7 +151,7 @@ evoasm_island_run(evoasm_island_t *island) {
     if(island->cancelled) break;
 
     EVOASM_TRY(error, evoasm_rwlock_wrlock, &island->rwlock);
-    EVOASM_TRY(error, evoasm_deme_seed, island->deme);
+    EVOASM_TRY(error, evoasm_pop_seed, island->pop);
     EVOASM_TRY(error, evoasm_rwlock_unlock, &island->rwlock);
     EVOASM_TRY(error, evoasm_island_cycle, island, cycle);
   }
@@ -168,12 +168,12 @@ evoasm_island_model_add_island(struct evoasm_island_model_s *island_model,
 
 evoasm_success_t
 evoasm_island_init(evoasm_island_t *island, struct evoasm_island_model_s *island_model,
-                   evoasm_deme_t *deme, evoasm_island_params_t *params) {
+                   evoasm_pop_t *pop, evoasm_island_params_t *params) {
   EVOASM_TRY(error, evoasm_rwlock_init, &island->rwlock);
 
   island->model = island_model;
   island->params = params;
-  island->deme = deme;
+  island->pop = pop;
   island->next = NULL;
 
   evoasm_island_model_add_island(island_model, island);
@@ -207,10 +207,10 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
     return false;
   }
 
-  if(immigr_island->deme->cls->type != island->deme->cls->type ||
-      evoasm_deme_get_indiv_size(immigr_island->deme) < evoasm_deme_get_indiv_size(island->deme)) {
+  if(immigr_island->pop->impl->type != island->pop->impl->type ||
+      evoasm_pop_get_indiv_size(immigr_island->pop) < evoasm_pop_get_indiv_size(island->pop)) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
-                     "island demes incompatible");
+                     "island pops incompatible");
     return false;
   }
 

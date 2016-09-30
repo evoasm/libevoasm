@@ -8,16 +8,14 @@
 
 #pragma once
 
-#include "evoasm-program-deme-params.h"
+#include "evoasm-program-pop-params.h"
 #include "evoasm-program.h"
-#include "evoasm-deme.h"
+#include "evoasm-pop.h"
 
 typedef struct {
-  evoasm_deme_t deme;
+  evoasm_pop_t pop;
   evoasm_buf_t buf;
   evoasm_buf_t body_buf;
-  evoasm_arch_info_t *arch_info;
-  evoasm_program_io_val_t *output_vals;
-} evoasm_program_deme_t;
+} evoasm_program_pop_t;
 
 

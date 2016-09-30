@@ -8,16 +8,16 @@
 
 #pragma once
 
-#include "evoasm-deme-params.h"
+#include "evoasm-pop-params.h"
 #include "evoasm-program-io.h"
 #include "evoasm-domain.h"
 #include "evoasm-param.h"
 #include "evoasm-program.h"
 
 typedef struct {
-  evoasm_deme_params_t deme_params;
-  evoasm_kernel_count_t min_kernel_count;
-  evoasm_kernel_count_t max_kernel_count;
+  evoasm_pop_params_t pop_params;
+  evoasm_program_size_t min_kernel_count;
+  evoasm_program_size_t max_kernel_count;
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
@@ -25,7 +25,7 @@ typedef struct {
   evoasm_program_input_t *program_input;
   evoasm_program_output_t *program_output;
   evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];
-} evoasm_program_deme_params_t;
+} evoasm_program_pop_params_t;
 
 bool
-evoasm_program_deme_params_valid(evoasm_program_deme_params_t *program_deme_params);
+evoasm_program_pop_params_valid(evoasm_program_pop_params_t *program_pop_params);

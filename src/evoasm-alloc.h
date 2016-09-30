@@ -59,6 +59,12 @@ evoasm_success_t evoasm_munmap(void *p, size_t size);
 evoasm_success_t evoasm_mprot(void *p, size_t size, int mode);
 long evoasm_page_size();
 
+
+#define EVOASM_CHECKED_CALLOC(f, n, s) \
+do { \
+  if(!(f = evoasm_calloc((n), (s)))) goto calloc_failed; \
+} while(0);
+
 #if defined(_WIN32)
   #define evoasm_alloca(s) _malloca(s);
 #else

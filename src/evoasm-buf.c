@@ -62,7 +62,9 @@ evoasm_buf_init(evoasm_buf_t *buf, evoasm_buf_type_t buf_type, size_t size)
 
 static evoasm_success_t
 evoasm_buf_destroy_mmap(evoasm_buf_t *buf) {
-  return evoasm_munmap(buf->data, buf->capa);
+  if(buf->data != NULL) {
+    return evoasm_munmap(buf->data, buf->capa);
+  }
 }
 
 static evoasm_success_t
