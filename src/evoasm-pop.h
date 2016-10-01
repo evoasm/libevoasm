@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <stdalign.h>
 #include "evoasm-error.h"
 #include "evoasm-pop-params.h"
 
@@ -47,29 +48,26 @@ typedef struct {
   evoasm_pop_type_t type;
 } evoasm_pop_impl_t;
 
-typedef struct {
-  unsigned char *swap_indivs;
+typedef struct alignas(128) {
   evoasm_prng_t prng;
-  evoasm_buf_t buf;
-  evoasm_buf_t body_buf;
   evoasm_program_io_val_t *output_vals;
+  evoasm_program_t program;
 } evoasm_pop_thread_data_t;
 
 typedef struct {
-  uint16_t *idxs;
-  uint16_t *alt_succ_idxs;
+  uint32_t *idxs;
+  uint32_t *alt_succ_idxs;
   uint8_t *jmp_selectors;
   evoasm_loss_t *losses;
+  evoasm_kernel_count_t *sizes;
   unsigned len;
 } evoasm_pop_program_layer_t;
 
-typedef union {
-  evoasm_x64_basic_params_t x64;
-} evoasm_arch_basic_params_t;
-
 typedef struct {
   evoasm_inst_id_t *insts;
-  evoasm_arch_basic_params_t *params;
+  union {
+    evoasm_x64_basic_params_t *x64;
+  } params;
   evoasm_kernel_size_t *sizes;
   evoasm_loss_t *losses;
   unsigned len;
@@ -84,7 +82,6 @@ typedef struct evoasm_pop_s {
   evoasm_loss_t *losses;
   uint64_t *error_counters;
   uint64_t error_counter;
-  size_t kernel_size;
   unsigned char *indivs;
   unsigned char *data;
   evoasm_pop_program_layer_t program_layers[EVOASM_POP_MAX_DEPTH];
@@ -96,7 +93,6 @@ typedef struct evoasm_pop_s {
   evoasm_pop_thread_data_t *thread_data;
   evoasm_arch_info_t *arch_info;
   int max_threads;
-  evoasm_program_io_val_t *output_vals;
 } evoasm_pop_t;
 
 

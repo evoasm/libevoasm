@@ -60,9 +60,9 @@ evoasm_success_t evoasm_mprot(void *p, size_t size, int mode);
 long evoasm_page_size();
 
 
-#define EVOASM_CHECKED_CALLOC(f, n, s) \
+#define EVOASM_TRY_CALLOC(l, f, n, s) \
 do { \
-  if(!(f = evoasm_calloc((n), (s)))) goto calloc_failed; \
+  if(!(f = evoasm_calloc((n), (s)))) goto l; \
 } while(0);
 
 #if defined(_WIN32)

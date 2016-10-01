@@ -60,6 +60,12 @@ set(SOURCE_FILES
         src/evoasm-program-io.h)
 
 find_package(Threads)
+find_package(OpenMP REQUIRED)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
+
 add_library(evoasm SHARED ${SOURCE_FILES})
 target_link_libraries(evoasm ${CMAKE_THREAD_LIBS_INIT})
 

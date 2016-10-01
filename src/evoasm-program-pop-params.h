@@ -16,8 +16,8 @@
 
 typedef struct {
   evoasm_pop_params_t pop_params;
-  evoasm_program_size_t min_kernel_count;
-  evoasm_program_size_t max_kernel_count;
+  evoasm_kernel_count_t min_kernel_count;
+  evoasm_kernel_count_t max_kernel_count;
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
