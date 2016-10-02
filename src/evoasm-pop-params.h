@@ -14,6 +14,8 @@
 #include "evoasm-program.h"
 
 typedef double evoasm_loss_t;
+typedef uint16_t evoasm_team_size_t;
+typedef uint16_t evoasm_deme_size_t;
 
 #define EVOASM_POP_PARAMS_MAX_PARAMS 32
 #define EVOASM_POP_MAX_DEPTH 128
@@ -22,9 +24,9 @@ typedef struct evoasm_pop_params_s {
   evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
   evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];
   uint8_t n_params;
-  uint32_t deme_sizes[EVOASM_POP_MAX_DEPTH + 1];
-  uint16_t max_program_sizes[EVOASM_POP_MAX_DEPTH];
-  uint16_t min_program_sizes[EVOASM_POP_MAX_DEPTH];
+  evoasm_deme_size_t deme_sizes[EVOASM_POP_MAX_DEPTH + 1];
+  evoasm_team_size_t max_team_sizes[EVOASM_POP_MAX_DEPTH];
+  evoasm_team_size_t min_team_sizes[EVOASM_POP_MAX_DEPTH];
   uint8_t depth;
   uint32_t mut_rate;
   evoasm_prng_state_t seed;

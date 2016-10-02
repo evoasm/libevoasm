@@ -54,14 +54,16 @@ typedef struct alignas(128) {
   evoasm_program_t program;
 } evoasm_pop_thread_data_t;
 
+
 typedef struct {
-  uint32_t *idxs;
-  uint32_t *alt_succ_idxs;
+  evoasm_deme_size_t *member_idxs;
+  evoasm_team_size_t *alt_succ_idxs;
   uint8_t *jmp_selectors;
   evoasm_loss_t *losses;
-  evoasm_kernel_count_t *sizes;
+  evoasm_team_size_t *sizes;
   unsigned len;
-} evoasm_pop_program_layer_t;
+  unsigned kernels_per_member;
+} evoasm_pop_team_layer_t;
 
 typedef struct {
   evoasm_inst_id_t *insts;
@@ -84,7 +86,7 @@ typedef struct evoasm_pop_s {
   uint64_t error_counter;
   unsigned char *indivs;
   unsigned char *data;
-  evoasm_pop_program_layer_t program_layers[EVOASM_POP_MAX_DEPTH];
+  evoasm_pop_team_layer_t team_layers[EVOASM_POP_MAX_DEPTH];
   evoasm_pop_kernel_layer_t kernel_layer;
   unsigned char *main_indivs;
   evoasm_domain_t *domains;

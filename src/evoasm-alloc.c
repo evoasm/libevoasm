@@ -62,7 +62,7 @@ evoasm_mmap(size_t size, void *p) {
 
 #if defined(_WIN32)
 retry:
-    mem = VirtualAlloc(p, kernel_count, MEM_COMMIT, PAGE_READWRITE);
+    mem = VirtualAlloc(p, size, MEM_COMMIT, PAGE_READWRITE);
     if(mem == NULL) {
       if(p != NULL) {
         goto retry;
@@ -91,7 +91,7 @@ evoasm_success_t
 evoasm_munmap(void *p, size_t size) {
   bool ret;
 #if defined(_WIN32)
-  ret = VirtualFree(p, kernel_count, MEM_DECOMMIT);
+  ret = VirtualFree(p, size, MEM_DECOMMIT);
 #elif defined(_POSIX_VERSION)
   ret = (munmap(p, size) == 0);
 #else
@@ -111,7 +111,7 @@ evoasm_mprot(void *p, size_t size, int mode)
 {
 
 #if defined(_WIN32)
-  if(VirtualProtect(p, kernel_count, mode, NULL) != 0) {
+  if(VirtualProtect(p, size, mode, NULL) != 0) {
     goto error;
   }
 #elif defined(_POSIX_VERSION)

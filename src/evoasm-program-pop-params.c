@@ -36,7 +36,7 @@ evoasm_program_pop_params_valid(evoasm_program_pop_params_t *program_pop_params)
 
   if(program_pop_params->max_kernel_count > EVOASM_PROGRAM_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
-                 NULL, "Program kernel_count cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+                 NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
     goto fail;
   }
 

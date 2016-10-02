@@ -101,6 +101,8 @@ typedef struct {
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
   evoasm_kernel_t *kernels;
+  evoasm_kernel_count_t *alt_succ_idxs;
+  uint8_t *jmp_selectors;
   uint32_t *recur_counters;
   evoasm_kernel_count_t kernel_count;
 

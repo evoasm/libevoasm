@@ -6,6 +6,8 @@
 #include "evoasm-pop-params.h"
 #include "evoasm-rand.h"
 #include "evoasm-signal.h"
+#include "evoasm-program.h"
+#include "evoasm.h"
 
 //#ifdef _OPENMP
 #  include <omp.h>
@@ -18,8 +20,8 @@ static evoasm_success_t
 evoasm_pop_thread_data_destroy(evoasm_pop_thread_data_t *thread_data) {
   bool retval = true;
 
-  if(!evoasm_buf_destroy(&thread_data->buf)) retval = false;
-  if(!evoasm_buf_destroy(&thread_data->body_buf)) retval = false;
+  if(!evoasm_program_destroy(&thread_data->program)) retval = false;
+  evoasm_prng_destroy(&thread_data->prng);
 
   return retval;
 }
@@ -33,10 +35,9 @@ evoasm_pop_destroy(evoasm_pop_t *pop) {
   evoasm_free(pop->error_counters);
   evoasm_free(pop->domains);
   for(int i = 0; i < pop->max_threads; i++) {
-    retval = retval && evoasm_pop_thread_data_destroy(&pop->thread_data[i]);
+    retval &= evoasm_pop_thread_data_destroy(&pop->thread_data[i]);
   }
   evoasm_free(pop->thread_data);
-  evoasm_free(pop->output_vals);
 
   return retval;
 }
@@ -46,7 +47,7 @@ static evoasm_success_t bool
 evoasm_pop_thread_data_init(evoasm_pop_thread_data_t *thread_data,
                             evoasm_pop_t *pop,
                             evoasm_prng_state_t *seed,
-                            evoasm_kernel_count_t program_size,
+                            evoasm_team_size_t program_size,
                             evoasm_kernel_size_t kernel_size,
                             uint32_t recur_limit) {
 
@@ -127,9 +128,11 @@ evoasm_pop_init(evoasm_pop_t *pop,
                 evoasm_pop_params_t *params) {
   int max_threads;
   static evoasm_pop_t zero_pop = {0};
-  unsigned kernel_layer_len, kernel_count;
+  unsigned kernel_layer_len;
+  evoasm_kernel_count_t kernel_count;
   evoasm_prng_t seed_prng;
-  unsigned program_layer_lens[EVOASM_POP_MAX_DEPTH];
+  unsigned team_layer_lens[EVOASM_POP_MAX_DEPTH];
+  unsigned kernels_per_member[EVOASM_POP_MAX_DEPTH];
 
   unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(params->program_input);
 
@@ -148,12 +151,15 @@ evoasm_pop_init(evoasm_pop_t *pop,
   kernel_layer_len = 1;
   kernel_count = 1;
   {
-    unsigned program_layer_len = 0;
+    unsigned team_layer_len = 1;
     for(unsigned i = 0; i < params->depth; i++) {
-      kernel_layer_len *= params->deme_sizes[i] * params->max_program_sizes[i];
-      kernel_count *= params->max_program_sizes[i];
-      program_layer_len += kernel_layer_len;
-      program_layer_lens[i] = program_layer_len;
+      kernels_per_member[params->depth - 1 - i] = kernel_count;
+      kernel_count *= params->max_team_sizes[params->depth - 1 - i];
+
+      kernel_layer_len *= params->deme_sizes[i] * params->max_team_sizes[i];
+      team_layer_len *= params->deme_sizes[i];
+      team_layer_lens[i] = team_layer_len;
+      team_layer_len *= params->max_team_sizes[i];
     }
   }
   kernel_layer_len *= params->deme_sizes[params->depth];
@@ -182,14 +188,15 @@ evoasm_pop_init(evoasm_pop_t *pop,
   }
 
   for(unsigned i = 0; i < params->depth; i++) {
-    unsigned n_subprograms = program_layer_lens[i] * params->max_program_sizes[i];
-    EVOASM_TRY_CALLOC(error, pop->program_layers[i].idxs, n_subprograms, sizeof(uint16_t));
-    EVOASM_TRY_CALLOC(error, pop->program_layers[i].alt_succ_idxs, n_subprograms, sizeof(uint16_t));
-    EVOASM_TRY_CALLOC(error, pop->program_layers[i].jmp_selectors, n_subprograms, sizeof(uint8_t));
+    unsigned n_members = team_layer_lens[i] * params->max_team_sizes[i];
+    EVOASM_TRY_CALLOC(error, pop->team_layers[i].member_idxs, n_members, sizeof(evoasm_deme_size_t));
+    EVOASM_TRY_CALLOC(error, pop->team_layers[i].alt_succ_idxs, n_members, sizeof(evoasm_team_size_t));
+    EVOASM_TRY_CALLOC(error, pop->team_layers[i].jmp_selectors, n_members, sizeof(uint8_t));
 
-    EVOASM_TRY_CALLOC(error, pop->program_layers[i].losses, program_layer_lens[i], sizeof(evoasm_loss_t));
-    EVOASM_TRY_CALLOC(error, pop->program_layers[i].sizes, program_layer_lens[i], sizeof(evoasm_kernel_count_t));
-    pop->program_layers[i].len = program_layer_lens[i];
+    EVOASM_TRY_CALLOC(error, pop->team_layers[i].losses, team_layer_lens[i], sizeof(evoasm_loss_t));
+    EVOASM_TRY_CALLOC(error, pop->team_layers[i].sizes, team_layer_lens[i], sizeof(evoasm_kernel_count_t));
+    pop->team_layers[i].len = team_layer_lens[i];
+    pop->team_layers[i].kernels_per_member = kernels_per_member[i];
   }
 
   EVOASM_TRY_CALLOC(error, pop->thread_data, (size_t) max_threads, sizeof(evoasm_pop_thread_data_t));
@@ -306,7 +313,7 @@ static void
 evoasm_pop_seed_kernel(evoasm_pop_t *pop,
                        evoasm_pop_kernel_layer_t *kernel_layer,
                        unsigned idx,
-                       unsigned tid) {
+                       int tid) {
   unsigned i;
 
   evoasm_prng_t *prng = &pop->thread_data[tid].prng;
@@ -337,28 +344,29 @@ evoasm_pop_seed_kernel(evoasm_pop_t *pop,
 }
 
 static void
-evoasm_pop_seed_program(evoasm_pop_t *pop,
-                        evoasm_pop_program_layer_t *program_layer,
-                        unsigned layer_idx,
-                        unsigned idx,
-                        unsigned tid) {
+evoasm_pop_seed_team(evoasm_pop_t *pop,
+                     evoasm_pop_team_layer_t *team_layer,
+                     unsigned depth,
+                     unsigned idx,
+                     int tid) {
   unsigned i;
 
   evoasm_prng_t *prng = &pop->thread_data[tid].prng;
   evoasm_pop_params_t *params = pop->params;
-  evoasm_kernel_count_t min_program_size = params->min_program_sizes[layer_idx];
-  evoasm_kernel_count_t max_program_size = params->max_program_sizes[layer_idx];
-  evoasm_kernel_count_t program_size = (evoasm_kernel_count_t) _evoasm_prng_rand_between(prng,
-                                                                                         min_program_size,
-                                                                                         max_program_size);
+  evoasm_team_size_t min_program_size = params->min_team_sizes[depth];
+  evoasm_team_size_t max_program_size = params->max_team_sizes[depth];
+  evoasm_team_size_t program_size = (evoasm_team_size_t) _evoasm_prng_rand_between(prng,
+                                                                                   min_program_size,
+                                                                                   max_program_size);
 
-  program_layer->sizes[idx] = kernel_count;
-  for(i = 0; i < kernel_count; i++) {
+  unsigned deme_size = params->deme_sizes[depth + 1];
+
+  team_layer->sizes[idx] = program_size;
+  for(i = 0; i < program_size; i++) {
     unsigned param_idx = idx * max_program_size + i;
-    unsigned deme_size = params->deme_sizes[layer_idx + 1];
-    program_layer->jmp_selectors[param_idx] = (uint8_t) _evoasm_prng_rand8(prng);
-    program_layer->alt_succ_idxs[param_idx] = (uint16_t) _evoasm_prng_rand_between(prng, 0, deme_size);
-    program_layer->idxs[param_idx] = (uint16_t) _evoasm_prng_rand_between(prng, 0, deme_size);
+    team_layer->jmp_selectors[param_idx] = (uint8_t) _evoasm_prng_rand8(prng);
+    team_layer->alt_succ_idxs[param_idx] = (evoasm_team_size_t) _evoasm_prng_rand_between(prng, 0, deme_size);
+    team_layer->member_idxs[param_idx] = (evoasm_deme_size_t) _evoasm_prng_rand_between(prng, 0, deme_size);
   }
 }
 
@@ -366,7 +374,7 @@ static void
 evoasm_pop_seed_kernel_layer(evoasm_pop_t *pop) {
   evoasm_pop_kernel_layer_t *kernel_layer = &pop->kernel_layer;
   for(unsigned i = 0; i < kernel_layer->len; i++) {
-    unsigned tid;
+    int tid;
 #ifdef _OPENMP
     tid = omp_get_thread_num();
 #else
@@ -377,17 +385,17 @@ evoasm_pop_seed_kernel_layer(evoasm_pop_t *pop) {
 }
 
 static void
-evoasm_pop_seed_program_layer(evoasm_pop_t *pop, unsigned layer_idx) {
-  evoasm_pop_program_layer_t *program_layer = &pop->program_layers[layer_idx];
+evoasm_pop_seed_team_layer(evoasm_pop_t *pop, unsigned depth) {
+  evoasm_pop_team_layer_t *team_layer = &pop->team_layers[depth];
 
-  for(unsigned i = 0; i < program_layer->len; i++) {
-    unsigned tid;
+  for(unsigned i = 0; i < team_layer->len; i++) {
+    int tid;
 #ifdef _OPENMP
     tid = omp_get_thread_num();
 #else
     tid = 1;
 #endif
-    evoasm_pop_seed_program(pop, program_layer, layer_idx, i, tid);
+    evoasm_pop_seed_team(pop, team_layer, depth, i, tid);
   }
 }
 
@@ -395,7 +403,7 @@ evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop) {
 
   for(unsigned i = 0; i < pop->params->depth; i++) {
-    evoasm_pop_seed_program_layer(pop, i);
+    evoasm_pop_seed_team_layer(pop, i);
   }
 
   evoasm_pop_seed_kernel_layer(pop);
@@ -418,17 +426,76 @@ evoasm_pop_eval_cleanup(evoasm_pop_t *pop) {
   return true;
 }
 
-static evoasm_success_t
-evoasm_pop_eval_deme(evoasm_pop_t *pop, unsigned depth, unsigned idx, unsigned layer_len, unsigned n_programs) {
+static evoasm_success_t bool
+evoasm_pop_program_load_kernels(evoasm_pop_t *pop, evoasm_program_t *program, unsigned depth, unsigned idx) {
 
-  #pragma omp parallel for
-  for(unsigned i = 0; i < pop->params->deme_sizes[depth]; i++) {
-    evoasm_loss_t *loss_ptr =
-        &pop->program_layers[depth].losses[idx * pop->params->deme_sizes[depth] + i];
-    for(unsigned j = 0; j < pop->program_layers[depth].len; j++) {
-      
+  evoasm_pop_team_layer_t *team_layer = &pop->team_layers[depth];
+  evoasm_pop_kernel_layer_t *kernel_layer = &pop->kernel_layer;
+
+  evoasm_team_size_t team_size = team_layer->sizes[idx];
+
+  unsigned params_idx = idx * pop->params->max_team_sizes[depth];
+  evoasm_deme_size_t *member_idxs = &team_layer->member_idxs[params_idx];
+  evoasm_team_size_t *alt_succ_idxs = &team_layer->alt_succ_idxs[params_idx];
+  uint8_t *jmp_selectors = &team_layer->jmp_selectors[params_idx];
+  evoasm_deme_size_t deme_size = pop->params->deme_sizes[depth + 1];
+
+  unsigned base_member_idx = idx * pop->params->max_team_sizes[depth] * deme_size;
+  unsigned base_kernel_idx = idx * pop->params->max_team_sizes[depth] * team_layer->kernels_per_member;
+
+  for(unsigned i = 0; i < team_size; i++) {
+    unsigned member_idx = base_member_idx + i * deme_size + member_idxs[i];
+    unsigned kernel_idx = base_kernel_idx + i * team_layer->kernels_per_member;
+
+    assert(member_idx < team_layer->len);
+
+    /* composed of subprograms */
+    if(depth < pop->params->depth - 1) {
+      evoasm_pop_program_load_kernels(pop, program, depth + 1, member_idx);
+    } else {
+      assert(kernel_idx < program->kernel_count);
+      unsigned inst_idx = member_idx * pop->params->max_kernel_size;
+
+      program->kernels[kernel_idx].insts = &kernel_layer->insts[inst_idx];
+
+      switch(pop->arch_info->id) {
+        case EVOASM_ARCH_X64:
+          program->kernels[kernel_idx].params.x64 = &kernel_layer->params.x64[inst_idx];
+          break;
+        default:
+          evoasm_assert_not_reached();
+      }
     }
 
+    program->alt_succ_idxs[kernel_idx] = alt_succ_idxs[i];
+    program->jmp_selectors[kernel_idx] = jmp_selectors[i];
+  }
+}
+
+static evoasm_success_t bool
+evoasm_pop_eval_team(evoasm_pop_t *pop, unsigned depth, unsigned idx, int tid) {
+  evoasm_program_t *program = &pop->thread_data[tid].program;
+  evoasm_pop_team_layer_t *team_layer = &pop->team_layers[depth];
+
+  evoasm_pop_program_load_kernels(pop, program, depth, idx);
+
+  evoasm_loss_t *loss_ptr = &team_layer->losses[idx];
+}
+
+static evoasm_success_t
+evoasm_pop_eval_(evoasm_pop_t *pop) {
+#pragma omp parallel for
+  for(unsigned i = 0; i < pop->params->deme_sizes[0]; i++) {
+    int tid;
+#ifdef _OPENMP
+    tid = omp_get_thread_num();
+#else
+    tid = 1;
+#endif
+
+    unsigned team_idx = i;
+
+    evoasm_pop_eval_team(pop, 0, team_idx, tid);
   }
 }
 
@@ -450,7 +517,7 @@ evoasm_pop_eval(evoasm_pop_t *pop, evoasm_loss_t max_loss, evoasm_pop_result_cb_
     goto done;
   }
 
-  if(!evoasm_pop_eval_deme(pop, 0, 0, 1, 0)) {
+  if(!evoasm_pop_eval_(pop, 0, 0, 1, 0)) {
     retval = false;
     goto done;
   }
