@@ -7,16 +7,30 @@
  */
 
 #include "evoasm-alloc.h"
+#include "evoasm.h"
 
 #include <stdlib.h>
 #include <errno.h>
+
+EVOASM_DEF_LOG_TAG("alloc")
 
 void *
 evoasm_malloc(size_t size) {
   void *ptr = malloc(size);
   if(EVOASM_UNLIKELY(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-      NULL, "Allocationg %zu bytes via malloc failed", size);
+      NULL, "Allocationg %zu bytes via malloc failed: %s", size, strerror(errno));
+    return NULL;
+  }
+  return ptr;
+}
+
+void *
+evoasm_aligned_alloc(size_t align, size_t size) {
+  void *ptr = aligned_alloc(align, size);
+  if(EVOASM_UNLIKELY(!ptr)) {
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+                 NULL, "Allocationg %zu bytes via aligned_alloc failed: %s", size, strerror(errno));
     return NULL;
   }
   return ptr;
@@ -28,10 +42,15 @@ evoasm_calloc(size_t n, size_t size) {
 
   if(EVOASM_UNLIKELY(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-      NULL, "Allocationg %zux%zu () bytes via calloc failed", n, size, n * size);
+      NULL, "Allocationg %zux%zu () bytes via calloc failed: %s", n, size, n * size, strerror(errno));
     return NULL;
   }
   return ptr;
+}
+
+void *
+evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
+  return evoasm_aligned_alloc(align, n * size);
 }
 
 void *
@@ -40,7 +59,7 @@ evoasm_realloc(void *ptr, size_t size) {
 
   if(EVOASM_UNLIKELY(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-        NULL, "Allocating %zu bytes via realloc failed", size);
+        NULL, "Allocating %zu bytes via realloc failed: %s", size, strerror(errno));
     return NULL;
   }
   return new_ptr;
@@ -129,7 +148,7 @@ error:
   return false;
 }
 
-static long _evoasm_page_size = -1;
+static size_t _evoasm_page_size = 0;
 
 static long
 evoasm_query_page_size() {
@@ -144,10 +163,15 @@ evoasm_query_page_size() {
 #endif
 }
 
-long
-evoasm_page_size() {
-  if(_evoasm_page_size == -1) {
-    _evoasm_page_size = evoasm_query_page_size();
+size_t
+evoasm_get_page_size() {
+  if(_evoasm_page_size == 0) {
+    long page_size = evoasm_query_page_size();
+    if(page_size == -1) {
+      page_size = 4096;
+      evoasm_log_warn("requesting page size failed. This might cause problems.");
+    }
+    _evoasm_page_size = (size_t) page_size;
   }
-  return _evoasm_page_size;
+  return (size_t) _evoasm_page_size;
 }

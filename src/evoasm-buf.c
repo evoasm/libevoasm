@@ -18,7 +18,7 @@ static evoasm_success_t
 evoasm_buf_init_mmap(evoasm_buf_t *buf, size_t size) {
   uint8_t *mem;
 
-  //size = EVOASM_ALIGN_UP(size, evoasm_page_size());
+  //size = EVOASM_ALIGN_UP(size, evoasm_get_page_size());
   mem = evoasm_mmap(size, NULL);
 
   if(mem) {
