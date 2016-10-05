@@ -30,7 +30,7 @@ evoasm_set_min_log_level(evoasm_log_level_t min_log_level) {
   _evoasm_min_log_level = min_log_level;
 }
 
-static const char *const log_levels[EVOASM_N_LOG_LEVELS] = {
+static const char *const log_levels[EVOASM_LOG_LEVEL_NONE] = {
   "TRACE",
   "DEBUG",
   "INFO",
@@ -39,7 +39,7 @@ static const char *const log_levels[EVOASM_N_LOG_LEVELS] = {
   "FATAL"
 };
 
-static const char *const log_colors[EVOASM_N_LOG_LEVELS] = {
+static const char *const log_colors[EVOASM_LOG_LEVEL_NONE] = {
   "\x1b[30;1m",
   "\x1b[30;1m",
   "\x1b[32;1m",

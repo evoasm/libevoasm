@@ -57,14 +57,14 @@ island_thread_func(void *arg) {
 
 bool
 evoasm_island_model_call_progress_cb(struct evoasm_island_model_s *island_model, evoasm_island_t *island,
-                                     unsigned cycle, unsigned gen, evoasm_loss_t loss, unsigned n_inf) {
+                                     unsigned cycle, unsigned gen, evoasm_loss_t loss, unsigned inf_count) {
 
   bool retval;
 
   if(island_model->progress_cb != NULL) {
     EVOASM_TRY(error, evoasm_mutex_lock, &island_model->progress_mutex);
     retval = island_model->progress_cb(island_model, island, cycle, gen,
-                                       loss, n_inf,
+                                       loss, inf_count,
                                        island_model->result_user_data);
     EVOASM_TRY(error, evoasm_mutex_unlock, &island_model->progress_mutex);
   }

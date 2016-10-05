@@ -18,7 +18,7 @@ void *
 evoasm_malloc(size_t size) {
   void *ptr = malloc(size);
   if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
       NULL, "Allocationg %zu bytes via malloc failed: %s", size, strerror(errno));
     return NULL;
   }
@@ -29,7 +29,7 @@ void *
 evoasm_aligned_alloc(size_t align, size_t size) {
   void *ptr = aligned_alloc(align, size);
   if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
                  NULL, "Allocationg %zu bytes via aligned_alloc failed: %s", size, strerror(errno));
     return NULL;
   }
@@ -41,7 +41,7 @@ evoasm_calloc(size_t n, size_t size) {
   void *ptr = calloc(n, size);
 
   if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
       NULL, "Allocationg %zux%zu () bytes via calloc failed: %s", n, size, n * size, strerror(errno));
     return NULL;
   }
@@ -58,7 +58,7 @@ evoasm_realloc(void *ptr, size_t size) {
   void *new_ptr = realloc(ptr, size);
 
   if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
         NULL, "Allocating %zu bytes via realloc failed: %s", size, strerror(errno));
     return NULL;
   }
@@ -101,7 +101,7 @@ retry:
   return mem;
 
 error:
-    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
         NULL, "Allocationg %zu bytes via mmap failed: %s", size, strerror(errno));
     return NULL;
 }
@@ -118,7 +118,7 @@ evoasm_munmap(void *p, size_t size) {
 #endif
 
   if(!ret) {
-    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
         NULL, "Unmapping %zu bytes via munmap failed: %s", size, strerror(errno));
   }
 
@@ -143,7 +143,7 @@ evoasm_mprot(void *p, size_t size, int mode)
   return true;
 
 error:
-  evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
+  evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
       NULL, "Changing memory protection failed: %s", strerror(errno));
   return false;
 }

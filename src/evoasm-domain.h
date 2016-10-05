@@ -23,7 +23,7 @@ typedef enum {
   EVOASM_DOMAIN_TYPE_INT32,
   EVOASM_DOMAIN_TYPE_INT16,
   EVOASM_DOMAIN_TYPE_INT8,
-  EVOASM_N_DOMAIN_TYPES
+  EVOASM_DOMAIN_TYPE_NONE
 } evoasm_domain_type_t;
 
 typedef struct {

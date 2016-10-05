@@ -62,7 +62,7 @@ evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
 
 evoasm_success_t
 evoasm_x64_init() {
-  extern evoasm_arch_info_t _evoasm_arch_infos[EVOASM_N_ARCHS];
+  extern evoasm_arch_info_t _evoasm_arch_infos[EVOASM_ARCH_NONE];
   uint64_t features;
   EVOASM_TRY(cpuid_failed, evoasm_x64_features, &features);
 
@@ -130,7 +130,7 @@ evoasm_x64_inst_get_operand(evoasm_x64_inst_t *inst, unsigned index) {
 
 unsigned
 evoasm_x64_inst_get_n_operands(evoasm_x64_inst_t *inst) {
-  return inst->n_operands;
+  return inst->operand_count;
 }
 
 #define _EVOASM_X64_OPERAND_DEF_GETTER(field, type) _EVOASM_DEF_GETTER(x64_operand, field, type)
@@ -231,9 +231,9 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
 
     if((inst->features & ~features) != 0) goto skip;
 
-    if(search && inst->n_operands == 0) goto skip;
+    if(search && inst->operand_count == 0) goto skip;
 
-    for(j = 0; j < inst->n_operands; j++) {
+    for(j = 0; j < inst->operand_count; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
 
       if(((1ull << operand->type) & operand_types) == 0) goto skip;

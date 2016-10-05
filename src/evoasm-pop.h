@@ -50,21 +50,24 @@ typedef struct {
 
 typedef struct alignas(EVOASM_CACHE_LINE_SIZE) {
   evoasm_prng_t prng;
-  evoasm_program_io_val_t *output_vals;
+  evoasm_deme_size_t *parent_idxs;
   evoasm_program_t program;
+  unsigned kernel_counter;
 } evoasm_pop_thread_data_t;
 
 
 typedef struct {
   evoasm_deme_size_t *member_idxs;
+  evoasm_deme_count_t *member_deme_idxs;
   evoasm_team_size_t *alt_succ_idxs;
   uint8_t *jmp_selectors;
   evoasm_loss_t *losses;
   evoasm_team_size_t *sizes;
-  unsigned team_lens[EVOASM_POP_MAX_DEPTH];
+  unsigned team_count;
+  unsigned team_pos_count;
+  unsigned team_pos_offs[EVOASM_POP_MAX_DEPTH];
   unsigned team_offs[EVOASM_POP_MAX_DEPTH];
-  unsigned members_offs[EVOASM_POP_MAX_DEPTH];
-  unsigned kernels_per_member[EVOASM_POP_MAX_DEPTH];
+  evoasm_loss_t best_losses[EVOASM_POP_MAX_DEPTH];
 } evoasm_pop_teams_data_t;
 
 typedef struct {
@@ -74,14 +77,16 @@ typedef struct {
   } params;
   evoasm_kernel_size_t *sizes;
   evoasm_loss_t *losses;
-  unsigned len;
+  evoasm_loss_t best_loss;
+  unsigned kernel_count;
+  unsigned inst_count;
 } evoasm_pop_kernels_data_t;
 
 typedef struct evoasm_pop_s {
   evoasm_pop_params_t *params;
   evoasm_loss_t best_loss;
   uint32_t best_indiv_idx;
-  uint32_t n_examples;
+  uint32_t example_count;
   bool seeded : 1;
   evoasm_loss_t *losses;
   uint64_t *error_counters;
@@ -128,7 +133,7 @@ size_t
 evoasm_pop_get_indiv_size(evoasm_pop_t *pop);
 
 evoasm_loss_t
-evoasm_pop_get_loss(evoasm_pop_t *pop, unsigned *n_inf, bool per_example);
+evoasm_pop_get_loss(evoasm_pop_t *pop, unsigned *inf_count, bool per_example);
 
 evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop);

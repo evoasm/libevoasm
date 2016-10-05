@@ -27,7 +27,7 @@ typedef void *(*evoasm_thread_func_t)(void *);
 
 #define _EVOASM_PTHREAD_WRAPPER_FUNC_BODY(type, name, msg) \
   if(errno) { \
-    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, \
+    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_ERROR_CODE_NONE, \
                        NULL, msg ": %s", strerror(errno)); \
     return false; \
   } \
@@ -72,7 +72,7 @@ evoasm_thread_create(evoasm_thread_t *thread, evoasm_thread_func_t thread_func, 
                              thread_func, arg);
 
   if(errno) {
-    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_ERROR_CODE_NONE,
                  NULL, "creating thread failed: %s", strerror(errno));
     return false;
   }
@@ -84,7 +84,7 @@ evoasm_thread_join(evoasm_thread_t *thread, void **retval) {
   int errno = pthread_join(thread->thread, retval);
 
   if(errno) {
-    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES,
+    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_ERROR_CODE_NONE,
                  NULL, "joining thread failed: %s", strerror(errno));
     return false;
   }

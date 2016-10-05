@@ -21,7 +21,7 @@ typedef struct {
   evoasm_kernel_size_t min_kernel_size;
   evoasm_kernel_size_t max_kernel_size;
   uint32_t recur_limit;
-  uint16_t n_insts;
+  uint16_t inst_count;
   evoasm_program_input_t *program_input;
   evoasm_program_output_t *program_output;
   evoasm_inst_id_t inst_ids[EVOASM_X64_N_INSTS];

@@ -56,8 +56,8 @@ typedef struct {
     evoasm_x64_reg_id_t x64[EVOASM_KERNEL_MAX_OUTPUT_REGS];
   } output_regs;
 
-  uint_fast8_t n_input_regs;
-  uint_fast8_t n_output_regs;
+  uint_fast8_t input_reg_count;
+  uint_fast8_t output_reg_count;
   evoasm_kernel_count_t idx;
   uint16_t buf_start;
   uint16_t buf_end;

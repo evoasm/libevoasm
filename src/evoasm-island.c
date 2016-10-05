@@ -14,7 +14,7 @@ static evoasm_success_t
 evoasm_island_emigrate(evoasm_island_t *island) {
 
   unsigned i;
-  for(i = 0; i < island->n_immigr_islands; i++) {
+  for(i = 0; i < island->immigr_island_count; i++) {
     evoasm_island_t *immigr_island = island->immigr_islands[i];
     unsigned emigr_size = (unsigned) island->params->emigr_rate * island->pop->params->size;
     uint32_t *emigr_selection = evoasm_alloca(sizeof(uint32_t) * emigr_size);
@@ -43,7 +43,7 @@ error:
 
 bool
 evoasm_island_model_call_progress_cb(struct evoasm_island_model_s *island_model, evoasm_island_t *island,
-                                     unsigned cycle, unsigned gen, evoasm_loss_t loss, unsigned n_inf);
+                                     unsigned cycle, unsigned gen, evoasm_loss_t loss, unsigned inf_count);
 
 
 bool
@@ -73,12 +73,12 @@ evoasm_island_cycle(evoasm_island_t *island,
     EVOASM_TRY(error_unlock, evoasm_pop_eval, island->pop, island->params->max_loss, island_result_func, island);
 
     if(gen % 256 == 0) {
-      unsigned n_inf;
-      evoasm_loss_t pop_loss = evoasm_pop_get_loss(island->pop, &n_inf, true);
-      evoasm_log_info("norm. pop loss: %g/%u\n\n", pop_loss, n_inf);
+      unsigned inf_count;
+      evoasm_loss_t pop_loss = evoasm_pop_get_loss(island->pop, &inf_count, true);
+      evoasm_log_info("norm. pop loss: %g/%u\n\n", pop_loss, inf_count);
 
       EVOASM_TRY(error_unlock, evoasm_island_model_call_progress_cb,
-                 island_model, island, cycle, gen, pop_loss, n_inf);
+                 island_model, island, cycle, gen, pop_loss, inf_count);
 
       if(gen > 0) {
         if(last_pop_loss <= pop_loss) {
@@ -196,25 +196,25 @@ evoasm_island_destroy(evoasm_island_t *island) {
 evoasm_success_t
 evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island) {
   if(island->model != immigr_island->model) {
-    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, NULL,
+    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_ERROR_CODE_NONE, NULL,
                      "islands belong to different models");
     return false;
   }
 
-  if(island->n_immigr_islands == EVOASM_ISLAND_MAX_IMMIGR_ISLANDS) {
-    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_N_ERROR_CODES, NULL,
+  if(island->immigr_island_count == EVOASM_ISLAND_MAX_IMMIGR_ISLANDS) {
+    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_ERROR_CODE_NONE, NULL,
                      "maximum number of immigration islands exceeded");
     return false;
   }
 
   if(immigr_island->pop->impl->type != island->pop->impl->type ||
       evoasm_pop_get_indiv_size(immigr_island->pop) < evoasm_pop_get_indiv_size(island->pop)) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES, NULL,
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE, NULL,
                      "island pops incompatible");
     return false;
   }
 
-  island->immigr_islands[island->n_immigr_islands++] = immigr_island;
+  island->immigr_islands[island->immigr_island_count++] = immigr_island;
 
   return true;
 }

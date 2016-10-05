@@ -31,7 +31,7 @@
 typedef enum {
   EVOASM_ERROR_CODE_MISSING_PARAM,
   EVOASM_ERROR_CODE_NOT_ENCODABLE,
-  EVOASM_N_ERROR_CODES
+  EVOASM_ERROR_CODE_NONE
 } evoasm_error_code_t;
 
 typedef enum {

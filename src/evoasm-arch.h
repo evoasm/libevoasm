@@ -25,19 +25,19 @@ typedef uint16_t evoasm_inst_id_t;
 
 typedef enum {
   EVOASM_ARCH_X64,
-  EVOASM_N_ARCHS
+  EVOASM_ARCH_NONE
 } evoasm_arch_id_t;
 
 typedef struct {
   uint8_t id;
-  uint8_t n_params;
+  uint8_t param_count;
   uint8_t max_inst_len;
-  uint16_t n_insts;
+  uint16_t inst_count;
   uint64_t features;
 } evoasm_arch_info_t;
 
 typedef enum {
-  EVOASM_ENC_ERROR_CODE_NOT_ENCODABLE = EVOASM_N_ERROR_CODES,
+  EVOASM_ENC_ERROR_CODE_NOT_ENCODABLE = EVOASM_ERROR_CODE_NONE,
   EVOASM_ENC_ERROR_CODE_MISSING_PARAM,
   EVOASM_ENC_ERROR_CODE_INVALID_ACCESS,
   EVOASM_ENC_ERROR_CODE_MISSING_FEATURE,

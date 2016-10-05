@@ -68,7 +68,7 @@ evoasm_program_pop_eval_program(evoasm_program_pop_t *program_pop,
     return false;
   }
 
-  if(EVOASM_UNLIKELY(kernel->n_output_regs == 0)) {
+  if(EVOASM_UNLIKELY(kernel->output_reg_count == 0)) {
     *loss = INFINITY;
     return true;
   }
@@ -329,11 +329,11 @@ evoasm_program_pop_init(evoasm_program_pop_t *program_pop, evoasm_arch_id_t arch
     return false;
   }
 
-  unsigned n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(params->program_input);
+  unsigned example_count = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(params->program_input);
   size_t indiv_size = EVOASM_PROGRAM_PARAMS_SIZE(params->max_kernel_count, params->max_kernel_size);
 
   if(!evoasm_pop_init(&program_pop->pop, (evoasm_pop_params_t *) params, &_evoasm_program_pop_cls, indiv_size,
-                       n_examples)) {
+                       example_count)) {
     return false;
   }
 

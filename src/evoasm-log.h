@@ -19,7 +19,7 @@ typedef int evoasm_log_level_t;
 #define EVOASM_LOG_LEVEL_WARN    3
 #define EVOASM_LOG_LEVEL_ERROR   4
 #define EVOASM_LOG_LEVEL_FATAL   5
-#define EVOASM_N_LOG_LEVELS      6
+#define EVOASM_LOG_LEVEL_NONE      6
 
 #ifndef EVOASM_MIN_LOG_LEVEL
 #  define EVOASM_MIN_LOG_LEVEL EVOASM_LOG_LEVEL_INFO

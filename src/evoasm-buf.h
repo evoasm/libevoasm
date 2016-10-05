@@ -19,7 +19,7 @@
 typedef enum {
   EVOASM_BUF_TYPE_MMAP,
   EVOASM_BUF_TYPE_MALLOC,
-  EVOASM_N_BUF_TYPES
+  EVOASM_BUF_TYPE_NONE
 } evoasm_buf_type_t;
 
 typedef struct {

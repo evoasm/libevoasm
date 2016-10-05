@@ -38,7 +38,7 @@ _evoasm_prng_rand64(evoasm_prng_t *prng) {
   uint64_t s1 = s[prng->p = (prng->p + 1) & 15];
   s1 ^= s1 << 31; // a
   s[prng->p] = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30); // b,c
-  return s[prng->p] * UINT64_C(1181783497276652981);
+  return (s[prng->p] * UINT64_C(1181783497276652981)) - 1;
 }
 
 static inline uint32_t

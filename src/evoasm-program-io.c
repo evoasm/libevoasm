@@ -56,7 +56,7 @@ evoasm_program_io_init(evoasm_program_io_t *program_io, uint8_t arity, ...) {
       evoasm_program_io_val_type_t prev_type = program_io->types[type_idx];
 
       if(prev_type != type) {
-        evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_N_ERROR_CODES,
+        evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                          NULL, "Example value type mismatch (previously %s, now %s)",
                          _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
         evoasm_free(program_io);
