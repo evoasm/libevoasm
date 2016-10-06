@@ -48,19 +48,22 @@ typedef struct {
   evoasm_pop_type_t type;
 } evoasm_pop_impl_t;
 
-typedef struct alignas(EVOASM_CACHE_LINE_SIZE) {
-  evoasm_prng_t prng;
-  evoasm_deme_size_t *parent_idxs;
-  evoasm_program_t program;
-  unsigned kernel_counter;
-} evoasm_pop_thread_data_t;
-
-
 typedef struct {
   evoasm_deme_size_t *member_idxs;
   evoasm_deme_count_t *member_deme_idxs;
   evoasm_team_size_t *alt_succ_idxs;
   uint8_t *jmp_selectors;
+} evoasm_pop_team_pos_data_t;
+
+typedef struct alignas(EVOASM_CACHE_LINE_SIZE) {
+  evoasm_prng_t prng;
+  evoasm_deme_size_t *parent_idxs;
+  evoasm_pop_team_pos_data_t parent_team_pos_data;
+  evoasm_program_t program;
+  unsigned kernel_counter;
+} evoasm_pop_thread_data_t;
+
+typedef struct {
   evoasm_loss_t *losses;
   evoasm_team_size_t *sizes;
   unsigned team_count;
@@ -68,7 +71,7 @@ typedef struct {
   unsigned team_pos_offs[EVOASM_POP_MAX_DEPTH];
   unsigned team_offs[EVOASM_POP_MAX_DEPTH];
   evoasm_loss_t best_losses[EVOASM_POP_MAX_DEPTH];
-} evoasm_pop_teams_data_t;
+} evoasm_pop_team_data_t;
 
 typedef struct {
   evoasm_inst_id_t *insts;
@@ -80,7 +83,7 @@ typedef struct {
   evoasm_loss_t best_loss;
   unsigned kernel_count;
   unsigned inst_count;
-} evoasm_pop_kernels_data_t;
+} evoasm_pop_kernel_data_t;
 
 typedef struct evoasm_pop_s {
   evoasm_pop_params_t *params;
@@ -88,13 +91,13 @@ typedef struct evoasm_pop_s {
   uint32_t best_indiv_idx;
   uint32_t example_count;
   bool seeded : 1;
-  evoasm_loss_t *losses;
   uint64_t *error_counters;
   uint64_t error_counter;
   unsigned char *indivs;
   unsigned char *data;
-  evoasm_pop_teams_data_t teams_data;
-  evoasm_pop_kernels_data_t kernels_data;
+  evoasm_pop_team_data_t team_data;
+  evoasm_pop_team_pos_data_t team_pos_data;
+  evoasm_pop_kernel_data_t kernel_data;
   unsigned char *main_indivs;
   evoasm_domain_t *domains;
   evoasm_loss_t max_loss;

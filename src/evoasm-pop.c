@@ -15,6 +15,30 @@
 
 EVOASM_DEF_LOG_TAG("pop")
 
+//team_data->team_pos_count
+static evoasm_success_t
+evoasm_pop_team_pos_data_init(evoasm_pop_team_pos_data_t *team_pos_data, size_t count) {
+  EVOASM_TRY_ALLOC(error, aligned_calloc, team_pos_data->member_idxs, EVOASM_CACHE_LINE_SIZE,
+                   count,
+                   sizeof(evoasm_deme_size_t));
+  EVOASM_TRY_ALLOC(error, aligned_calloc, team_pos_data->member_deme_idxs, EVOASM_CACHE_LINE_SIZE,
+                   count,
+                   sizeof(evoasm_deme_count_t));
+  EVOASM_TRY_ALLOC(error, aligned_calloc, team_pos_data->alt_succ_idxs, EVOASM_CACHE_LINE_SIZE,
+                   count,
+                   sizeof(evoasm_team_size_t));
+  EVOASM_TRY_ALLOC(error, aligned_calloc, team_pos_data->jmp_selectors, EVOASM_CACHE_LINE_SIZE,
+                   count,
+                   sizeof(uint8_t));
+}
+
+static void
+evoasm_pop_team_pos_data_destroy(evoasm_pop_team_pos_data_t *team_pos_data) {
+  evoasm_free(team_pos_data->member_idxs);
+  evoasm_free(team_pos_data->member_deme_idxs);
+  evoasm_free(team_pos_data->alt_succ_idxs);
+  evoasm_free(team_pos_data->jmp_selectors);
+}
 
 static evoasm_success_t
 evoasm_pop_thread_data_destroy(evoasm_pop_thread_data_t *thread_data) {
@@ -24,6 +48,8 @@ evoasm_pop_thread_data_destroy(evoasm_pop_thread_data_t *thread_data) {
   evoasm_prng_destroy(&thread_data->prng);
   evoasm_free(thread_data->parent_idxs);
 
+  evoasm_pop_team_pos_data_destroy(&thread_data->parent_team_pos_data);
+
   return retval;
 }
 
@@ -32,13 +58,23 @@ evoasm_pop_destroy(evoasm_pop_t *pop) {
   bool retval = true;
 
   evoasm_free(pop->indivs);
-  evoasm_free(pop->losses);
   evoasm_free(pop->error_counters);
   evoasm_free(pop->domains);
+
   for(int i = 0; i < pop->max_threads; i++) {
     retval &= evoasm_pop_thread_data_destroy(&pop->thread_data[i]);
   }
   evoasm_free(pop->thread_data);
+
+  evoasm_pop_team_pos_data_destroy(&pop->team_pos_data);
+
+  evoasm_free(pop->team_data.losses);
+  evoasm_free(pop->team_data.sizes);
+
+  evoasm_free(pop->kernel_data.losses);
+  evoasm_free(pop->kernel_data.sizes);
+  evoasm_free(pop->kernel_data.insts);
+  evoasm_free(&pop->kernel_data.params);
 
   return retval;
 }
@@ -62,12 +98,15 @@ evoasm_pop_thread_data_init(evoasm_pop_thread_data_t *thread_data,
              recur_limit);
 
   unsigned max_deme_size = 0;
+  unsigned max_team_size = 0;
   for(unsigned i = 0; i < pop->params->depth; i++) {
     max_deme_size = EVOASM_MAX(max_deme_size, pop->params->team_deme_sizes[i]);
+    max_team_size = EVOASM_MAX(max_team_size, pop->params->max_team_sizes[i]);
   }
   max_deme_size = EVOASM_MAX(max_deme_size, pop->params->kernel_deme_size);
 
   EVOASM_TRY_ALLOC(error, calloc, thread_data->parent_idxs, max_deme_size, sizeof(evoasm_deme_size_t));
+  EVOASM_TRY(error, evoasm_pop_team_pos_data_init, &thread_data->parent_team_pos_data, 2 * max_team_size);
 
   return true;
 
@@ -139,8 +178,8 @@ evoasm_pop_init(evoasm_pop_t *pop,
   static evoasm_pop_t zero_pop = {0};
   evoasm_kernel_count_t program_kernel_count;
   evoasm_prng_t seed_prng;
-  evoasm_pop_teams_data_t *teams_data = &pop->teams_data;
-  evoasm_pop_kernels_data_t *kernels_data = &pop->kernels_data;
+  evoasm_pop_team_data_t *team_data = &pop->team_data;
+  evoasm_pop_kernel_data_t *kernel_data = &pop->kernel_data;
   unsigned example_count = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(params->program_input);
 
 #ifdef _OPENMP
@@ -157,62 +196,51 @@ evoasm_pop_init(evoasm_pop_t *pop,
 
   evoasm_prng_init(&seed_prng, &params->seed);
 
-  teams_data->team_count = 0;
-  teams_data->team_pos_count = 0;
+  team_data->team_count = 0;
+  team_data->team_pos_count = 0;
   program_kernel_count = 1;
 
   for(unsigned i = 0; i < params->depth; i++) {
-    teams_data->team_offs[i] = teams_data->team_count;
-    teams_data->team_pos_offs[i] = teams_data->team_pos_count;
+    team_data->team_offs[i] = team_data->team_count;
+    team_data->team_pos_offs[i] = team_data->team_pos_count;
 
-    teams_data->team_count += params->team_deme_counts[i] * params->team_deme_sizes[i];
-    teams_data->team_pos_count += params->team_deme_counts[i] * params->team_deme_sizes[i] * params->max_team_sizes[i];
+    team_data->team_count += params->team_deme_counts[i] * params->team_deme_sizes[i];
+    team_data->team_pos_count += params->team_deme_counts[i] * params->team_deme_sizes[i] * params->max_team_sizes[i];
 
     program_kernel_count *= params->max_team_sizes[i];
   }
 
-  kernels_data->kernel_count = params->kernel_deme_count * params->kernel_deme_size;
-  kernels_data->inst_count = kernels_data->kernel_count * params->max_kernel_size;
+  kernel_data->kernel_count = params->kernel_deme_count * params->kernel_deme_size;
+  kernel_data->inst_count = kernel_data->kernel_count * params->max_kernel_size;
 
   EVOASM_TRY(error, evoasm_pop_init_domains, pop);
 
   {
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernels_data.insts, EVOASM_CACHE_LINE_SIZE, kernels_data->inst_count,
+    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernel_data.insts, EVOASM_CACHE_LINE_SIZE, kernel_data->inst_count,
                      sizeof(evoasm_inst_id_t));
 
     switch(arch_id) {
       case EVOASM_ARCH_X64:
-        EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernels_data.params.x64, EVOASM_CACHE_LINE_SIZE,
-                         kernels_data->inst_count,
+        EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernel_data.params.x64, EVOASM_CACHE_LINE_SIZE,
+                         kernel_data->inst_count,
                          sizeof(evoasm_x64_basic_params_t));
         break;
       default:
         evoasm_assert_not_reached();
     }
 
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernels_data.sizes, EVOASM_CACHE_LINE_SIZE, kernels_data->kernel_count,
+    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernel_data.sizes, EVOASM_CACHE_LINE_SIZE, kernel_data->kernel_count,
                      sizeof(evoasm_kernel_size_t));
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernels_data.losses, EVOASM_CACHE_LINE_SIZE,
-                     kernels_data->kernel_count,
+    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->kernel_data.losses, EVOASM_CACHE_LINE_SIZE,
+                     kernel_data->kernel_count,
                      sizeof(evoasm_loss_t));
   }
 
   {
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->teams_data.member_idxs, EVOASM_CACHE_LINE_SIZE,
-                     teams_data->team_pos_count,
-                     sizeof(evoasm_deme_size_t));
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->teams_data.member_deme_idxs, EVOASM_CACHE_LINE_SIZE,
-                     teams_data->team_pos_count,
-                     sizeof(evoasm_deme_count_t));
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->teams_data.alt_succ_idxs, EVOASM_CACHE_LINE_SIZE,
-                     teams_data->team_pos_count,
-                     sizeof(evoasm_team_size_t));
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->teams_data.jmp_selectors, EVOASM_CACHE_LINE_SIZE,
-                     teams_data->team_pos_count,
-                     sizeof(uint8_t));
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->teams_data.losses, EVOASM_CACHE_LINE_SIZE, teams_data->team_count,
+    EVOASM_TRY(error, evoasm_pop_team_pos_data_init, &pop->team_pos_data, team_data->team_pos_count);
+    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->team_data.losses, EVOASM_CACHE_LINE_SIZE, team_data->team_count,
                      sizeof(evoasm_loss_t));
-    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->teams_data.sizes, EVOASM_CACHE_LINE_SIZE, teams_data->team_count,
+    EVOASM_TRY_ALLOC(error, aligned_calloc, pop->team_data.sizes, EVOASM_CACHE_LINE_SIZE, team_data->team_count,
                      sizeof(evoasm_kernel_count_t));
   }
 
@@ -289,12 +317,12 @@ done:;
 #endif
 
 #define EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, team_idx) \
-  ((pop)->teams_data.team_offs[(depth)]\
+  ((pop)->team_data.team_offs[(depth)]\
         + (deme_idx) * (pop)->params->team_deme_sizes[depth]\
         + (team_idx))
 
 #define EVOASM_POP_TEAM_POS_OFF(pop, depth, deme_idx, team_idx, team_pos_idx)\
-  ((pop)->teams_data.team_pos_offs[(depth)]\
+  ((pop)->team_data.team_pos_offs[(depth)]\
          + (deme_idx) * (pop)->params->team_deme_sizes[depth]\
          + (team_idx) * (pop)->params->max_team_sizes[depth]\
          + team_pos_idx)
@@ -339,7 +367,7 @@ evoasm_pop_seed_kernel(evoasm_pop_t *pop, unsigned deme_idx, unsigned kernel_idx
 
   evoasm_prng_t *prng = &pop->thread_data[tid].prng;
   evoasm_pop_params_t *params = pop->params;
-  evoasm_pop_kernels_data_t *kernels_data = &pop->kernels_data;
+  evoasm_pop_kernel_data_t *kernel_data = &pop->kernel_data;
 
   evoasm_kernel_size_t kernel_size =
       (evoasm_kernel_size_t) _evoasm_prng_rand_between(prng,
@@ -348,16 +376,16 @@ evoasm_pop_seed_kernel(evoasm_pop_t *pop, unsigned deme_idx, unsigned kernel_idx
 
   assert(kernel_size > 0);
 
-  kernels_data->sizes[EVOASM_POP_KERNEL_OFF(pop, deme_idx, kernel_idx)] = kernel_size;
+  kernel_data->sizes[EVOASM_POP_KERNEL_OFF(pop, deme_idx, kernel_idx)] = kernel_size;
 
   for(i = 0; i < kernel_size; i++) {
     unsigned inst_off = EVOASM_POP_INST_OFF(pop, deme_idx, kernel_idx, i);
 
-    evoasm_inst_id_t *insts_ptr = &kernels_data->insts[inst_off];
+    evoasm_inst_id_t *insts_ptr = &kernel_data->insts[inst_off];
 
     switch(pop->arch_info->id) {
       case EVOASM_ARCH_X64: {
-        evoasm_x64_basic_params_t *params_ptr = &kernels_data->params.x64[inst_off];
+        evoasm_x64_basic_params_t *params_ptr = &kernel_data->params.x64[inst_off];
         evoasm_pop_seed_kernel_param_x64(pop, insts_ptr, params_ptr, prng);
         break;
       }
@@ -381,7 +409,8 @@ evoasm_pop_seed_team(evoasm_pop_t *pop,
                      unsigned team_idx,
                      int tid) {
   unsigned i;
-  evoasm_pop_teams_data_t *teams_data = &pop->teams_data;
+  evoasm_pop_team_data_t *team_data = &pop->team_data;
+  evoasm_pop_team_pos_data_t *team_pos_data = &pop->team_pos_data;
   evoasm_prng_t *prng = &pop->thread_data[tid].prng;
   evoasm_pop_params_t *params = pop->params;
   evoasm_team_size_t min_team_size = params->min_team_sizes[depth];
@@ -393,21 +422,21 @@ evoasm_pop_seed_team(evoasm_pop_t *pop,
   unsigned deme_size = params->team_deme_sizes[depth];
   unsigned deme_count = params->team_deme_counts[depth];
 
-  teams_data->sizes[EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, team_idx)] = team_size;
+  team_data->sizes[EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, team_idx)] = team_size;
 
   for(i = 0; i < team_size; i++) {
     unsigned team_pos_off = EVOASM_POP_TEAM_POS_OFF(pop, depth, deme_idx, team_idx, i);
 
-    teams_data->jmp_selectors[team_pos_off] =
+    team_pos_data->jmp_selectors[team_pos_off] =
         (uint8_t) _evoasm_prng_rand8(prng);
 
-    teams_data->alt_succ_idxs[team_pos_off] =
+    team_pos_data->alt_succ_idxs[team_pos_off] =
         (evoasm_team_size_t) _evoasm_prng_rand_between(prng, 0, team_size - 1);
 
-    teams_data->member_idxs[team_pos_off] =
+    team_pos_data->member_idxs[team_pos_off] =
         (evoasm_deme_size_t) _evoasm_prng_rand_between(prng, 0, deme_size);
 
-    teams_data->member_deme_idxs[team_pos_off] =
+    team_pos_data->member_deme_idxs[team_pos_off] =
         (evoasm_deme_size_t) _evoasm_prng_rand_between(prng, 0, deme_count);
   }
 }
@@ -465,29 +494,30 @@ static void
 evoasm_pop_load_program(evoasm_pop_t *pop, evoasm_program_t *program,
                         unsigned depth, unsigned deme_idx, unsigned team_idx, int tid) {
 
-  evoasm_pop_teams_data_t *teams_data = &pop->teams_data;
-  evoasm_pop_kernels_data_t *kernels_data = &pop->kernels_data;
+  evoasm_pop_team_data_t *team_data = &pop->team_data;
+  evoasm_pop_team_pos_data_t *team_pos_data = &pop->team_pos_data;
+  evoasm_pop_kernel_data_t *kernel_data = &pop->kernel_data;
 
   unsigned team_off = EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, team_idx);
 
-  evoasm_team_size_t team_size = teams_data->sizes[team_off];
+  evoasm_team_size_t team_size = team_data->sizes[team_off];
 
   for(unsigned i = 0; i < team_size; i++) {
     unsigned team_pos_off = EVOASM_POP_TEAM_POS_OFF(pop, depth, deme_idx, team_idx, i);
 
-    evoasm_deme_count_t member_deme_idx = teams_data->member_deme_idxs[team_pos_off];
-    evoasm_deme_size_t member_idx = teams_data->member_idxs[team_pos_off];
+    evoasm_deme_count_t member_deme_idx = team_pos_data->member_deme_idxs[team_pos_off];
+    evoasm_deme_size_t member_idx = team_pos_data->member_idxs[team_pos_off];
 
     if(depth < pop->params->depth) {
       evoasm_pop_load_program(pop, program, depth + 1, member_deme_idx, member_idx, tid);
     } else {
       unsigned inst_off = EVOASM_POP_INST_OFF(pop, member_deme_idx, member_deme_idx, 0u);
 
-      program->kernels[pop->thread_data[tid].kernel_counter].insts = &kernels_data->insts[inst_off];
+      program->kernels[pop->thread_data[tid].kernel_counter].insts = &kernel_data->insts[inst_off];
 
       switch(pop->arch_info->id) {
         case EVOASM_ARCH_X64:
-          program->kernels[pop->thread_data[tid].kernel_counter].params.x64 = &kernels_data->params.x64[inst_off];
+          program->kernels[pop->thread_data[tid].kernel_counter].params.x64 = &kernel_data->params.x64[inst_off];
           break;
         default:
           evoasm_assert_not_reached();
@@ -496,8 +526,8 @@ evoasm_pop_load_program(evoasm_pop_t *pop, evoasm_program_t *program,
       pop->thread_data[tid].kernel_counter++;
     }
 
-    program->alt_succ_idxs[pop->thread_data[tid].kernel_counter - 1] = teams_data->alt_succ_idxs[team_pos_off];
-    program->jmp_selectors[pop->thread_data[tid].kernel_counter - 1] = teams_data->jmp_selectors[team_pos_off];
+    program->alt_succ_idxs[pop->thread_data[tid].kernel_counter - 1] = team_pos_data->alt_succ_idxs[team_pos_off];
+    program->jmp_selectors[pop->thread_data[tid].kernel_counter - 1] = team_pos_data->jmp_selectors[team_pos_off];
   }
 }
 
@@ -534,17 +564,18 @@ evoasm_pop_eval_program(evoasm_pop_t *pop, evoasm_program_t *program, evoasm_los
 static void
 evoasm_pop_update_loss(evoasm_pop_t *pop, evoasm_loss_t loss, unsigned depth, unsigned deme_idx, unsigned team_idx) {
 
-  evoasm_pop_teams_data_t *teams_data = &pop->teams_data;
+  evoasm_pop_team_data_t *team_data = &pop->team_data;
+  evoasm_pop_team_pos_data_t *team_pos_data = &pop->team_pos_data;
   unsigned team_off = EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, team_idx);
 
-  evoasm_team_size_t team_size = teams_data->sizes[team_off];
-  teams_data->losses[team_off] = loss;
+  evoasm_team_size_t team_size = team_data->sizes[team_off];
+  team_data->losses[team_off] = loss;
   evoasm_loss_t member_loss = loss / team_size;
 
   for(unsigned i = 0; i < team_size; i++) {
     unsigned team_pos_off = EVOASM_POP_TEAM_POS_OFF(pop, depth, deme_idx, team_idx, i);
-    evoasm_deme_count_t member_deme_idx = teams_data->member_deme_idxs[team_pos_off];
-    evoasm_deme_size_t member_idx = teams_data->member_idxs[team_pos_off];
+    evoasm_deme_count_t member_deme_idx = team_pos_data->member_deme_idxs[team_pos_off];
+    evoasm_deme_size_t member_idx = team_pos_data->member_idxs[team_pos_off];
 
     evoasm_pop_update_loss(pop, member_loss, depth + 1, member_deme_idx, member_idx);
   }
@@ -590,7 +621,7 @@ static void
 evoasm_pop_update_best_losses(evoasm_pop_t *pop) {
 
   {
-    evoasm_pop_teams_data_t *teams_data = &pop->teams_data;
+    evoasm_pop_team_data_t *team_data = &pop->team_data;
 #pragma omp parallel for
     for(unsigned i = 0; i < pop->params->depth; i++) {
       for(unsigned j = 0; j < pop->params->team_deme_counts[i]; j++) {
@@ -602,9 +633,9 @@ evoasm_pop_update_best_losses(evoasm_pop_t *pop) {
 #endif
 
         for(unsigned k = 0; k < pop->params->team_deme_sizes[i]; k++) {
-          evoasm_loss_t loss = teams_data->losses[EVOASM_POP_TEAM_OFF(pop, i, j, k)];
-          if(loss > teams_data->best_losses[i]) {
-            teams_data->best_losses[i] = loss;
+          evoasm_loss_t loss = team_data->losses[EVOASM_POP_TEAM_OFF(pop, i, j, k)];
+          if(loss > team_data->best_losses[i]) {
+            team_data->best_losses[i] = loss;
           }
         }
       }
@@ -612,14 +643,14 @@ evoasm_pop_update_best_losses(evoasm_pop_t *pop) {
   }
 
   {
-    evoasm_pop_kernels_data_t *kernels_data = &pop->kernels_data;
+    evoasm_pop_kernel_data_t *kernel_data = &pop->kernel_data;
 
     for(unsigned i = 0; i < pop->params->kernel_deme_count; i++) {
       for(unsigned j = 0; j < pop->params->kernel_deme_size; j++) {
-        evoasm_loss_t loss = kernels_data->losses[EVOASM_POP_KERNEL_OFF(pop, i, j)];
+        evoasm_loss_t loss = kernel_data->losses[EVOASM_POP_KERNEL_OFF(pop, i, j)];
 
-        if(loss > kernels_data->best_loss) {
-          kernels_data->best_loss = loss;
+        if(loss > kernel_data->best_loss) {
+          kernel_data->best_loss = loss;
         }
       }
     }
@@ -669,7 +700,7 @@ evoasm_pop_select_(evoasm_pop_t *pop, evoasm_deme_size_t deme_size, evoasm_loss_
   uint32_t n = 0;
 
   while(true) {
-    for(evoasm_deme_size_t  i = 0; i < deme_size; i++) {
+    for(evoasm_deme_size_t i = 0; i < deme_size; i++) {
       uint32_t r = _evoasm_prng_rand32(prng);
       if(n >= deme_size) goto done;
       if(r < UINT32_MAX * ((best_loss + 1.0) / (losses[i] + 1.0))) {
@@ -682,14 +713,104 @@ done:;
 
 static void
 evoasm_pop_team_deme_select(evoasm_pop_t *pop, unsigned depth, unsigned deme_idx, int tid) {
-  evoasm_pop_select_(pop, pop->params->team_deme_sizes[depth], pop->teams_data.best_losses[depth],
-                     &pop->teams_data.losses[EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, 0)], tid);
+  evoasm_pop_select_(pop, pop->params->team_deme_sizes[depth], pop->team_data.best_losses[depth],
+                     &pop->team_data.losses[EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, 0)], tid);
 }
 
 static void
 evoasm_pop_kernel_deme_select(evoasm_pop_t *pop, unsigned deme_idx, int tid) {
-  evoasm_pop_select_(pop, pop->params->kernel_deme_size, pop->kernels_data.best_loss,
-                     &pop->kernels_data.losses[EVOASM_POP_KERNEL_OFF(pop, deme_idx, 0)], tid);
+  evoasm_pop_select_(pop, pop->params->kernel_deme_size, pop->kernel_data.best_loss,
+                     &pop->kernel_data.losses[EVOASM_POP_KERNEL_OFF(pop, deme_idx, 0)], tid);
+}
+
+static void
+evoasm_pop_team_pos_data_copy(evoasm_pop_team_pos_data_t *team_pos_data_dst,
+                              size_t off_dst,
+                              evoasm_pop_team_pos_data_t *team_pos_data_src,
+                              size_t off_src,
+                              size_t len) {
+
+  memcpy(team_pos_data_dst->member_idxs + off_dst, team_pos_data_src->member_idxs + off_src,
+         sizeof(evoasm_deme_size_t) * len);
+  memcpy(team_pos_data_dst->member_deme_idxs + off_dst, team_pos_data_src->member_deme_idxs + off_src,
+         sizeof(evoasm_deme_count_t) * len);
+  memcpy(team_pos_data_dst->alt_succ_idxs + off_dst, team_pos_data_src->alt_succ_idxs + off_src,
+         sizeof(evoasm_team_size_t) * len);
+  memcpy(team_pos_data_dst->jmp_selectors + off_dst, team_pos_data_src->jmp_selectors + off_src,
+         sizeof(uint8_t) * len);
+}
+
+static void
+evoasm_pop_combine_kernel_deme(evoasm_pop_t *pop, unsigned deme_idx, int tid) {
+
+}
+
+static void
+evoasm_pop_combine_team_deme(evoasm_pop_t *pop, unsigned depth, unsigned deme_idx, int tid) {
+  evoasm_pop_team_data_t *team_data = &pop->team_data;
+  evoasm_pop_team_pos_data_t *team_pos_data = &pop->team_pos_data;
+  evoasm_pop_thread_data_t *thread_data = &pop->thread_data[tid];
+  evoasm_prng_t *prng = &thread_data->prng;
+
+  for(unsigned i = 0; i < pop->params->team_deme_sizes[depth]; i += 2) {
+    unsigned parent_team_idxs[2] = {thread_data->parent_idxs[i], thread_data->parent_idxs[i + 1]};
+    unsigned parent_team_offs[2] = {EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, parent_team_idxs[0]),
+                                    EVOASM_POP_TEAM_OFF(pop, depth, deme_idx, parent_team_idxs[1])};
+
+    evoasm_team_size_t parent_team_sizes[2] = {team_data->sizes[parent_team_offs[0]],
+                                               team_data->sizes[parent_team_offs[1]]};
+
+    if(parent_team_sizes[0] < parent_team_sizes[1]) {
+      EVOASM_SWAP(unsigned, parent_team_idxs[0], parent_team_idxs[1]);
+      EVOASM_SWAP(unsigned, parent_team_offs[0], parent_team_offs[1]);
+      EVOASM_SWAP(evoasm_team_size_t, parent_team_sizes[0], parent_team_sizes[1]);
+    }
+
+    evoasm_loss_t parent_team_losses[2] = {team_data->losses[parent_team_offs[0]],
+                                           team_data->losses[parent_team_offs[1]]};
+
+    /* save parents to local storage, we override originals with children */
+    for(unsigned j = 0; j < 2; j++) {
+      unsigned team_pos_off = EVOASM_POP_TEAM_POS_OFF(pop, depth, deme_idx, parent_team_idxs[j], 0);
+      unsigned parent_off = j * parent_team_sizes[0];
+      evoasm_team_size_t parent_team_size = parent_team_sizes[j];
+
+      evoasm_pop_team_pos_data_copy(&thread_data->parent_team_pos_data, parent_off, team_pos_data, team_pos_off,
+                                    parent_team_size);
+    }
+
+    /* rough estimate */
+    evoasm_loss_t child_team_loss = 0.5 * (parent_team_losses[0] + parent_team_losses[1]);
+
+    for(unsigned child_idx = 0; child_idx < 2; child_idx++) {
+      evoasm_team_size_t child_team_size = (evoasm_kernel_size_t)
+          _evoasm_prng_rand_between(prng, parent_team_sizes[0], parent_team_sizes[1]);
+
+      assert(child_team_size > 0);
+
+      /* offset for shorter parent */
+      unsigned crossover_point = (unsigned) _evoasm_prng_rand_between(prng,
+                                                                      0, child_team_size - parent_team_sizes[1]);
+      unsigned crossover_len = (unsigned) _evoasm_prng_rand_between(prng,
+                                                                    0, parent_team_sizes[1]);
+
+      unsigned child_team_pos0_off = EVOASM_POP_TEAM_POS_OFF(pop, depth, deme_idx, parent_team_idxs[child_idx],
+                                                             0);
+
+      evoasm_pop_team_pos_data_copy(team_pos_data, child_team_pos0_off, &thread_data->parent_team_pos_data, 0,
+                                    crossover_point);
+      evoasm_pop_team_pos_data_copy(team_pos_data, child_team_pos0_off + crossover_point,
+                                    &thread_data->parent_team_pos_data, parent_team_sizes[0] + crossover_point,
+                                    crossover_len);
+      evoasm_pop_team_pos_data_copy(team_pos_data, child_team_pos0_off + crossover_point + crossover_len,
+                                    &thread_data->parent_team_pos_data, crossover_point + crossover_len,
+                                    child_team_size - crossover_point - crossover_len);
+
+      team_data->sizes[parent_team_offs[child_idx]] = child_team_size;
+      team_data->losses[parent_team_offs[child_idx]] = child_team_loss;
+    }
+
+  }
 }
 
 static evoasm_success_t
