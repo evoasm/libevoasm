@@ -13,29 +13,37 @@
 #include "evoasm.h"
 #include "evoasm-program.h"
 
-typedef double evoasm_loss_t;
-typedef evoasm_kernel_count_t evoasm_team_size_t;
-typedef uint16_t evoasm_deme_size_t;
-typedef uint16_t evoasm_deme_count_t;
+typedef float evoasm_loss_t;
 
 #define EVOASM_POP_PARAMS_MAX_PARAMS 32
-#define EVOASM_POP_MAX_DEPTH 128
+#define EVOASM_POP_PARAMS_MAX_DEPTH 32
+#define EVOASM_POP_PARAMS_KERNELS_DEPTH(params) ((params)->depth - 1)
+#define EVOASM_POP_PARAMS_KERNEL_DEME_COUNT(params) ((params)->deme_counts[EVOASM_POP_PARAMS_KERNELS_DEPTH(params)])
+#define EVOASM_POP_PARAMS_KERNEL_DEME_SIZE(params) ((params)->deme_sizes[EVOASM_POP_PARAMS_KERNELS_DEPTH(params)])
+#define EVOASM_POP_PARAMS_MAX_KERNEL_SIZE(params) ((params)->max_indiv_sizes[EVOASM_POP_PARAMS_KERNELS_DEPTH(params)])
 
 typedef struct evoasm_pop_params_s {
   evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
   evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];
   uint8_t param_count;
-  evoasm_deme_size_t team_deme_sizes[EVOASM_POP_MAX_DEPTH];
-  evoasm_deme_count_t team_deme_counts[EVOASM_POP_MAX_DEPTH];
-  evoasm_team_size_t max_team_sizes[EVOASM_POP_MAX_DEPTH];
-  evoasm_team_size_t min_team_sizes[EVOASM_POP_MAX_DEPTH];
+
+  uint16_t kernel_deme_count;
+  uint16_t kernel_deme_size;
+  uint16_t program_deme_count;
+  uint16_t program_deme_size;
+  uint16_t library_size;
+
+  uint16_t min_kernel_size;
+  uint16_t max_kernel_size;
+  uint16_t min_program_size;
+  uint16_t max_program_size;
+  uint16_t min_module_size;
+  uint16_t max_module_size;
+  float mut_rate;
+  float evap_rate;
+
   uint8_t depth;
-  uint32_t mut_rate;
   evoasm_prng_state_t seed;
-  evoasm_kernel_size_t min_kernel_size;
-  evoasm_kernel_size_t max_kernel_size;
-  evoasm_deme_size_t kernel_deme_size;
-  evoasm_deme_count_t kernel_deme_count;
   uint32_t recur_limit;
   uint16_t inst_count;
   evoasm_program_input_t *program_input;

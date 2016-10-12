@@ -130,7 +130,7 @@ evoasm_island_model_merge(evoasm_island_model_t *model) {
 
   evoasm_log_info("merging\n");
 
-  for(i = 0; i < model->params->kernel_count; i++) {
+  for(i = 0; i < model->params->program_size; i++) {
     evoasm_program_params_t *parent_a = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_main, i);
     evoasm_program_params_t *parent_b = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_aux, i);
 

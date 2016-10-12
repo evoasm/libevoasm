@@ -21,12 +21,6 @@ typedef union {
   evoasm_kernel_param_x64_t x64;
 } evoasm_kernel_param_t;
 
-typedef uint16_t evoasm_kernel_count_t;
-
-#define EVOASM_KERNEL_SIZE_MAX UINT8_MAX
-typedef uint16_t evoasm_kernel_size_t;
-#define EVOASM_KERNEL_MAX_SIZE (EVOASM_KERNEL_SIZE_MAX - 1)
-
 #define EVOASM_KERNEL_MAX_OUTPUT_REGS 254
 #define EVOASM_KERNEL_MAX_INPUT_REGS 254
 
@@ -40,12 +34,12 @@ typedef struct {
 } evoasm_kernel_x64_reg_info_t;
 
 typedef union {
-  evoasm_kernel_x64_reg_info_t x64[EVOASM_X64_N_REGS];
+  evoasm_kernel_x64_reg_info_t x64[EVOASM_X64_REG_NONE];
 } evoasm_kernel_reg_info_t;
 
 
 typedef struct {
-  evoasm_kernel_size_t kernel_size;
+  uint16_t kernel_size;
   evoasm_inst_id_t *insts;
   union {
     evoasm_x64_basic_params_t *x64;
@@ -58,7 +52,7 @@ typedef struct {
 
   uint_fast8_t input_reg_count;
   uint_fast8_t output_reg_count;
-  evoasm_kernel_count_t idx;
+  uint16_t idx;
   uint16_t buf_start;
   uint16_t buf_end;
 } evoasm_kernel_t;
@@ -101,10 +95,10 @@ typedef struct {
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
   evoasm_kernel_t *kernels;
-  evoasm_kernel_count_t *alt_succ_idxs;
+  uint16_t *jmp_offs;
   uint8_t *jmp_selectors;
   uint32_t *recur_counters;
-  evoasm_kernel_count_t kernel_count;
+  uint16_t program_size;
 
   /* these two are incomplete (values missig)
    * We only need arity and types */
@@ -118,7 +112,7 @@ typedef struct {
 
   union {
     /* register at index i has _input i % input_arity */
-    uint8_t x64[EVOASM_X64_N_REGS];
+    uint8_t x64[EVOASM_X64_REG_NONE];
   } reg_inputs;
 } evoasm_program_t;
 
@@ -127,10 +121,10 @@ evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program
 
 evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
-                    evoasm_arch_info_t *arch_info,
+                    evoasm_arch_id_t arch_id,
                     evoasm_program_io_t *program_input,
-                    evoasm_kernel_count_t kernel_count,
-                    evoasm_kernel_size_t kernel_size,
+                    uint16_t kernel_count,
+                    uint16_t kernel_size,
                     uint32_t recur_limit);
 
 

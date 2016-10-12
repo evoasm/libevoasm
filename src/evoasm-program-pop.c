@@ -119,10 +119,10 @@ evoasm_program_pop_init_program(evoasm_program_pop_t *program_pop, evoasm_progra
   };
 
   unsigned i;
-  for(i = 0; i < program_params->kernel_count; i++) {
+  for(i = 0; i < program_params->program_size; i++) {
     evoasm_kernel_t *kernel = &program_.kernels[i];
     kernel->params = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(program_params, params->max_kernel_size, i);
-    kernel->idx = (evoasm_kernel_count_t) i;
+    kernel->idx = (uint16_t) i;
   }
 
   *program = program_;
@@ -170,19 +170,19 @@ evoasm_program_pop_mutate_kernel(evoasm_program_pop_t *program_pop, evoasm_kerne
   if(r < mut_rate) {
 
     r = _evoasm_prng_rand32(prng);
-    if(child->kernel_count > params->min_kernel_size && r < UINT32_MAX / 16) {
-      uint32_t index = r % child->kernel_count;
+    if(child->program_size > params->min_kernel_size && r < UINT32_MAX / 16) {
+      uint32_t index = r % child->program_size;
 
-      if(index < (uint32_t) (child->kernel_count - 1)) {
+      if(index < (uint32_t) (child->program_size - 1)) {
         memmove(child->params + index, child->params + index + 1,
-                (child->kernel_count - index - 1) * sizeof(evoasm_kernel_param_t));
+                (child->program_size - index - 1) * sizeof(evoasm_kernel_param_t));
       }
-      child->kernel_count--;
+      child->program_size--;
     }
 
     r = _evoasm_prng_rand32(prng);
     {
-      evoasm_kernel_param_t *param = child->params + (r % child->kernel_count);
+      evoasm_kernel_param_t *param = child->params + (r % child->program_size);
       evoasm_program_pop_seed_kernel_param(program_pop, param);
     }
   }
@@ -195,24 +195,24 @@ evoasm_program_pop_crossover_kernel(evoasm_program_pop_t *program_pop,
                                  evoasm_kernel_params_t *child) {
 
   /* NOTE: parent_a must be the longer parent, i.e. parent_size_a >= parent_size_b */
-  evoasm_kernel_size_t child_size;
+  uint16_t child_size;
   unsigned crossover_point, crossover_len, i;
   evoasm_prng_t *prng = &program_pop->pop.prng;
 
-  assert(parent_a->kernel_count >= parent_b->kernel_count);
+  assert(parent_a->program_size >= parent_b->program_size);
 
-  child_size = (evoasm_kernel_size_t)
+  child_size = (uint16_t)
       _evoasm_prng_rand_between(prng,
-                                parent_b->kernel_count, parent_a->kernel_count);
+                                parent_b->program_size, parent_a->program_size);
 
   assert(child_size > 0);
-  assert(child_size >= parent_b->kernel_count);
+  assert(child_size >= parent_b->program_size);
 
   /* offset for shorter parent */
   crossover_point = (unsigned) _evoasm_prng_rand_between(prng,
-                                                         0, child_size - parent_b->kernel_count);
+                                                         0, child_size - parent_b->program_size);
   crossover_len = (unsigned) _evoasm_prng_rand_between(prng,
-                                                       0, parent_b->kernel_count);
+                                                       0, parent_b->program_size);
 
 
   for(i = 0; i < child_size; i++) {
@@ -228,7 +228,7 @@ evoasm_program_pop_crossover_kernel(evoasm_program_pop_t *program_pop,
     }
     child->params[i] = parent->params[index];
   }
-  child->kernel_count = child_size;
+  child->program_size = child_size;
 
   evoasm_program_pop_mutate_kernel(program_pop, child);
 }
@@ -240,33 +240,33 @@ evoasm_program_pop_crossover_program_param(evoasm_program_pop_t *program_pop, ev
                                     evoasm_program_params_t *child) {
 
   /* NOTE: parent_a must be the longer parent, i.e. parent_size_a >= parent_size_b */
-  evoasm_kernel_count_t child_size;
+  uint16_t child_size;
   unsigned i;
 
   evoasm_prng_t *prng = &program_pop->pop.prng;
   evoasm_program_pop_params_t *params = evoasm_program_pop_params(program_pop);
   unsigned max_kernel_size = params->max_kernel_size;
 
-  assert(parent_a->kernel_count >= parent_b->kernel_count);
-  assert(parent_a->kernel_count > 0);
-  assert(parent_b->kernel_count > 0);
+  assert(parent_a->program_size >= parent_b->program_size);
+  assert(parent_a->program_size > 0);
+  assert(parent_b->program_size > 0);
 
-  child_size = (evoasm_kernel_count_t)
+  child_size = (uint16_t)
       _evoasm_prng_rand_between(prng,
-                                parent_b->kernel_count, parent_a->kernel_count);
+                                parent_b->program_size, parent_a->program_size);
 
   assert(child_size > 0);
-  assert(child_size >= parent_b->kernel_count);
+  assert(child_size >= parent_b->program_size);
 
 
   for(i = 0; i < child_size; i++) {
     evoasm_kernel_params_t *kernel_child = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(child, max_kernel_size, i);
 
-    if(i < parent_b->kernel_count) {
+    if(i < parent_b->program_size) {
       evoasm_kernel_params_t *kernel_parent_a = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(parent_a, max_kernel_size, i);
       evoasm_kernel_params_t *kernel_parent_b = _EVOASM_PROGRAM_PARAMS_KERNEL_PARAMS(parent_b, max_kernel_size, i);
 
-      if(kernel_parent_a->kernel_count < kernel_parent_b->kernel_count) {
+      if(kernel_parent_a->program_size < kernel_parent_b->program_size) {
         evoasm_kernel_params_t *t = kernel_parent_a;
         kernel_parent_a = kernel_parent_b;
         kernel_parent_b = t;
@@ -278,14 +278,14 @@ evoasm_program_pop_crossover_program_param(evoasm_program_pop_t *program_pop, ev
       evoasm_program_pop_mutate_kernel(program_pop, kernel_child);
     }
   }
-  child->kernel_count = child_size;
+  child->program_size = child_size;
 }
 
 static evoasm_success_t
 evoasm_program_pop_crossover_program_params(evoasm_program_pop_t *pop, evoasm_program_params_t *parent_a, evoasm_program_params_t *parent_b,
                           evoasm_program_params_t *child_a, evoasm_program_params_t *child_b) {
 
-  if(parent_a->kernel_count < parent_b->kernel_count) {
+  if(parent_a->program_size < parent_b->program_size) {
     evoasm_program_params_t *t = parent_a;
     parent_a = parent_b;
     parent_b = t;
