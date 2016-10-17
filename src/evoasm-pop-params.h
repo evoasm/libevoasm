@@ -25,11 +25,11 @@ typedef float evoasm_loss_t;
 typedef struct evoasm_pop_params_s {
   evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
   evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];
-  uint8_t param_count;
+  uint8_t n_params;
 
-  uint16_t kernel_deme_count;
+  uint16_t n_kernel_demes;
   uint16_t kernel_deme_size;
-  uint16_t program_deme_count;
+  uint16_t n_program_demes;
   uint16_t program_deme_size;
   uint16_t library_size;
 
@@ -45,7 +45,7 @@ typedef struct evoasm_pop_params_s {
   uint8_t depth;
   evoasm_prng_state_t seed;
   uint32_t recur_limit;
-  uint16_t inst_count;
+  uint16_t n_insts;
   evoasm_program_input_t *program_input;
   evoasm_program_output_t *program_output;
   evoasm_inst_id_t inst_ids[EVOASM_X64_INST_NONE];

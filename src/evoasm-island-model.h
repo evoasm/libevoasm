@@ -31,7 +31,7 @@ typedef bool (*evoasm_island_model_progress_cb_t)(struct evoasm_island_model_s *
                                                   unsigned cycle,
                                                   unsigned gen,
                                                   evoasm_loss_t pop_loss,
-                                                  unsigned inf_count,
+                                                  unsigned n_inf,
                                                   void *user_data);
 
 typedef struct evoasm_island_model_s {

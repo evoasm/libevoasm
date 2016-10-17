@@ -72,7 +72,7 @@ typedef struct {
 typedef bool (*evoasm_x64_inst_enc_func_t)(evoasm_x64_enc_ctx_t *ctx);
 
 typedef struct {
-  uint8_t operand_count;
+  uint8_t n_operands;
   uint16_t id;
   uint16_t n_params;
   uint32_t exceptions;

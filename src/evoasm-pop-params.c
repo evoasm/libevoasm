@@ -10,7 +10,7 @@ _EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
 #define _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) _EVOASM_DEF_GETTER_SETTER(pop_params, field, type)
 
 _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(size, uint32_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(param_count, uint8_t)
+_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, uint8_t)
 
 double
 evoasm_pop_params_get_mut_rate(evoasm_pop_params_t *pop_params) {
@@ -25,7 +25,7 @@ evoasm_pop_params_set_mut_rate(evoasm_pop_params_t *pop_params, double mut_rate)
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {
   unsigned i;
-  for(i = 0; i < pop_params->param_count; i++) {
+  for(i = 0; i < pop_params->n_params; i++) {
     if(pop_params->param_ids[i] == param_id) {
       return &pop_params->domains[i];
     }
@@ -66,8 +66,8 @@ evoasm_pop_params_set_param(evoasm_pop_params_t *pop_params, unsigned index, evo
 }
 
 uint8_t
-evoasm_search_get_param_count(evoasm_pop_params_t *pop_params) {
-  return pop_params->param_count;
+evoasm_search_get_n_params(evoasm_pop_params_t *pop_params) {
+  return pop_params->n_params;
 }
 
 uint64_t
@@ -87,7 +87,7 @@ evoasm_pop_params_destroy(evoasm_pop_params_t *pop_params) {
 
 bool
 evoasm_pop_params_valid(evoasm_pop_params_t *pop_params) {
-  if(pop_params->param_count == 0) {
+  if(pop_params->n_params == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                      NULL, "No parameters given");
     goto fail;

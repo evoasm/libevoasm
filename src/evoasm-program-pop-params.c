@@ -11,12 +11,12 @@ _EVOASM_DEF_ZERO_INIT_FUNC(program_pop_params)
 
 #define _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) _EVOASM_DEF_GETTER_SETTER(program_pop_params, field, type)
 
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernel_count, evoasm_kernel_count_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_count, evoasm_kernel_count_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernel_size, uint16_t)
+_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernels, evoasm_kernel_count_t)
+_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernels, evoasm_kernel_count_t)
+_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernels, uint16_t)
 _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, uint16_t)
 _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, uint32_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(inst_count, uint16_t)
+_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, uint16_t)
 _EVOASM_DEF_GETTER(program_pop_params, program_input, evoasm_program_io_t *)
 _EVOASM_DEF_GETTER(program_pop_params, program_output, evoasm_program_io_t *)
 
@@ -34,13 +34,13 @@ bool
 evoasm_program_pop_params_valid(evoasm_program_pop_params_t *program_pop_params) {
   if(!evoasm_pop_params_valid(&program_pop_params->pop_params)) goto fail;
 
-  if(program_pop_params->max_kernel_count > EVOASM_PROGRAM_MAX_SIZE) {
+  if(program_pop_params->max_kernels > EVOASM_PROGRAM_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
     goto fail;
   }
 
-  if(program_pop_params->inst_count == 0) {
+  if(program_pop_params->n_insts == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "No instructions given");
     goto fail;
@@ -58,9 +58,9 @@ evoasm_program_pop_params_valid(evoasm_program_pop_params_t *program_pop_params)
     goto fail;
   }
 
-  if(program_pop_params->min_kernel_count == 0 || program_pop_params->min_kernel_count > program_pop_params->max_kernel_count) {
+  if(program_pop_params->min_kernels == 0 || program_pop_params->min_kernels > program_pop_params->max_kernels) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Invalid kernel count");
+                 NULL, "Invalid number of kernels");
     goto fail;
   }
 

@@ -60,7 +60,7 @@ evoasm_program_pop_eval_program(evoasm_program_pop_t *program_pop,
                          evoasm_program_t *program,
                          evoasm_loss_t *loss) {
 
-  evoasm_kernel_t *kernel = &program->kernels[program->params->kernel_count - 1];
+  evoasm_kernel_t *kernel = &program->kernels[program->params->n_kernels - 1];
   evoasm_program_pop_params_t *params = evoasm_program_pop_params(program_pop);
 
   if(!evoasm_program_emit(program, params->program_input, true, true, true, true)) {
@@ -68,7 +68,7 @@ evoasm_program_pop_eval_program(evoasm_program_pop_t *program_pop,
     return false;
   }
 
-  if(EVOASM_UNLIKELY(kernel->output_reg_count == 0)) {
+  if(EVOASM_UNLIKELY(kernel->n_output_regs == 0)) {
     *loss = INFINITY;
     return true;
   }
@@ -329,11 +329,11 @@ evoasm_program_pop_init(evoasm_program_pop_t *program_pop, evoasm_arch_id_t arch
     return false;
   }
 
-  unsigned example_count = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(params->program_input);
-  size_t indiv_size = EVOASM_PROGRAM_PARAMS_SIZE(params->max_kernel_count, params->max_kernel_size);
+  unsigned n_examples = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(params->program_input);
+  size_t indiv_size = EVOASM_PROGRAM_PARAMS_SIZE(params->max_n_kernels, params->max_kernel_size);
 
   if(!evoasm_pop_init(&program_pop->pop, (evoasm_pop_params_t *) params, &_evoasm_program_pop_cls, indiv_size,
-                       example_count)) {
+                       n_examples)) {
     return false;
   }
 

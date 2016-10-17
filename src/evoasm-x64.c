@@ -11,7 +11,7 @@
 
 //static const char *_evoasm_log_tag = "x64";
 
-uint8_t evoasm_x64_reg_type_sizes[EVOASM_X64_N_REG_TYPES] = {0};
+uint8_t evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_NONE] = {0};
 
 static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
     EVOASM_X64_REG_BP,
@@ -130,7 +130,7 @@ evoasm_x64_inst_get_operand(evoasm_x64_inst_t *inst, unsigned index) {
 
 unsigned
 evoasm_x64_inst_get_n_operands(evoasm_x64_inst_t *inst) {
-  return inst->operand_count;
+  return inst->n_operands;
 }
 
 #define _EVOASM_X64_OPERAND_DEF_GETTER(field, type) _EVOASM_DEF_GETTER(x64_operand, field, type)
@@ -205,7 +205,7 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
   unsigned i, j;
   bool search = (flags & EVOASM_X64_INSTS_FLAG_SEARCH) != 0;
 
-  for(i = 0; i < EVOASM_X64_N_INSTS; i++) {
+  for(i = 0; i < EVOASM_X64_INST_NONE; i++) {
     if(search && (i == EVOASM_X64_INST_CRC32_R32_RM8 ||
                   i == EVOASM_X64_INST_CRC32_R32_RM16 ||
                   i == EVOASM_X64_INST_CRC32_R32_RM32 ||
@@ -231,9 +231,9 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
 
     if((inst->features & ~features) != 0) goto skip;
 
-    if(search && inst->operand_count == 0) goto skip;
+    if(search && inst->n_operands == 0) goto skip;
 
-    for(j = 0; j < inst->operand_count; j++) {
+    for(j = 0; j < inst->n_operands; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
 
       if(((1ull << operand->type) & operand_types) == 0) goto skip;

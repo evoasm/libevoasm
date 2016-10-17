@@ -50,8 +50,8 @@ typedef struct {
     evoasm_x64_reg_id_t x64[EVOASM_KERNEL_MAX_OUTPUT_REGS];
   } output_regs;
 
-  uint_fast8_t input_reg_count;
-  uint_fast8_t output_reg_count;
+  uint_fast8_t n_input_regs;
+  uint_fast8_t n_output_regs;
   uint16_t idx;
   uint16_t buf_start;
   uint16_t buf_end;
@@ -123,7 +123,7 @@ evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_id_t arch_id,
                     evoasm_program_io_t *program_input,
-                    uint16_t kernel_count,
+                    uint16_t n_kernels,
                     uint16_t kernel_size,
                     uint32_t recur_limit);
 

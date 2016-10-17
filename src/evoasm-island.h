@@ -31,7 +31,7 @@ typedef struct evoasm_island_s {
   evoasm_pop_t *pop;
   struct evoasm_island_s *immigr_islands[EVOASM_ISLAND_MAX_IMMIGR_ISLANDS];
   evoasm_island_params_t *params;
-  uint8_t immigr_island_count;
+  uint8_t n_immigr_islands;
   atomic_bool cancelled;
   struct evoasm_island_model_s *model;
   struct evoasm_island_s *next;

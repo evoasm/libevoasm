@@ -56,6 +56,7 @@ typedef struct {
 
 typedef struct {
   evoasm_loss_t *losses;
+  uint8_t *sample_counters;
   evoasm_loss_t *best_losses;
   uint16_t *sizes;
 } evoasm_pop_indiv_data_t;
@@ -78,13 +79,17 @@ typedef struct {
   evoasm_pop_basic_program_data_t basic_program_data;
 } evoasm_pop_program_data_t;
 
-typedef struct {
-  evoasm_pop_indiv_data_t indiv_data;
+typedef struct  {
   evoasm_inst_id_t *insts;
   union {
     evoasm_x64_basic_params_t *x64;
     void *data;
   } params;
+} evoasm_pop_basic_kernel_data_t;
+
+typedef struct {
+  evoasm_pop_indiv_data_t indiv_data;
+  evoasm_pop_basic_kernel_data_t basic_kernel_data;
 } evoasm_pop_kernel_data_t;
 
 
@@ -92,24 +97,25 @@ typedef struct alignas(EVOASM_CACHE_LINE_SIZE) {
   evoasm_prng_t prng;
   uint16_t *parent_idxs;
   evoasm_pop_basic_program_data_t parent_basic_program_data;
-  evoasm_pop_kernel_data_t parent_kernel_data;
+  evoasm_pop_basic_kernel_data_t parent_basic_kernel_data;
   evoasm_program_t program;
+  size_t *kernel_offs;
 } evoasm_pop_thread_data_t;
 
 typedef struct evoasm_pop_s {
   evoasm_pop_params_t *params;
-  evoasm_loss_t best_loss;
-  uint32_t best_indiv_idx;
-  uint32_t example_count;
+  uint32_t n_examples;
   bool seeded : 1;
   uint64_t *error_counters;
   uint64_t error_counter;
-  unsigned team_pos_offs[EVOASM_POP_PARAMS_MAX_DEPTH];
-  unsigned indiv_offs[EVOASM_POP_PARAMS_MAX_DEPTH];
-  unsigned deme_offs[EVOASM_POP_PARAMS_MAX_DEPTH];
   evoasm_pop_program_data_t program_data;
   evoasm_pop_kernel_data_t kernel_data;
   evoasm_pop_module_data_t module_data;
+
+  evoasm_loss_t best_loss;
+  evoasm_pop_program_data_t best_program_data;
+  evoasm_pop_kernel_data_t best_kernel_data;
+
   evoasm_domain_t *domains;
   evoasm_loss_t max_loss;
   evoasm_pop_thread_data_t *thread_data;
@@ -146,7 +152,7 @@ size_t
 evoasm_pop_get_indiv_size(evoasm_pop_t *pop);
 
 evoasm_loss_t
-evoasm_pop_get_loss(evoasm_pop_t *pop, unsigned *inf_count, bool per_example);
+evoasm_pop_get_loss(evoasm_pop_t *pop, unsigned *n_inf, bool per_example);
 
 evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop);
