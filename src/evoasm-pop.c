@@ -20,13 +20,13 @@ EVOASM_DEF_LOG_TAG("pop")
 
 static evoasm_success_t
 evoasm_pop_indiv_data_init(evoasm_pop_indiv_data_t *indiv_data, size_t n_demes, size_t deme_size,
-                           size_t n_losses_per_indiv) {
+                           size_t n_samples_per_indiv) {
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, indiv_data->sizes, EVOASM_CACHE_LINE_SIZE,
                    n_demes * deme_size,
                    sizeof(uint16_t));
   EVOASM_TRY_ALLOC(error, aligned_calloc, indiv_data->losses, EVOASM_CACHE_LINE_SIZE,
-                   n_demes * deme_size * n_losses_per_indiv,
+                   n_demes * deme_size * n_samples_per_indiv,
                    sizeof(evoasm_loss_t));
   EVOASM_TRY_ALLOC(error, aligned_calloc, indiv_data->sample_counters, EVOASM_CACHE_LINE_SIZE,
                    n_demes * deme_size,
@@ -387,7 +387,7 @@ evoasm_pop_inject(evoasm_pop_t *pop, evoasm_indiv_t *indiv, size_t indiv_size, e
   while(true) {
     for(i = 0; i < pop->params->size; i++) {
       uint32_t r = _evoasm_prng_rand32(&pop->prng);
-      if(r > UINT32_MAX * ((pop->best_loss + 1.0) / (pop->losses[i] + 1.0))) {
+      if(r > UINT32_MAX * ((pop->best_program_loss + 1.0) / (pop->losses[i] + 1.0))) {
         goto done;
       }
     }
@@ -600,43 +600,6 @@ evoasm_pop_load_program(evoasm_pop_t *pop, evoasm_program_t *program, uint16_t p
   }
 }
 
-
-static void
-evoasm_pop_load_program_(evoasm_pop_t *pop, evoasm_program_t *program,
-                         size_t deme_idx, size_t program_idx, int tid) {
-
-  evoasm_pop_program_data_t *program_data = &pop->program_data;
-  evoasm_pop_kernel_data_t *inst_data = &pop->kernel_data;
-
-  size_t program_off = EVOASM_POP_PROGRAM_OFF(pop, deme_idx, program_idx);
-  uint16_t program_size = program_data->indiv_data.sizes[program_off];
-
-  program->program_size = program_size;
-
-  for(unsigned i = 0; i < program_size; i++) {
-    size_t program_pos_off = EVOASM_POP_PROGRAM_POS_OFF(pop, program_off, i);
-
-    uint16_t kernel_deme_idx = program_data->basic_program_data.kernel_deme_idxs[program_pos_off];
-    uint16_t kernel_idx = program_data->basic_program_data.kernel_idxs[program_pos_off];
-
-    size_t kernel_off = EVOASM_POP_KERNEL_OFF(pop, i, kernel_deme_idx, kernel_idx);
-    size_t inst_off = EVOASM_POP_KERNEL_INST_OFF(pop, kernel_off, 0);
-
-    program->kernels[i].insts = &inst_data->basic_kernel_data.insts[inst_off];
-
-    switch(pop->arch_id) {
-      case EVOASM_ARCH_X64:
-        program->kernels[i].params.x64 = &inst_data->basic_kernel_data.params.x64[inst_off];
-        break;
-      default:
-        evoasm_assert_not_reached();
-    }
-
-    program->jmp_offs[i] = program_data->basic_program_data.jmp_offs[program_pos_off];
-    program->jmp_selectors[i] = program_data->basic_program_data.jmp_selectors[program_pos_off];
-  }
-}
-
 static evoasm_success_t
 evoasm_pop_assess_program(evoasm_pop_t *pop, evoasm_program_t *program, evoasm_loss_t *loss) {
   evoasm_kernel_t *kernel = &program->kernels[program->program_size - 1];
@@ -668,7 +631,8 @@ evoasm_pop_assess_program(evoasm_pop_t *pop, evoasm_program_t *program, evoasm_l
 }
 
 static void
-evoasm_pop_indiv_data_add_sample(evoasm_pop_indiv_data_t *indiv_data, size_t indiv_off, size_t n_samples, evoasm_loss_t loss) {
+evoasm_pop_indiv_data_register_sample(evoasm_pop_indiv_data_t *indiv_data, size_t indiv_off, size_t n_samples,
+                                      evoasm_loss_t loss) {
 
 #pragma omp atomic capture
   uint8_t sample_idx = indiv_data->sample_counters[indiv_off]++;
@@ -680,22 +644,64 @@ evoasm_pop_indiv_data_add_sample(evoasm_pop_indiv_data_t *indiv_data, size_t ind
 
 static evoasm_success_t
 evoasm_pop_eval_program(evoasm_pop_t *pop, evoasm_program_t *program, uint16_t program_size, size_t program_off,
-                        size_t *kernel_offs) {
+                        size_t *kernel_offs, evoasm_loss_t *ret_loss) {
 
   evoasm_loss_t loss;
   evoasm_pop_load_program(pop, program, program_size, program_off, kernel_offs);
   EVOASM_TRY(error, evoasm_pop_assess_program, pop, program, &loss);
 
-  evoasm_pop_indiv_data_add_sample(&pop->program_data.indiv_data, program_off, EVOASM_POP_N_SAMPLES_PER_PROGRAM, loss);
+  evoasm_pop_indiv_data_register_sample(&pop->program_data.indiv_data, program_off, EVOASM_POP_N_SAMPLES_PER_PROGRAM,
+                                        loss);
 
   for(unsigned i = 0; i < program_size; i++) {
     size_t kernel_off = kernel_offs[i];
-    evoasm_pop_indiv_data_add_sample(&pop->kernel_data.indiv_data, kernel_off, EVOASM_POP_N_SAMPLES_PER_KERNEL, loss);
+    evoasm_pop_indiv_data_register_sample(&pop->kernel_data.indiv_data, kernel_off, EVOASM_POP_N_SAMPLES_PER_KERNEL,
+                                          loss);
   }
 
+  *ret_loss = loss;
   return true;
 error:
   return false;
+}
+
+
+static void
+evoasm_pop_basic_program_data_copy(evoasm_pop_basic_program_data_t *basic_program_data,
+                                   size_t off,
+                                   evoasm_pop_basic_program_data_t *dst,
+                                   size_t dst_off,
+                                   size_t len) {
+
+  memcpy(dst->kernel_idxs + dst_off, basic_program_data->kernel_idxs + off,
+         sizeof(uint16_t) * len);
+  memcpy(dst->kernel_deme_idxs + dst_off, basic_program_data->kernel_deme_idxs + off,
+         sizeof(uint16_t) * len);
+  memcpy(dst->jmp_offs + dst_off, basic_program_data->jmp_offs + off,
+         sizeof(uint16_t) * len);
+  memcpy(dst->jmp_selectors + dst_off, basic_program_data->jmp_selectors + off,
+         sizeof(uint8_t) * len);
+}
+
+static void
+evoasm_pop_basic_kernel_data_copy(evoasm_pop_basic_kernel_data_t *basic_kernel_data,
+                          evoasm_arch_id_t arch_id,
+                          size_t off,
+                          evoasm_pop_basic_kernel_data_t *dst,
+                          size_t dst_off,
+                          size_t len) {
+
+  memcpy(dst->insts + dst_off, basic_kernel_data->insts + off,
+         sizeof(evoasm_inst_id_t) * len);
+
+  switch(arch_id) {
+    case EVOASM_ARCH_X64:
+      memcpy(dst->params.x64 + dst_off, basic_kernel_data->params.x64 + off,
+             sizeof(evoasm_x64_basic_params_t) * len);
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
 }
 
 
@@ -718,14 +724,26 @@ evoasm_pop_eval_programs(evoasm_pop_t *pop) {
 
       size_t program_off = EVOASM_POP_PROGRAM_OFF(pop, i, j);
       uint16_t program_size = pop->program_data.indiv_data.sizes[program_off];
+      evoasm_loss_t loss;
 
       for(unsigned k = 0; k < EVOASM_POP_N_SAMPLES_PER_KERNEL; k++) {
         for(unsigned l = 0; l < program_size; l++) {
           uint16_t kernel_deme_idx = (uint16_t) _evoasm_prng_rand_between(prng, 0, pop->params->n_kernel_demes);
           uint16_t kernel_idx = (uint16_t) _evoasm_prng_rand_between(prng, 0, pop->params->kernel_deme_size);
-          kernel_offs[i] = EVOASM_POP_KERNEL_OFF(pop, l, kernel_deme_idx, kernel_idx);
+          kernel_offs[l] = EVOASM_POP_KERNEL_OFF(pop, l, kernel_deme_idx, kernel_idx);
         }
-        evoasm_pop_eval_program(pop, program, program_size, program_off, kernel_offs);
+        EVOASM_TRY(error, evoasm_pop_eval_program, pop, program, program_size, program_off, kernel_offs, &loss);
+
+        if(loss < pop->best_program_loss) {
+          evoasm_log_info("new best loss: %g", loss);
+          pop->best_program_loss = loss;
+          pop->best_program_size = program_size;
+          evoasm_pop_basic_program_data_copy(&pop->program_data.basic_program_data, program_off, &pop->best_program_data, 0, program_size);
+
+          for(unsigned l = 0; l < program_size; l++) {
+            evoasm_pop_basic_kernel_data_copy(&pop->kernel_data.basic_kernel_data, pop->arch_id, kernel_offs[l], &pop->best_kernel_data, 0, 1);
+          }
+        }
       }
     }
   }
@@ -757,8 +775,8 @@ evoasm_pop_eval_kernels(evoasm_pop_t *pop) {
           uint16_t program_deme_idx = (uint16_t) _evoasm_prng_rand_between(prng, 0, pop->params->n_program_demes);
           uint16_t program_idx = (uint16_t) _evoasm_prng_rand_between(prng, 0, pop->params->program_deme_size);
           size_t program_off = EVOASM_POP_PROGRAM_OFF(pop, program_deme_idx, program_idx);
-
           uint16_t program_size = pop->program_data.indiv_data.sizes[program_off];
+          evoasm_loss_t loss;
 
           for(unsigned m = 0; m < program_size; m++) {
             uint16_t kernel_deme_idx;
@@ -773,16 +791,68 @@ evoasm_pop_eval_kernels(evoasm_pop_t *pop) {
             }
             kernel_offs[i] = EVOASM_POP_KERNEL_OFF(pop, l, kernel_deme_idx, kernel_idx);
           }
-          evoasm_pop_eval_program(pop, program, program_size, program_off, kernel_offs);
+          evoasm_pop_eval_program(pop, program, program_size, program_off, kernel_offs, &loss);
         }
       }
     }
   }
 }
 
+#define EVOASM_SORT_PAIR(t, a, b) \
+do { \
+  t x = EVOASM_MIN(a, b); \
+  t y = EVOASM_MAX(a, b); \
+  (a) = x;\
+  (b) = y;\
+} while(0);
+
+typedef void (*evoasm_pop_loss_sort_func_t)(evoasm_loss_t *);
+
+static inline void
+evoasm_pop_sort_losses7(evoasm_loss_t *losses) {
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[1], losses[2]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[0], losses[2]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[0], losses[1]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[3], losses[4]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[5], losses[6]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[3], losses[5]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[4], losses[6]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[4], losses[5]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[0], losses[4]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[0], losses[3]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[1], losses[5]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[2], losses[6]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[2], losses[5]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[1], losses[3]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[2], losses[4]);
+  EVOASM_SORT_PAIR(evoasm_loss_t, losses[2], losses[3]);
+}
+
+static_assert(EVOASM_POP_N_SAMPLES_PER_PROGRAM == 7, "sort function and sample count must match");
+#define evoasm_pop_sort_program_losses evoasm_pop_sort_losses7
+
+static_assert(EVOASM_POP_N_SAMPLES_PER_KERNEL == 7, "sort function and sample count must match");
+#define evoasm_pop_sort_kernel_losses evoasm_pop_sort_losses7
 
 static void
-evoasm_pop_update_best_losses(evoasm_pop_t *pop) {
+evoasm_pop_update_losses(evoasm_pop_t *pop) {
+
+  {
+    size_t program_losses_len =
+        pop->params->n_program_demes * pop->params->program_deme_size * (size_t) EVOASM_POP_N_SAMPLES_PER_PROGRAM;
+    for(size_t i = 0; i < program_losses_len; i += EVOASM_POP_N_SAMPLES_PER_PROGRAM) {
+      evoasm_pop_sort_program_losses(&pop->program_data.indiv_data.losses[i]);
+    }
+  }
+
+  {
+    size_t kernel_losses_len =
+        pop->params->max_program_size * pop->params->n_kernel_demes * pop->params->kernel_deme_size *
+        (size_t) EVOASM_POP_N_SAMPLES_PER_KERNEL;
+    for(size_t i = 0; i < kernel_losses_len; i += EVOASM_POP_N_SAMPLES_PER_KERNEL) {
+      evoasm_pop_sort_kernel_losses(&pop->program_data.indiv_data.losses[i]);
+    }
+  }
 
   {
     evoasm_pop_kernel_data_t *kernel_data = &pop->kernel_data;
@@ -846,7 +916,7 @@ evoasm_pop_eval(evoasm_pop_t *pop) {
     goto done;
   }
 
-  evoasm_pop_update_best_losses(pop);
+  evoasm_pop_update_losses(pop);
 
   retval = true;
 
@@ -909,26 +979,7 @@ evoasm_pop_select_deme(evoasm_pop_t *pop, size_t depth, size_t deme_idx, int tid
 done:;
 }
 
-static void
-evoasm_pop_inst_data_copy(evoasm_pop_kernel_data_t *inst_data_dst,
-                          evoasm_arch_id_t arch_id,
-                          size_t off_dst,
-                          evoasm_pop_kernel_data_t *inst_data_src,
-                          size_t off_src,
-                          size_t len) {
 
-  memcpy(inst_data_dst->insts + off_dst, inst_data_src->insts + off_src,
-         sizeof(evoasm_inst_id_t) * len);
-
-  switch(arch_id) {
-    case EVOASM_ARCH_X64:
-      memcpy(inst_data_dst->params.x64 + off_dst, inst_data_src->params.x64 + off_src,
-             sizeof(evoasm_x64_basic_params_t) * len);
-      break;
-    default:
-      evoasm_assert_not_reached();
-  }
-}
 
 static void
 evoasm_pop_team_pos_data_copy(evoasm_pop_program_data_t *team_pos_data_dst,

@@ -112,9 +112,10 @@ typedef struct evoasm_pop_s {
   evoasm_pop_kernel_data_t kernel_data;
   evoasm_pop_module_data_t module_data;
 
-  evoasm_loss_t best_loss;
-  evoasm_pop_program_data_t best_program_data;
-  evoasm_pop_kernel_data_t best_kernel_data;
+  evoasm_loss_t best_program_loss;
+  evoasm_pop_basic_program_data_t best_program_data;
+  evoasm_pop_basic_kernel_data_t best_kernel_data;
+  uint16_t best_program_size;
 
   evoasm_domain_t *domains;
   evoasm_loss_t max_loss;
