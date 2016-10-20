@@ -66,17 +66,17 @@ typedef struct {
   uint16_t *kernel_deme_idxs;
   uint16_t *jmp_offs;
   uint8_t *jmp_selectors;
-} evoasm_pop_basic_program_data_t;
+} evoasm_pop_program_pos_data_t;
 
 typedef struct {
   float *pheromones;
   uint16_t *sizes;
-  evoasm_pop_basic_program_data_t basic_program_data;
+  evoasm_pop_program_pos_data_t program_pos_data;
 } evoasm_pop_module_data_t;
 
 typedef struct {
   evoasm_pop_indiv_data_t indiv_data;
-  evoasm_pop_basic_program_data_t basic_program_data;
+  evoasm_pop_program_pos_data_t program_pos_data;
 } evoasm_pop_program_data_t;
 
 typedef struct  {
@@ -85,19 +85,19 @@ typedef struct  {
     evoasm_x64_basic_params_t *x64;
     void *data;
   } params;
-} evoasm_pop_basic_kernel_data_t;
+} evoasm_pop_kernel_inst_data_t;
 
 typedef struct {
   evoasm_pop_indiv_data_t indiv_data;
-  evoasm_pop_basic_kernel_data_t basic_kernel_data;
+  evoasm_pop_kernel_inst_data_t kernel_inst_data;
 } evoasm_pop_kernel_data_t;
 
 
 typedef struct alignas(EVOASM_CACHE_LINE_SIZE) {
   evoasm_prng_t prng;
   uint16_t *parent_idxs;
-  evoasm_pop_basic_program_data_t parent_basic_program_data;
-  evoasm_pop_basic_kernel_data_t parent_basic_kernel_data;
+  evoasm_pop_program_pos_data_t parent_program_pos_data;
+  evoasm_pop_kernel_inst_data_t parent_kernel_inst_data;
   evoasm_program_t program;
   size_t *kernel_offs;
 } evoasm_pop_thread_data_t;
@@ -113,8 +113,8 @@ typedef struct evoasm_pop_s {
   evoasm_pop_module_data_t module_data;
 
   evoasm_loss_t best_program_loss;
-  evoasm_pop_basic_program_data_t best_program_data;
-  evoasm_pop_basic_kernel_data_t best_kernel_data;
+  evoasm_pop_program_pos_data_t best_program_data;
+  evoasm_pop_kernel_inst_data_t best_kernel_data;
   uint16_t best_program_size;
 
   evoasm_domain_t *domains;
@@ -122,6 +122,7 @@ typedef struct evoasm_pop_s {
   evoasm_pop_thread_data_t *thread_data;
   evoasm_arch_id_t arch_id;
   int max_threads;
+  evoasm_loss_t *deme_losses;
 } evoasm_pop_t;
 
 
@@ -137,10 +138,9 @@ evoasm_pop_init(evoasm_pop_t *pop,
 
 
 evoasm_success_t
-evoasm_pop_eval(evoasm_pop_t *pop, evoasm_loss_t max_loss, evoasm_pop_result_cb_t result_cb,
-                 void *user_data);
+evoasm_pop_eval(evoasm_pop_t *pop);
 
-evoasm_success_t
+void
 evoasm_pop_next_gen(evoasm_pop_t *pop);
 
 evoasm_indiv_t *

@@ -38,6 +38,8 @@
 # define evoasm_pack(decl) __pragma(pack(push, 1)) decl __pragma(pack(pop))
 #else
 # define evoasm_check_return
+# define evoasm_force_inline
+# define evoasm_pack(decl)
 #endif
 
 #define _EVOASM_DEF_ALLOC_FUNC(type) \
