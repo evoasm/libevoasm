@@ -131,10 +131,10 @@ evoasm_island_model_merge(evoasm_island_model_t *model) {
   evoasm_log_info("merging\n");
 
   for(i = 0; i < model->params->program_size; i++) {
-    evoasm_program_params_t *parent_a = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_main, i);
-    evoasm_program_params_t *parent_b = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_aux, i);
+    evoasm_program_params_t *parent_a = EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_main, i);
+    evoasm_program_params_t *parent_b = EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_aux, i);
 
-    evoasm_program_params_t *child = _EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_swap, i);
+    evoasm_program_params_t *child = EVOASM_SEARCH_PROGRAM_PARAMS(model, model->pop.programs_swap, i);
     evoasm_island_model_crossover(model, parent_a, parent_b, child, NULL);
   }
   evoasm_pop_swap(&model->pop, &model->pop.programs_main);
@@ -219,11 +219,11 @@ evoasm_island_connect_to(evoasm_island_t *island, evoasm_island_t *immigr_island
   return true;
 }
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(island_params)
-_EVOASM_DEF_ZERO_INIT_FUNC(island_params)
+EVOASM_DEF_ALLOC_FREE_FUNCS(island_params)
+EVOASM_DEF_ZERO_INIT_FUNC(island_params)
 
-_EVOASM_DEF_GETTER_SETTER(island_params, emigr_rate, double)
-_EVOASM_DEF_GETTER_SETTER(island_params, emigr_freq, uint16_t)
-_EVOASM_DEF_GETTER_SETTER(island_params, max_loss, evoasm_loss_t)
+EVOASM_DEF_GETTER_SETTER(island_params, emigr_rate, double)
+EVOASM_DEF_GETTER_SETTER(island_params, emigr_freq, uint16_t)
+EVOASM_DEF_GETTER_SETTER(island_params, max_loss, evoasm_loss_t)
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(island)
+EVOASM_DEF_ALLOC_FREE_FUNCS(island)

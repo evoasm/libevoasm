@@ -16,10 +16,9 @@ void
 evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
-      unsigned i;
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
       evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Enum%d( ", enum_domain->len);
-      for (i = 0; i < enum_domain->len; i++) {
+      for(size_t i = 0; i < enum_domain->len; i++) {
         evoasm_log(log_level, EVOASM_LOG_TAG, "  %" PRId64 " ", enum_domain->vals[i]);
       }
       evoasm_log(log_level, EVOASM_LOG_TAG, " )");
@@ -41,7 +40,7 @@ evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
 
 void
 evoasm_domain_get_bounds(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
-  _evoasm_domain_get_bounds(domain, min, max);
+  evoasm_domain_get_bounds_(domain, min, max);
 }
 
 evoasm_domain_type_t
@@ -49,17 +48,17 @@ evoasm_domain_get_type(evoasm_domain_t *domain) {
   return (evoasm_domain_type_t) domain->type;
 }
 
-unsigned
+size_t
 evoasm_enum_domain_get_len(evoasm_enum_domain_t *enum_domain) {
   return enum_domain->len;
 }
 
 int64_t
-evoasm_enum_domain_get_val(evoasm_enum_domain_t *enum_domain, unsigned index) {
-  return enum_domain->vals[index];
+evoasm_enum_domain_get_val(evoasm_enum_domain_t *enum_domain, size_t idx) {
+  return enum_domain->vals[idx];
 }
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
+EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
 
 evoasm_success_t
 evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
@@ -71,9 +70,7 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
   switch(type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
-      unsigned len = va_arg(args, unsigned);
-      unsigned i;
-
+      size_t len = va_arg(args, size_t);
       enum_domain->len = (uint16_t) len;
 
       if(len > EVOASM_ENUM_DOMAIN_LEN_MAX) {
@@ -83,7 +80,7 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
         return false;
       }
 
-      for(i = 0; i < len; i++) {
+      for(size_t i = 0; i < len; i++) {
         enum_domain->vals[i] = va_arg(args, int64_t);
       }
       break;

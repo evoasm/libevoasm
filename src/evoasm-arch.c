@@ -26,12 +26,12 @@ evoasm_get_arch_info(evoasm_arch_id_t arch_id) {
 }
 
 
-#define _EVOASM_ARCH_INFO_DEF_GETTER(field, type) _EVOASM_DEF_GETTER(arch_info, field, type)
+#define EVOASM_ARCH_INFO_DEF_GETTER(field, type) EVOASM_DEF_GETTER(arch_info, field, type)
 
-_EVOASM_ARCH_INFO_DEF_GETTER(id, evoasm_arch_id_t)
-_EVOASM_ARCH_INFO_DEF_GETTER(n_params, unsigned)
-_EVOASM_ARCH_INFO_DEF_GETTER(max_inst_len, unsigned)
-_EVOASM_ARCH_INFO_DEF_GETTER(n_insts, unsigned)
-_EVOASM_ARCH_INFO_DEF_GETTER(features, unsigned)
+EVOASM_ARCH_INFO_DEF_GETTER(id, evoasm_arch_id_t)
+EVOASM_ARCH_INFO_DEF_GETTER(n_params, size_t)
+EVOASM_ARCH_INFO_DEF_GETTER(max_inst_len, size_t)
+EVOASM_ARCH_INFO_DEF_GETTER(n_insts, size_t)
+EVOASM_ARCH_INFO_DEF_GETTER(features, uint64_t)
 
 

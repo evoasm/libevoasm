@@ -32,60 +32,63 @@
 # define evoasm_check_return __attribute__((warn_unused_result))
 # define evoasm_force_inline __attribute__((always_inline))
 # define evoasm_pack(decl) decl __attribute__((__packed__))
+# define evoasm_align(align) __attribute__ ((aligned(align)))
 #elif defined(_MSC_VER)
 # define evoasm_check_return _Check_return_
 # define evoasm_force_inline __forceinline
 # define evoasm_pack(decl) __pragma(pack(push, 1)) decl __pragma(pack(pop))
+# define evoasm_align(align) __declspec(align(align))
 #else
 # define evoasm_check_return
 # define evoasm_force_inline
 # define evoasm_pack(decl)
+# define evoasm_align(align)
 #endif
 
-#define _EVOASM_DEF_ALLOC_FUNC(type) \
+#define EVOASM_DEF_ALLOC_FUNC(type) \
   evoasm_##type##_t *evoasm_##type##_alloc() { return evoasm_malloc(sizeof(evoasm_##type##_t)); }
 
-#define _EVOASM_DEF_FREE_FUNC(type) \
+#define EVOASM_DEF_FREE_FUNC(type) \
   void evoasm_##type##_free(evoasm_##type##_t *ptr) { evoasm_free(ptr); }
 
-#define _EVOASM_DECL_ALLOC_FUNC(type) \
+#define EVOASM_DECL_ALLOC_FUNC(type) \
   evoasm_##type##_t *evoasm_##type##_alloc();
 
-#define _EVOASM_DECL_FREE_FUNC(type) \
+#define EVOASM_DECL_FREE_FUNC(type) \
   void evoasm_##type##_free(evoasm_##type##_t *ptr);
 
-#define _EVOASM_DEF_ALLOC_FREE_FUNCS(type) \
-  _EVOASM_DEF_ALLOC_FUNC(type) \
-  _EVOASM_DEF_FREE_FUNC(type) \
+#define EVOASM_DEF_ALLOC_FREE_FUNCS(type) \
+  EVOASM_DEF_ALLOC_FUNC(type) \
+  EVOASM_DEF_FREE_FUNC(type) \
 
-#define _EVOASM_DECL_ALLOC_FREE_FUNCS(type) \
-  _EVOASM_DECL_ALLOC_FUNC(type) \
-  _EVOASM_DECL_FREE_FUNC(type) \
+#define EVOASM_DECL_ALLOC_FREE_FUNCS(type) \
+  EVOASM_DECL_ALLOC_FUNC(type) \
+  EVOASM_DECL_FREE_FUNC(type) \
 
-#define _EVOASM_DEF_ZERO_INIT_FUNC(type) \
+#define EVOASM_DEF_ZERO_INIT_FUNC(type) \
   void evoasm_##type##_init(evoasm_##type##_t *ptr) {\
     static evoasm_##type##_t zero = {0}; \
     *ptr = zero; \
   }
 
-#define _EVOASM_DEF_GETTER(type, field, field_type) \
+#define EVOASM_DEF_GETTER(type, field, field_type) \
   field_type evoasm_##type##_get_##field(evoasm_##type##_t *ptr) { \
     return (field_type) ptr->field; \
   }
 
-#define _EVOASM_DEF_BOOL_GETTER(type, field) \
+#define EVOASM_DEF_BOOL_GETTER(type, field) \
   bool evoasm_##type##_is_##field(evoasm_##type##_t *ptr) { \
     return ptr->field; \
   }
 
-#define _EVOASM_DEF_SETTER(type, field, field_type) \
+#define EVOASM_DEF_SETTER(type, field, field_type) \
   void evoasm_##type##_set_##field(evoasm_##type##_t *ptr, field_type value) { \
     ptr->field = value; \
   }
 
-#define _EVOASM_DEF_GETTER_SETTER(type, field, field_type) \
-  _EVOASM_DEF_GETTER(type, field, field_type) \
-  _EVOASM_DEF_SETTER(type, field, field_type)
+#define EVOASM_DEF_GETTER_SETTER(type, field, field_type) \
+  EVOASM_DEF_GETTER(type, field, field_type) \
+  EVOASM_DEF_SETTER(type, field, field_type)
 
 #define EVOASM_SWAP(type, a, b) do { type s = (a); (a) = (b); (b) = s;} while (0)
 

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/furunkel/evoasm-gen.git
-  revision: 338249465a583dceef3c7aca6d99f14e7069b061
+  revision: 5556a4885f48347c7adb5ef4ba05271656c83662
   branch: master
   specs:
     evoasm-gen (0.0.1)

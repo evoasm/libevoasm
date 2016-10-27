@@ -32,7 +32,7 @@ evoasm_prng_destroy(evoasm_prng_t *prng);
 
 /* From: https://en.wikipedia.org/wiki/Xorshift */
 static inline uint64_t
-_evoasm_prng_rand64(evoasm_prng_t *prng) {
+evoasm_prng_rand64_(evoasm_prng_t *prng) {
   uint64_t *s = prng->state.data;
   const uint64_t s0 = s[prng->p];
   uint64_t s1 = s[prng->p = (prng->p + 1) & 15];
@@ -42,21 +42,21 @@ _evoasm_prng_rand64(evoasm_prng_t *prng) {
 }
 
 static inline uint32_t
-_evoasm_prng_rand32(evoasm_prng_t *prng) {
-  return (uint32_t) (_evoasm_prng_rand64(prng) & UINT32_MAX);
+evoasm_prng_rand32_(evoasm_prng_t *prng) {
+  return (uint32_t) (evoasm_prng_rand64_(prng) & UINT32_MAX);
 }
 
 static inline uint16_t
-_evoasm_prng_rand16(evoasm_prng_t *prng) {
-  return (uint16_t) (_evoasm_prng_rand64(prng) & UINT16_MAX);
+evoasm_prng_rand16_(evoasm_prng_t *prng) {
+  return (uint16_t) (evoasm_prng_rand64_(prng) & UINT16_MAX);
 }
 
 static inline uint8_t
-_evoasm_prng_rand8(evoasm_prng_t *prng) {
-  return (uint8_t) (_evoasm_prng_rand64(prng) & UINT8_MAX);
+evoasm_prng_rand8_(evoasm_prng_t *prng) {
+  return (uint8_t) (evoasm_prng_rand64_(prng) & UINT8_MAX);
 }
 
 static inline int64_t
-_evoasm_prng_rand_between(evoasm_prng_t *prng, int64_t min, int64_t max) {
-  return min + (int64_t)(_evoasm_prng_rand64(prng) % (uint64_t)(max - min + 1ll));
+evoasm_prng_rand_between_(evoasm_prng_t *prng, int64_t min, int64_t max) {
+  return min + (int64_t)(evoasm_prng_rand64_(prng) % (uint64_t)(max - min + 1ll));
 }

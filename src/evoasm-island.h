@@ -41,4 +41,4 @@ typedef struct evoasm_island_s {
 evoasm_success_t
 evoasm_island_run(evoasm_island_t *island);
 
-_EVOASM_DECL_ALLOC_FREE_FUNCS(island)
+EVOASM_DECL_ALLOC_FREE_FUNCS(island)

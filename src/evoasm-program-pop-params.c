@@ -6,19 +6,19 @@
 #include "evoasm-alloc.h"
 #include "evoasm-program-pop.h"
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(program_pop_params)
-_EVOASM_DEF_ZERO_INIT_FUNC(program_pop_params)
+EVOASM_DEF_ALLOC_FREE_FUNCS(program_pop_params)
+EVOASM_DEF_ZERO_INIT_FUNC(program_pop_params)
 
-#define _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) _EVOASM_DEF_GETTER_SETTER(program_pop_params, field, type)
+#define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) EVOASM_DEF_GETTER_SETTER(program_pop_params, field, type)
 
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernels, evoasm_kernel_count_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernels, evoasm_kernel_count_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernels, uint16_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, uint16_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, uint32_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, uint16_t)
-_EVOASM_DEF_GETTER(program_pop_params, program_input, evoasm_program_io_t *)
-_EVOASM_DEF_GETTER(program_pop_params, program_output, evoasm_program_io_t *)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernels, evoasm_kernel_count_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernels, evoasm_kernel_count_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernels, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, uint32_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, uint16_t)
+EVOASM_DEF_GETTER(program_pop_params, program_input, evoasm_program_io_t *)
+EVOASM_DEF_GETTER(program_pop_params, program_output, evoasm_program_io_t *)
 
 void
 evoasm_program_pop_params_set_inst(evoasm_program_pop_params_t *program_pop_params, unsigned index, evoasm_inst_id_t inst_id) {

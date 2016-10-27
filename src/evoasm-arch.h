@@ -63,18 +63,18 @@ evoasm_get_arch_info(evoasm_arch_id_t arch_id);
 #if 0
 static inline void
 evoasm_enc_ctx_write_access(evoasm_buf_ref_t *arch_id, evoasm_bitmap_t *acc, evoasm_reg_id_t reg) {
-  evoasm_bitmap_set(acc, (unsigned) reg);
+  evoasm_bitmap_set(acc, (size_t) reg);
 }
 
 static inline void
 evoasm_enc_ctx_undefined_access(evoasm_buf_ref_t *arch_id, evoasm_bitmap_t *acc, evoasm_reg_id_t reg) {
-  evoasm_bitmap_unset(acc, (unsigned) reg);
+  evoasm_bitmap_unset(acc, (size_t) reg);
 }
 
 static inline evoasm_success_t
-_evoasm_enc_ctx_read_access(evoasm_buf_ref_t *arch_id, evoasm_bitmap_t *acc, evoasm_reg_id_t reg,
+evoasm_enc_ctx_read_access_(evoasm_buf_ref_t *arch_id, evoasm_bitmap_t *acc, evoasm_reg_id_t reg,
                              evoasm_inst_id_t inst, const char *file, unsigned line) {
-  if(!evoasm_bitmap_get(acc, (unsigned) reg)) {
+  if(!evoasm_bitmap_get(acc, (size_t) reg)) {
     evoasm_enc_error_data_t error_data = {
       .reg = (uint8_t) reg,
       .inst = (uint16_t) inst,
@@ -85,6 +85,6 @@ _evoasm_enc_ctx_read_access(evoasm_buf_ref_t *arch_id, evoasm_bitmap_t *acc, evo
   }
   return true;
 }
-#define evoasm_arch_read_access(arch, acc, reg, inst) _evoasm_arch_read_access(arch, acc, reg, inst, __FILE__, __LINE__)
+#define evoasm_arch_read_access(arch, acc, reg, inst) evoasm_arch_read_access_(arch, acc, reg, inst, __FILE__, __LINE__)
 #endif
 

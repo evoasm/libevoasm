@@ -10,11 +10,12 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-#define _EVOASM_BITMAP_INDEX_DECLS(key) \
-  unsigned size = sizeof(uint64_t) * 8;\
-  unsigned ary_idx = ((unsigned) key) / size;\
-  unsigned bit_idx = ((unsigned) key) % size;
+#define EVOASM_BITMAP_INDEX_DECLS(key) \
+  size_t size = sizeof(uint64_t) * 8;\
+  size_t ary_idx = ((size_t) key) / size;\
+  size_t bit_idx = ((size_t) key) % size;
 
 typedef struct {
   uint64_t data[1];
@@ -39,44 +40,44 @@ typedef struct {
 typedef uint64_t evoasm_bitmap_t;
 
 static inline void
-evoasm_bitmap_set(evoasm_bitmap_t *bitmap, unsigned idx) {
-  _EVOASM_BITMAP_INDEX_DECLS(idx);
+evoasm_bitmap_set(evoasm_bitmap_t *bitmap, size_t idx) {
+  EVOASM_BITMAP_INDEX_DECLS(idx);
   bitmap[ary_idx] |= (1ull << bit_idx);
 }
 
 static inline void
-evoasm_bitmap_unset(evoasm_bitmap_t *bitmap, unsigned idx) {
-  _EVOASM_BITMAP_INDEX_DECLS(idx);
+evoasm_bitmap_unset(evoasm_bitmap_t *bitmap, size_t idx) {
+  EVOASM_BITMAP_INDEX_DECLS(idx);
   /* unset values must be 0*/
   bitmap[ary_idx] &= ~(1ull << bit_idx);
 }
 
 static inline bool
-evoasm_bitmap_get(evoasm_bitmap_t *bitmap, unsigned idx) {
-  _EVOASM_BITMAP_INDEX_DECLS(idx);
-  return !!(bitmap[ary_idx] & (1ull << bit_idx));
+evoasm_bitmap_get(evoasm_bitmap_t *bitmap, size_t idx) {
+  EVOASM_BITMAP_INDEX_DECLS(idx);
+  return (bitmap[ary_idx] & (1ull << bit_idx)) != 0;
 }
 
 
-#define _EVOASM_BITMAP_DECL_UNOP(name, width, op) \
+#define EVOASM_BITMAP_DECL_UNOP(name, width, op) \
   static inline void evoasm_bitmap ## width ## _ ## name (evoasm_bitmap##width##_t *bitmap, evoasm_bitmap##width##_t *result) { \
-    unsigned i;\
+    size_t i;\
     for(i = 0; i < width / 64; i++) {\
       result->data[i] = op bitmap->data[i];\
     }\
   }
 
-#define _EVOASM_BITMAP_DECL_BINOP(name, width, op) \
+#define EVOASM_BITMAP_DECL_BINOP(name, width, op) \
   static inline void evoasm_bitmap ## width ## _ ## name (evoasm_bitmap##width##_t *bitmap1, evoasm_bitmap##width##_t *bitmap2, evoasm_bitmap##width##_t *result) { \
-    unsigned i;\
+    size_t i;\
     for(i = 0; i < width / 64; i++) {\
       result->data[i] = bitmap1->data[i] op bitmap2->data[i];\
     }\
   }
 
-#define _EVOASM_BITMAP_DECL_EQL(width) \
+#define EVOASM_BITMAP_DECL_EQL(width) \
   static inline bool evoasm_bitmap ## width ## _ ## eql (evoasm_bitmap##width##_t *bitmap1, evoasm_bitmap##width##_t *bitmap2) { \
-    unsigned i;\
+    size_t i;\
     for(i = 0; i < width / 64; i++) {\
       if(bitmap1->data[i] != bitmap2->data[i]) return false;\
     } \
@@ -85,18 +86,19 @@ evoasm_bitmap_get(evoasm_bitmap_t *bitmap, unsigned idx) {
 
 
 #ifdef __GNUC__
-#  define _EVOASM_BITMAP_DECL_POPCOUNT(width) \
-    static inline unsigned evoasm_bitmap ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
-      unsigned c = 0, i;\
+#  define EVOASM_BITMAP_DECL_POPCOUNT(width) \
+    static inline size_t evoasm_bitmap ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
+      size_t c = 0; \
+      size_t i;\
       for(i = 0; i < width / 64; i++) {\
-        c += (unsigned) __builtin_popcountll(bitmap->data[i]);\
+        c += (size_t) __builtin_popcountll(bitmap->data[i]);\
       } \
       return c;\
     }
 #else
-#  define _EVOASM_BITMAP_DECL_POPCOUNT(width) \
-    static inline unsigned evoasm_bitmap_t ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
-      unsigned c = 0, i;\
+#  define EVOASM_BITMAP_DECL_POPCOUNT(width) \
+    static inline size_t evoasm_bitmap_t ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
+      size_t c = 0, i;\
       for(i = 0; i < width / 64; i++) {\
         uint64_t x = bitmap->data[i]; \
         for(; x > 0; x &= x - 1) c++;\
@@ -105,18 +107,18 @@ evoasm_bitmap_get(evoasm_bitmap_t *bitmap, unsigned idx) {
     }
 #endif
 
-_EVOASM_BITMAP_DECL_UNOP(not, 128, ~)
-_EVOASM_BITMAP_DECL_BINOP(and, 128, &)
-_EVOASM_BITMAP_DECL_BINOP(or, 128, |)
-_EVOASM_BITMAP_DECL_BINOP(andn, 128, &~)
-_EVOASM_BITMAP_DECL_POPCOUNT(128)
-_EVOASM_BITMAP_DECL_EQL(128)
+EVOASM_BITMAP_DECL_UNOP(not, 128, ~)
+EVOASM_BITMAP_DECL_BINOP(and, 128, &)
+EVOASM_BITMAP_DECL_BINOP(or, 128, |)
+EVOASM_BITMAP_DECL_BINOP(andn, 128, &~)
+EVOASM_BITMAP_DECL_POPCOUNT(128)
+EVOASM_BITMAP_DECL_EQL(128)
 
-_EVOASM_BITMAP_DECL_UNOP(not, 64, ~)
-_EVOASM_BITMAP_DECL_BINOP(and, 64, &)
-_EVOASM_BITMAP_DECL_BINOP(or, 64, |)
-_EVOASM_BITMAP_DECL_POPCOUNT(64)
-_EVOASM_BITMAP_DECL_EQL(64)
+EVOASM_BITMAP_DECL_UNOP(not, 64, ~)
+EVOASM_BITMAP_DECL_BINOP(and, 64, &)
+EVOASM_BITMAP_DECL_BINOP(or, 64, |)
+EVOASM_BITMAP_DECL_POPCOUNT(64)
+EVOASM_BITMAP_DECL_EQL(64)
 
 
-_EVOASM_BITMAP_DECL_EQL(1024)
+EVOASM_BITMAP_DECL_EQL(1024)

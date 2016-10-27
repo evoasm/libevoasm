@@ -5,27 +5,17 @@
 #include "evoasm-pop-params.h"
 #include "evoasm-util.h"
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
+EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
 
-#define _EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) _EVOASM_DEF_GETTER_SETTER(pop_params, field, type)
+#define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) EVOASM_DEF_GETTER_SETTER(pop_params, field, type)
 
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(size, uint32_t)
-_EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, uint8_t)
+//EVOASM_POP_PARAMS_DEF_GETTER_SETTER(size, uint32_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, uint8_t)
 
-double
-evoasm_pop_params_get_mut_rate(evoasm_pop_params_t *pop_params) {
-  return EVOASM_CLAMP(pop_params->mut_rate / (double) UINT32_MAX, 0.0, 1.0);
-}
-
-void
-evoasm_pop_params_set_mut_rate(evoasm_pop_params_t *pop_params, double mut_rate) {
-  pop_params->mut_rate = (uint32_t)(EVOASM_CLAMP(mut_rate, 0.0, 1.0) * UINT32_MAX);
-}
 
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {
-  unsigned i;
-  for(i = 0; i < pop_params->n_params; i++) {
+  for(size_t i = 0; i < pop_params->n_params; i++) {
     if(pop_params->param_ids[i] == param_id) {
       return &pop_params->domains[i];
     }
@@ -39,8 +29,7 @@ evoasm_pop_params_set_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t 
   if(domain_ptr) {
     *domain_ptr = domain;
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
@@ -56,13 +45,13 @@ evoasm_pop_params_get_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t 
 }
 
 evoasm_param_id_t
-evoasm_pop_params_get_param(evoasm_pop_params_t *pop_params, unsigned index) {
-  return pop_params->param_ids[index];
+evoasm_pop_params_get_param(evoasm_pop_params_t *pop_params, size_t idx) {
+  return pop_params->param_ids[idx];
 }
 
 void
-evoasm_pop_params_set_param(evoasm_pop_params_t *pop_params, unsigned index, evoasm_param_id_t param) {
-  pop_params->param_ids[index] = param;
+evoasm_pop_params_set_param(evoasm_pop_params_t *pop_params, size_t idx, evoasm_param_id_t param) {
+  pop_params->param_ids[idx] = param;
 }
 
 uint8_t
@@ -71,13 +60,13 @@ evoasm_search_get_n_params(evoasm_pop_params_t *pop_params) {
 }
 
 uint64_t
-evoasm_pop_params_get_seed(evoasm_pop_params_t *pop_params, unsigned index) {
-  return pop_params->seed.data[index];
+evoasm_pop_params_get_seed(evoasm_pop_params_t *pop_params, size_t idx) {
+  return pop_params->seed.data[idx];
 }
 
 void
-evoasm_pop_params_set_seed(evoasm_pop_params_t *pop_params, unsigned index, uint64_t seed) {
-  pop_params->seed.data[index] = seed;
+evoasm_pop_params_set_seed(evoasm_pop_params_t *pop_params, size_t idx, uint64_t seed) {
+  pop_params->seed.data[idx] = seed;
 }
 
 void
@@ -86,16 +75,64 @@ evoasm_pop_params_destroy(evoasm_pop_params_t *pop_params) {
 
 
 bool
-evoasm_pop_params_valid(evoasm_pop_params_t *pop_params) {
+evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
   if(pop_params->n_params == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                     NULL, "No parameters given");
+                 NULL, "No parameters given");
     goto fail;
   }
 
-  if(pop_params->size == 0) {
+  if(pop_params->n_kernels_per_deme == 0 || pop_params->n_programs_per_deme) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                     NULL, "Population size cannot be zero");
+                 NULL, "Deme size cannot be zero");
+    goto fail;
+  }
+
+  if(pop_params->max_kernel_size > EVOASM_KERNEL_MAX_SIZE) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+    goto fail;
+  }
+
+  if(pop_params->max_program_size > EVOASM_PROGRAM_MAX_SIZE) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+    goto fail;
+  }
+
+  if(pop_params->n_insts == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "No instructions given");
+    goto fail;
+  }
+
+  if(pop_params->program_input == NULL || pop_params->program_input->len == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "No input values given");
+    goto fail;
+  }
+
+  if(pop_params->program_output == NULL || pop_params->program_output->len == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "No output values given");
+    goto fail;
+  }
+
+  if(pop_params->min_kernel_size == 0 || pop_params->min_kernel_size > pop_params->max_kernel_size) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Invalid kernel size");
+    goto fail;
+  }
+
+  if(pop_params->min_program_size == 0 || pop_params->min_program_size > pop_params->max_program_size) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Invalid program size");
+    goto fail;
+  }
+
+  if(pop_params->n_demes == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Invalid number of demes");
     goto fail;
   }
 

@@ -188,16 +188,6 @@ typedef enum evoasm_x64_reg_id_t {
 #define EVOASM_X64_REG_BITMASK_OPT 0x7f
 
 
-typedef enum evoasm_x64_disp_size_t {
-  EVOASM_X64_DISP_SIZE_8 = 0,
-  EVOASM_X64_DISP_SIZE_32 = 1,
-  EVOASM_X64_DISP_SIZE_NONE
-} evoasm_x64_disp_size_t;
-#define EVOASM_X64_DISP_SIZE_BITSIZE 1
-#define EVOASM_X64_DISP_SIZE_BITSIZE_OPT 2
-#define EVOASM_X64_DISP_SIZE_BITMASK 0x1
-#define EVOASM_X64_DISP_SIZE_BITMASK_OPT 0x3
-
 typedef enum evoasm_x64_scale_t {
   EVOASM_X64_SCALE_1 = 0,
   EVOASM_X64_SCALE_2 = 1,

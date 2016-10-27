@@ -8,7 +8,6 @@
 
 #include "evoasm.h"
 #include "evoasm-log.h"
-#include "evoasm-island-model.h"
 #include "evoasm-x64.h"
 
 void

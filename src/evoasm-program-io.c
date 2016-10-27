@@ -27,13 +27,12 @@ evoasm_program_io_alloc(uint16_t len) {
 evoasm_success_t
 evoasm_program_io_init(evoasm_program_io_t *program_io, uint8_t arity, ...) {
   va_list args;
-  unsigned i;
   bool retval = true;
   program_io->arity = arity;
 
   va_start(args, arity);
-  for(i = 0; i < program_io->len; i++) {
-    unsigned type_idx = i % arity;
+  for(size_t i = 0; i < program_io->len; i++) {
+    size_t type_idx = i % arity;
     evoasm_program_io_val_type_t type = va_arg(args, evoasm_program_io_val_type_t);
     evoasm_program_io_val_t val;
     switch(type) {
@@ -93,8 +92,8 @@ evoasm_program_io_get_type(evoasm_program_io_t *program_io, unsigned idx) {
   return program_io->types[idx % program_io->arity];
 }
 
-_EVOASM_DEF_FREE_FUNC(program_io)
+EVOASM_DEF_FREE_FUNC(program_io)
 
-_EVOASM_DEF_GETTER(program_io, arity, uint8_t)
-_EVOASM_DEF_GETTER(program_io, len, uint16_t)
+EVOASM_DEF_GETTER(program_io, arity, uint8_t)
+EVOASM_DEF_GETTER(program_io, len, uint16_t)
 

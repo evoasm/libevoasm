@@ -17,6 +17,7 @@
 #include <stdarg.h>
 
 #include "evoasm-util.h"
+#include "evoasm-log.h"
 
 #define EVOASM_ERROR_MAX_FILENAME_LEN 128
 #define EVOASM_ERROR_MAX_MSG_LEN 128
@@ -73,6 +74,14 @@ extern _Thread_local evoasm_error_t _evoasm_last_error;
 #define EVOASM_TRY(label, func, ...) \
   do { if(!func(__VA_ARGS__)) {goto label;} } while(0)
 
+
+#define EVOASM_TRY_WARN(func, ...) \
+  do { \
+    if(!func(__VA_ARGS__)) { \
+      evoasm_log(EVOASM_LOG_LEVEL_WARN, EVOASM_LOG_TAG, #func "failed"); \
+    } \
+  } while(0)
+
 #define evoasm_success_t evoasm_check_return bool
 
 #define evoasm_error(type, code, data, ...) \
@@ -80,9 +89,8 @@ extern _Thread_local evoasm_error_t _evoasm_last_error;
                    __FILE__, __LINE__, __VA_ARGS__)
 
 #define evoasm_assert_not_reached() \
-  evoasm_assert_not_reached_full(__FILE__, __LINE__)
+  do { \
+    evoasm_log(EVOASM_LOG_LEVEL_FATAL, "error", "%s:%d should not be reached", __FILE__, __LINE__); \
+    abort(); \
+  } while(0)
 
-static inline _Noreturn void evoasm_assert_not_reached_full(const char *file, unsigned line) {
-  fprintf(stderr, "FATAL: %s:%d should not be reached\n", file, line);
-  abort();
-}

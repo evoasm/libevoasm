@@ -48,7 +48,7 @@ typedef enum {
 } evoasm_x64_operand_size_t;
 
 #define EVOASM_X64_OPERAND_SIZE_BITSIZE 3
-#define EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N 4
+#define EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT 4
 
 typedef struct {
   unsigned read: 1;
@@ -59,9 +59,9 @@ typedef struct {
   unsigned mnem: 1;
   unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
-  unsigned size1: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
-  unsigned size2: EVOASM_X64_OPERAND_SIZE_BITSIZE_WITH_N;
-  unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_WITH_N;
+  unsigned size1: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
+  unsigned size2: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
+  unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_OPT;
   unsigned write_mask: EVOASM_X64_BIT_MASK_BITSIZE;
   union {
     uint8_t reg_id;
@@ -99,10 +99,10 @@ typedef struct {
   } while(0);
 
 #define EVOASM_X64_SET(param, val) \
-  _evoasm_x64_params_set(&params, param, val)
+  evoasm_x64_params_set_(&params, param, val)
 
 #define EVOASM_X64_UNSET(param) \
-  _evoasm_x64_params_unset(&params, param)
+  evoasm_x64_params_unset_(&params, param)
 
 typedef enum {
   EVOASM_X64_ABI_SYSV
@@ -111,7 +111,7 @@ typedef enum {
 #include "gen/evoasm-x64-insts.h"
 
 static inline evoasm_success_t
-_evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
+evoasm_x64_inst_enc_(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
   evoasm_x64_enc_ctx_t enc_ctx = {
       .params = *params,
       .buf_ref = *buf_ref
@@ -120,7 +120,7 @@ _evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoas
 }
 
 static inline evoasm_success_t
-_evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+evoasm_x64_inst_enc_basic_(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
   evoasm_x64_enc_ctx_t enc_ctx = {
       .basic_params = *params,
       .buf_ref = *buf_ref
@@ -128,31 +128,23 @@ _evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *p
   return inst->basic_enc_func(&enc_ctx);
 }
 
-extern const evoasm_x64_inst_t *_EVOASM_X64_INSTS_VAR_NAME;
+extern const evoasm_x64_inst_t *EVOASM_X64_INSTS_VAR_NAME;
 
 static inline evoasm_x64_inst_t *
-_evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
-  return (evoasm_x64_inst_t *) &_EVOASM_X64_INSTS_VAR_NAME[inst_id];
+evoasm_x64_inst_(evoasm_x64_inst_id_t inst_id) {
+  return (evoasm_x64_inst_t *) &EVOASM_X64_INSTS_VAR_NAME[inst_id];
 }
 
 static inline evoasm_success_t
-_evoasm_x64_enc(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
-  evoasm_x64_inst_t *inst = _evoasm_x64_inst(inst_id);
-  return _evoasm_x64_inst_enc(inst, params, buf_ref);
+evoasm_x64_enc_(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  evoasm_x64_inst_t *inst = evoasm_x64_inst_(inst_id);
+  return evoasm_x64_inst_enc_(inst, params, buf_ref);
 }
 
 static inline evoasm_success_t
-_evoasm_x64_enc_basic(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
-  evoasm_x64_inst_t *inst = _evoasm_x64_inst(inst_id);
-  return _evoasm_x64_inst_enc_basic(inst, params, buf_ref);
-}
-
-static inline int64_t
-evoasm_x64_auto_disp_size(evoasm_x64_params_t *params) {
-  int32_t disp = (int32_t) params->disp;
-  if(disp >= INT8_MIN && disp <= INT8_MAX) return EVOASM_X64_DISP_SIZE_8;
-  if(disp >= INT32_MIN && disp <= INT32_MAX) return EVOASM_X64_DISP_SIZE_32;
-  return EVOASM_X64_N_DISP_SIZES;
+evoasm_x64_enc_basic_(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  evoasm_x64_inst_t *inst = evoasm_x64_inst_(inst_id);
+  return evoasm_x64_inst_enc_basic_(inst, params, buf_ref);
 }
 
 evoasm_success_t

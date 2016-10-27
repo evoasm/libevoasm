@@ -8,6 +8,6 @@
 
 #include "evoasm-param.h"
 
-_EVOASM_DEF_GETTER(param, domain, evoasm_domain_t *)
-_EVOASM_DEF_GETTER(param, id, evoasm_param_id_t)
+EVOASM_DEF_GETTER(param, domain, evoasm_domain_t *)
+EVOASM_DEF_GETTER(param, id, evoasm_param_id_t)
 

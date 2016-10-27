@@ -28,10 +28,6 @@ set(SOURCE_FILES
         src/evoasm-rand.h
         src/evoasm-param.c
         src/evoasm-param.h
-        src/evoasm-island.c
-        src/evoasm-island.h
-        src/evoasm-island-model.c
-        src/evoasm-island-model.h
         src/evoasm-util.h
         src/evoasm.c
         src/evoasm.h
@@ -39,18 +35,17 @@ set(SOURCE_FILES
         src/evoasm-x64.h
         src/gen/evoasm-x64-misc.c
         src/gen/evoasm-x64-insts.c
+        src/gen/evoasm-x64-params.c
+        src/gen/evoasm-x64-params.h
+        src/gen/evoasm-x64-enums.h
         src/evoasm-domain.h
         src/evoasm-domain.c
         src/evoasm-pop-params.h
         src/evoasm-pop-params.c
-        src/evoasm-program-pop-params.h
-        src/evoasm-program-pop-params.c
         src/evoasm-program.c
         src/evoasm-program.h
         src/evoasm-pop.c
         src/evoasm-pop.h
-        src/evoasm-program-pop.c
-        src/evoasm-program-pop.h
         src/evoasm-signal.c
         src/evoasm-signal.h
         src/evoasm-threads.c

@@ -6,7 +6,7 @@
 
 #include "evoasm-rand.h"
 
-#define _EVOASM_DECL_ENUM_DOMAIN_TYPE(l) \
+#define EVOASM_DECL_ENUM_DOMAIN_TYPE(l) \
   typedef struct { \
     uint8_t type; \
     uint16_t len; \
@@ -46,12 +46,12 @@ typedef struct {
   int64_t vals[];
 } evoasm_enum_domain_t;
 
-_EVOASM_DECL_ENUM_DOMAIN_TYPE(2)
-_EVOASM_DECL_ENUM_DOMAIN_TYPE(3)
-_EVOASM_DECL_ENUM_DOMAIN_TYPE(4)
-_EVOASM_DECL_ENUM_DOMAIN_TYPE(8)
-_EVOASM_DECL_ENUM_DOMAIN_TYPE(11)
-_EVOASM_DECL_ENUM_DOMAIN_TYPE(16)
+EVOASM_DECL_ENUM_DOMAIN_TYPE(2)
+EVOASM_DECL_ENUM_DOMAIN_TYPE(3)
+EVOASM_DECL_ENUM_DOMAIN_TYPE(4)
+EVOASM_DECL_ENUM_DOMAIN_TYPE(8)
+EVOASM_DECL_ENUM_DOMAIN_TYPE(11)
+EVOASM_DECL_ENUM_DOMAIN_TYPE(16)
 
 #define EVOASM_ENUM_DOMAIN_LEN_MAX 16
 
@@ -65,23 +65,23 @@ evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;
-      return _evoasm_prng_rand_between(prng, range_domain->min, range_domain->max);
+      return evoasm_prng_rand_between_(prng, range_domain->min, range_domain->max);
     }
     case EVOASM_DOMAIN_TYPE_INT64: {
-      return (int64_t) _evoasm_prng_rand64(prng);
+      return (int64_t) evoasm_prng_rand64_(prng);
     }
     case EVOASM_DOMAIN_TYPE_INT32: {
-      return (int32_t) _evoasm_prng_rand32(prng);
+      return (int32_t) evoasm_prng_rand32_(prng);
     }
     case EVOASM_DOMAIN_TYPE_INT16: {
-      return (int16_t) _evoasm_prng_rand16(prng);
+      return (int16_t) evoasm_prng_rand16_(prng);
     }
     case EVOASM_DOMAIN_TYPE_INT8: {
-      return (int8_t) _evoasm_prng_rand8(prng);
+      return (int8_t) evoasm_prng_rand8_(prng);
     }
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enm = (evoasm_enum_domain_t *) domain;
-      return enm->vals[_evoasm_prng_rand64(prng) % enm->len];
+      return enm->vals[evoasm_prng_rand64_(prng) % enm->len];
     }
     default:
       evoasm_assert_not_reached();
@@ -119,7 +119,7 @@ evoasm_domain_clone(evoasm_domain_t *restrict domain, evoasm_domain_t *restrict 
 }
 
 static inline void
-_evoasm_domain_get_bounds(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
+evoasm_domain_get_bounds_(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
@@ -163,7 +163,7 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
                         evoasm_domain_t *restrict domain_dst) {
 
   if(domain1->type == EVOASM_DOMAIN_TYPE_ENUM && domain2->type == EVOASM_DOMAIN_TYPE_ENUM) {
-    unsigned i = 0, j = 0;
+    size_t i = 0, j = 0;
     evoasm_enum_domain_t *enum1 = (evoasm_enum_domain_t *) domain1;
     evoasm_enum_domain_t *enum2 = (evoasm_enum_domain_t *) domain2;
     evoasm_enum_domain_t *enum_dst = (evoasm_enum_domain_t *) domain_dst;
@@ -199,10 +199,10 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
 
   int64_t min1, max1, min2, max2;
 
-  _evoasm_domain_get_bounds(domain2, &min2, &max2);
+  evoasm_domain_get_bounds_(domain2, &min2, &max2);
 
   if(domain1->type == EVOASM_DOMAIN_TYPE_ENUM) {
-    unsigned i;
+    size_t i;
     evoasm_enum_domain_t *enum_domain_dst = (evoasm_enum_domain_t *) domain_dst;
     evoasm_enum_domain_t *enum_domain1 = (evoasm_enum_domain_t *) domain1;
 
@@ -215,7 +215,7 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
   } else {
     evoasm_range_domain_t *range_domain_dst = (evoasm_range_domain_t *) domain_dst;
 
-    _evoasm_domain_get_bounds(domain1, &min1, &max1);
+    evoasm_domain_get_bounds_(domain1, &min1, &max1);
     range_domain_dst->min = EVOASM_MAX(min1, min2);
     range_domain_dst->max = EVOASM_MIN(max1, max2);
   }
@@ -229,7 +229,7 @@ evoasm_domain_contains(evoasm_domain_t *domain, int64_t val) {
       return val >= interval->min && val <= interval->max;
     }
     case EVOASM_DOMAIN_TYPE_ENUM: {
-      unsigned i;
+      size_t i;
       evoasm_enum_domain_t *enm = (evoasm_enum_domain_t *) domain;
       for(i = 0; i < enm->len; i++) {
         if(enm->vals[i] == val) return true;

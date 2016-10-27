@@ -65,6 +65,7 @@ evoasm_buf_destroy_mmap(evoasm_buf_t *buf) {
   if(buf->data != NULL) {
     return evoasm_munmap(buf->data, buf->capa);
   }
+  return true;
 }
 
 static evoasm_success_t
@@ -105,13 +106,11 @@ evoasm_buf_exec(evoasm_buf_t *buf) {
 
 void
 evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level_t log_level) {
-  unsigned i;
-
   if(_evoasm_min_log_level > log_level) return;
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Buffer: capa: %zu, pos: %zu, addr: %p\n",
              buf->capa, buf->pos, (void *) buf->data);
-  for(i = 0; i < buf->pos; i++)
+  for(size_t i = 0; i < buf->pos; i++)
   {
     if (i > 0) evoasm_log(log_level, EVOASM_LOG_TAG, "   ");
     evoasm_log(log_level, EVOASM_LOG_TAG, " %02X ", buf->data[i]);
@@ -146,7 +145,7 @@ evoasm_buf_data(evoasm_buf_t *buf) {
 }
 
 
-_EVOASM_DEF_ALLOC_FREE_FUNCS(buf_ref)
+EVOASM_DEF_ALLOC_FREE_FUNCS(buf_ref)
 
 void
 evoasm_buf_ref_init(evoasm_buf_ref_t *buf_ref, uint8_t *data, size_t *pos) {

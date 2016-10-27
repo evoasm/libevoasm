@@ -8,16 +8,14 @@
 
 #include "evoasm-signal.h"
 
-#include <stdatomic.h>
-
 #ifdef EVOASM_UNIX
 
-#define _EVOASM_SIGNAL_EXCEPTION_SET(exc) (_evoasm_signal_ctx.exception_mask & (1 << exc))
+#define EVOASM_SIGNAL_EXCEPTION_SET(exc) (_evoasm_signal_ctx.exception_mask & (1 << exc))
 
 _Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
 
 static void
-_evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
+evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
   bool handle = false;
 
   switch(_evoasm_signal_ctx.arch_id) {
@@ -25,7 +23,7 @@ _evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
       switch(sig) {
         case SIGFPE: {
           bool catch_div_by_zero = siginfo->si_code == FPE_INTDIV &&
-                                   _EVOASM_SIGNAL_EXCEPTION_SET(EVOASM_X64_EXCEPTION_DE);
+                                   EVOASM_SIGNAL_EXCEPTION_SET(EVOASM_X64_EXCEPTION_DE);
           handle = catch_div_by_zero;
           break;
         }
@@ -52,7 +50,7 @@ evoasm_signal_install(evoasm_arch_id_t arch_id, uint64_t exception_mask) {
   _evoasm_signal_ctx.arch_id = (volatile evoasm_arch_id_t) arch_id;
   _evoasm_signal_ctx.exception_mask = exception_mask;
 
-  action.sa_sigaction = _evoasm_signal_handler;
+  action.sa_sigaction = evoasm_signal_handler;
   sigemptyset(&action.sa_mask);
   action.sa_flags = SA_SIGINFO;
 
