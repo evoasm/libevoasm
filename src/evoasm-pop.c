@@ -1311,4 +1311,4 @@ evoasm_pop_select(pop, selected_parent_idxs, pop->params->size);
 }
 #endif
 
-
+EVOASM_DEF_ALLOC_FREE_FUNCS(pop)
