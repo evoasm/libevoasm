@@ -6,15 +6,25 @@
 #include "evoasm-util.h"
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
+EVOASM_DEF_ZERO_INIT_FUNC(pop_params)
 
 #define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, value_type, field_type) \
   EVOASM_DEF_GETTER(pop_params, field, value_type) \
   EVOASM_DEF_SETTER(pop_params, field, value_type, field_type)
 
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_program_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_program_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernel_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, size_t, uint16_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_programs_per_deme, size_t, uint16_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_kernels_per_deme, size_t, uint16_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(mut_rate, float, float)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, size_t, uint32_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_input, evoasm_program_io_t *, evoasm_program_io_t *)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_output, evoasm_program_io_t *, evoasm_program_io_t *)
 
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {
@@ -57,11 +67,6 @@ evoasm_pop_params_set_param(evoasm_pop_params_t *pop_params, size_t idx, evoasm_
   pop_params->param_ids[idx] = param;
 }
 
-uint8_t
-evoasm_search_get_n_params(evoasm_pop_params_t *pop_params) {
-  return pop_params->n_params;
-}
-
 uint64_t
 evoasm_pop_params_get_seed(evoasm_pop_params_t *pop_params, size_t idx) {
   return pop_params->seed.data[idx];
@@ -76,6 +81,15 @@ void
 evoasm_pop_params_destroy(evoasm_pop_params_t *pop_params) {
 }
 
+void
+evoasm_pop_params_set_inst(evoasm_pop_params_t *pop_params, size_t index, evoasm_inst_id_t inst_id) {
+  pop_params->inst_ids[index] = inst_id;
+}
+
+evoasm_inst_id_t
+evoasm_pop_params_get_inst(evoasm_pop_params_t *pop_params, size_t idx) {
+  return pop_params->inst_ids[idx];
+}
 
 bool
 evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {

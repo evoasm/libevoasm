@@ -352,7 +352,7 @@ evoasm_pop_init(evoasm_pop_t *pop,
   EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, (size_t) max_threads,
                    sizeof(evoasm_deme_t));
 
-  for(int i = 0; i < max_threads; i++) {
+  for(int i = 0; i < params->n_demes; i++) {
     evoasm_prng_state_t seed;
 
     for(int j = 0; j < EVOASM_PRNG_SEED_LEN; j++) {
@@ -1183,12 +1183,10 @@ static evoasm_force_inline inline void
 evoasm_deme_mutate_indiv(evoasm_deme_t *deme, evoasm_pop_indiv_data_t *indiv_data, size_t indiv_off,
                          size_t min_indiv_size, bool kernel_indiv) {
   evoasm_prng_t *prng = &deme->prng;
-  uint64_t mut_rate = (uint64_t) (deme->params->mut_rate * UINT64_MAX);
-  uint64_t r = evoasm_prng_rand64_(prng);
   size_t indiv_size = indiv_data->sizes[indiv_off];
 
-  if(r < mut_rate) {
-    r = evoasm_prng_rand64_(prng);
+  if(evoasm_prng_randf_(prng) < deme->params->mut_rate) {
+    uint64_t r = evoasm_prng_rand64_(prng);
     if(indiv_size > min_indiv_size && r < UINT64_MAX / 16) {
       size_t index = (size_t) (r % indiv_size);
 
