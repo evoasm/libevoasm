@@ -50,7 +50,7 @@ evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code
 
 EVOASM_DEF_GETTER(error, type, evoasm_error_type_t)
 EVOASM_DEF_GETTER(error, code, evoasm_error_code_t)
-EVOASM_DEF_GETTER(error, line, uint32_t)
+EVOASM_DEF_GETTER(error, line, unsigned)
 EVOASM_DEF_GETTER(error, filename, char *)
 EVOASM_DEF_GETTER(error, msg, char *)
 

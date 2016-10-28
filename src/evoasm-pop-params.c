@@ -7,11 +7,14 @@
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
 
-#define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) EVOASM_DEF_GETTER_SETTER(pop_params, field, type)
+#define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, value_type, field_type) \
+  EVOASM_DEF_GETTER(pop_params, field, value_type) \
+  EVOASM_DEF_SETTER(pop_params, field, value_type, field_type)
 
-//EVOASM_POP_PARAMS_DEF_GETTER_SETTER(size, uint32_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, uint8_t)
-
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_programs_per_deme, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_kernels_per_deme, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
 
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {

@@ -82,7 +82,7 @@ typedef struct {
   int16_t *jmp_offs;
   uint8_t *jmp_conds;
   uint32_t *recur_counters;
-  uint16_t program_size;
+  uint16_t size;
 
   /* these two are incomplete (values missig)
    * We only need arity and types */

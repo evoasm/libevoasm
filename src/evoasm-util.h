@@ -71,9 +71,9 @@
     *ptr = zero; \
   }
 
-#define EVOASM_DEF_GETTER(type, field, field_type) \
-  field_type evoasm_##type##_get_##field(evoasm_##type##_t *ptr) { \
-    return (field_type) ptr->field; \
+#define EVOASM_DEF_GETTER(type, field, value_type) \
+  value_type evoasm_##type##_get_##field(evoasm_##type##_t *ptr) { \
+    return (value_type) ptr->field; \
   }
 
 #define EVOASM_DEF_BOOL_GETTER(type, field) \
@@ -81,14 +81,10 @@
     return ptr->field; \
   }
 
-#define EVOASM_DEF_SETTER(type, field, field_type) \
-  void evoasm_##type##_set_##field(evoasm_##type##_t *ptr, field_type value) { \
-    ptr->field = value; \
+#define EVOASM_DEF_SETTER(type, field, value_type, field_type) \
+  void evoasm_##type##_set_##field(evoasm_##type##_t *ptr, value_type value) { \
+    ptr->field = (field_type) value; \
   }
-
-#define EVOASM_DEF_GETTER_SETTER(type, field, field_type) \
-  EVOASM_DEF_GETTER(type, field, field_type) \
-  EVOASM_DEF_SETTER(type, field, field_type)
 
 #define EVOASM_SWAP(type, a, b) do { type s = (a); (a) = (b); (b) = s;} while (0)
 

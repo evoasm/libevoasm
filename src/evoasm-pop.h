@@ -53,7 +53,6 @@ struct evoasm_deme_s {
   evoasm_pop_program_pos_data_t parent_program_pos_data;
   evoasm_pop_kernel_inst_data_t parent_kernel_inst_data;
   evoasm_program_t program;
-  size_t *eval_kernel_offs;
   uint64_t *error_counters;
   uint64_t error_counter;
   evoasm_loss_t best_loss;

@@ -94,6 +94,6 @@ evoasm_program_io_get_type(evoasm_program_io_t *program_io, unsigned idx) {
 
 EVOASM_DEF_FREE_FUNC(program_io)
 
-EVOASM_DEF_GETTER(program_io, arity, uint8_t)
-EVOASM_DEF_GETTER(program_io, len, uint16_t)
+EVOASM_DEF_GETTER(program_io, arity, size_t)
+EVOASM_DEF_GETTER(program_io, len, size_t)
 
