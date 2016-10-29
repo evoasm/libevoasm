@@ -45,15 +45,16 @@ struct evoasm_deme_s {
   evoasm_program_t program;
   uint64_t *error_counters;
   uint64_t error_counter;
-  evoasm_loss_t best_loss;
   evoasm_pop_indiv_data_t indiv_data;
   evoasm_pop_program_data_t program_data;
   evoasm_pop_kernel_data_t kernel_data;
   evoasm_loss_t *top_losses;
-  evoasm_loss_t best_program_loss;
+
+  evoasm_loss_t best_loss;
+  evoasm_pop_indiv_data_t best_indiv_data;
   evoasm_pop_program_data_t best_program_data;
   evoasm_pop_kernel_data_t best_kernel_data;
-  uint16_t best_program_size;
+
   uint16_t n_examples;
   evoasm_arch_id_t arch_id;
   evoasm_pop_params_t *params;

@@ -30,7 +30,7 @@ typedef union {
 
 
 typedef struct {
-  uint16_t kernel_size;
+  uint16_t size;
   evoasm_inst_id_t *insts;
   union {
     evoasm_x64_basic_params_t *x64;
@@ -108,7 +108,7 @@ evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_id_t arch_id,
                     evoasm_program_io_t *program_input,
                     size_t n_kernels,
-                    size_t kernel_size,
+                    size_t max_kernel_size,
                     size_t recur_limit);
 
 
