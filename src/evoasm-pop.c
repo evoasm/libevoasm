@@ -1069,9 +1069,11 @@ evoasm_deme_combine(evoasm_deme_t *deme, size_t row) {
     for(size_t j = 0; j < 2; j++) {
       size_t seg1_src_off = j * max_indiv_size;
       size_t seg2_src_off = (1 - j) * max_indiv_size;
-      size_t seg1_len = (size_t) (crossover_point * parent_sizes[j]);
+      size_t seg1_len = EVOASM_MAX(1u, (size_t) (crossover_point * parent_sizes[j]));
       size_t seg2_len = (size_t) ((1.0f - crossover_point) * parent_sizes[j]);
       size_t child_size = seg1_len + seg2_len;
+
+      assert(child_size > 0 && (child_size <= parent_sizes[0] || child_size <= parent_sizes[1]));
 
       /* children replace their parents */
       indiv_data->sizes[parent_indiv_offs[j]] = (uint16_t) child_size;
