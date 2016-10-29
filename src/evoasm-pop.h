@@ -21,18 +21,13 @@ typedef struct {
 typedef struct {
   int16_t *jmp_offs;
   uint8_t *jmp_cond;
-} evoasm_pop_program_pos_data_t;
+} evoasm_pop_program_data_t;
 
 typedef struct {
   float *pheromones;
   uint16_t *sizes;
-  evoasm_pop_program_pos_data_t program_pos_data;
+  evoasm_pop_program_data_t program_data;
 } evoasm_pop_module_data_t;
-
-typedef struct {
-  evoasm_pop_indiv_data_t indiv_data;
-  evoasm_pop_program_pos_data_t program_pos_data;
-} evoasm_pop_program_data_t;
 
 typedef struct  {
   evoasm_inst_id_t *insts;
@@ -40,29 +35,24 @@ typedef struct  {
     evoasm_x64_basic_params_t *x64;
     void *data;
   } params;
-} evoasm_pop_kernel_inst_data_t;
-
-typedef struct {
-  evoasm_pop_indiv_data_t indiv_data;
-  evoasm_pop_kernel_inst_data_t kernel_inst_data;
 } evoasm_pop_kernel_data_t;
 
 struct evoasm_deme_s {
   evoasm_prng_t prng;
   uint16_t *selected_parent_idxs;
-  evoasm_pop_program_pos_data_t parent_program_pos_data;
-  evoasm_pop_kernel_inst_data_t parent_kernel_inst_data;
+  evoasm_pop_program_data_t parent_program_data;
+  evoasm_pop_kernel_data_t parent_kernel_data;
   evoasm_program_t program;
   uint64_t *error_counters;
   uint64_t error_counter;
   evoasm_loss_t best_loss;
+  evoasm_pop_indiv_data_t indiv_data;
   evoasm_pop_program_data_t program_data;
   evoasm_pop_kernel_data_t kernel_data;
-  evoasm_loss_t *top_kernel_losses;
-  evoasm_loss_t top_program_loss;
+  evoasm_loss_t *top_losses;
   evoasm_loss_t best_program_loss;
-  evoasm_pop_program_pos_data_t best_program_data;
-  evoasm_pop_kernel_inst_data_t best_kernel_data;
+  evoasm_pop_program_data_t best_program_data;
+  evoasm_pop_kernel_data_t best_kernel_data;
   uint16_t best_program_size;
   uint16_t n_examples;
   evoasm_arch_id_t arch_id;
