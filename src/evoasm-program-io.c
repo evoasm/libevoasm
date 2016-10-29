@@ -17,18 +17,26 @@ static const char * const _evoasm_example_type_names[] = {
 };
 
 evoasm_program_io_t *
-evoasm_program_io_alloc(uint16_t len) {
+evoasm_program_io_alloc(size_t len) {
   evoasm_program_io_t *program_io = evoasm_malloc(sizeof(evoasm_program_io_t) + len * sizeof(evoasm_program_io_val_t));
-  program_io->len = len;
+  program_io->len = (uint16_t) len;
 
   return program_io;
 }
 
 evoasm_success_t
-evoasm_program_io_init(evoasm_program_io_t *program_io, uint8_t arity, ...) {
+evoasm_program_io_init(evoasm_program_io_t *program_io, size_t arity, ...) {
   va_list args;
   bool retval = true;
-  program_io->arity = arity;
+
+  if(arity > EVOASM_PROGRAM_IO_MAX_ARITY) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Maximum arity exceeded (%d > %d)", arity, EVOASM_PROGRAM_IO_MAX_ARITY);
+    retval = false;
+    goto done;
+  }
+
+  program_io->arity = (uint8_t) arity;
 
   va_start(args, arity);
   for(size_t i = 0; i < program_io->len; i++) {
@@ -58,7 +66,6 @@ evoasm_program_io_init(evoasm_program_io_t *program_io, uint8_t arity, ...) {
         evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                          NULL, "Example value type mismatch (previously %s, now %s)",
                          _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
-        evoasm_free(program_io);
         retval = false;
         goto done;
       }
@@ -73,12 +80,12 @@ done:
 }
 
 double
-evoasm_program_io_get_value_f64(evoasm_program_io_t *program_io, unsigned idx) {
+evoasm_program_io_get_value_f64(evoasm_program_io_t *program_io, size_t idx) {
   return program_io->vals[idx].f64;
 }
 
 int64_t
-evoasm_program_io_get_value_i64(evoasm_program_io_t *program_io, unsigned idx) {
+evoasm_program_io_get_value_i64(evoasm_program_io_t *program_io, size_t idx) {
   return program_io->vals[idx].i64;
 }
 
@@ -88,7 +95,7 @@ evoasm_program_io_destroy(evoasm_program_io_t *program_io) {
 }
 
 evoasm_program_io_val_type_t
-evoasm_program_io_get_type(evoasm_program_io_t *program_io, unsigned idx) {
+evoasm_program_io_get_type(evoasm_program_io_t *program_io, size_t idx) {
   return program_io->types[idx % program_io->arity];
 }
 

@@ -198,9 +198,9 @@ evoasm_x64_basic_params_init(evoasm_x64_basic_params_t *params) {
   *params = zero_params;
 }
 
-uint16_t
+size_t
 evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types, evoasm_x64_inst_id_t *insts) {
-  uint16_t len = 0;
+  size_t len = 0;
   bool search = (flags & EVOASM_X64_INSTS_FLAG_SEARCH) != 0;
 
   for(size_t i = 0; i < EVOASM_X64_INST_NONE; i++) {

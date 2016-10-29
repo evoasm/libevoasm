@@ -41,7 +41,7 @@ typedef evoasm_program_io_t evoasm_program_input_t;
 #define EVOASM_PROGRAM_OUTPUT_EXAMPLE_COUNT(program_output) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_output)
 
 evoasm_program_io_t *
-evoasm_program_io_alloc(uint16_t len);
+evoasm_program_io_alloc(size_t len);
 
 void
 evoasm_program_io_destroy(evoasm_program_io_t *program_io);

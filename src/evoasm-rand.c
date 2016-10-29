@@ -44,6 +44,11 @@ evoasm_prng_rand8(evoasm_prng_t *prng) {
   return evoasm_prng_rand8_(prng);
 }
 
+float
+evoasm_prng_randf(evoasm_prng_t *prng) {
+  return evoasm_prng_randf_(prng);
+}
+
 int64_t
 evoasm_prng_rand_between(evoasm_prng_t *prng, int64_t min, int64_t max) {
   return evoasm_prng_rand_between_(prng, min, max);
