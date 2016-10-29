@@ -62,8 +62,8 @@ typedef enum {
 #define EVOASM_PROGRAM_OUTPUT_VALS_SIZE(io) \
   (EVOASM_PROGRAM_OUTPUT_VALS_LEN(io) * sizeof(evoasm_program_io_val_t))
 
-#define EVOASM_PROGRAM_MAX_SIZE 128
-#define EVOASM_KERNEL_MAX_SIZE 1024
+#define EVOASM_PROGRAM_MAX_SIZE 256
+#define EVOASM_KERNEL_MAX_SIZE 2048
 
 typedef struct {
   evoasm_arch_info_t *arch_info;

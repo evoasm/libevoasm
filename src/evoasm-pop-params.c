@@ -100,7 +100,7 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
 
   if(pop_params->deme_size == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Invalid deme size");
+                 NULL, "Deme size cannot be zero");
     goto fail;
   }
 
@@ -110,9 +110,33 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
+  if(pop_params->min_kernel_size == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Kernel size cannot be zero");
+    goto fail;
+  }
+
+  if(pop_params->min_kernel_size > pop_params->max_kernel_size) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Minimum kernel size must be smaller or equal than maximum size");
+    goto fail;
+  }
+
   if(pop_params->max_program_size > EVOASM_PROGRAM_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+    goto fail;
+  }
+
+  if(pop_params->min_program_size == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Program size cannot be zero");
+    goto fail;
+  }
+
+  if(pop_params->min_program_size > pop_params->max_program_size) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Minimum program size must be smaller or equal than maximum size");
     goto fail;
   }
 
@@ -131,22 +155,6 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
   if(pop_params->program_output == NULL || pop_params->program_output->len == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "No output values given");
-    goto fail;
-  }
-
-  if(pop_params->min_kernel_size == 0 ||
-     pop_params->min_kernel_size > pop_params->max_kernel_size ||
-     pop_params->max_kernel_size > EVOASM_PROGRAM_MAX_SIZE) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Invalid kernel size");
-    goto fail;
-  }
-
-  if(pop_params->min_program_size == 0 ||
-     pop_params->min_program_size > pop_params->max_program_size ||
-      pop_params->max_program_size > EVOASM_KERNEL_MAX_SIZE) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Invalid program size");
     goto fail;
   }
 
