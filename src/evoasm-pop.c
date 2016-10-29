@@ -484,16 +484,14 @@ evoasm_pop_seed(evoasm_pop_t *pop) {
   return true;
 }
 
-static evoasm_success_t
+static void
 evoasm_deme_eval_prepare(evoasm_deme_t *deme) {
   evoasm_signal_install((evoasm_arch_id_t) deme->arch_id, 0);
-  return true;
 }
 
-static evoasm_success_t
+static void
 evoasm_deme_eval_cleanup(evoasm_deme_t *deme) {
   evoasm_signal_uninstall();
-  return true;
 }
 
 static void
@@ -779,6 +777,8 @@ evoasm_deme_eval_programs(evoasm_deme_t *deme) {
     }
   }
 
+  return true;
+
 error:
   return false;
 }
@@ -928,10 +928,7 @@ static evoasm_success_t
 evoasm_deme_eval(evoasm_deme_t *deme) {
   bool retval = true;
 
-  if(!evoasm_deme_eval_prepare(deme)) {
-    retval = false;
-    goto done;
-  }
+  evoasm_deme_eval_prepare(deme);
 
   if(!evoasm_deme_eval_programs(deme)) {
     retval = false;
@@ -946,9 +943,7 @@ evoasm_deme_eval(evoasm_deme_t *deme) {
   evoasm_deme_eval_update(deme);
 
 done:
-  if(!evoasm_deme_eval_cleanup(deme)) {
-    retval = false;
-  }
+  evoasm_deme_eval_cleanup(deme);
   return retval;
 }
 
