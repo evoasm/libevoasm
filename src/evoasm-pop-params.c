@@ -147,11 +147,11 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->n_demes == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Invalid number of demes");
-    goto fail;
-  }
+//  if(pop_params->n_demes == 0) {
+//    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+//                 NULL, "Invalid number of demes");
+//    goto fail;
+//  }
 
   return true;
 

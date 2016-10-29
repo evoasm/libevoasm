@@ -48,4 +48,4 @@ typedef struct evoasm_pop_params_s {
 } evoasm_pop_params_t;
 
 bool
-evoasm_pop_params_valid(evoasm_pop_params_t *pop_params);
+evoasm_pop_params_validate(evoasm_pop_params_t *pop_params);
