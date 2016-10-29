@@ -57,6 +57,8 @@ evoasm_pop_indiv_data_init(evoasm_pop_indiv_data_t *indiv_data, size_t n_indivs)
                    n_indivs,
                    sizeof(uint8_t));
 
+  memset(indiv_data->loss_sample_counters, 0, n_indivs * sizeof(uint8_t));
+
   return true;
 error:
   return false;
@@ -1101,7 +1103,7 @@ static int evoasm_pop_loss_cmp_func(const void *a, const void *b) {
   return (loss_a > loss_b) - (loss_a < loss_b);
 }
 
-static evoasm_force_inline inline void
+static inline void
 evoasm_deme_calc_summary(evoasm_deme_t *deme, evoasm_loss_t *summary_losses, evoasm_loss_t *summary) {
   size_t deme_size = deme->params->deme_size;
   evoasm_pop_indiv_data_t *indiv_data = &deme->indiv_data;
