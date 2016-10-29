@@ -1531,7 +1531,7 @@ evoasm_program_init(evoasm_program_t *program,
   program->buf = &program->_buf;
 
   EVOASM_TRY(error, evoasm_buf_init, &program->_body_buf, EVOASM_BUF_TYPE_MALLOC, body_buf_size);
-  program->buf = &program->_body_buf;
+  program->body_buf = &program->_body_buf;
 
   EVOASM_TRY(error, evoasm_buf_protect, &program->_buf,
              EVOASM_MPROT_RWX);
