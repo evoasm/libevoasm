@@ -636,6 +636,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
                            program_idx,
                            kernel_idxs);
 
+  return true;
 
 error:
   return false;
