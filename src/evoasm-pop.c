@@ -216,7 +216,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
              params->program_input,
              params->max_program_size,
              params->max_kernel_size,
-             params->recur_limit);
+             params->recur_limit, NULL, NULL);
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, deme->selected_parent_idxs, EVOASM_CACHE_LINE_SIZE, params->deme_size,
                    sizeof(uint16_t));
@@ -618,7 +618,9 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
              params->program_input,
              params->max_program_size,
              params->max_kernel_size,
-             params->recur_limit);
+             params->recur_limit,
+             pop->params->program_input,
+             pop->params->program_output);
 
   size_t program_idx = EVOASM_DEME_PROGRAM_ROW(best_deme);
   size_t kernel_idxs[EVOASM_PROGRAM_MAX_SIZE];

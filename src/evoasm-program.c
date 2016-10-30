@@ -129,7 +129,7 @@ evoasm_program_get_buf(evoasm_program_t *program, bool body) {
   }
 }
 
-uint16_t
+size_t
 evoasm_program_get_size(evoasm_program_t *program) {
   return program->size;
 }
@@ -1510,7 +1510,9 @@ evoasm_program_init(evoasm_program_t *program,
                     evoasm_program_io_t *program_input,
                     size_t program_size,
                     size_t max_kernel_size,
-                    size_t recur_limit) {
+                    size_t recur_limit,
+                    evoasm_program_io_t *input,
+                    evoasm_program_io_t *output) {
 
   static evoasm_program_t zero_program = {0};
   size_t n_transitions = program_size - 1u;
@@ -1548,6 +1550,15 @@ evoasm_program_init(evoasm_program_t *program,
     evoasm_kernel_t *kernel = &program->kernels[i];
     kernel->idx = i;
   }
+
+  if(input != NULL) {
+    program->_input = *input;
+  }
+
+  if(output != NULL) {
+    program->_output = *output;
+  }
+
   return true;
 
 error:
