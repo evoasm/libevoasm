@@ -13,10 +13,13 @@
 #include "evoasm-pop-params.h"
 
 typedef struct {
-  evoasm_loss_t *loss_samples;
-  uint8_t *loss_sample_counters;
   uint16_t *sizes;
 } evoasm_pop_indiv_data_t;
+
+typedef struct {
+  evoasm_loss_t *samples;
+  uint8_t *counters;
+} evoasm_pop_loss_data_t;
 
 typedef struct {
   int16_t *jmp_offs;
@@ -46,6 +49,7 @@ struct evoasm_deme_s {
   uint64_t *error_counters;
   uint64_t error_counter;
   evoasm_pop_indiv_data_t indiv_data;
+  evoasm_pop_loss_data_t loss_data;
   evoasm_pop_program_data_t program_data;
   evoasm_pop_kernel_data_t kernel_data;
   evoasm_loss_t *top_losses;
