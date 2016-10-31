@@ -34,10 +34,11 @@ evoasm_program_destroy(evoasm_program_t *program) {
 
   if(!program->shallow) {
     for(size_t i = 0; i < program->size; i++) {
-      evoasm_free(program->kernels[i].insts);
+      evoasm_kernel_t *kernel = &program->kernels[i];
+      evoasm_free(kernel->insts);
       switch(program->arch_info->id) {
         case EVOASM_ARCH_X64:
-          evoasm_free(program->kernels[i].params.x64);
+          evoasm_free(kernel->params.x64);
           break;
         default:
           evoasm_assert_not_reached();
@@ -1504,15 +1505,14 @@ error:
 #define EVOASM_PROGRAM_PROLOG_EPILOG_SIZE UINT32_C(1024)
 #define EVOASM_PROGRAM_TRANSITION_SIZE UINT32_C(512)
 
+
 evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_id_t arch_id,
                     evoasm_program_io_t *program_input,
                     size_t program_size,
                     size_t max_kernel_size,
-                    size_t recur_limit,
-                    evoasm_program_io_t *input,
-                    evoasm_program_io_t *output) {
+                    size_t recur_limit) {
 
   static evoasm_program_t zero_program = {0};
   size_t n_transitions = program_size - 1u;
@@ -1551,14 +1551,6 @@ evoasm_program_init(evoasm_program_t *program,
     kernel->idx = i;
   }
 
-  if(input != NULL) {
-    program->_input = *input;
-  }
-
-  if(output != NULL) {
-    program->_output = *output;
-  }
-
   return true;
 
 error:
@@ -1566,5 +1558,44 @@ error:
   return false;
 }
 
+evoasm_success_t
+evoasm_program_detach(evoasm_program_t *program,
+                      evoasm_program_io_t *input,
+                      evoasm_program_io_t *output) {
+
+  assert(program->shallow);
+
+  program->shallow = false;
+  program->need_emit = true;
+
+  program->_input = *input;
+  program->_output = *output;
+  program->_input.len = 0;
+  program->_output.len = 0;
+
+  for(size_t i = 0; i < program->size; i++) {
+    evoasm_kernel_t *kernel = &program->kernels[i];
+    evoasm_inst_id_t *insts = kernel->insts;
+    size_t insts_size = sizeof(evoasm_inst_id_t) * kernel->size;
+    EVOASM_TRY_ALLOC(error, malloc, kernel->insts, insts_size);
+    memcpy(kernel->insts, insts, insts_size);
+
+    switch(program->arch_info->id) {
+      case EVOASM_ARCH_X64: {
+        size_t params_size = sizeof(evoasm_x64_basic_params_t) * kernel->size;
+        evoasm_x64_basic_params_t *params = kernel->params.x64;
+        EVOASM_TRY_ALLOC(error, malloc, kernel->params.x64, params_size);
+        memcpy(kernel->params.x64, params, params_size);
+        break;
+      }
+      default:
+        evoasm_assert_not_reached();
+    }
+  }
+
+  return true;
+error:
+  return false;
+}
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(program)

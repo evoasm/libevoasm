@@ -109,9 +109,7 @@ evoasm_program_init(evoasm_program_t *program,
                     evoasm_program_io_t *program_input,
                     size_t n_kernels,
                     size_t max_kernel_size,
-                    size_t recur_limit,
-                    evoasm_program_io_t *input,
-                    evoasm_program_io_t *output);
+                    size_t recur_limit);
 
 
 evoasm_program_output_t *
@@ -133,5 +131,10 @@ evoasm_program_emit(evoasm_program_t *program,
 evoasm_loss_t
 evoasm_program_assess(evoasm_program_t *program,
                   evoasm_program_output_t *output);
+
+evoasm_success_t
+evoasm_program_detach(evoasm_program_t *program,
+                      evoasm_program_io_t *input,
+                      evoasm_program_io_t *output);
 
 EVOASM_DECL_ALLOC_FREE_FUNCS(program)
