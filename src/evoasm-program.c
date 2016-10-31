@@ -382,7 +382,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
     evoasm_x64_reg_write_acc_init(&reg_write_accs[i]);
   }
 
-  for(size_t i = 0; i < program->size; i++) {
+  for(size_t i = 0; i < kernel->size; i++) {
     evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
     evoasm_x64_basic_params_t *x64_basic_params = &kernel->params.x64[i];
 
