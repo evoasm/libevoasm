@@ -1281,7 +1281,7 @@ evoasm_program_run(evoasm_program_t *program,
   // now allocated on heap
   //program->output_vals = evoasm_alloca(EVOASM_PROGRAM_OUTPUT_VALS_SIZE(input));
 
-  if(!evoasm_program_emit(program, input, false, program->need_emit, true, false)) {
+  if(!evoasm_program_emit(program, input, program->need_emit, program->need_emit, true, false)) {
     return NULL;
   }
 
