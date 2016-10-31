@@ -1593,6 +1593,8 @@ evoasm_program_detach(evoasm_program_t *program,
     }
   }
 
+  evoasm_program_assess(program, output);
+
   return true;
 error:
   return false;
