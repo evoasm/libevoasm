@@ -64,7 +64,7 @@ struct evoasm_deme_s {
   evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
   uint16_t max_program_size;
-} evoasm_align(EVOASM_CACHE_LINE_SIZE) ;
+} evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
 
 typedef struct evoasm_deme_s evoasm_deme_t;
 

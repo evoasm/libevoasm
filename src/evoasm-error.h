@@ -60,7 +60,7 @@ evoasm_error_setv(evoasm_error_t *error, unsigned error_type, unsigned error_cod
 void
 evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code,
                 void *error_data, const char *file,
-                unsigned line, const char *format, ...);
+                unsigned line, const char *format, ...) evoasm_printf(7, 8);
 
 
 evoasm_error_t *

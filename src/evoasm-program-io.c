@@ -31,7 +31,7 @@ evoasm_program_io_init(evoasm_program_io_t *program_io, size_t arity, ...) {
 
   if(arity > EVOASM_PROGRAM_IO_MAX_ARITY) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Maximum arity exceeded (%d > %d)", arity, EVOASM_PROGRAM_IO_MAX_ARITY);
+                 NULL, "Maximum arity exceeded (%zu > %d)", arity, EVOASM_PROGRAM_IO_MAX_ARITY);
     retval = false;
     goto done;
   }

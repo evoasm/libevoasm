@@ -71,8 +71,6 @@ evoasm_pop_loss_data_init(evoasm_pop_loss_data_t *loss_data, size_t n_indivs) {
                    n_indivs,
                    sizeof(uint8_t));
 
-  memset(loss_data->counters, 0, n_indivs * sizeof(uint8_t));
-
   return true;
 error:
   return false;

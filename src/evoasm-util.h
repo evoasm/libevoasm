@@ -19,30 +19,32 @@
 #define EVOASM_ARY_LEN(ary) (sizeof(ary) / sizeof(ary[0]))
 
 #ifdef __GNUC__
-# define EVOASM_UNLIKELY(e) (__builtin_expect(e, 0))
-# define EVOASM_LIKELY(e) (__builtin_expect(e, 1))
+# define evoasm_unlikely(e) (__builtin_expect(e, 0))
+# define evoasm_likely(e) (__builtin_expect(e, 1))
 # define evoasm_used __attribute__((used))
+# define evoasm_printf(x, y) __attribute__((__format__(__printf__, x, y)))
 #else
-# define EVOASM_UNLIKELY(e) (e)
-# define EVOASM_LIKELY(e) (e)
+# define evoasm_unlikely(e) (e)
+# define evoasm_likely(e) (e)
 # define evoasm_used
+# define evoasm_printf
 #endif
 
 #if defined(__GNUC__)
 # define evoasm_check_return __attribute__((warn_unused_result))
 # define evoasm_force_inline __attribute__((always_inline))
-# define evoasm_pack(decl) decl __attribute__((__packed__))
-# define evoasm_align(align) __attribute__ ((aligned(align)))
+# define evoasm_packed(decl) decl __attribute__((__packed__))
+# define evoasm_aligned(align) __attribute__ ((aligned(align)))
 #elif defined(_MSC_VER)
 # define evoasm_check_return _Check_return_
 # define evoasm_force_inline __forceinline
-# define evoasm_pack(decl) __pragma(pack(push, 1)) decl __pragma(pack(pop))
-# define evoasm_align(align) __declspec(align(align))
+# define evoasm_packed(decl) __pragma(pack(push, 1)) decl __pragma(pack(pop))
+# define evoasm_aligned(align) __declspec(align(align))
 #else
 # define evoasm_check_return
 # define evoasm_force_inline
-# define evoasm_pack(decl)
-# define evoasm_align(align)
+# define evoasm_packed(decl)
+# define evoasm_aligned(align)
 #endif
 
 #define EVOASM_DEF_ALLOC_FUNC(type) \

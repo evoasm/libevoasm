@@ -41,11 +41,11 @@ typedef struct {
   uint64_t reg3 : 7;
   uint64_t reg_base : 7;
   uint64_t reg_index : 7;
-  evoasm_pack(union {
+  evoasm_packed(union {
     int8_t imm1 : 8;
     int32_t disp : 32;
   });
-  evoasm_pack(union {
+  evoasm_packed(union {
     int64_t imm : 64;
     int64_t imm0 : 64;
     int64_t moffs : 64;
@@ -62,7 +62,7 @@ typedef struct {
   uint64_t reg1 : 7;
   uint64_t reg2 : 7;
   uint64_t reg3 : 7;
-  evoasm_pack(union {
+  evoasm_packed(union {
     int32_t imm : 32;
     int32_t imm0 : 32;
     int32_t rel : 32;

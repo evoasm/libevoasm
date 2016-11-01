@@ -17,7 +17,7 @@ EVOASM_DEF_LOG_TAG("alloc")
 void *
 evoasm_malloc(size_t size) {
   void *ptr = malloc(size);
-  if(EVOASM_UNLIKELY(!ptr)) {
+  if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
       NULL, "Allocationg %zu bytes via malloc failed: %s", size, strerror(errno));
     return NULL;
@@ -28,7 +28,7 @@ evoasm_malloc(size_t size) {
 void *
 evoasm_aligned_alloc(size_t align, size_t size) {
   void *ptr = aligned_alloc(align, size);
-  if(EVOASM_UNLIKELY(!ptr)) {
+  if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
                  NULL, "Allocationg %zu bytes via aligned_alloc failed: %s", size, strerror(errno));
     return NULL;
@@ -40,9 +40,9 @@ void *
 evoasm_calloc(size_t n, size_t size) {
   void *ptr = calloc(n, size);
 
-  if(EVOASM_UNLIKELY(!ptr)) {
+  if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
-      NULL, "Allocationg %zux%zu () bytes via calloc failed: %s", n, size, n * size, strerror(errno));
+      NULL, "Allocationg %zux%zu (%zu) bytes via calloc failed: %s", n, size, n * size, strerror(errno));
     return NULL;
   }
   return ptr;
@@ -50,14 +50,26 @@ evoasm_calloc(size_t n, size_t size) {
 
 void *
 evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
-  return evoasm_aligned_alloc(align, n * size);
+  if(evoasm_unlikely(size == 0 || n >= SIZE_MAX / size)) {
+    evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Allocationg %zux%zu bytes via aligned_calloc failed: integer overflow", n, size);
+    return NULL;
+  }
+
+  size_t len = n * size;
+  void *ptr = evoasm_aligned_alloc(align, n * size);
+
+  if(evoasm_likely(ptr != NULL)) {
+    memset(ptr, 0, len);
+  }
+  return ptr;
 }
 
 void *
 evoasm_realloc(void *ptr, size_t size) {
   void *new_ptr = realloc(ptr, size);
 
-  if(EVOASM_UNLIKELY(!ptr)) {
+  if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_ERROR_CODE_NONE,
         NULL, "Allocating %zu bytes via realloc failed: %s", size, strerror(errno));
     return NULL;

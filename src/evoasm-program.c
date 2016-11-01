@@ -1045,7 +1045,7 @@ evoasm_program_match(evoasm_program_t *program,
     }
   }
 
-  if(EVOASM_LIKELY(best_index != UINT_FAST8_MAX)) {
+  if(evoasm_likely(best_index != UINT_FAST8_MAX)) {
     *matching = best_index;
     return true;
   } else {
@@ -1106,7 +1106,7 @@ evoasm_program_calc_stable_matching(evoasm_program_t *program,
       }
     }
 
-    if(EVOASM_LIKELY(best_index != UINT_FAST8_MAX)) {
+    if(evoasm_likely(best_index != UINT_FAST8_MAX)) {
       if(inv_matching[best_index] == UINT_FAST8_MAX) {
         inv_matching[best_index] = unmatched_index;
         matching[unmatched_index] = best_index;
@@ -1220,7 +1220,7 @@ evoasm_program_eval(evoasm_program_t *program,
   evoasm_kernel_t *kernel = &program->kernels[program->size - 1];
   evoasm_loss_t loss;
 
-  if(EVOASM_UNLIKELY(kernel->n_output_regs == 0)) {
+  if(evoasm_unlikely(kernel->n_output_regs == 0)) {
     return INFINITY;
   }
 
