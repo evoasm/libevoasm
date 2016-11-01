@@ -218,11 +218,11 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  evoasm_prng_state_t *seed,
                  evoasm_domain_t *domains) {
 
-  uint16_t n_examples = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(params->program_input);
+  size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(params->program_input);
   static evoasm_deme_t zero_deme = {0};
 
   *deme = zero_deme;
-  deme->n_examples = n_examples;
+  deme->n_examples = (uint16_t) n_examples;
   deme->arch_id = arch_id;
   deme->params = params;
   deme->domains = domains;
@@ -230,9 +230,9 @@ evoasm_deme_init(evoasm_deme_t *deme,
   evoasm_prng_init(&deme->prng, seed);
   EVOASM_TRY(error, evoasm_program_init, &deme->program,
              arch_id,
-             params->program_input,
              params->max_program_size,
              params->max_kernel_size,
+             n_examples,
              params->recur_limit);
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, deme->selected_parent_idxs, EVOASM_CACHE_LINE_SIZE, params->deme_size,
@@ -626,9 +626,9 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
 
   EVOASM_TRY(error, evoasm_program_init, program,
              best_deme->arch_id,
-             params->program_input,
              params->max_program_size,
              params->max_kernel_size,
+             best_deme->n_examples,
              params->recur_limit);
 
   size_t program_idx = 0;

@@ -863,7 +863,7 @@ static evoasm_success_t
 evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
                                       evoasm_program_input_t *input,
                                       bool io_mapping) {
-  size_t n_examples = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(input);
+  size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
   evoasm_kernel_t *kernel = &program->kernels[0];
 
   evoasm_buf_reset(program->buf);
@@ -968,7 +968,7 @@ evoasm_program_log_program_output(evoasm_program_t *program,
                                   uint_fast8_t *const matching,
                                   evoasm_log_level_t log_level) {
 
-  size_t n_examples = EVOASM_PROGRAM_OUTPUT_EXAMPLE_COUNT(output);
+  size_t n_examples = EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(output);
   size_t height = output->arity;
   size_t width = kernel->n_output_regs;
 
@@ -1155,7 +1155,7 @@ static evoasm_loss_t
 evoasm_program_assess(evoasm_program_t *program,
                       evoasm_program_output_t *output) {
 
-  size_t n_examples = EVOASM_PROGRAM_OUTPUT_EXAMPLE_COUNT(output);
+  size_t n_examples = EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(output);
   size_t height = output->arity;
   evoasm_kernel_t *kernel = &program->kernels[program->size - 1];
   size_t width = kernel->n_output_regs;
@@ -1244,11 +1244,11 @@ evoasm_program_load_output(evoasm_program_t *program,
   size_t width = kernel->n_output_regs;
   evoasm_program_output_t *output = &program->_output;
   size_t height = output->arity;
-  size_t n_examples = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(input);
+  size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
   uint_fast8_t *matching = evoasm_alloca(height * sizeof(uint_fast8_t));
 
   evoasm_program_output_t *load_output = evoasm_program_io_alloc(
-      (uint16_t) (EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(input) * height));
+      (uint16_t) (EVOASM_PROGRAM_INPUT_N_EXAMPLES(input) * height));
 
   for(size_t i = 0; i < height; i++) {
     for(size_t j = 0; j < kernel->n_output_regs; j++) {
@@ -1533,14 +1533,13 @@ error:
 evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_id_t arch_id,
-                    evoasm_program_io_t *program_input,
-                    size_t program_size,
+                    size_t max_program_size,
                     size_t max_kernel_size,
+                    size_t n_examples,
                     size_t recur_limit) {
 
   static evoasm_program_t zero_program = {0};
-  size_t n_transitions = program_size - 1u;
-  size_t n_examples = EVOASM_PROGRAM_INPUT_EXAMPLE_COUNT(program_input);
+  size_t n_transitions = max_program_size - 1u;
 
   *program = zero_program;
   program->arch_info = evoasm_get_arch_info(arch_id);
@@ -1549,7 +1548,7 @@ evoasm_program_init(evoasm_program_t *program,
 
   size_t body_buf_size =
       (size_t) (n_transitions * EVOASM_PROGRAM_TRANSITION_SIZE
-                + program_size * max_kernel_size * program->arch_info->max_inst_len);
+                + max_program_size * max_kernel_size * program->arch_info->max_inst_len);
 
   size_t buf_size = n_examples * (body_buf_size + EVOASM_PROGRAM_PROLOG_EPILOG_SIZE);
 
@@ -1562,15 +1561,15 @@ evoasm_program_init(evoasm_program_t *program,
   EVOASM_TRY(error, evoasm_buf_protect, &program->_buf,
              EVOASM_MPROT_RWX);
 
-  size_t output_vals_len = EVOASM_PROGRAM_OUTPUT_VALS_LEN(program_input);
+  size_t output_vals_len = n_examples * EVOASM_KERNEL_MAX_OUTPUT_REGS;
 
   EVOASM_TRY_ALLOC(error, calloc, program->output_vals, output_vals_len, sizeof(evoasm_program_io_val_t));
-  EVOASM_TRY_ALLOC(error, calloc, program->kernels, program_size, sizeof(evoasm_kernel_t));
-  EVOASM_TRY_ALLOC(error, calloc, program->recur_counters, program_size, sizeof(uint32_t));
-  EVOASM_TRY_ALLOC(error, calloc, program->jmp_conds, program_size, sizeof(uint8_t));
-  EVOASM_TRY_ALLOC(error, calloc, program->jmp_offs, program_size, sizeof(int16_t));
+  EVOASM_TRY_ALLOC(error, calloc, program->kernels, max_program_size, sizeof(evoasm_kernel_t));
+  EVOASM_TRY_ALLOC(error, calloc, program->recur_counters, max_program_size, sizeof(uint32_t));
+  EVOASM_TRY_ALLOC(error, calloc, program->jmp_conds, max_program_size, sizeof(uint8_t));
+  EVOASM_TRY_ALLOC(error, calloc, program->jmp_offs, max_program_size, sizeof(int16_t));
 
-  for(uint16_t i = 0; i < program_size; i++) {
+  for(uint16_t i = 0; i < max_program_size; i++) {
     evoasm_kernel_t *kernel = &program->kernels[i];
     kernel->idx = i;
   }

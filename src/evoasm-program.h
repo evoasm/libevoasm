@@ -55,13 +55,6 @@ typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING = (1 << 3)
 } evoasm_program_emit_flags_t;
 
-
-#define EVOASM_PROGRAM_OUTPUT_VALS_LEN(io) \
-  ((size_t)EVOASM_PROGRAM_IO_N_EXAMPLES(io) * (size_t)EVOASM_KERNEL_MAX_OUTPUT_REGS)
-
-#define EVOASM_PROGRAM_OUTPUT_VALS_SIZE(io) \
-  (EVOASM_PROGRAM_OUTPUT_VALS_LEN(io) * sizeof(evoasm_program_io_val_t))
-
 #define EVOASM_PROGRAM_MAX_SIZE 256
 #define EVOASM_KERNEL_MAX_SIZE 2048
 
@@ -106,9 +99,9 @@ evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program
 evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_id_t arch_id,
-                    evoasm_program_io_t *program_input,
-                    size_t n_kernels,
+                    size_t max_program_size,
                     size_t max_kernel_size,
+                    size_t n_examples,
                     size_t recur_limit);
 
 
