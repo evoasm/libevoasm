@@ -1302,19 +1302,6 @@ evoasm_program_run(evoasm_program_t *program,
     }
   }
 
-  // now allocated on heap
-  //program->output_vals = evoasm_alloca(EVOASM_PROGRAM_OUTPUT_VALS_SIZE(input));
-
-//  if(!evoasm_program_emit(program, input, program->need_emit, program->need_emit, true, false)) {
-//    return NULL;
-//  }
-//
-//  program->need_emit = false;
-
-//  if(kernel->n_output_regs == 0) {
-//    return NULL;
-//  }
-
   evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
   evoasm_signal_install((evoasm_arch_id_t) program->arch_info->id, program->exception_mask);
 
@@ -1337,8 +1324,6 @@ evoasm_program_run(evoasm_program_t *program,
   }
 
   evoasm_signal_uninstall();
-
-  program->output_vals = NULL;
 
   return output;
 }
