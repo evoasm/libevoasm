@@ -521,16 +521,6 @@ evoasm_pop_seed(evoasm_pop_t *pop) {
 }
 
 static void
-evoasm_deme_eval_prepare(evoasm_deme_t *deme) {
-  evoasm_signal_install((evoasm_arch_id_t) deme->arch_id, 0);
-}
-
-static void
-evoasm_deme_eval_cleanup(evoasm_deme_t *deme) {
-  evoasm_signal_uninstall();
-}
-
-static void
 evoasm_deme_load_program_(evoasm_deme_t *deme,
                           evoasm_program_t *program,
                           evoasm_pop_indiv_data_t *indiv_data,
@@ -587,8 +577,7 @@ evoasm_deme_load_program(evoasm_deme_t *deme,
 
 
 static evoasm_success_t
-evoasm_deme_assess_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *loss) {
-  evoasm_kernel_t *kernel = &program->kernels[program->size - 1];
+evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *loss) {
   evoasm_pop_params_t *params = deme->params;
 
   if(!evoasm_program_emit(program, params->program_input, true, true, true, true)) {
@@ -596,23 +585,8 @@ evoasm_deme_assess_program(evoasm_deme_t *deme, evoasm_program_t *program, evoas
     return false;
   }
 
-  if(EVOASM_UNLIKELY(kernel->n_output_regs == 0)) {
-    *loss = INFINITY;
-    return true;
-  }
-
+  *loss = evoasm_program_eval(program, params->program_output);
   //evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_INFO);
-  {
-    evoasm_signal_set_exception_mask(program->exception_mask);
-
-    if(EVOASM_SIGNAL_TRY()) {
-      evoasm_buf_exec(program->buf);
-      *loss = evoasm_program_assess(program, params->program_output);
-    } else {
-      evoasm_log_debug("program %p signaled", (void *) program);
-      *loss = INFINITY;
-    }
-  }
   return true;
 }
 
@@ -676,7 +650,10 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
                            params->max_program_size,
                            params->max_kernel_size);
 
+
+  evoasm_signal_install((evoasm_arch_id_t) best_deme->arch_id, 0);
   EVOASM_TRY(error, evoasm_program_detach, program, params->program_input, params->program_output);
+  evoasm_signal_uninstall();
 
   return true;
 
@@ -685,7 +662,7 @@ error:
 }
 
 static evoasm_success_t
-evoasm_deme_eval_program(evoasm_deme_t *deme, size_t program_idx, size_t *kernel_idxs, evoasm_loss_t *ret_loss) {
+evoasm_deme_test_program(evoasm_deme_t *deme, size_t program_idx, size_t *kernel_idxs, evoasm_loss_t *ret_loss) {
 
   evoasm_loss_t loss;
   evoasm_program_t *program = &deme->program;
@@ -695,7 +672,7 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, size_t program_idx, size_t *kernel
 
   evoasm_deme_load_program(deme, program, indiv_data, program_data, kernel_data, program_idx, kernel_idxs);
 
-  EVOASM_TRY(error, evoasm_deme_assess_program, deme, program, &loss);
+  EVOASM_TRY(error, evoasm_deme_eval_program, deme, program, &loss);
 
   size_t program_off = EVOASM_DEME_PROGRAM_OFF(deme, program_idx);
   size_t program_size = indiv_data->sizes[program_off];
@@ -849,7 +826,7 @@ evoasm_deme_eval_programs(evoasm_deme_t *deme) {
         kernel_idxs[k] = kernel_idx;
       }
 
-      EVOASM_TRY(error, evoasm_deme_eval_program, deme, i, kernel_idxs, &loss);
+      EVOASM_TRY(error, evoasm_deme_test_program, deme, i, kernel_idxs, &loss);
       evoasm_deme_update_best(deme, loss, i, kernel_idxs);
     }
   }
@@ -861,7 +838,7 @@ error:
 }
 
 static evoasm_success_t
-evoasm_deme_eval_kernels(evoasm_deme_t *deme) {
+evoasm_deme_test_kernels(evoasm_deme_t *deme) {
 
   evoasm_prng_t *prng = &deme->prng;
   size_t kernel_idxs[EVOASM_PROGRAM_MAX_SIZE];
@@ -900,7 +877,7 @@ evoasm_deme_eval_kernels(evoasm_deme_t *deme) {
           }
           kernel_idxs[i] = load_kernel_idx;
         }
-        EVOASM_TRY(error, evoasm_deme_eval_program, deme, program_idx, kernel_idxs, &loss);
+        EVOASM_TRY(error, evoasm_deme_test_program, deme, program_idx, kernel_idxs, &loss);
         evoasm_deme_update_best(deme, loss, program_idx, kernel_idxs);
       }
     }
@@ -1012,14 +989,14 @@ static evoasm_success_t
 evoasm_deme_eval(evoasm_deme_t *deme) {
   bool retval = true;
 
-  evoasm_deme_eval_prepare(deme);
+  evoasm_signal_install((evoasm_arch_id_t) deme->arch_id, 0);
 
   if(!evoasm_deme_eval_programs(deme)) {
     retval = false;
     goto done;
   }
 
-  if(!evoasm_deme_eval_kernels(deme)) {
+  if(!evoasm_deme_test_kernels(deme)) {
     retval = false;
     goto done;
   }
@@ -1027,7 +1004,7 @@ evoasm_deme_eval(evoasm_deme_t *deme) {
   evoasm_deme_eval_update(deme);
 
 done:
-  evoasm_deme_eval_cleanup(deme);
+  evoasm_signal_uninstall();
   return retval;
 }
 

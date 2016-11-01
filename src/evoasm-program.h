@@ -129,8 +129,8 @@ evoasm_program_emit(evoasm_program_t *program,
                 bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping);
 
 evoasm_loss_t
-evoasm_program_assess(evoasm_program_t *program,
-                  evoasm_program_output_t *output);
+evoasm_program_eval(evoasm_program_t *program,
+                    evoasm_program_output_t *output);
 
 evoasm_success_t
 evoasm_program_detach(evoasm_program_t *program,

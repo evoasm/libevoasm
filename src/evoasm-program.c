@@ -1150,7 +1150,8 @@ evoasm_program_calc_loss(evoasm_program_t *program,
   return (evoasm_loss_t) loss;
 }
 
-evoasm_loss_t
+
+static evoasm_loss_t
 evoasm_program_assess(evoasm_program_t *program,
                       evoasm_program_output_t *output) {
 
@@ -1209,6 +1210,29 @@ evoasm_program_assess(evoasm_program_t *program,
   }
 #endif
 
+  return loss;
+}
+
+evoasm_loss_t
+evoasm_program_eval(evoasm_program_t *program,
+                    evoasm_program_output_t *output) {
+
+  evoasm_kernel_t *kernel = &program->kernels[program->size - 1];
+  evoasm_loss_t loss;
+
+  if(EVOASM_UNLIKELY(kernel->n_output_regs == 0)) {
+    return INFINITY;
+  }
+
+  evoasm_signal_set_exception_mask(program->exception_mask);
+
+  if(EVOASM_SIGNAL_TRY()) {
+    evoasm_buf_exec(program->buf);
+    loss = evoasm_program_assess(program, output);
+  } else {
+    evoasm_log_debug("program %p signaled", (void *) program);
+    loss = INFINITY;
+  }
   return loss;
 }
 
@@ -1281,15 +1305,15 @@ evoasm_program_run(evoasm_program_t *program,
   // now allocated on heap
   //program->output_vals = evoasm_alloca(EVOASM_PROGRAM_OUTPUT_VALS_SIZE(input));
 
-  if(!evoasm_program_emit(program, input, program->need_emit, program->need_emit, true, false)) {
-    return NULL;
-  }
+//  if(!evoasm_program_emit(program, input, program->need_emit, program->need_emit, true, false)) {
+//    return NULL;
+//  }
+//
+//  program->need_emit = false;
 
-  program->need_emit = false;
-
-  if(kernel->n_output_regs == 0) {
-    return NULL;
-  }
+//  if(kernel->n_output_regs == 0) {
+//    return NULL;
+//  }
 
   evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
   evoasm_signal_install((evoasm_arch_id_t) program->arch_info->id, program->exception_mask);
@@ -1566,7 +1590,6 @@ evoasm_program_detach(evoasm_program_t *program,
   assert(program->shallow);
 
   program->shallow = false;
-  program->need_emit = true;
 
   program->_input = *input;
   program->_output = *output;
@@ -1593,7 +1616,8 @@ evoasm_program_detach(evoasm_program_t *program,
     }
   }
 
-  evoasm_program_assess(program, output);
+  EVOASM_TRY(error, evoasm_program_emit, program, input, true, true, true, false);
+  evoasm_program_eval(program, output);
 
   return true;
 error:
