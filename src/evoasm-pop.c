@@ -927,24 +927,33 @@ evoasm_pop_find_median_loss_(evoasm_loss_t *losses, size_t len) {
     EVOASM_SORT_PAIR(evoasm_loss_t, losses[i + 3], losses[i + 4]);
   }
 
-  if(n_runs == 1) {
-    return losses[EVOASM_POP_FIND_MEDIAN_RUN_LEN / 2 - 1];
-  } else {
-    size_t merge_len = trunc_len / 2;
-    for(size_t i = 0; i < merge_len; i++) {
-      evoasm_loss_t min_loss = INFINITY;
-      size_t min_run_idx = SIZE_MAX;
-      for(size_t j = 0; j < n_runs; j++) {
-        evoasm_loss_t front_loss = losses[j * EVOASM_POP_FIND_MEDIAN_RUN_LEN + front_idxs[j]];
-        if(front_loss < min_loss) {
-          min_loss = front_loss;
-          min_run_idx = j;
+  switch(n_runs) {
+    case 1:
+      return losses[EVOASM_POP_FIND_MEDIAN_RUN_LEN / 2 - 1];
+    case 2: {
+      const size_t merge_len = 8;
+      for(size_t i = 0; i < merge_len; i++) {
+        size_t loss_off0 = 0 * EVOASM_POP_FIND_MEDIAN_RUN_LEN + front_idxs[0];
+        size_t loss_off1 = 1 * EVOASM_POP_FIND_MEDIAN_RUN_LEN + front_idxs[1];
+        evoasm_loss_t loss0 = losses[loss_off0];
+        evoasm_loss_t loss1 = losses[loss_off1];
+        evoasm_loss_t min_loss;
+        size_t min_run_idx;
+
+        if(loss0 < loss1) {
+          min_run_idx = 0;
+          min_loss = loss0;
+        } else {
+          min_run_idx = 1;
+          min_loss = loss1;
         }
+        front_idxs[min_run_idx]++;
+        scratch[i] = min_loss;
       }
-      front_idxs[min_run_idx]++;
-      scratch[i] = min_loss;
+      return scratch[merge_len - 1];
     }
-    return scratch[merge_len - 1];
+    default:
+      evoasm_assert_not_reached();
   }
 }
 

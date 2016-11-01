@@ -1200,15 +1200,15 @@ evoasm_program_assess(evoasm_program_t *program,
     }
   }
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
+//#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
   if(loss == 0.0) {
     evoasm_program_log_program_output(program,
                                       kernel,
                                       output,
                                       matching,
-                                      EVOASM_LOG_LEVEL_DEBUG);
+                                      EVOASM_LOG_LEVEL_INFO);
   }
-#endif
+//#endif
 
   return loss;
 }
@@ -1302,7 +1302,7 @@ evoasm_program_run(evoasm_program_t *program,
     }
   }
 
-  if(!evoasm_program_emit(program, input, false, false, true, false)) {
+  if(!evoasm_program_emit(program, input, false, true, true, false)) {
     return NULL;
   }
 
