@@ -1302,6 +1302,10 @@ evoasm_program_run(evoasm_program_t *program,
     }
   }
 
+  if(!evoasm_program_emit(program, input, false, false, true, false)) {
+    return NULL;
+  }
+
   evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
   evoasm_signal_install((evoasm_arch_id_t) program->arch_info->id, program->exception_mask);
 
@@ -1600,7 +1604,7 @@ evoasm_program_detach(evoasm_program_t *program,
     }
   }
 
-  EVOASM_TRY(error, evoasm_program_emit, program, input, true, true, true, false);
+  EVOASM_TRY(error, evoasm_program_emit, program, input, true, true, true, true);
   evoasm_program_eval(program, output);
 
   return true;
