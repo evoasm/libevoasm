@@ -928,7 +928,7 @@ evoasm_pop_find_median_loss_(evoasm_loss_t *losses, size_t len) {
   }
 
   if(n_runs == 1) {
-    return losses[EVOASM_POP_FIND_MEDIAN_RUN_LEN / 2];
+    return losses[EVOASM_POP_FIND_MEDIAN_RUN_LEN / 2 - 1];
   } else {
     size_t merge_len = trunc_len / 2;
     for(size_t i = 0; i < merge_len; i++) {
