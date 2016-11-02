@@ -456,7 +456,6 @@ evoasm_program_x64_prepare(evoasm_program_t *program) {
 
 static evoasm_success_t
 evoasm_program_x64_emit_input_load(evoasm_program_t *program,
-                                   evoasm_kernel_t *kernel,
                                    evoasm_program_io_val_t *input_vals,
                                    evoasm_program_io_val_type_t *types,
                                    size_t in_arity,
@@ -467,6 +466,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
   evoasm_x64_reg_id_t input_reg_id;
   size_t input_reg_idx;
   evoasm_buf_t *buf = program->buf;
+  evoasm_kernel_t *kernel = &program->kernels[0];
 
   evoasm_log_debug("n _input regs %d", kernel->n_input_regs);
 #if 1
@@ -864,14 +864,13 @@ evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
                                       evoasm_program_input_t *input,
                                       bool io_mapping) {
   size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
-  evoasm_kernel_t *kernel = &program->kernels[0];
 
   evoasm_buf_reset(program->buf);
   EVOASM_TRY(error, evoasm_x64_func_prolog, program->buf, EVOASM_X64_ABI_SYSV);
 
   for(size_t i = 0; i < n_examples; i++) {
     evoasm_program_io_val_t *input_vals = input->vals + i * input->arity;
-    EVOASM_TRY(error, evoasm_program_x64_emit_input_load, program, kernel, input_vals, input->types, input->arity,
+    EVOASM_TRY(error, evoasm_program_x64_emit_input_load, program,  input_vals, input->types, input->arity,
                io_mapping);
     {
       size_t r = evoasm_buf_append(program->buf, program->body_buf);

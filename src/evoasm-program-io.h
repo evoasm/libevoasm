@@ -28,7 +28,7 @@ typedef struct {
   uint8_t arity;
   uint16_t len;
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_IO_MAX_ARITY];
-  evoasm_program_io_val_t vals[1];
+  evoasm_program_io_val_t vals[];
 } evoasm_program_io_t;
 
 #define EVOASM_PROGRAM_OUTPUT_MAX_ARITY EVOASM_PROGRAM_IO_MAX_ARITY
