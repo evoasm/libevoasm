@@ -875,7 +875,7 @@ evoasm_deme_test_kernels(evoasm_deme_t *deme) {
             /* some random other kernel */
             load_kernel_idx = (size_t) evoasm_prng_rand_between_(prng, 0, deme->params->deme_size - 1);
           }
-          kernel_idxs[i] = load_kernel_idx;
+          kernel_idxs[l] = load_kernel_idx;
         }
         EVOASM_TRY(error, evoasm_deme_test_program, deme, program_idx, kernel_idxs, &loss);
         evoasm_deme_update_best(deme, loss, program_idx, kernel_idxs);
