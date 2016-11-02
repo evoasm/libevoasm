@@ -93,6 +93,9 @@ typedef struct {
   } reg_inputs;
 } evoasm_program_t;
 
+void
+evoasm_program_unprepare(evoasm_program_t *program);
+
 evoasm_success_t
 evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program);
 

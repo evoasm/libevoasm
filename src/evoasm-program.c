@@ -1355,7 +1355,7 @@ evoasm_program_unprepare_kernel(evoasm_program_t *program, evoasm_kernel_t *kern
   kernel->reg_info = zero_reg_info;
 }
 
-static void
+void
 evoasm_program_unprepare(evoasm_program_t *program) {
   for(size_t i = 0; i < program->size; i++) {
     evoasm_program_unprepare_kernel(program, &program->kernels[i]);

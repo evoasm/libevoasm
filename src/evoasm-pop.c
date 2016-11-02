@@ -578,6 +578,8 @@ static evoasm_success_t
 evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *loss) {
   evoasm_pop_params_t *params = deme->params;
 
+  evoasm_program_unprepare(program);
+
   if(!evoasm_program_emit(program, params->program_input, true, true, true, true)) {
     *loss = INFINITY;
     return false;
