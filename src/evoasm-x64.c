@@ -149,9 +149,9 @@ EVOASM_X64_OPERAND_DEF_GETTER(imm, int8_t)
 EVOASM_X64_OPERAND_DEF_GETTER(param_idx, size_t)
 
 evoasm_x64_operand_size_t evoasm_x64_operand_get_size(evoasm_x64_operand_t *operand) {
-  if(operand->size1 < EVOASM_X64_N_OPERAND_SIZES) return operand->size1;
-  if(operand->size2 < EVOASM_X64_N_OPERAND_SIZES) return operand->size2;
-  return EVOASM_X64_N_OPERAND_SIZES;
+  if(operand->size1 < EVOASM_X64_OPERAND_SIZE_NONE) return operand->size1;
+  if(operand->size2 < EVOASM_X64_OPERAND_SIZE_NONE) return operand->size2;
+  return EVOASM_X64_OPERAND_SIZE_NONE;
 }
 
 evoasm_x64_operand_size_t evoasm_x64_operand_get_reg_size(evoasm_x64_operand_t *operand) {

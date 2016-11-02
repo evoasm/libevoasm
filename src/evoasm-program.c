@@ -294,7 +294,7 @@ typedef struct {
 static void
 evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t *reg_write_acc,
                                 evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params) {
-  if(reg_write_acc->size < EVOASM_X64_N_OPERAND_SIZES) {
+  if(reg_write_acc->size < EVOASM_X64_OPERAND_SIZE_NONE) {
     reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size1);
   } else {
     reg_write_acc->size = op->size1;
@@ -308,24 +308,24 @@ evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t *reg_write_acc,
 static bool
 evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc, evoasm_x64_operand_t *op,
                                        evoasm_x64_basic_params_t *params) {
-  bool uncovered_acc;
+  bool dirty_read;
   bool high_byte_reg = params->reg0_high_byte || params->reg1_high_byte;
 
-  assert(reg_write_acc->size <= EVOASM_X64_N_OPERAND_SIZES);
-  if(reg_write_acc->size == EVOASM_X64_N_OPERAND_SIZES) {
+  assert(reg_write_acc->size <= EVOASM_X64_OPERAND_SIZE_NONE);
+  if(reg_write_acc->size == EVOASM_X64_OPERAND_SIZE_NONE) {
     return true;
   }
 
   if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
     /* 32bit writes clear the whole register */
     if(reg_write_acc->size >= EVOASM_X64_OPERAND_SIZE_32) {
-      uncovered_acc = false;
+      dirty_read = false;
     } else {
       if(op->size1 == EVOASM_X64_OPERAND_SIZE_8 &&
          reg_write_acc->size == EVOASM_X64_OPERAND_SIZE_8) {
-        uncovered_acc = high_byte_reg != reg_write_acc->high_byte_reg;
+        dirty_read = high_byte_reg != reg_write_acc->high_byte_reg;
       } else {
-        uncovered_acc = reg_write_acc->size < op->size1;
+        dirty_read = reg_write_acc->size < op->size1;
       }
     }
   } else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
@@ -335,12 +335,12 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
     } else {
       mask = EVOASM_X64_BIT_MASK_ALL;
     }
-    uncovered_acc = ((mask & (~reg_write_acc->mask)) != 0);
+    dirty_read = ((mask & (~reg_write_acc->mask)) != 0);
   } else {
-    uncovered_acc = false;
+    dirty_read = false;
   }
 
-  return uncovered_acc;
+  return dirty_read;
 }
 
 static bool
@@ -368,7 +368,7 @@ evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
   static evoasm_x64_reg_write_acc_t zero_reg_write_acc = {0};
   *reg_write_acc = zero_reg_write_acc;
 
-  reg_write_acc->size = EVOASM_X64_N_OPERAND_SIZES;
+  reg_write_acc->size = EVOASM_X64_OPERAND_SIZE_NONE;
 }
 
 static void
@@ -412,10 +412,17 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
               // has not been written before, might contain garbage
               bool dirty_read;
 
-              if(!reg_info->written) {
-                dirty_read = true;
-              } else {
+              /* the writer rank check is needed for the following case
+               * inst regX (operand1, written), regX (operand2, read)
+               *
+               * The first operand marks regX as written. The read in the second
+               * operand, however, is dirty, since the write has not yet occurred at this point.
+               */
+
+              if(reg_info->written && reg_info->writer_rank < i) {
                 dirty_read = evoasm_x64_reg_write_acc_is_dirty_read(reg_write_acc, op, x64_basic_params);
+              } else {
+                dirty_read = true;
               }
 
               if(dirty_read) {
@@ -430,6 +437,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
             if(!reg_info->written) {
               reg_info->written = true;
               reg_info->output = true;
+              reg_info->writer_rank = (uint16_t) i;
               kernel->output_regs.x64[kernel->n_output_regs] = reg_id;
               kernel->n_output_regs++;
             }
@@ -469,7 +477,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
   evoasm_kernel_t *kernel = &program->kernels[0];
 
   evoasm_log_debug("n _input regs %d", kernel->n_input_regs);
-#if 1
+#if 0
   for(input_reg_id = (evoasm_x64_reg_id_t) 9; input_reg_id < 25; input_reg_id++) {
     if(input_reg_id == EVOASM_X64_REG_SP) continue;
     evoasm_x64_params_t params = {0};
@@ -1199,7 +1207,7 @@ evoasm_program_assess(evoasm_program_t *program,
     }
   }
 
-//#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
+#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
   if(loss == 0.0) {
     evoasm_program_log_program_output(program,
                                       kernel,
@@ -1207,7 +1215,7 @@ evoasm_program_assess(evoasm_program_t *program,
                                       matching,
                                       EVOASM_LOG_LEVEL_INFO);
   }
-//#endif
+#endif
 
   return loss;
 }
@@ -1301,7 +1309,7 @@ evoasm_program_run(evoasm_program_t *program,
     }
   }
 
-  if(!evoasm_program_emit(program, input, false, true, true, false)) {
+  if(!evoasm_program_emit(program, input, false, false, true, false)) {
     return NULL;
   }
 
