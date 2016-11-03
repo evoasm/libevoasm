@@ -61,6 +61,7 @@ EVOASM_DEF_LOG_TAG("pop")
 #define EVOASM_DEME_KERNEL_INST_OFF(deme, pos, kernel_idx, inst_idx) \
   EVOASM_DEME_KERNEL_INST_OFF_((deme)->params->deme_size, (deme)->params->max_kernel_size, pos, kernel_idx, inst_idx)
 
+#define EVOASM_DEME_N_INDIVS(deme) ((1u + (deme)->params->max_program_size) * (deme)->params->deme_size)
 
 static evoasm_success_t
 evoasm_pop_loss_data_init(evoasm_pop_loss_data_t *loss_data, size_t n_indivs) {
@@ -242,7 +243,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
   EVOASM_TRY(error, evoasm_pop_kernel_data_init, &deme->parent_kernel_data, arch_id,
              2u * params->max_kernel_size);
 
-  size_t n_indivs = (1u + params->max_program_size) * params->deme_size;
+  size_t n_indivs = EVOASM_DEME_N_INDIVS(deme);
 
   EVOASM_TRY(error, evoasm_pop_indiv_data_init, &deme->indiv_data, n_indivs);
   EVOASM_TRY(error, evoasm_pop_kernel_data_init, &deme->kernel_data, arch_id,
@@ -1001,6 +1002,7 @@ evoasm_deme_eval(evoasm_deme_t *deme) {
   bool retval = true;
 
   evoasm_signal_install((evoasm_arch_id_t) deme->arch_id, 0);
+  memset(deme->loss_data.counters, 0, EVOASM_DEME_N_INDIVS(deme) * sizeof(deme->loss_data.counters[0]));
 
   if(!evoasm_deme_eval_programs(deme)) {
     retval = false;
@@ -1067,8 +1069,9 @@ evoasm_deme_select_indivs(evoasm_deme_t *deme, size_t row) {
   while(true) {
     for(size_t i = 0; i < deme_size; i++) {
       float r = evoasm_prng_randf_(prng);
-      size_t sample0_off = EVOASM_DEME_LOSS_SAMPLE_OFF(deme, row, i, 0);
-      if(r < (top_loss + 1.0) / (loss_data->samples[sample0_off] + 1.0)) {
+      evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
+
+      if(r < (top_loss + 1.0) / (loss + 1.0)) {
         parent_idxs[n++] = (uint16_t) i;
         if(n >= deme_size) goto done;
       }
