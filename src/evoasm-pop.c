@@ -639,12 +639,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
              params->recur_limit);
 
   size_t program_idx = 0;
-  size_t kernel_idxs[EVOASM_PROGRAM_MAX_SIZE];
-  size_t best_program_size = best_deme->best_indiv_data.sizes[EVOASM_DEME_PROGRAM_ROW(best_deme)];
-
-  for(size_t i = 0; i < best_program_size; i++) {
-    kernel_idxs[i] = i;
-  }
+  size_t kernel_idxs[EVOASM_PROGRAM_MAX_SIZE] = {0};
 
   evoasm_deme_load_program_(best_deme,
                            program,
