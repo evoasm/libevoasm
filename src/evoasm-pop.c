@@ -1093,11 +1093,9 @@ evoasm_deme_calc_summary(evoasm_deme_t *deme, evoasm_loss_t *summary_losses, evo
 
     qsort(summary_losses, deme_size, sizeof(evoasm_loss_t), evoasm_pop_loss_cmp_func);
 
-    summary[summary_off + 0] = summary_losses[0 * deme_size / 4];
-    summary[summary_off + 1] = summary_losses[1 * deme_size / 4];
-    summary[summary_off + 2] = summary_losses[2 * deme_size / 4];
-    summary[summary_off + 3] = summary_losses[3 * deme_size / 4];
-    summary[summary_off + 4] = summary_losses[4 * deme_size / 4];
+    for(size_t j = 0; j < 5; j++) {
+      summary[summary_off + j] = summary_losses[j * (deme_size - 1) / 4];
+    }
   }
 }
 
