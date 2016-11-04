@@ -203,7 +203,7 @@ enc_failed:
   return false;
 }
 
-static evoasm_success_t
+static evoasm_used evoasm_success_t
 evoasm_program_x64_emit_mxcsr_reset(evoasm_program_t *program) {
   static uint32_t default_mxcsr_val = 0x1f80;
   evoasm_x64_params_t params = {0};

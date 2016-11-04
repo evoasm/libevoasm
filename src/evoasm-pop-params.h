@@ -27,10 +27,8 @@ typedef struct evoasm_pop_params_s {
   uint16_t n_demes;
   uint16_t library_size;
   uint16_t deme_size;
-  uint16_t min_kernel_size;
-  uint16_t max_kernel_size;
-  uint16_t min_program_size;
-  uint16_t max_program_size;
+  uint16_t kernel_size;
+  uint16_t program_size;
   uint16_t min_module_size;
   uint16_t max_module_size;
   float mut_rate;

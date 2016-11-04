@@ -12,10 +12,8 @@ EVOASM_DEF_ZERO_INIT_FUNC(pop_params)
   EVOASM_DEF_GETTER(pop_params, field, value_type) \
   EVOASM_DEF_SETTER(pop_params, field, value_type, field_type)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_program_size, size_t, uint16_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_program_size, size_t, uint16_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernel_size, size_t, uint16_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_size, size_t, uint16_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(deme_size, size_t, uint16_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
@@ -104,39 +102,33 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->max_kernel_size > EVOASM_KERNEL_MAX_SIZE) {
+  if(pop_params->mut_rate < 0.0 || pop_params->mut_rate > 1.0) {
+    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
+                 NULL, "Mutatin rate must be in the range [0..1]");
+    goto fail;
+  }
+
+  if(pop_params->kernel_size > EVOASM_KERNEL_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
     goto fail;
   }
 
-  if(pop_params->min_kernel_size == 0) {
+  if(pop_params->kernel_size == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "Kernel size cannot be zero");
     goto fail;
   }
 
-  if(pop_params->min_kernel_size > pop_params->max_kernel_size) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Minimum kernel size must be smaller or equal than maximum size");
-    goto fail;
-  }
-
-  if(pop_params->max_program_size > EVOASM_PROGRAM_MAX_SIZE) {
+  if(pop_params->program_size > EVOASM_PROGRAM_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
     goto fail;
   }
 
-  if(pop_params->min_program_size == 0) {
+  if(pop_params->program_size == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
                  NULL, "Program size cannot be zero");
-    goto fail;
-  }
-
-  if(pop_params->min_program_size > pop_params->max_program_size) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Minimum program size must be smaller or equal than maximum size");
     goto fail;
   }
 
