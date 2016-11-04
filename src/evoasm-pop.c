@@ -1088,7 +1088,7 @@ evoasm_deme_calc_summary(evoasm_deme_t *deme, evoasm_loss_t *summary_losses, evo
 
     for(size_t j = 0; j < deme_size; j++) {
       size_t loss_off = EVOASM_DEME_LOSS_OFF(deme, i, j);
-      summary_losses[i] = loss_data->samples[loss_off];
+      summary_losses[j] = loss_data->samples[loss_off];
     }
 
     qsort(summary_losses, deme_size, sizeof(evoasm_loss_t), evoasm_pop_loss_cmp_func);
