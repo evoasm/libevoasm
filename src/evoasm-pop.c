@@ -186,8 +186,6 @@ evoasm_deme_init(evoasm_deme_t *deme,
   deme->arch_id = arch_id;
   deme->params = params;
   deme->domains = domains;
-  deme->sizes[0] = params->kernel_size;
-  deme->sizes[1] = params->program_size;
 
   evoasm_prng_init(&deme->prng, seed);
   EVOASM_TRY(error, evoasm_program_init, &deme->program,
