@@ -208,7 +208,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
                    sizeof(uint16_t));
 
   EVOASM_TRY(error, evoasm_program_init, &deme->program,
-             arch_id,
+             evoasm_get_arch_info(arch_id),
              params->program_size,
              params->kernel_size,
              n_examples,
@@ -479,18 +479,16 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
                           evoasm_pop_kernel_data_t *kernel_data,
                           size_t program_idx,
                           size_t *kernel_idxs,
-                          size_t deme_size,
-                          size_t program_size,
-                          size_t kernel_size) {
+                          size_t deme_size) {
 
-  program->size = (uint16_t) program_size;
+  size_t program_size = deme->params->program_size;
+  size_t kernel_size = deme->params->kernel_size;
+
   for(size_t i = 0; i < program_size; i++) {
     size_t kernel_idx = kernel_idxs[i];
     size_t inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme_size, kernel_size, i, kernel_idx, 0);
     evoasm_kernel_t *kernel = &program->kernels[i];
-
     kernel->insts = &kernel_data->insts[inst0_off];
-    kernel->size = (uint16_t) kernel_size;
 
     switch(deme->arch_id) {
       case EVOASM_ARCH_X64:
@@ -499,8 +497,10 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
       default:
         evoasm_assert_not_reached();
     }
+  }
 
-    if(program_size > 1) {
+  if(program_size > 1) {
+    for(size_t i = 0; i < program_size; i++) {
       size_t program_pos_off = EVOASM_DEME_PROGRAM_POS_OFF_(program_size, program_idx, i);
       program->jmp_offs[i] = program_data->jmp_offs[program_pos_off];
       program->jmp_conds[i] = program_data->jmp_cond[program_pos_off];
@@ -518,8 +518,7 @@ evoasm_deme_load_program(evoasm_deme_t *deme,
 
   evoasm_deme_load_program_(deme, program, program_data,
                             kernel_data, program_idx, kernel_idxs,
-                            deme->params->deme_size, deme->params->program_size,
-                            deme->params->kernel_size);
+                            deme->params->deme_size);
 }
 
 
@@ -528,8 +527,14 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_
   evoasm_pop_params_t *params = deme->params;
 
   evoasm_program_unprepare(program);
+  //bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping
+  evoasm_program_emit_flags_t emit_flags =
+      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
+      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS |
+      EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE |
+      EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
-  if(!evoasm_program_emit(program, params->program_input, true, true, true, true)) {
+  if(!evoasm_program_emit(program, params->program_input, emit_flags)) {
     *loss = INFINITY;
     return false;
   }
@@ -574,7 +579,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
   evoasm_pop_params_t *params = best_deme->params;
 
   EVOASM_TRY(error, evoasm_program_init, program,
-             best_deme->arch_id,
+             evoasm_get_arch_info(best_deme->arch_id),
              params->program_size,
              params->kernel_size,
              best_deme->n_examples,
@@ -589,10 +594,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
                             &best_deme->best_kernel_data,
                             program_idx,
                             kernel_idxs,
-                            1,
-                            params->program_size,
-                            params->kernel_size);
-
+                            1);
 
   evoasm_signal_install((evoasm_arch_id_t) best_deme->arch_id, 0);
   EVOASM_TRY(error, evoasm_program_detach, program, params->program_input, params->program_output);

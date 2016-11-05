@@ -63,12 +63,11 @@ typedef struct {
   evoasm_arch_info_t *arch_info;
   evoasm_buf_t *buf;
   evoasm_buf_t *body_buf;
-  uint8_t in_arity;
-  uint8_t out_arity;
   bool reset_rflags : 1;
-  bool need_emit    : 1;
   bool shallow : 1;
-
+  uint32_t recur_limit;
+  uint16_t size;
+  uint16_t max_examples;
   uint32_t exception_mask;
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
@@ -76,14 +75,12 @@ typedef struct {
   int16_t *jmp_offs;
   uint8_t *jmp_conds;
   uint32_t *recur_counters;
-  uint16_t size;
 
   /* these two are incomplete (values missig)
    * We only need arity and types */
   evoasm_program_input_t _input;
   evoasm_program_output_t _output;
 
-  uint32_t recur_limit;
   evoasm_reg_id_t output_regs[EVOASM_PROGRAM_IO_MAX_ARITY];
   evoasm_buf_t _buf;
   evoasm_buf_t _body_buf;
@@ -102,10 +99,10 @@ evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program
 
 evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
-                    evoasm_arch_id_t arch_id,
-                    size_t max_program_size,
-                    size_t max_kernel_size,
-                    size_t n_examples,
+                    evoasm_arch_info_t *arch_info,
+                    size_t program_size,
+                    size_t kernel_size,
+                    size_t max_examples,
                     size_t recur_limit);
 
 
@@ -118,12 +115,12 @@ evoasm_success_t
 evoasm_program_destroy(evoasm_program_t *program);
 
 evoasm_success_t
-evoasm_program_eliminate_introns(evoasm_program_t *program);
+evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *dest_program);
 
 evoasm_success_t
 evoasm_program_emit(evoasm_program_t *program,
                 evoasm_program_input_t *input,
-                bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping);
+                evoasm_program_emit_flags_t emit_flags);
 
 evoasm_loss_t
 evoasm_program_eval(evoasm_program_t *program,
