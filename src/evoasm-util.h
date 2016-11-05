@@ -47,6 +47,8 @@
 # define evoasm_aligned(align)
 #endif
 
+#define EVOASM_MEMCPY_N(dst, src, n) memcpy(dst, src, (n) * sizeof(*(src)))
+
 #define EVOASM_DEF_ALLOC_FUNC(type) \
   evoasm_##type##_t *evoasm_##type##_alloc() { return evoasm_malloc(sizeof(evoasm_##type##_t)); }
 

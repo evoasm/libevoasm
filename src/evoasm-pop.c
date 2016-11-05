@@ -4,6 +4,7 @@
 
 #include "evoasm-pop.h"
 #include "evoasm-signal.h"
+#include "evoasm-program.h"
 
 #ifdef _OPENMP
 
@@ -212,7 +213,8 @@ evoasm_deme_init(evoasm_deme_t *deme,
              params->program_size,
              params->kernel_size,
              n_examples,
-             params->recur_limit);
+             params->recur_limit,
+             true);
 
   if(params->program_size > 1) {
     EVOASM_TRY(error, evoasm_pop_program_data_init, &deme->program_data,
@@ -488,11 +490,24 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
     size_t kernel_idx = kernel_idxs[i];
     size_t inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme_size, kernel_size, i, kernel_idx, 0);
     evoasm_kernel_t *kernel = &program->kernels[i];
-    kernel->insts = &kernel_data->insts[inst0_off];
+
+    if(program->shallow) {
+      kernel->insts = &kernel_data->insts[inst0_off];
+    }
+    else {
+      EVOASM_MEMCPY_N(kernel->insts,
+                      &kernel_data->insts[inst0_off], kernel->size);
+    }
 
     switch(deme->arch_id) {
       case EVOASM_ARCH_X64:
-        kernel->params.x64 = &kernel_data->params.x64[inst0_off];
+        if(program->shallow) {
+          kernel->params.x64 = &kernel_data->params.x64[inst0_off];
+        }
+        else {
+          EVOASM_MEMCPY_N(kernel->params.x64,
+                          &kernel_data->params.x64[inst0_off], kernel->size);
+        }
         break;
       default:
         evoasm_assert_not_reached();
@@ -583,7 +598,8 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
              params->program_size,
              params->kernel_size,
              best_deme->n_examples,
-             params->recur_limit);
+             params->recur_limit,
+             false);
 
   size_t program_idx = 0;
   size_t kernel_idxs[EVOASM_PROGRAM_MAX_SIZE] = {0};
@@ -596,8 +612,23 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
                             kernel_idxs,
                             1);
 
+
+  program->_input = *params->program_input;
+  program->_output = *params->program_output;
+  program->_input.len = 0;
+  program->_output.len = 0;
+
+  evoasm_program_emit_flags_t emit_flags =
+      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
+      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS |
+      EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE |
+      EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
+
+  EVOASM_TRY(error, evoasm_program_emit, program, params->program_input, emit_flags);
+
   evoasm_signal_install((evoasm_arch_id_t) best_deme->arch_id, 0);
-  EVOASM_TRY(error, evoasm_program_detach, program, params->program_input, params->program_output);
+  evoasm_loss_t loss = evoasm_program_eval(program, params->program_output);
+  assert(loss == best_deme->best_loss);
   evoasm_signal_uninstall();
 
   return true;

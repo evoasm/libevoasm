@@ -880,10 +880,8 @@ evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
     evoasm_program_io_val_t *input_vals = input->vals + i * input->arity;
     EVOASM_TRY(error, evoasm_program_x64_emit_input_load, program, input_vals, input->types, input->arity,
                io_mapping);
-    {
-      size_t r = evoasm_buf_append(program->buf, program->body_buf);
-      assert(r == 0);
-    }
+    size_t r = evoasm_buf_append(program->buf, program->body_buf);
+    assert(r == 0);
     EVOASM_TRY(error, evoasm_program_x64_emit_output_store, program, i);
   }
 
@@ -1495,10 +1493,14 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
 
   //evoasm_kernel_t *last_kernel = &program->kernels[last_kernel_idx];
 
-  EVOASM_TRY(error, evoasm_program_init, dst_program, program->arch_info,
-             program->size, program->kernels[0].size,
-             program->max_examples, program->recur_limit);
-
+  EVOASM_TRY(error, evoasm_program_init,
+             dst_program,
+             program->arch_info,
+             program->size,
+             program->kernels[0].size,
+             program->max_examples,
+             program->recur_limit,
+             false);
 
   evoasm_bitmap_t *output_bitmap = (evoasm_bitmap_t *) &ctx.output_reg_bitmaps[last_kernel_idx];
   for(size_t i = 0; i < program->_output.arity; i++) {
@@ -1536,17 +1538,17 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
     }
   }
 
-  evoasm_program_emit_flags_t emit_flags =
-      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS;
-
   if(dst_program != program) {
     dst_program->_input = program->_input;
     dst_program->_output = program->_output;
     memcpy(dst_program->output_regs, program->output_regs, sizeof(program->output_regs));
-    memcpy(dst_program->jmp_offs, program->jmp_offs, sizeof(program->jmp_offs[0]) * program->size);
-    memcpy(dst_program->jmp_conds, program->jmp_conds, sizeof(program->jmp_conds[0]) * program->size);
+    EVOASM_MEMCPY_N(dst_program->jmp_offs, program->jmp_offs, program->size);
+    EVOASM_MEMCPY_N(dst_program->jmp_conds, program->jmp_conds, program->size);
   }
+
+  evoasm_program_emit_flags_t emit_flags =
+      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
+      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS;
 
   EVOASM_TRY(error, evoasm_program_emit, dst_program, NULL, emit_flags);
 
@@ -1566,7 +1568,8 @@ evoasm_program_init(evoasm_program_t *program,
                     size_t program_size,
                     size_t kernel_size,
                     size_t max_examples,
-                    size_t recur_limit) {
+                    size_t recur_limit,
+                    bool shallow) {
 
   static evoasm_program_t zero_program = {0};
   size_t n_transitions = program_size - 1u;
@@ -1574,7 +1577,7 @@ evoasm_program_init(evoasm_program_t *program,
   *program = zero_program;
   program->arch_info = arch_info;
   program->recur_limit = (uint32_t) recur_limit;
-  program->shallow = true;
+  program->shallow = shallow;
   program->size = (uint16_t) program_size;
   program->max_examples = (uint16_t) max_examples;
 
@@ -1603,63 +1606,28 @@ evoasm_program_init(evoasm_program_t *program,
 
   for(uint16_t i = 0; i < program_size; i++) {
     evoasm_kernel_t *kernel = &program->kernels[i];
+
     kernel->idx = i;
     kernel->size = (uint16_t) kernel_size;
+
+    if(!shallow) {
+      EVOASM_TRY_ALLOC(error, calloc, kernel->insts, kernel_size, sizeof(kernel->insts[0]));
+      switch(program->arch_info->id) {
+        case EVOASM_ARCH_X64: {
+          EVOASM_TRY_ALLOC(error, calloc, kernel->params.x64, kernel_size, sizeof(kernel->params.x64[0]));
+          break;
+        }
+        default:
+          evoasm_assert_not_reached();
+      }
+    }
   }
+
 
   return true;
 
 error:
   EVOASM_TRY_WARN(evoasm_program_destroy, program);
-  return false;
-}
-
-evoasm_success_t
-evoasm_program_detach(evoasm_program_t *program,
-                      evoasm_program_io_t *input,
-                      evoasm_program_io_t *output) {
-
-  assert(program->shallow);
-
-  program->shallow = false;
-
-  program->_input = *input;
-  program->_output = *output;
-  program->_input.len = 0;
-  program->_output.len = 0;
-
-  for(size_t i = 0; i < program->size; i++) {
-    evoasm_kernel_t *kernel = &program->kernels[i];
-    evoasm_inst_id_t *insts = kernel->insts;
-    size_t insts_size = sizeof(evoasm_inst_id_t) * kernel->size;
-    EVOASM_TRY_ALLOC(error, malloc, kernel->insts, insts_size);
-    memcpy(kernel->insts, insts, insts_size);
-
-    switch(program->arch_info->id) {
-      case EVOASM_ARCH_X64: {
-        size_t params_size = sizeof(evoasm_x64_basic_params_t) * kernel->size;
-        evoasm_x64_basic_params_t *params = kernel->params.x64;
-        EVOASM_TRY_ALLOC(error, malloc, kernel->params.x64, params_size);
-        memcpy(kernel->params.x64, params, params_size);
-        break;
-      }
-      default:
-        evoasm_assert_not_reached();
-    }
-  }
-
-  evoasm_program_emit_flags_t emit_flags =
-      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE |
-      EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
-
-  EVOASM_TRY(error, evoasm_program_emit, program, input, emit_flags);
-
-  evoasm_program_eval(program, output);
-
-  return true;
-error:
   return false;
 }
 

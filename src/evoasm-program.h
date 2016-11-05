@@ -103,7 +103,8 @@ evoasm_program_init(evoasm_program_t *program,
                     size_t program_size,
                     size_t kernel_size,
                     size_t max_examples,
-                    size_t recur_limit);
+                    size_t recur_limit,
+                    bool shallow);
 
 
 evoasm_program_output_t *
