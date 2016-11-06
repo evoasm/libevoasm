@@ -132,4 +132,8 @@ evoasm_program_detach(evoasm_program_t *program,
                       evoasm_program_io_t *input,
                       evoasm_program_io_t *output);
 
+
+void
+evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level);
+
 EVOASM_DECL_ALLOC_FREE_FUNCS(program)

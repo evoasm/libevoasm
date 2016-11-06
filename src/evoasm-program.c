@@ -477,8 +477,8 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
   evoasm_kernel_t *kernel = &program->kernels[0];
 
   evoasm_log_debug("n _input regs %d", kernel->n_input_regs);
-#if 0
-  for(input_reg_id = (evoasm_x64_reg_id_t) 9; input_reg_id < 25; input_reg_id++) {
+#if 1
+  for(input_reg_id = (evoasm_x64_reg_id_t) 13; input_reg_id < 19; input_reg_id++) {
     if(input_reg_id == EVOASM_X64_REG_SP) continue;
     evoasm_x64_params_t params = {0};
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
@@ -1629,6 +1629,36 @@ evoasm_program_init(evoasm_program_t *program,
 error:
   EVOASM_TRY_WARN(evoasm_program_destroy, program);
   return false;
+}
+
+void
+evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_arch_id_t arch_id, evoasm_log_level_t log_level) {
+  if(_evoasm_min_log_level > log_level) return;
+
+  switch(arch_id) {
+    case EVOASM_ARCH_X64:
+      for(size_t i = 0; i < kernel->size; i++) {
+        evoasm_x64_inst_t *inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
+        const char *mnem = evoasm_x64_inst_get_mnem(inst);
+        evoasm_log(log_level, EVOASM_LOG_TAG, "%s", mnem);
+      }
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
+void
+evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level) {
+  if(_evoasm_min_log_level > log_level) return;
+
+  evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Program: size: %d", program->size);
+
+  for(size_t i = 0; i < program->size; i++)
+  {
+    evoasm_kernel_log(&program->kernels[i], (evoasm_arch_id_t) program->arch_info->id, log_level);
+  }
+  evoasm_log(log_level, EVOASM_LOG_TAG, " \n ");
 }
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(program)

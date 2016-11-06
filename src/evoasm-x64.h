@@ -152,3 +152,6 @@ evoasm_x64_func_prolog(evoasm_buf_t *buf, evoasm_x64_abi_t abi);
 
 evoasm_success_t
 evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi);
+
+const char *
+evoasm_x64_inst_get_mnem(evoasm_x64_inst_t *inst);
