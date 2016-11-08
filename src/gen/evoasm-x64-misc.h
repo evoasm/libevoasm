@@ -10,7 +10,7 @@
 #pragma once
 
 static inline evoasm_x64_reg_type_t
-evoasm_x64_reg_type(evoasm_x64_reg_id_t reg) {
+evoasm_x64_get_reg_type(evoasm_x64_reg_id_t reg) {
   switch(reg) {
     case EVOASM_X64_REG_IP: return EVOASM_X64_REG_TYPE_IP;
     case EVOASM_X64_REG_OF: return EVOASM_X64_REG_TYPE_RFLAGS;
@@ -82,7 +82,7 @@ evoasm_x64_reg_type(evoasm_x64_reg_id_t reg) {
 }
 
 evoasm_success_t
-evoasm_x64_features(uint64_t *features);
+evoasm_x64_get_features(uint64_t *features);
 
 #define EVOASM_X64_INSTS_VAR_NAME _evoasm_x64_insts
 

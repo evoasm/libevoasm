@@ -11,7 +11,7 @@
 static const char *_evoasm_log_tag = "x64";
 
 evoasm_success_t
-evoasm_x64_features(uint64_t *features_) {
+evoasm_x64_get_features(uint64_t *features_) {
   evoasm_buf_t buf_;
   evoasm_buf_t *buf = &buf_;
   evoasm_x64_params_t params = {0};

@@ -236,7 +236,7 @@ evoasm_program_x64_emit_output_store(evoasm_program_t *program,
   for(size_t i = 0; i < kernel->n_output_regs; i++) {
     evoasm_x64_reg_id_t reg_id = kernel->output_regs.x64[i];
     evoasm_program_io_val_t *val_addr = &program->output_vals[(example_idx * kernel->n_output_regs) + i];
-    evoasm_x64_reg_type_t reg_type = evoasm_x64_reg_type(reg_id);
+    evoasm_x64_reg_type_t reg_type = evoasm_x64_get_reg_type(reg_id);
 
     evoasm_param_val_t addr_imm = (evoasm_param_val_t) (uintptr_t) val_addr;
 
@@ -502,7 +502,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
 
     evoasm_program_io_val_t *example = &input_vals[example_idx];
     evoasm_x64_params_t params = {0};
-    evoasm_x64_reg_type_t reg_type = evoasm_x64_reg_type(input_reg_id);
+    evoasm_x64_reg_type_t reg_type = evoasm_x64_get_reg_type(input_reg_id);
 
     evoasm_log_debug("emitting _input register initialization of register %d to value %"
                          PRId64, input_reg_id, example->i64);
@@ -575,8 +575,8 @@ evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
       output_reg_id = kernel->reg_info.x64[input_reg_id].trans_regs[trans_idx];
     }
 
-    evoasm_x64_reg_type_t output_reg_type = evoasm_x64_reg_type(output_reg_id);
-    evoasm_x64_reg_type_t input_reg_type = evoasm_x64_reg_type(input_reg_id);
+    evoasm_x64_reg_type_t output_reg_type = evoasm_x64_get_reg_type(output_reg_id);
+    evoasm_x64_reg_type_t input_reg_type = evoasm_x64_get_reg_type(input_reg_id);
     evoasm_x64_params_t params = {0};
 
     if(input_reg_id != output_reg_id) {
