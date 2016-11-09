@@ -264,7 +264,7 @@ skip:;
 }
 
 
-static uint8_t *
+static uint64_t *
 evoasm_x64_cpu_state_get_reg_data(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg) {
   switch(reg) {
     case EVOASM_X64_REG_A:
@@ -525,9 +525,9 @@ enc_failed:
 }
 
 void
-evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint8_t *data, size_t len) {
-  len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)], len);
-  memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id), data, len);
+evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint64_t *data, size_t len) {
+  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)], len * sizeof(uint64_t));
+  memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id), data, bytes_len);
 }
 
 void
@@ -536,22 +536,15 @@ evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
 }
 
 size_t
-evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint8_t **data) {
-  size_t len = evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)];
+evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint64_t **data) {
   *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
+  size_t len = evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)] / sizeof(uint64_t);
   return len;
 }
 
 bool
 evoasm_x64_cpu_state_get_rflags_flag(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_rflags_flag_t flag) {
-  /* silence strict-aliasing warning */
-  union {
-    uint64_t *u64;
-    uint8_t *u8;
-  } ptr;
-
-  ptr.u8 = cpu_state->rflags;
-  uint64_t rflags = *ptr.u64;
+  uint64_t rflags = cpu_state->rflags[0];
 
   switch(flag) {
     case EVOASM_X64_RFLAGS_FLAG_OF:
@@ -598,7 +591,7 @@ evoasm_success_t
 evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf, bool load) {
   static const evoasm_x64_reg_id_t tmp_reg_id = EVOASM_X64_REG_14;
   for(evoasm_x64_reg_id_t reg_id = (evoasm_x64_reg_id_t) 0; reg_id < EVOASM_X64_REG_NONE; reg_id++) {
-    uint8_t *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
+    uint8_t *data = (uint8_t *) evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
 
     switch(reg_id) {
       case EVOASM_X64_REG_IP:
