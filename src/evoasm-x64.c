@@ -65,6 +65,9 @@ evoasm_x64_init() {
   EVOASM_TRY(cpuid_failed, evoasm_x64_get_features, &features);
 
   evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_GP] = 8;
+  evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_RFLAGS] = 8;
+  evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_IP] = 8;
+  evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_MXCSR] = 4;
 
 #ifdef EVOASM_X64_ENABLE_AVX512
   uint64_t avx512 = EVOASM_X64_FEATURE_AVX512F |
