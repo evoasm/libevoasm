@@ -13,14 +13,8 @@ static inline evoasm_x64_reg_type_t
 evoasm_x64_get_reg_type(evoasm_x64_reg_id_t reg) {
   switch(reg) {
     case EVOASM_X64_REG_IP: return EVOASM_X64_REG_TYPE_IP;
-    case EVOASM_X64_REG_OF: return EVOASM_X64_REG_TYPE_RFLAGS;
-    case EVOASM_X64_REG_SF: return EVOASM_X64_REG_TYPE_RFLAGS;
-    case EVOASM_X64_REG_ZF: return EVOASM_X64_REG_TYPE_RFLAGS;
-    case EVOASM_X64_REG_PF: return EVOASM_X64_REG_TYPE_RFLAGS;
-    case EVOASM_X64_REG_CF: return EVOASM_X64_REG_TYPE_RFLAGS;
-    case EVOASM_X64_REG_FZ: return EVOASM_X64_REG_TYPE_MXCSR;
-    case EVOASM_X64_REG_RC: return EVOASM_X64_REG_TYPE_MXCSR;
-    case EVOASM_X64_REG_DAZ: return EVOASM_X64_REG_TYPE_MXCSR;
+    case EVOASM_X64_REG_RFLAGS: return EVOASM_X64_REG_TYPE_RFLAGS;
+    case EVOASM_X64_REG_MXCSR: return EVOASM_X64_REG_TYPE_MXCSR;
     case EVOASM_X64_REG_A: return EVOASM_X64_REG_TYPE_GP;
     case EVOASM_X64_REG_C: return EVOASM_X64_REG_TYPE_GP;
     case EVOASM_X64_REG_D: return EVOASM_X64_REG_TYPE_GP;

@@ -122,7 +122,11 @@ typedef struct {
   unsigned size1: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
   unsigned size2: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_OPT;
-  unsigned write_mask: EVOASM_X64_BIT_MASK_BITSIZE;
+  unsigned read_mask: EVOASM_X64_BITMASK_BITSIZE;
+  unsigned write_mask: EVOASM_X64_BITMASK_BITSIZE;
+  unsigned undefined_mask: EVOASM_X64_BITMASK_BITSIZE;
+  unsigned cond_write_mask: EVOASM_X64_BITMASK_BITSIZE;
+  unsigned flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
   union {
     uint8_t reg_id;
     int8_t imm;

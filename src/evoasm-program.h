@@ -23,10 +23,15 @@ typedef struct {
   bool output : 1;
   uint16_t writer_rank;
   evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS];
+} evoasm_kernel_x64_reg_info_reg_t;
+
+typedef struct {
+  evoasm_kernel_x64_reg_info_reg_t regs[EVOASM_X64_REG_NONE];
+  unsigned written_flags : EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
 } evoasm_kernel_x64_reg_info_t;
 
 typedef union {
-  evoasm_kernel_x64_reg_info_t x64[EVOASM_X64_REG_NONE];
+  evoasm_kernel_x64_reg_info_t x64;
 } evoasm_kernel_reg_info_t;
 
 

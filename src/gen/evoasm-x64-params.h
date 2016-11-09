@@ -35,12 +35,12 @@ typedef struct {
   uint64_t legacy_prefix_order : 3;
   uint64_t modrm_reg : 3;
   uint64_t vex_v : 4;
-  uint64_t reg0 : 7;
-  uint64_t reg1 : 7;
-  uint64_t reg2 : 7;
-  uint64_t reg3 : 7;
-  uint64_t reg_base : 7;
-  uint64_t reg_index : 7;
+  uint64_t reg0 : 6;
+  uint64_t reg1 : 6;
+  uint64_t reg2 : 6;
+  uint64_t reg3 : 6;
+  uint64_t reg_base : 6;
+  uint64_t reg_index : 6;
   evoasm_packed(union {
     int8_t imm1 : 8;
     int32_t disp : 32;
@@ -58,10 +58,10 @@ typedef struct {
   uint64_t reg0_set : 1;
   uint64_t reg1_high_byte : 1;
   uint64_t reg1_set : 1;
-  uint64_t reg0 : 7;
-  uint64_t reg1 : 7;
-  uint64_t reg2 : 7;
-  uint64_t reg3 : 7;
+  uint64_t reg0 : 6;
+  uint64_t reg1 : 6;
+  uint64_t reg2 : 6;
+  uint64_t reg3 : 6;
   evoasm_packed(union {
     int32_t imm : 32;
     int32_t imm0 : 32;
@@ -72,18 +72,18 @@ typedef struct {
 static inline void evoasm_x64_params_set_(evoasm_x64_params_t * params, evoasm_x64_param_id_t param, int64_t param_val) {
   switch(param) {
     case EVOASM_X64_PARAM_REG0:
-      params->reg0 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg0 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       params->reg0_set = true;
       break;
     case EVOASM_X64_PARAM_REG1:
-      params->reg1 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg1 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       params->reg1_set = true;
       break;
     case EVOASM_X64_PARAM_REG2:
-      params->reg2 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg2 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       break;
     case EVOASM_X64_PARAM_REG3:
-      params->reg3 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg3 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       break;
     case EVOASM_X64_PARAM_IMM:
       params->imm = (int64_t) (((uint64_t) param_val) & 0xffffffffffffffff);
@@ -113,11 +113,11 @@ static inline void evoasm_x64_params_set_(evoasm_x64_params_t * params, evoasm_x
       params->addr_size = (uint64_t) (((uint64_t) param_val) & 0x1);
       break;
     case EVOASM_X64_PARAM_REG_BASE:
-      params->reg_base = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg_base = (uint64_t) (((uint64_t) param_val) & 0x3f);
       params->reg_base_set = true;
       break;
     case EVOASM_X64_PARAM_REG_INDEX:
-      params->reg_index = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg_index = (uint64_t) (((uint64_t) param_val) & 0x3f);
       params->reg_index_set = true;
       break;
     case EVOASM_X64_PARAM_REX_W:
@@ -171,18 +171,18 @@ static inline void evoasm_x64_params_set_(evoasm_x64_params_t * params, evoasm_x
 static inline void evoasm_x64_basic_params_set_(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param, int64_t param_val) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
-      params->reg0 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg0 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       params->reg0_set = true;
       break;
     case EVOASM_X64_BASIC_PARAM_REG1:
-      params->reg1 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg1 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       params->reg1_set = true;
       break;
     case EVOASM_X64_BASIC_PARAM_REG2:
-      params->reg2 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg2 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       break;
     case EVOASM_X64_BASIC_PARAM_REG3:
-      params->reg3 = (uint64_t) (((uint64_t) param_val) & 0x7f);
+      params->reg3 = (uint64_t) (((uint64_t) param_val) & 0x3f);
       break;
     case EVOASM_X64_BASIC_PARAM_IMM:
       params->imm = (int32_t) (((uint64_t) param_val) & 0xffffffff);

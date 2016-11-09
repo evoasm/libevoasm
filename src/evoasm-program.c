@@ -10,6 +10,7 @@
 #include "evoasm-program.h"
 #include "evoasm-arch.h"
 #include "evoasm.h"
+#include "evoasm-x64.h"
 
 
 EVOASM_DEF_LOG_TAG("program")
@@ -167,7 +168,7 @@ evoasm_program_is_input_reg(evoasm_program_t *program, size_t kernel_idx, evoasm
   evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   switch(program->arch_info->id) {
     case EVOASM_ARCH_X64:
-      return kernel->reg_info.x64[reg_id].input;
+      return kernel->reg_info.x64.regs[reg_id].input;
     default:
       evoasm_assert_not_reached();
   }
@@ -178,7 +179,7 @@ evoasm_program_is_output_reg(evoasm_program_t *program, size_t kernel_idx, evoas
   evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   switch(program->arch_info->id) {
     case EVOASM_ARCH_X64:
-      return kernel->reg_info.x64[reg_id].output;
+      return kernel->reg_info.x64.regs[reg_id].output;
     default:
       evoasm_assert_not_reached();
   }
@@ -331,9 +332,9 @@ evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc
   } else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
     uint64_t mask;
     if(op->size1 == EVOASM_X64_OPERAND_SIZE_128) {
-      mask = EVOASM_X64_BIT_MASK_0_127;
+      mask = EVOASM_X64_BITMASK_0_127;
     } else {
-      mask = EVOASM_X64_BIT_MASK_ALL;
+      mask = EVOASM_X64_BITMASK_ALL;
     }
     dirty_read = ((mask & (~reg_write_acc->mask)) != 0);
   } else {
@@ -396,11 +397,12 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
           if(op->read) {
             program->reset_rflags = true;
           } else if(op->written) {
-            kernel->reg_info.x64[op->reg_id].written = true;
+            kernel->reg_info.x64.written_flags = (kernel->reg_info.x64.written_flags | op->flags) & EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
+            kernel->reg_info.x64.regs[op->reg_id].written = true;
           }
         } else {
           evoasm_x64_reg_id_t reg_id = evoasm_kernel_get_operand_reg_id_x64(kernel, op, (uint16_t) i);
-          evoasm_kernel_x64_reg_info_t *reg_info = &kernel->reg_info.x64[reg_id];
+          evoasm_kernel_x64_reg_info_reg_t *reg_info = &kernel->reg_info.x64.regs[reg_id];
           evoasm_x64_reg_write_acc_t *reg_write_acc = &reg_write_accs[reg_id];
 
           /*
@@ -489,7 +491,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
 #endif
 
   for(input_reg_id = (evoasm_x64_reg_id_t) 0, input_reg_idx = 0; input_reg_idx < kernel->n_input_regs; input_reg_id++) {
-    if(!kernel->reg_info.x64[input_reg_id].input) continue;
+    if(!kernel->reg_info.x64.regs[input_reg_id].input) continue;
 
     size_t example_idx;
 
@@ -562,7 +564,7 @@ evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
   assert(kernel->n_output_regs > 0);
 
   for(input_reg_id = (evoasm_x64_reg_id_t) 0, input_reg_idx = 0; input_reg_id < EVOASM_X64_REG_NONE; input_reg_id++) {
-    if(!target_kernel->reg_info.x64[input_reg_id].input) continue;
+    if(!target_kernel->reg_info.x64.regs[input_reg_id].input) continue;
 
     evoasm_x64_reg_id_t output_reg_id;
 
@@ -570,9 +572,9 @@ evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
       size_t output_reg_idx = input_reg_idx % kernel->n_output_regs;
       output_reg_id = kernel->output_regs.x64[output_reg_idx];
 
-      kernel->reg_info.x64[input_reg_id].trans_regs[trans_idx] = output_reg_id;
+      kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx] = output_reg_id;
     } else {
-      output_reg_id = kernel->reg_info.x64[input_reg_id].trans_regs[trans_idx];
+      output_reg_id = kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx];
     }
 
     evoasm_x64_reg_type_t output_reg_type = evoasm_x64_get_reg_type(output_reg_id);
@@ -668,57 +670,58 @@ evoasm_program_x64_emit_kernel_transitions(evoasm_program_t *program,
 
   evoasm_inst_id_t jmp_inst_id = jmp_insts[program->jmp_conds[kernel->idx] % EVOASM_PROGRAM_X64_N_JMP_INSTS];
 
-  if(kernel->reg_info.x64[EVOASM_X64_REG_OF].written) {
-    if(jmp_inst_id == EVOASM_X64_INST_JO_REL32 || jmp_inst_id == EVOASM_X64_INST_JNO_REL32) goto branch_transition;
-  }
+  if(kernel->reg_info.x64.regs[EVOASM_X64_REG_RFLAGS].written) {
+    if(EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_OF)) {
+      if(jmp_inst_id == EVOASM_X64_INST_JO_REL32 || jmp_inst_id == EVOASM_X64_INST_JNO_REL32) goto branch_transition;
+    }
 
-  if(kernel->reg_info.x64[EVOASM_X64_REG_SF].written) {
-    if(jmp_inst_id == EVOASM_X64_INST_JS_REL32 || jmp_inst_id == EVOASM_X64_INST_JNS_REL32) goto branch_transition;
-  }
+    if(EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_SF)) {
+      if(jmp_inst_id == EVOASM_X64_INST_JS_REL32 || jmp_inst_id == EVOASM_X64_INST_JNS_REL32) goto branch_transition;
+    }
 
-  if(kernel->reg_info.x64[EVOASM_X64_REG_ZF].written) {
-    if(jmp_inst_id == EVOASM_X64_INST_JE_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JNE_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JBE_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JLE_REL32) {
-      goto branch_transition;
+    if(EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_ZF)) {
+      if(jmp_inst_id == EVOASM_X64_INST_JE_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JNE_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JBE_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JLE_REL32) {
+        goto branch_transition;
+      }
+    }
+
+    if(EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_CF)) {
+      if(jmp_inst_id == EVOASM_X64_INST_JB_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JAE_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JBE_REL32) {
+        goto branch_transition;
+      }
+    }
+
+    if((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_ZF)) &&
+        (EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_CF))) {
+      if(jmp_inst_id == EVOASM_X64_INST_JA_REL32) goto branch_transition;
+    }
+
+    if((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_SF)) &&
+        (EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_OF))) {
+
+      if(jmp_inst_id == EVOASM_X64_INST_JL_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JGE_REL32 ||
+         jmp_inst_id == EVOASM_X64_INST_JLE_REL32 ||
+         ((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_ZF)) && jmp_inst_id == EVOASM_X64_INST_JG_REL32)) {
+        goto branch_transition;
+      }
+    }
+
+    if(EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_PF)) {
+      if(jmp_inst_id == EVOASM_X64_INST_JP_REL32 || jmp_inst_id == EVOASM_X64_INST_JNP_REL32) goto branch_transition;
     }
   }
-
-  if(kernel->reg_info.x64[EVOASM_X64_REG_CF].written) {
-    if(jmp_inst_id == EVOASM_X64_INST_JB_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JAE_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JBE_REL32) {
-      goto branch_transition;
-    }
-  }
-
-  if(kernel->reg_info.x64[EVOASM_X64_REG_ZF].written &&
-     kernel->reg_info.x64[EVOASM_X64_REG_CF].written) {
-    if(jmp_inst_id == EVOASM_X64_INST_JA_REL32) goto branch_transition;
-  }
-
-  if(kernel->reg_info.x64[EVOASM_X64_REG_SF].written &&
-     kernel->reg_info.x64[EVOASM_X64_REG_OF].written) {
-
-    if(jmp_inst_id == EVOASM_X64_INST_JL_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JGE_REL32 ||
-       jmp_inst_id == EVOASM_X64_INST_JLE_REL32 ||
-       (kernel->reg_info.x64[EVOASM_X64_REG_ZF].written && jmp_inst_id == EVOASM_X64_INST_JG_REL32)) {
-      goto branch_transition;
-    }
-  }
-
-  if(kernel->reg_info.x64[EVOASM_X64_REG_PF].written) {
-    if(jmp_inst_id == EVOASM_X64_INST_JP_REL32 || jmp_inst_id == EVOASM_X64_INST_JNP_REL32) goto branch_transition;
-  }
-
   /* kernel does not write to required jump flag, ignore jmp_off and emit next kernel */
   goto next_transition;
 
 #if 0
   /*FIXME: only 8bit possible, check and activate if feasable*/
-  if(kernel->reg_info.x64[EVOASM_X64_REG_C].written) {
+  if(kernel->reg_info.x64.regs[EVOASM_X64_REG_C].written) {
     jmp_insts[possible_jmp_insts_len++] = EVOASM_X64_INST_JECXZ_JRCXZ_REL8;
   }
 #endif
@@ -1440,13 +1443,13 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
             evoasm_program_x64_mark_writers(program, kernel, op_reg_id, writer_idx - 1u, ctx);
           }
 
-          if(kernel->reg_info.x64[op_reg_id].input) {
+          if(kernel->reg_info.x64.regs[op_reg_id].input) {
             size_t trans_kernels_idxs[] = {kernel->idx + 1u,
                                            evoasm_program_branch_kernel_idx(program, i)};
             for(size_t k = 0; k < EVOASM_ARY_LEN(trans_kernels_idxs); k++) {
               //evoasm_kernel_t *trans_kernel = &program->kernels[trans_kernels_idxs[k]];
               for(size_t l = 0; l < EVOASM_X64_REG_NONE; l++) {
-                if(kernel->reg_info.x64[l].trans_regs[k] == op_reg_id) {
+                if(kernel->reg_info.x64.regs[l].trans_regs[k] == op_reg_id) {
                   evoasm_bitmap_set((evoasm_bitmap_t *) &ctx->output_reg_bitmaps[trans_kernels_idxs[k]], l);
                 }
               }

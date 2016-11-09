@@ -144,7 +144,7 @@ EVOASM_X64_OPERAND_DEF_BOOL_GETTER(cond_written)
 
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
 
-EVOASM_X64_OPERAND_DEF_GETTER(write_mask, evoasm_x64_bit_mask_t)
+EVOASM_X64_OPERAND_DEF_GETTER(write_mask, evoasm_x64_bitmask_t)
 
 EVOASM_X64_OPERAND_DEF_GETTER(type, evoasm_x64_operand_type_t)
 
@@ -379,15 +379,9 @@ evoasm_x64_cpu_state_get_reg_data(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_
       return cpu_state->zmm30;
     case EVOASM_X64_REG_ZMM31:
       return cpu_state->zmm31;
+    case EVOASM_X64_REG_RFLAGS:
+      return cpu_state->rflags;
     case EVOASM_X64_REG_IP:
-    case EVOASM_X64_REG_OF:
-    case EVOASM_X64_REG_SF:
-    case EVOASM_X64_REG_ZF:
-    case EVOASM_X64_REG_PF:
-    case EVOASM_X64_REG_CF:
-    case EVOASM_X64_REG_FZ:
-    case EVOASM_X64_REG_RC:
-    case EVOASM_X64_REG_DAZ:
     default:
       evoasm_assert_not_reached();
   }
@@ -530,37 +524,87 @@ enc_failed:
   return false;
 }
 
-
-evoasm_success_t
-evoasm_x64_emit_rflags_load(uint8_t *data,
-                            evoasm_buf_t *buf) {
-  return evoasm_x64_emit_rflags_load_store(data, buf, true);
+void
+evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint8_t *data, size_t len) {
+  len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)], len);
+  memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id), data, len);
 }
 
-evoasm_success_t
-evoasm_x64_emit_rflags_store(uint8_t *data,
-                             evoasm_buf_t *buf) {
-  return evoasm_x64_emit_rflags_load_store(data, buf, false);
+void
+evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
+  memset(cpu_state, value, sizeof(evoasm_x64_cpu_state_t));
 }
 
+size_t
+evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint8_t **data) {
+  size_t len = evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)];
+  *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
+  return len;
+}
+
+bool
+evoasm_x64_cpu_state_get_rflags_flag(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_rflags_flag_t flag) {
+  /* silence strict-aliasing warning */
+  union {
+    uint64_t *u64;
+    uint8_t *u8;
+  } ptr;
+
+  ptr.u8 = cpu_state->rflags;
+  uint64_t rflags = *ptr.u64;
+
+  switch(flag) {
+    case EVOASM_X64_RFLAGS_FLAG_OF:
+      return (rflags & (1 << 11)) != 0;
+    case EVOASM_X64_RFLAGS_FLAG_SF:
+      return (rflags & (1 << 7)) != 0;
+    case EVOASM_X64_RFLAGS_FLAG_ZF:
+      return (rflags & (1 << 6)) != 0;
+    case EVOASM_X64_RFLAGS_FLAG_PF:
+      return (rflags & (1 << 2)) != 0;
+    case EVOASM_X64_RFLAGS_FLAG_CF:
+      return (rflags & (1 << 0)) != 0;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
+void
+evoasm_x64_cpu_state_clone(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_cpu_state_t *cloned_cpu_state) {
+  *cloned_cpu_state = *cpu_state;
+}
+
+static_assert(CHAR_BIT == 8, "CHAR_BIT must be 8");
+
+void
+evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
+                         evoasm_x64_cpu_state_t *other_cpu_state,
+                         evoasm_x64_cpu_state_t *xored_cpu_state) {
+  size_t size = sizeof(evoasm_x64_cpu_state_t);
+  uint8_t *data = (uint8_t *) cpu_state;
+  uint8_t *other_data = (uint8_t *) other_cpu_state;
+  uint8_t *xored_data = (uint8_t *) xored_cpu_state;
+
+  for(size_t i = 0; i < size; i++) {
+    xored_data[i] = data[i] ^ other_data[i];
+  }
+}
+
+EVOASM_DEF_ZERO_INIT_FUNC(x64_cpu_state)
+EVOASM_DEF_ALLOC_FREE_FUNCS(x64_cpu_state)
 
 evoasm_success_t
-evoasm_x64_cpu_state_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf, bool load) {
+evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf, bool load) {
   static const evoasm_x64_reg_id_t tmp_reg_id = EVOASM_X64_REG_14;
   for(evoasm_x64_reg_id_t reg_id = (evoasm_x64_reg_id_t) 0; reg_id < EVOASM_X64_REG_NONE; reg_id++) {
     uint8_t *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
 
     switch(reg_id) {
       case EVOASM_X64_REG_IP:
-      case EVOASM_X64_REG_OF:
-      case EVOASM_X64_REG_SF:
-      case EVOASM_X64_REG_ZF:
-      case EVOASM_X64_REG_PF:
-      case EVOASM_X64_REG_CF:
-      case EVOASM_X64_REG_FZ:
-      case EVOASM_X64_REG_RC:
-      case EVOASM_X64_REG_DAZ:
         continue;
+      case EVOASM_X64_REG_RFLAGS:
+        EVOASM_TRY(enc_failed, evoasm_x64_emit_rflags_load_store, data, buf, load);
+        break;
       default:
         EVOASM_TRY(enc_failed, evoasm_x64_emit_load_store, reg_id, data, tmp_reg_id, buf, load);
 
@@ -569,9 +613,7 @@ evoasm_x64_cpu_state_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t 
         }
     }
   }
-
   EVOASM_TRY(enc_failed, evoasm_x64_emit_pop, tmp_reg_id, buf);
-  EVOASM_TRY(enc_failed, evoasm_x64_emit_rflags_load_store, (uint8_t *) &cpu_state->rflags, buf, load);
 
   return true;
 
@@ -581,13 +623,13 @@ enc_failed:
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_load(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
-  return evoasm_x64_cpu_state_load_store(cpu_state, buf, true);
+evoasm_x64_cpu_state_emit_load(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
+  return evoasm_x64_cpu_state_emit_load_store(cpu_state, buf, true);
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
-  return evoasm_x64_cpu_state_load_store(cpu_state, buf, false);
+evoasm_x64_cpu_state_emit_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
+  return evoasm_x64_cpu_state_emit_load_store(cpu_state, buf, false);
 }
 
 
