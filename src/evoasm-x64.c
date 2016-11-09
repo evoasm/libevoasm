@@ -382,6 +382,7 @@ evoasm_x64_cpu_state_get_reg_data(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_
     case EVOASM_X64_REG_RFLAGS:
       return cpu_state->rflags;
     case EVOASM_X64_REG_IP:
+      return cpu_state->ip;
     default:
       evoasm_assert_not_reached();
   }
@@ -499,6 +500,32 @@ evoasm_x64_emit_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf) {
   return evoasm_x64_emit_pop_push(reg_id, buf, false);
 }
 
+
+static evoasm_success_t
+evoasm_x64_emit_rip_load_store(uint8_t *data,
+                               evoasm_buf_t *buf,
+                               bool load) {
+
+  evoasm_x64_params_t params = {0};
+
+  EVOASM_TRY(enc_failed, evoasm_x64_emit_push, EVOASM_X64_REG_SP, buf);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_SP);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
+  EVOASM_X64_ENC(mov_r64_imm64);
+
+  if(load) {
+    EVOASM_X64_ENC(popfq);
+  } else {
+    EVOASM_X64_ENC(pushfq);
+  }
+
+  EVOASM_TRY(enc_failed, evoasm_x64_emit_pop, EVOASM_X64_REG_SP, buf);
+  return true;
+
+enc_failed:
+  return false;
+}
+
 static evoasm_success_t
 evoasm_x64_emit_rflags_load_store(uint8_t *data,
                                   evoasm_buf_t *buf,
@@ -595,7 +622,8 @@ evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_b
 
     switch(reg_id) {
       case EVOASM_X64_REG_IP:
-        continue;
+        EVOASM_TRY(enc_failed, evoasm_x64_emit_rip_load_store, data, buf, load);
+        break;
       case EVOASM_X64_REG_RFLAGS:
         EVOASM_TRY(enc_failed, evoasm_x64_emit_rflags_load_store, data, buf, load);
         break;

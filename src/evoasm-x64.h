@@ -51,6 +51,7 @@ typedef enum {
 #define EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT 4
 
 typedef struct {
+  uint64_t ip[1];
   uint64_t rflags[1];
   uint64_t rax[1];
   uint64_t rcx[1];
