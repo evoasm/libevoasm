@@ -591,6 +591,7 @@ evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
 }
 
 EVOASM_DEF_ZERO_INIT_FUNC(x64_cpu_state)
+EVOASM_DEF_EMPTY_DESTROY_FUNC(x64_cpu_state)
 EVOASM_DEF_ALLOC_FREE_FUNCS(x64_cpu_state)
 
 evoasm_success_t
