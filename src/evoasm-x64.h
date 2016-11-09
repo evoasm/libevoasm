@@ -53,6 +53,7 @@ typedef enum {
 typedef struct {
   uint64_t ip[1];
   uint64_t rflags[1];
+  uint64_t mxcsr[1];
   uint64_t rax[1];
   uint64_t rcx[1];
   uint64_t rdx[1];
