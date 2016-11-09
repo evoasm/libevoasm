@@ -146,6 +146,7 @@ evoasm_buf_data(evoasm_buf_t *buf) {
 
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(buf_ref)
+EVOASM_DEF_ALLOC_FREE_FUNCS(buf)
 
 void
 evoasm_buf_ref_init(evoasm_buf_ref_t *buf_ref, uint8_t *data, size_t *pos) {
