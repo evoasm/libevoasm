@@ -77,7 +77,7 @@
   }
 
 #define EVOASM_DEF_EMPTY_DESTROY_FUNC(type) \
-  void evoasm_##type##_destrot(evoasm_##type##_t *ptr) {}
+  void evoasm_##type##_destroy(evoasm_##type##_t *ptr) {}
 
 #define EVOASM_DEF_GETTER(type, field, value_type) \
   value_type evoasm_##type##_get_##field(evoasm_##type##_t *ptr) { \
