@@ -41,17 +41,11 @@
 #  define EVOASM_ALIGNED_CALLOC_ATTRS
 #endif
 
-#if defined(_WIN32)
-#define EVOASM_MPROT_RW PAGE_READWRITE
-#define EVOASM_MPROT_RX PAGE_EXECUTE_READ
-#define EVOASM_MPROT_RWX PAGE_EXECUTE_READWRITE
-#elif defined(_POSIX_VERSION)
-#define EVOASM_MPROT_RW (PROT_READ|PROT_WRITE)
-#define EVOASM_MPROT_RX (PROT_READ|PROT_EXEC)
-#define EVOASM_MPROT_RWX (PROT_READ|PROT_WRITE|PROT_EXEC)
-#else
-#error
-#endif
+typedef enum {
+  EVOASM_MPROT_MODE_RW,
+  EVOASM_MPROT_MODE_RX,
+  EVOASM_MPROT_MODE_RWX,
+} evoasm_mprot_mode_t;
 
 void *evoasm_malloc(size_t) EVOASM_MALLOC_ATTRS;
 void *evoasm_calloc(size_t, size_t) EVOASM_CALLOC_ATTRS;
@@ -62,7 +56,7 @@ void evoasm_free(void *);
 
 void *evoasm_mmap(size_t size, void *p);
 evoasm_success_t evoasm_munmap(void *p, size_t size);
-evoasm_success_t evoasm_mprot(void *p, size_t size, int mode);
+evoasm_success_t evoasm_mprot(void *p, size_t size, evoasm_mprot_mode_t mode);
 size_t evoasm_get_page_size();
 
 #define EVOASM_TRY_ALLOC(label, func, var, ...) \

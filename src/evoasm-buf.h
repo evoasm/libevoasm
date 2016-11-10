@@ -15,6 +15,8 @@
 
 #include "evoasm-error.h"
 #include "evoasm-log.h"
+#include "evoasm-alloc.h"
+#include "evoasm.h"
 
 typedef enum {
   EVOASM_BUF_TYPE_MMAP,
@@ -47,7 +49,7 @@ size_t
 evoasm_buf_append(evoasm_buf_t * restrict dst, evoasm_buf_t * restrict src);
 
 evoasm_success_t
-evoasm_buf_protect(evoasm_buf_t *buf, int mode);
+evoasm_buf_protect(evoasm_buf_t *buf, evoasm_mprot_mode_t mode);
 
 intptr_t
 evoasm_buf_exec(evoasm_buf_t *buf);

@@ -91,7 +91,7 @@ evoasm_buf_reset(evoasm_buf_t *buf) {
 }
 
 evoasm_success_t
-evoasm_buf_protect(evoasm_buf_t *buf, int mode) {
+evoasm_buf_protect(evoasm_buf_t *buf, evoasm_mprot_mode_t mode) {
   return evoasm_mprot(buf->data, buf->capa, mode);
 }
 

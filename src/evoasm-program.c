@@ -1333,7 +1333,7 @@ evoasm_program_run(evoasm_program_t *program,
   evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
   evoasm_signal_install((evoasm_arch_id_t) program->arch_info->id, program->exception_mask);
 
-  if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_RX)) {
+  if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_MODE_RX)) {
     evoasm_assert_not_reached();
   }
 
@@ -1349,7 +1349,7 @@ evoasm_program_run(evoasm_program_t *program,
     output = NULL;
   }
 
-  if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_RW)) {
+  if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_MODE_RW)) {
     evoasm_assert_not_reached();
   }
 
@@ -1597,7 +1597,7 @@ evoasm_program_init(evoasm_program_t *program,
   program->body_buf = &program->_body_buf;
 
   EVOASM_TRY(error, evoasm_buf_protect, &program->_buf,
-             EVOASM_MPROT_RWX);
+             EVOASM_MPROT_MODE_RWX);
 
   size_t output_vals_len = max_examples * EVOASM_KERNEL_MAX_OUTPUT_REGS;
 

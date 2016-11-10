@@ -137,16 +137,45 @@ evoasm_munmap(void *p, size_t size) {
   return ret;
 }
 
-evoasm_success_t
-evoasm_mprot(void *p, size_t size, int mode)
-{
 
 #if defined(_WIN32)
-  if(VirtualProtect(p, size, mode, NULL) != 0) {
+#define EVOASM_MPROT_RW PAGE_READWRITE
+#define EVOASM_MPROT_RX PAGE_EXECUTE_READ
+#define EVOASM_MPROT_RWX PAGE_EXECUTE_READWRITE
+#elif defined(_POSIX_VERSION)
+#define EVOASM_MPROT_RW (PROT_READ|PROT_WRITE)
+#define EVOASM_MPROT_RX (PROT_READ|PROT_EXEC)
+#define EVOASM_MPROT_RWX (PROT_READ|PROT_WRITE|PROT_EXEC)
+#else
+#error
+#endif
+
+evoasm_success_t
+evoasm_mprot(void *p, size_t size, evoasm_mprot_mode_t mode)
+{
+  int mode_;
+
+  switch(mode) {
+    case EVOASM_MPROT_MODE_RW:
+      mode_ = EVOASM_MPROT_RW;
+      break;
+    case EVOASM_MPROT_MODE_RWX:
+      mode_ = EVOASM_MPROT_RWX;
+      break;
+    case EVOASM_MPROT_MODE_RX:
+      mode_ = EVOASM_MPROT_RX;
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
+
+
+#if defined(_WIN32)
+  if(VirtualProtect(p, size, mode_, NULL) != 0) {
     goto error;
   }
 #elif defined(_POSIX_VERSION)
-  if(mprotect(p, size, mode) != 0) {
+  if(mprotect(p, size, mode_) != 0) {
     goto error;
   }
 #else

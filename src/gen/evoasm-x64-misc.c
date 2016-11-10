@@ -147,7 +147,7 @@ evoasm_x64_get_features(uint64_t *features_) {
 
   /*evoasm_buf_dump(buf, stderr);*/
 
-  EVOASM_TRY(enc_failed, evoasm_buf_protect, buf, EVOASM_MPROT_RX);
+  EVOASM_TRY(enc_failed, evoasm_buf_protect, buf, EVOASM_MPROT_MODE_RX);
   evoasm_buf_exec(buf);
 
   if(vals[0][0] & (1ull << 8)) {
