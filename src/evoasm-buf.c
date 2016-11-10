@@ -26,8 +26,7 @@ evoasm_buf_init_mmap(evoasm_buf_t *buf, size_t size) {
     buf->data = mem;
     buf->pos = 0;
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
@@ -43,20 +42,21 @@ evoasm_buf_init_malloc(evoasm_buf_t *buf, size_t size) {
     buf->data = mem;
     buf->pos = 0;
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
 
 evoasm_success_t
-evoasm_buf_init(evoasm_buf_t *buf, evoasm_buf_type_t buf_type, size_t size)
-{
+evoasm_buf_init(evoasm_buf_t *buf, evoasm_buf_type_t buf_type, size_t size) {
   buf->type = buf_type;
   switch(buf_type) {
-    case EVOASM_BUF_TYPE_MMAP: return evoasm_buf_init_mmap(buf, size);
-    case EVOASM_BUF_TYPE_MALLOC: return evoasm_buf_init_malloc(buf, size);
-    default: evoasm_assert_not_reached();
+    case EVOASM_BUF_TYPE_MMAP:
+      return evoasm_buf_init_mmap(buf, size);
+    case EVOASM_BUF_TYPE_MALLOC:
+      return evoasm_buf_init_malloc(buf, size);
+    default:
+      evoasm_assert_not_reached();
   }
 }
 
@@ -75,12 +75,14 @@ evoasm_buf_destroy_malloc(evoasm_buf_t *buf) {
 }
 
 evoasm_success_t
-evoasm_buf_destroy(evoasm_buf_t *buf)
-{
+evoasm_buf_destroy(evoasm_buf_t *buf) {
   switch(buf->type) {
-    case EVOASM_BUF_TYPE_MMAP: return evoasm_buf_destroy_mmap(buf);
-    case EVOASM_BUF_TYPE_MALLOC: return evoasm_buf_destroy_malloc(buf);
-    default: evoasm_assert_not_reached();
+    case EVOASM_BUF_TYPE_MMAP:
+      return evoasm_buf_destroy_mmap(buf);
+    case EVOASM_BUF_TYPE_MALLOC:
+      return evoasm_buf_destroy_malloc(buf);
+    default:
+      evoasm_assert_not_reached();
   }
 }
 
@@ -110,20 +112,25 @@ evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level_t log_level) {
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Buffer: capa: %zu, pos: %zu, addr: %p\n",
              buf->capa, buf->pos, (void *) buf->data);
-  for(size_t i = 0; i < buf->pos; i++)
-  {
-    if (i > 0) evoasm_log(log_level, EVOASM_LOG_TAG, "   ");
+  for(size_t i = 0; i < buf->pos; i++) {
+    if(i > 0) evoasm_log(log_level, EVOASM_LOG_TAG, "   ");
     evoasm_log(log_level, EVOASM_LOG_TAG, " %02X ", buf->data[i]);
   }
   evoasm_log(log_level, EVOASM_LOG_TAG, " \n ");
 }
 
+void
+evoasm_buf_to_buf_ref(evoasm_buf_t *buf, evoasm_buf_ref_t *buf_ref) {
+  buf_ref->data = buf->data;
+  buf_ref->pos = &buf->pos;
+}
+
 size_t
-evoasm_buf_append(evoasm_buf_t * restrict dst, evoasm_buf_t * restrict src) {
+evoasm_buf_append(evoasm_buf_t *restrict dst, evoasm_buf_t *restrict src) {
   size_t free = dst->capa - dst->pos;
   if(src->pos > free) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-      NULL, "buffer does not fit (need %zu bytes but only %zu free)", src->pos, free);
+                 NULL, "buffer does not fit (need %zu bytes but only %zu free)", src->pos, free);
     return src->pos - (dst->capa - dst->pos);
   }
   memcpy(dst->data + dst->pos, src->data, src->pos);
@@ -132,7 +139,7 @@ evoasm_buf_append(evoasm_buf_t * restrict dst, evoasm_buf_t * restrict src) {
 }
 
 evoasm_success_t
-evoasm_buf_clone(evoasm_buf_t * restrict buf, evoasm_buf_t * restrict cloned_buf) {
+evoasm_buf_clone(evoasm_buf_t *restrict buf, evoasm_buf_t *restrict cloned_buf) {
   if(!evoasm_buf_init(cloned_buf, buf->type, buf->capa)) {
     return false;
   }
@@ -146,6 +153,7 @@ evoasm_buf_data(evoasm_buf_t *buf) {
 
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(buf_ref)
+
 EVOASM_DEF_ALLOC_FREE_FUNCS(buf)
 
 void

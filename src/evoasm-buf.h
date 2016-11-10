@@ -60,6 +60,8 @@ evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level_t log_level);
 evoasm_success_t
 evoasm_buf_clone(evoasm_buf_t * restrict buf, evoasm_buf_t * restrict cloned_buf);
 
+void
+evoasm_buf_to_buf_ref(evoasm_buf_t *buf, evoasm_buf_ref_t *buf_ref);
 
 static inline void
 evoasm_buf_ref_write8(evoasm_buf_ref_t *buf_ref, int64_t datum) {
