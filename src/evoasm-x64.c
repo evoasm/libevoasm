@@ -429,9 +429,9 @@ evoasm_x64_emit_pop_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf, bool pop
   evoasm_x64_params_t params = {0};
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg_id);
   if(pop) {
-    EVOASM_X64_ENC(push_r64);
-  } else {
     EVOASM_X64_ENC(pop_r64);
+  } else {
+    EVOASM_X64_ENC(push_r64);
   }
 
   return true;
