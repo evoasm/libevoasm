@@ -27,7 +27,7 @@ typedef enum {
 typedef struct {
     size_t  capa;
     size_t  pos;
-    evoasm_buf_type_t type : 2;
+    unsigned type : 2;
     uint8_t *data;
 } evoasm_buf_t;
 

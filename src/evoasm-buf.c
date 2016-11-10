@@ -140,7 +140,7 @@ evoasm_buf_append(evoasm_buf_t *restrict dst, evoasm_buf_t *restrict src) {
 
 evoasm_success_t
 evoasm_buf_clone(evoasm_buf_t *restrict buf, evoasm_buf_t *restrict cloned_buf) {
-  if(!evoasm_buf_init(cloned_buf, buf->type, buf->capa)) {
+  if(!evoasm_buf_init(cloned_buf, (evoasm_buf_type_t) buf->type, buf->capa)) {
     return false;
   }
   return evoasm_buf_append(cloned_buf, buf) == 0;
@@ -155,6 +155,11 @@ evoasm_buf_data(evoasm_buf_t *buf) {
 EVOASM_DEF_ALLOC_FREE_FUNCS(buf_ref)
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(buf)
+
+EVOASM_DEF_GETTER(buf, capa, size_t)
+EVOASM_DEF_GETTER(buf, pos, size_t)
+EVOASM_DEF_GETTER(buf, type, evoasm_buf_type_t)
+EVOASM_DEF_GETTER(buf, data, const uint8_t *)
 
 void
 evoasm_buf_ref_init(evoasm_buf_ref_t *buf_ref, uint8_t *data, size_t *pos) {
