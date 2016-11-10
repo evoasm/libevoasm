@@ -452,12 +452,17 @@ evoasm_x64_emit_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf) {
 
 static evoasm_success_t
 evoasm_x64_emit_rflags_load_store(uint8_t *data,
+                                  evoasm_x64_reg_id_t tmp_reg,
                                   evoasm_buf_t *buf,
                                   bool load) {
 
   evoasm_x64_params_t params = {0};
 
-  EVOASM_TRY(enc_failed, evoasm_x64_emit_push, EVOASM_X64_REG_SP, buf);
+
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_REG_SP);
+  EVOASM_X64_ENC(mov_r64_rm64);
+
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_SP);
   EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
   EVOASM_X64_ENC(mov_r64_imm64);
@@ -468,7 +473,10 @@ evoasm_x64_emit_rflags_load_store(uint8_t *data,
     EVOASM_X64_ENC(pushfq);
   }
 
-  EVOASM_TRY(enc_failed, evoasm_x64_emit_pop, EVOASM_X64_REG_SP, buf);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_SP);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, tmp_reg);
+  EVOASM_X64_ENC(mov_r64_rm64);
+
   return true;
 
 enc_failed:
@@ -625,7 +633,7 @@ evoasm_x64_emit_load_store(evoasm_x64_reg_id_t reg_id,
       break;
     }
     case EVOASM_X64_REG_TYPE_RFLAGS: {
-      EVOASM_TRY(enc_failed, evoasm_x64_emit_rflags_load_store, data, buf, load);
+      EVOASM_TRY(enc_failed, evoasm_x64_emit_rflags_load_store, data, tmp_reg1, buf, load);
       break;
     }
     case EVOASM_X64_REG_TYPE_MXCSR: {
