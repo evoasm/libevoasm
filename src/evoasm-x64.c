@@ -415,7 +415,7 @@ evoasm_x64_emit_rip_load_store(uint8_t *data,
     EVOASM_X64_ENC(lea_r64_m64);
 
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg1);
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg2);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, tmp_reg2);
     EVOASM_X64_ENC(mov_rm64_r64);
   }
   return true;
