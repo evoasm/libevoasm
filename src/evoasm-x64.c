@@ -656,7 +656,7 @@ evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_b
   static const evoasm_x64_reg_id_t tmp_reg2 = EVOASM_X64_REG_15;
 
   for(evoasm_x64_reg_id_t reg_id = (evoasm_x64_reg_id_t) 0; reg_id < EVOASM_X64_REG_NONE; reg_id++) {
-    if(reg_id != tmp_reg1 && reg_id != tmp_reg2) continue;
+    if(reg_id == tmp_reg1 || reg_id == tmp_reg2) continue;
 
     uint8_t *data = (uint8_t *) evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
     EVOASM_TRY(enc_failed, evoasm_x64_emit_load_store, reg_id, data, tmp_reg1, tmp_reg2, buf, load);
