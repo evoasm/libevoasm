@@ -475,6 +475,103 @@ enc_failed:
   return false;
 }
 
+
+static evoasm_success_t
+evoasm_x64_emit_mm_load_store(evoasm_reg_id_t reg,
+                              uint8_t *data,
+                              evoasm_x64_reg_id_t tmp_reg,
+                              evoasm_buf_t *buf,
+                              bool load) {
+
+  evoasm_x64_params_t params = {0};
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
+  EVOASM_X64_ENC(mov_r64_imm64);
+
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
+
+  if(load) {
+    EVOASM_X64_ENC(movsd_xmm_xmmm64);
+  } else {
+    EVOASM_X64_ENC(movsd_xmmm64_xmm);
+  }
+
+  return true;
+
+enc_failed:
+  return false;
+}
+
+static evoasm_success_t
+evoasm_x64_emit_gp_load_store(evoasm_reg_id_t reg,
+                              uint8_t *data,
+                              evoasm_x64_reg_id_t tmp_reg,
+                              evoasm_buf_t *buf,
+                              bool load) {
+
+  evoasm_x64_params_t params = {0};
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
+  EVOASM_X64_ENC(mov_r64_imm64);
+
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
+
+  if(load) {
+    EVOASM_X64_ENC(mov_r64_rm64);
+  } else {
+    EVOASM_X64_ENC(mov_rm64_r64);
+  }
+
+  return true;
+
+enc_failed:
+  return false;
+}
+
+static evoasm_success_t
+evoasm_x64_emit_xmm_load_store(evoasm_reg_id_t reg,
+                               uint8_t *data,
+                               evoasm_x64_reg_id_t tmp_reg,
+                               evoasm_buf_t *buf,
+                               bool load) {
+
+  evoasm_x64_params_t params = {0};
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
+  EVOASM_X64_ENC(mov_r64_imm64);
+
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
+
+  if(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] == 32) {
+    if(load) {
+      EVOASM_X64_ENC(vmovdqa_ymm_ymmm256);
+    } else {
+      EVOASM_X64_ENC(vmovdqa_ymmm256_ymm);
+    }
+  }
+#ifdef EVOASM_X64_ENABLE_AVX512
+    else if(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] == 64) {
+      goto unsupported;
+    }
+#endif
+  else {
+    if(load) {
+      EVOASM_X64_ENC(movdqa_xmm_xmmm128);
+    } else {
+      EVOASM_X64_ENC(movdqa_xmmm128_xmm);
+    }
+  }
+
+  return true;
+
+enc_failed:
+  return false;
+}
+
+
 static evoasm_success_t
 evoasm_x64_emit_mxcsr_load_store(uint8_t *data,
                                  evoasm_x64_reg_id_t tmp_reg,
@@ -508,53 +605,19 @@ evoasm_x64_emit_load_store(evoasm_x64_reg_id_t reg_id,
                            evoasm_buf_t *buf,
                            bool load) {
 
-  evoasm_x64_params_t params = {0};
   evoasm_x64_reg_type_t reg_type = evoasm_x64_get_reg_type(reg_id);
-
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg1);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
-  EVOASM_X64_ENC(mov_r64_imm64);
-
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg1);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg_id);
 
   switch(reg_type) {
     case EVOASM_X64_REG_TYPE_GP: {
-      if(load) {
-        EVOASM_X64_ENC(mov_r64_rm64);
-      } else {
-        EVOASM_X64_ENC(mov_rm64_r64);
-      }
+      EVOASM_TRY(enc_failed, evoasm_x64_emit_gp_load_store, reg_id, data, tmp_reg1, buf, load);
       break;
     }
     case EVOASM_X64_REG_TYPE_XMM: {
-      if(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] == 32) {
-        if(load) {
-          EVOASM_X64_ENC(vmovdqa_ymm_ymmm256);
-        } else {
-          EVOASM_X64_ENC(vmovdqa_ymmm256_ymm);
-        }
-      }
-#ifdef EVOASM_X64_ENABLE_AVX512
-        else if(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] == 64) {
-          goto unsupported;
-        }
-#endif
-      else {
-        if(load) {
-          EVOASM_X64_ENC(movdqa_xmm_xmmm128);
-        } else {
-          EVOASM_X64_ENC(movdqa_xmmm128_xmm);
-        }
-      }
+      EVOASM_TRY(enc_failed, evoasm_x64_emit_xmm_load_store, reg_id, data, tmp_reg1, buf, load);
       break;
     }
     case EVOASM_X64_REG_TYPE_MM: {
-      if(load) {
-        EVOASM_X64_ENC(movsd_xmm_xmmm64);
-      } else {
-        EVOASM_X64_ENC(movsd_xmmm64_xmm);
-      }
+      EVOASM_TRY(enc_failed, evoasm_x64_emit_mm_load_store, reg_id, data, tmp_reg1, buf, load);
       break;
     }
     case EVOASM_X64_REG_TYPE_IP: {
