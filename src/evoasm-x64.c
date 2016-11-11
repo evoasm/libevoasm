@@ -719,7 +719,16 @@ EVOASM_DEF_ZERO_INIT_FUNC(x64_cpu_state)
 
 EVOASM_DEF_EMPTY_DESTROY_FUNC(x64_cpu_state)
 
-EVOASM_DEF_ALLOC_FREE_FUNCS(x64_cpu_state)
+
+evoasm_x64_cpu_state_t *
+evoasm_x64_cpu_state_alloc() {
+  return evoasm_aligned_alloc(32, sizeof(evoasm_x64_cpu_state_t));
+}
+
+void
+evoasm_x64_cpu_state_free(evoasm_x64_cpu_state_t *cpu_state) {
+  evoasm_free(cpu_state);
+}
 
 evoasm_success_t
 evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf, bool load) {
