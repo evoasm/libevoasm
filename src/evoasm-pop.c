@@ -389,7 +389,7 @@ evoasm_deme_seed_kernel_param_x64(evoasm_deme_t *deme, evoasm_inst_id_t *inst_id
       evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) deme->params->param_ids[i];
       evoasm_param_val_t param_val;
 
-      param_val = (int64_t) evoasm_domain_rand(domain, prng);
+      param_val = (int64_t) evoasm_domain_rand_(domain, prng);
       evoasm_x64_basic_params_set_(params_ptr, param_id, param_val);
     }
   }

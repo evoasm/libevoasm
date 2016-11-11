@@ -61,7 +61,7 @@ EVOASM_DECL_ENUM_DOMAIN_TYPE(16)
 typedef evoasm_enum16_domain_t evoasm_domain_t;
 
 static inline int64_t
-evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
+evoasm_domain_rand_(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;

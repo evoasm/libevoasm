@@ -58,6 +58,11 @@ evoasm_enum_domain_get_val(evoasm_enum_domain_t *enum_domain, size_t idx) {
   return enum_domain->vals[idx];
 }
 
+int64_t
+evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
+  return evoasm_domain_rand_(domain, prng);
+}
+
 EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
 
 evoasm_success_t
