@@ -46,7 +46,6 @@ typedef struct {
     int32_t disp : 32;
   });
   evoasm_packed(union {
-    int64_t imm : 64;
     int64_t imm0 : 64;
     int64_t moffs : 64;
     int64_t rel : 64;
@@ -63,7 +62,6 @@ typedef struct {
   uint64_t reg2 : 6;
   uint64_t reg3 : 6;
   evoasm_packed(union {
-    int32_t imm : 32;
     int32_t imm0 : 32;
     int32_t rel : 32;
   });
@@ -84,9 +82,6 @@ static inline void evoasm_x64_params_set_(evoasm_x64_params_t * params, evoasm_x
       break;
     case EVOASM_X64_PARAM_REG3:
       params->reg3 = (uint64_t) (((uint64_t) param_val) & 0x3f);
-      break;
-    case EVOASM_X64_PARAM_IMM:
-      params->imm = (int64_t) (((uint64_t) param_val) & 0xffffffffffffffff);
       break;
     case EVOASM_X64_PARAM_IMM0:
       params->imm0 = (int64_t) (((uint64_t) param_val) & 0xffffffffffffffff);
@@ -168,7 +163,7 @@ static inline void evoasm_x64_params_set_(evoasm_x64_params_t * params, evoasm_x
   }
 }
 
-static inline void evoasm_x64_basic_params_set_(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param, int64_t param_val) {
+static inline void evoasm_x64_basic_params_set_(evoasm_x64_basic_params_t * params, evoasm_x64_basic_param_id_t param, int64_t param_val) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       params->reg0 = (uint64_t) (((uint64_t) param_val) & 0x3f);
@@ -183,9 +178,6 @@ static inline void evoasm_x64_basic_params_set_(evoasm_x64_basic_params_t * para
       break;
     case EVOASM_X64_BASIC_PARAM_REG3:
       params->reg3 = (uint64_t) (((uint64_t) param_val) & 0x3f);
-      break;
-    case EVOASM_X64_BASIC_PARAM_IMM:
-      params->imm = (int32_t) (((uint64_t) param_val) & 0xffffffff);
       break;
     case EVOASM_X64_BASIC_PARAM_IMM0:
       params->imm0 = (int32_t) (((uint64_t) param_val) & 0xffffffff);
@@ -213,8 +205,6 @@ static inline int64_t evoasm_x64_params_get_(evoasm_x64_params_t * params, evoas
       return (int64_t) params->reg2;
     case EVOASM_X64_PARAM_REG3:
       return (int64_t) params->reg3;
-    case EVOASM_X64_PARAM_IMM:
-      return (int64_t) params->imm;
     case EVOASM_X64_PARAM_IMM0:
       return (int64_t) params->imm0;
     case EVOASM_X64_PARAM_FORCE_REX:
@@ -268,7 +258,7 @@ static inline int64_t evoasm_x64_params_get_(evoasm_x64_params_t * params, evoas
   }
 }
 
-static inline int64_t evoasm_x64_basic_params_get_(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param) {
+static inline int64_t evoasm_x64_basic_params_get_(evoasm_x64_basic_params_t * params, evoasm_x64_basic_param_id_t param) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       return (int64_t) params->reg0;
@@ -278,8 +268,6 @@ static inline int64_t evoasm_x64_basic_params_get_(evoasm_x64_basic_params_t * p
       return (int64_t) params->reg2;
     case EVOASM_X64_BASIC_PARAM_REG3:
       return (int64_t) params->reg3;
-    case EVOASM_X64_BASIC_PARAM_IMM:
-      return (int64_t) params->imm;
     case EVOASM_X64_BASIC_PARAM_IMM0:
       return (int64_t) params->imm0;
     case EVOASM_X64_BASIC_PARAM_REG0_HIGH_BYTE:
@@ -307,9 +295,6 @@ static inline void evoasm_x64_params_unset_(evoasm_x64_params_t * params, evoasm
       break;
     case EVOASM_X64_PARAM_REG3:
       params->reg3 = 0;
-      break;
-    case EVOASM_X64_PARAM_IMM:
-      params->imm = 0;
       break;
     case EVOASM_X64_PARAM_IMM0:
       params->imm0 = 0;
@@ -391,7 +376,7 @@ static inline void evoasm_x64_params_unset_(evoasm_x64_params_t * params, evoasm
   }
 }
 
-static inline void evoasm_x64_basic_params_unset_(evoasm_x64_basic_params_t * params, evoasm_x64_param_id_t param) {
+static inline void evoasm_x64_basic_params_unset_(evoasm_x64_basic_params_t * params, evoasm_x64_basic_param_id_t param) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       params->reg0 = 0;
@@ -406,9 +391,6 @@ static inline void evoasm_x64_basic_params_unset_(evoasm_x64_basic_params_t * pa
       break;
     case EVOASM_X64_BASIC_PARAM_REG3:
       params->reg3 = 0;
-      break;
-    case EVOASM_X64_BASIC_PARAM_IMM:
-      params->imm = 0;
       break;
     case EVOASM_X64_BASIC_PARAM_IMM0:
       params->imm0 = 0;

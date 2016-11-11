@@ -195,7 +195,7 @@ evoasm_program_x64_emit_rflags_reset(evoasm_program_t *program) {
   evoasm_log_debug("emitting RFLAGS reset");
   EVOASM_X64_ENC(pushfq);
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_SP);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM, 0);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, 0);
   EVOASM_X64_ENC(mov_rm64_imm32);
   EVOASM_X64_ENC(popfq);
 
