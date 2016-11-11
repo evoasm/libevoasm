@@ -214,10 +214,10 @@ evoasm_x64_enc_basic_(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *p
 }
 
 evoasm_success_t
-evoasm_x64_func_prolog(evoasm_buf_t *buf, evoasm_x64_abi_t abi);
+evoasm_x64_emit_func_prolog(evoasm_x64_abi_t abi, evoasm_buf_t *buf);
 
 evoasm_success_t
-evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi);
+evoasm_x64_emit_func_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf);
 
 const char *
 evoasm_x64_inst_get_mnem(evoasm_x64_inst_t *inst);

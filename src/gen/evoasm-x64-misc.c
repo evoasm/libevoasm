@@ -23,7 +23,7 @@ evoasm_x64_get_features(uint64_t *features_) {
   evoasm_log_debug("Running CPUID...");
 
   EVOASM_TRY(alloc_failed, evoasm_buf_init, buf, EVOASM_BUF_TYPE_MMAP, 512);
-  EVOASM_TRY(enc_failed, evoasm_x64_func_prolog,  buf, EVOASM_X64_ABI_SYSV);
+  EVOASM_TRY(enc_failed, evoasm_x64_emit_func_prolog, EVOASM_X64_ABI_SYSV, buf);
 
 
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_A);
@@ -143,7 +143,7 @@ evoasm_x64_get_features(uint64_t *features_) {
 
   }
 
-  EVOASM_TRY(enc_failed, evoasm_x64_func_epilog, buf, EVOASM_X64_ABI_SYSV);
+  EVOASM_TRY(enc_failed, evoasm_x64_emit_func_epilog, EVOASM_X64_ABI_SYSV, buf);
 
   /*evoasm_buf_dump(buf, stderr);*/
 

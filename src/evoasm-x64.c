@@ -23,7 +23,7 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
 };
 
 static evoasm_success_t
-evoasm_x64_func_prolog_or_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi, bool prolog) {
+evoasm_x64_func_emit_prolog_or_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf, bool prolog) {
   size_t regs_len = EVOASM_ARY_LEN(evoasm_x64_sysv_callee_save_regs);
   evoasm_x64_params_t params = {0};
 
@@ -49,13 +49,13 @@ enc_failed:
 }
 
 evoasm_success_t
-evoasm_x64_func_prolog(evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
-  return evoasm_x64_func_prolog_or_epilog(buf, abi, true);
+evoasm_x64_emit_func_prolog(evoasm_x64_abi_t abi, evoasm_buf_t *buf) {
+  return evoasm_x64_func_emit_prolog_or_epilog(abi, buf, true);
 }
 
 evoasm_success_t
-evoasm_x64_func_epilog(evoasm_buf_t *buf, evoasm_x64_abi_t abi) {
-  return evoasm_x64_func_prolog_or_epilog(buf, abi, false);
+evoasm_x64_emit_func_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf) {
+  return evoasm_x64_func_emit_prolog_or_epilog(abi, buf, false);
 }
 
 evoasm_success_t

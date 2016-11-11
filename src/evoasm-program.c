@@ -877,7 +877,7 @@ evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
   size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
 
   evoasm_buf_reset(program->buf);
-  EVOASM_TRY(error, evoasm_x64_func_prolog, program->buf, EVOASM_X64_ABI_SYSV);
+  EVOASM_TRY(error, evoasm_x64_emit_func_prolog, EVOASM_X64_ABI_SYSV, program->buf);
 
   for(size_t i = 0; i < n_examples; i++) {
     evoasm_program_io_val_t *input_vals = input->vals + i * input->arity;
@@ -888,7 +888,7 @@ evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
     EVOASM_TRY(error, evoasm_program_x64_emit_output_store, program, i);
   }
 
-  EVOASM_TRY(error, evoasm_x64_func_epilog, program->buf, EVOASM_X64_ABI_SYSV);
+  EVOASM_TRY(error, evoasm_x64_emit_func_epilog, EVOASM_X64_ABI_SYSV, program->buf);
   return true;
 
 error:
