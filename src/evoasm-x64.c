@@ -731,7 +731,10 @@ evoasm_x64_cpu_state_free(evoasm_x64_cpu_state_t *cpu_state) {
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf, bool load) {
+evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state,
+                                     bool ip, bool sp,
+                                     evoasm_buf_t *buf, bool load) {
+
   static const evoasm_x64_reg_id_t tmp_reg1 = EVOASM_X64_REG_14;
   static const evoasm_x64_reg_id_t tmp_reg2 = EVOASM_X64_REG_15;
 
@@ -743,6 +746,9 @@ evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_b
 #ifndef EVOASM_X64_ENABLE_AVX512
     if(reg_id >= EVOASM_X64_REG_ZMM16) continue;
 #endif
+
+    if(!ip && reg_id == EVOASM_X64_REG_IP) continue;
+    if(!sp && reg_id == EVOASM_X64_REG_SP) continue;
 
     uint8_t *data = (uint8_t *) evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
     EVOASM_TRY(enc_failed, evoasm_x64_emit_load_store, reg_id, data, tmp_reg1, tmp_reg2, buf, load);
@@ -770,13 +776,13 @@ enc_failed:
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_emit_load(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
-  return evoasm_x64_cpu_state_emit_load_store(cpu_state, buf, true);
+evoasm_x64_cpu_state_emit_load(evoasm_x64_cpu_state_t *cpu_state, bool ip, bool sp, evoasm_buf_t *buf) {
+  return evoasm_x64_cpu_state_emit_load_store(cpu_state, ip, sp, buf, true);
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_emit_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
-  return evoasm_x64_cpu_state_emit_load_store(cpu_state, buf, false);
+evoasm_x64_cpu_state_emit_store(evoasm_x64_cpu_state_t *cpu_state, bool ip, bool sp, evoasm_buf_t *buf) {
+  return evoasm_x64_cpu_state_emit_load_store(cpu_state, ip, sp, buf, false);
 }
 
 
