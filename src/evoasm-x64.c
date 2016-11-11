@@ -500,9 +500,9 @@ evoasm_x64_emit_mm_load_store(evoasm_reg_id_t reg,
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
 
   if(load) {
-    EVOASM_X64_ENC(movsd_xmm_xmmm64);
+    EVOASM_X64_ENC(movq_mm_mmm64);
   } else {
-    EVOASM_X64_ENC(movsd_xmmm64_xmm);
+    EVOASM_X64_ENC(movq_mmm64_mm);
   }
 
   return true;
