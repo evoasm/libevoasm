@@ -41,6 +41,7 @@ evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
   if(handle) {
     siglongjmp(_evoasm_signal_ctx.env, 1);
   } else {
+    evoasm_signal_uninstall();
     raise(sig);
   }
 }
