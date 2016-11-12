@@ -22,6 +22,7 @@ typedef struct  {
   volatile evoasm_arch_id_t arch_id;
   sigjmp_buf env;
   struct sigaction prev_action;
+  int last_exception;
 } evoasm_signal_ctx_t;
 
 extern _Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
@@ -33,11 +34,15 @@ extern _Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
 
 #include "evoasm-arch.h"
 
+
+typedef void *(*evoasm_signal_try_func_t)(void *);
+typedef void *(*evoasm_signal_catch_func_t)(int, void *);
+
 void
 evoasm_signal_uninstall();
 
 void
-evoasm_signal_install(evoasm_arch_id_t arch_id, uint64_t exception_mask);
+evoasm_signal_install(evoasm_arch_id_t arch_id);
 
 void
 evoasm_signal_set_exception_mask(uint64_t exception_mask);

@@ -625,7 +625,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
 
   EVOASM_TRY(error, evoasm_program_emit, program, params->program_input, emit_flags);
 
-  evoasm_signal_install((evoasm_arch_id_t) best_deme->arch_id, 0);
+  evoasm_signal_install((evoasm_arch_id_t) best_deme->arch_id);
   evoasm_loss_t loss = evoasm_program_eval(program, params->program_output);
   assert(loss == best_deme->best_loss);
   evoasm_signal_uninstall();
@@ -967,7 +967,7 @@ static evoasm_success_t
 evoasm_deme_eval(evoasm_deme_t *deme) {
   bool retval = true;
 
-  evoasm_signal_install((evoasm_arch_id_t) deme->arch_id, 0);
+  evoasm_signal_install((evoasm_arch_id_t) deme->arch_id);
 
   EVOASM_MEMSET_N(deme->loss_data.counters, 0, EVOASM_DEME_N_INDIVS(deme));
   EVOASM_MEMSET_N(deme->loss_data.samples, 0, EVOASM_DEME_N_INDIVS(deme) * EVOASM_DEME_MAX_LOSS_SAMPLES);

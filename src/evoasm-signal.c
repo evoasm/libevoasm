@@ -10,7 +10,7 @@
 
 #ifdef EVOASM_UNIX
 
-#define EVOASM_SIGNAL_EXCEPTION_SET(exc) (_evoasm_signal_ctx.exception_mask & (1 << exc))
+#define EVOASM_SIGNAL_EXCEPTION_MASK_GET(exc) (_evoasm_signal_ctx.exception_mask & (1u << exc))
 
 _Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
 
@@ -22,8 +22,10 @@ evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
     case EVOASM_ARCH_X64: {
       switch(sig) {
         case SIGFPE: {
+          int exception = EVOASM_X64_EXCEPTION_DE;
           bool catch_div_by_zero = siginfo->si_code == FPE_INTDIV &&
-                                   EVOASM_SIGNAL_EXCEPTION_SET(EVOASM_X64_EXCEPTION_DE);
+                                   EVOASM_SIGNAL_EXCEPTION_MASK_GET(exception);
+          _evoasm_signal_ctx.last_exception = exception;
           handle = catch_div_by_zero;
           break;
         }
@@ -44,11 +46,12 @@ evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
 }
 
 void
-evoasm_signal_install(evoasm_arch_id_t arch_id, uint64_t exception_mask) {
+evoasm_signal_install(evoasm_arch_id_t arch_id) {
   struct sigaction action = {0};
 
   _evoasm_signal_ctx.arch_id = (volatile evoasm_arch_id_t) arch_id;
-  _evoasm_signal_ctx.exception_mask = exception_mask;
+  _evoasm_signal_ctx.exception_mask = 0;
+  _evoasm_signal_ctx.last_exception = 0;
 
   action.sa_sigaction = evoasm_signal_handler;
   sigemptyset(&action.sa_mask);
@@ -71,6 +74,23 @@ evoasm_signal_uninstall() {
     perror("sigaction");
     exit(1);
   }
+}
+
+void *
+evoasm_signal_try(evoasm_arch_id_t arch, uint64_t exception_mask, evoasm_signal_try_func_t try_func,
+                  evoasm_signal_catch_func_t catch_func, void *data) {
+
+  void *retval = NULL;
+  evoasm_signal_install(arch);
+  evoasm_signal_set_exception_mask(exception_mask);
+
+  if(EVOASM_SIGNAL_TRY()) {
+    retval = try_func(data);
+  } else {
+    retval = catch_func(_evoasm_signal_ctx.last_exception, data);
+  }
+  evoasm_signal_uninstall();
+  return retval;
 }
 
 #else
