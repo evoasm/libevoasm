@@ -20,11 +20,17 @@ evoasm_arch_info_t _evoasm_arch_infos[] = {
     }
 };
 
+evoasm_arch_id_t _evoasm_current_arch = EVOASM_ARCH_NONE;
+
 evoasm_arch_info_t *
 evoasm_get_arch_info(evoasm_arch_id_t arch_id) {
   return &_evoasm_arch_infos[arch_id];
 }
 
+evoasm_arch_id_t
+evoasm_get_current_arch() {
+  return _evoasm_current_arch;
+}
 
 #define EVOASM_ARCH_INFO_DEF_GETTER(field, type) EVOASM_DEF_GETTER(arch_info, field, type)
 

@@ -61,6 +61,7 @@ evoasm_x64_emit_func_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf) {
 evoasm_success_t
 evoasm_x64_init() {
   extern evoasm_arch_info_t _evoasm_arch_infos[EVOASM_ARCH_NONE];
+  extern evoasm_arch_id_t _evoasm_current_arch;
   uint64_t features;
   EVOASM_TRY(cpuid_failed, evoasm_x64_get_features, &features);
 
@@ -92,6 +93,7 @@ evoasm_x64_init() {
   }
 
   _evoasm_arch_infos[EVOASM_ARCH_X64].features = features;
+  _evoasm_current_arch = EVOASM_ARCH_X64;
 
   return true;
 

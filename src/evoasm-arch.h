@@ -59,6 +59,8 @@ _Static_assert(sizeof(evoasm_error_data_t) >= sizeof(evoasm_enc_error_data_t), "
 evoasm_arch_info_t *
 evoasm_get_arch_info(evoasm_arch_id_t arch_id);
 
+evoasm_arch_id_t
+evoasm_get_current_arch();
 
 #if 0
 static inline void

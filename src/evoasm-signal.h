@@ -34,15 +34,14 @@ extern _Thread_local evoasm_signal_ctx_t _evoasm_signal_ctx;
 
 #include "evoasm-arch.h"
 
-
-typedef void *(*evoasm_signal_try_func_t)(void *);
-typedef void *(*evoasm_signal_catch_func_t)(int, void *);
+int
+evoasm_signal_get_last_exception();
 
 void
 evoasm_signal_uninstall();
 
 void
-evoasm_signal_install(evoasm_arch_id_t arch_id);
+evoasm_signal_install();
 
 void
 evoasm_signal_set_exception_mask(uint64_t exception_mask);

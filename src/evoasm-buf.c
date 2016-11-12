@@ -11,6 +11,7 @@
 #include "evoasm-buf.h"
 #include "evoasm-alloc.h"
 #include "evoasm-util.h"
+#include "evoasm-signal.h"
 
 EVOASM_DEF_LOG_TAG("buf")
 
@@ -104,6 +105,25 @@ evoasm_buf_exec(evoasm_buf_t *buf) {
   *(void **) (&func) = buf->data;
   result = func();
   return result;
+}
+
+evoasm_success_t
+evoasm_buf_safe_exec(evoasm_buf_t *buf, uint64_t exception_mask, intptr_t *retval) {
+  bool success;
+
+  evoasm_signal_install();
+  evoasm_signal_set_exception_mask(exception_mask);
+
+  if(EVOASM_SIGNAL_TRY()) {
+    *retval = evoasm_buf_exec(buf);
+    success = true;
+  } else {
+    *retval = evoasm_signal_get_last_exception();
+    success = false;
+  }
+
+  evoasm_signal_uninstall();
+  return success;
 }
 
 void

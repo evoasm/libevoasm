@@ -47,8 +47,11 @@ evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
 }
 
 void
-evoasm_signal_install(evoasm_arch_id_t arch_id) {
+evoasm_signal_install() {
   struct sigaction action = {0};
+
+  evoasm_arch_id_t arch_id = evoasm_get_current_arch();
+  assert(arch_id != EVOASM_ARCH_NONE);
 
   _evoasm_signal_ctx.arch_id = (volatile evoasm_arch_id_t) arch_id;
   _evoasm_signal_ctx.exception_mask = 0;
@@ -69,29 +72,17 @@ evoasm_signal_set_exception_mask(uint64_t exception_mask) {
   _evoasm_signal_ctx.exception_mask = exception_mask;
 }
 
+int
+evoasm_signal_get_last_exception() {
+  return _evoasm_signal_ctx.last_exception;
+}
+
 void
 evoasm_signal_uninstall() {
   if(sigaction(SIGFPE, &_evoasm_signal_ctx.prev_action, NULL) < 0) {
     perror("sigaction");
     exit(1);
   }
-}
-
-void *
-evoasm_signal_try(evoasm_arch_id_t arch, uint64_t exception_mask, evoasm_signal_try_func_t try_func,
-                  evoasm_signal_catch_func_t catch_func, void *data) {
-
-  void *retval = NULL;
-  evoasm_signal_install(arch);
-  evoasm_signal_set_exception_mask(exception_mask);
-
-  if(EVOASM_SIGNAL_TRY()) {
-    retval = try_func(data);
-  } else {
-    retval = catch_func(_evoasm_signal_ctx.last_exception, data);
-  }
-  evoasm_signal_uninstall();
-  return retval;
 }
 
 #else
