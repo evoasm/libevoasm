@@ -510,12 +510,14 @@ evoasm_x64_emit_mm_load_store(evoasm_reg_id_t reg,
   EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
   EVOASM_X64_ENC(mov_r64_imm64);
 
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
 
   if(load) {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
     EVOASM_X64_ENC(movq_mm_mmm64);
   } else {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
     EVOASM_X64_ENC(movq_mmm64_mm);
   }
 
@@ -537,12 +539,14 @@ evoasm_x64_emit_gp_load_store(evoasm_reg_id_t reg,
   EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
   EVOASM_X64_ENC(mov_r64_imm64);
 
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
 
   if(load) {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
     EVOASM_X64_ENC(mov_r64_rm64);
   } else {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
     EVOASM_X64_ENC(mov_rm64_r64);
   }
 
@@ -564,8 +568,13 @@ evoasm_x64_emit_xmm_load_store(evoasm_reg_id_t reg,
   EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
   EVOASM_X64_ENC(mov_r64_imm64);
 
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
+  if(load) {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+  } else {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
+  }
 
   if(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM] == 32) {
     if(load) {
