@@ -478,7 +478,7 @@ evoasm_x64_emit_rflags_load_store(uint8_t *data,
   EVOASM_X64_ENC(mov_r64_rm64);
 
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_REG_SP);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) (data + 8));
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) (data + (load ? 0 : 8)));
   EVOASM_X64_ENC(mov_r64_imm64);
 
   if(load) {
