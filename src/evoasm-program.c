@@ -479,7 +479,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
   evoasm_kernel_t *kernel = &program->kernels[0];
 
   evoasm_log_debug("n _input regs %d", kernel->n_input_regs);
-#if 1
+#if 0
   for(input_reg_id = (evoasm_x64_reg_id_t) 13; input_reg_id < 19; input_reg_id++) {
     if(input_reg_id == EVOASM_X64_REG_SP) continue;
     evoasm_x64_params_t params = {0};
