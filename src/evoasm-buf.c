@@ -12,6 +12,7 @@
 #include "evoasm-alloc.h"
 #include "evoasm-util.h"
 #include "evoasm-signal.h"
+#include "evoasm.h"
 
 EVOASM_DEF_LOG_TAG("buf")
 
@@ -146,16 +147,21 @@ evoasm_buf_to_buf_ref(evoasm_buf_t *buf, evoasm_buf_ref_t *buf_ref) {
 }
 
 size_t
-evoasm_buf_append(evoasm_buf_t *restrict dst, evoasm_buf_t *restrict src) {
-  size_t free = dst->capa - dst->pos;
-  if(src->pos > free) {
+evoasm_buf_write(evoasm_buf_t *buf, uint8_t *data, size_t len) {
+  size_t free = buf->capa - buf->pos;
+  if(len > free) {
     evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "buffer does not fit (need %zu bytes but only %zu free)", src->pos, free);
-    return src->pos - (dst->capa - dst->pos);
+                 NULL, "buffer does not fit (need %zu bytes but only %zu free)", len, free);
+    return len - free;
   }
-  memcpy(dst->data + dst->pos, src->data, src->pos);
-  dst->pos += src->pos;
+  memcpy(buf->data + buf->pos, data, len);
+  buf->pos += len;
   return 0;
+}
+
+size_t
+evoasm_buf_append(evoasm_buf_t *restrict dst, evoasm_buf_t *restrict src) {
+  return evoasm_buf_write(dst, src->data, src->pos);
 }
 
 evoasm_success_t
