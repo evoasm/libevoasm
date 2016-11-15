@@ -660,7 +660,7 @@ evoasm_x64_emit_load_store(evoasm_x64_reg_id_t reg_id,
       break;
     }
     case EVOASM_X64_REG_TYPE_MXCSR: {
-      EVOASM_TRY(enc_failed, evoasm_x64_emit_mxcsr_load_store, data, tmp_reg1, buf, load);
+      //EVOASM_TRY(enc_failed, evoasm_x64_emit_mxcsr_load_store, data, tmp_reg1, buf, load);
       break;
     }
     default: {
