@@ -766,6 +766,7 @@ evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state,
   bool ip = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_IP;
   bool sp = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_SP;
   bool mxcsr = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_MXCSR;
+  bool rflags = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_RFLAGS;
 
   static const evoasm_x64_reg_id_t tmp_reg1 = EVOASM_X64_REG_14;
   static const evoasm_x64_reg_id_t tmp_reg2 = EVOASM_X64_REG_15;
@@ -782,6 +783,7 @@ evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state,
     if(!ip && reg_id == EVOASM_X64_REG_IP) continue;
     if(!sp && reg_id == EVOASM_X64_REG_SP) continue;
     if(!mxcsr && reg_id == EVOASM_X64_REG_MXCSR) continue;
+    if(!rflags && reg_id == EVOASM_X64_REG_RFLAGS) continue;
 
     uint8_t *data = (uint8_t *) evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
     EVOASM_TRY(enc_failed, evoasm_x64_emit_load_store, reg_id, data, tmp_reg1, tmp_reg2, buf, load);

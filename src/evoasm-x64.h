@@ -39,6 +39,7 @@ typedef enum {
   EVOASM_X64_CPU_STATE_FLAG_IP = (1 << 0),
   EVOASM_X64_CPU_STATE_FLAG_SP = (1 << 1),
   EVOASM_X64_CPU_STATE_FLAG_MXCSR = (1 << 2),
+  EVOASM_X64_CPU_STATE_FLAG_RFLAGS = (1 << 3),
 } evoasm_x64_cpu_state_flags_t;
 
 typedef enum {
