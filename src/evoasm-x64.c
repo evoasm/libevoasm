@@ -245,18 +245,18 @@ size_t
 evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types,
                  evoasm_x64_inst_id_t *insts) {
   size_t len = 0;
-  bool all = (flags & EVOASM_X64_INSTS_FLAG_ALL) != 0;
+  bool include_useless = (flags & EVOASM_X64_INSTS_FLAG_INCLUDE_USELESS) != 0;
 
   for(size_t i = 0; i < EVOASM_X64_INST_NONE; i++) {
-    if(!all && !evoasm_x64_is_useful_inst((evoasm_x64_inst_id_t) i)) goto skip;
+    if(!include_useless && !evoasm_x64_is_useful_inst((evoasm_x64_inst_id_t) i)) goto skip;
 
     evoasm_x64_inst_t *inst = (evoasm_x64_inst_t *) &EVOASM_X64_INSTS_VAR_NAME[i];
 
-    if(all && !evoasm_x64_inst_is_basic(inst)) goto skip;
+    if(include_useless && !evoasm_x64_inst_is_basic(inst)) goto skip;
 
     if((inst->features & ~features) != 0) goto skip;
 
-    if(all && inst->n_operands == 0) goto skip;
+    if(include_useless && inst->n_operands == 0) goto skip;
 
     for(size_t j = 0; j < inst->n_operands; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
@@ -265,7 +265,7 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
 
       if(operand->type == EVOASM_X64_OPERAND_TYPE_REG ||
          operand->type == EVOASM_X64_OPERAND_TYPE_RM) {
-        if((flags & EVOASM_X64_INSTS_FLAG_ALL) &&
+        if((flags & EVOASM_X64_INSTS_FLAG_INCLUDE_USELESS) &&
            (operand->reg_id == EVOASM_X64_REG_SP ||
             operand->reg_id == EVOASM_X64_REG_IP))
           goto skip;
