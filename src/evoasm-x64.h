@@ -36,6 +36,12 @@ typedef enum {
 } evoasm_x64_insts_flags_t;
 
 typedef enum {
+  EVOASM_X64_CPU_STATE_FLAG_IP = (1 << 0),
+  EVOASM_X64_CPU_STATE_FLAG_SP = (1 << 1),
+  EVOASM_X64_CPU_STATE_FLAG_MXCSR = (1 << 2),
+} evoasm_x64_cpu_state_flags_t;
+
+typedef enum {
   EVOASM_X64_OPERAND_SIZE_1,
   EVOASM_X64_OPERAND_SIZE_8,
   EVOASM_X64_OPERAND_SIZE_16,
@@ -110,6 +116,7 @@ typedef struct {
   evoasm_aligned(32) uint64_t zmm29[8];
   evoasm_aligned(32) uint64_t zmm30[8];
   evoasm_aligned(32) uint64_t zmm31[8];
+  evoasm_x64_cpu_state_flags_t flags;
 } evoasm_x64_cpu_state_t;
 
 typedef struct {

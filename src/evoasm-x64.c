@@ -660,7 +660,7 @@ evoasm_x64_emit_load_store(evoasm_x64_reg_id_t reg_id,
       break;
     }
     case EVOASM_X64_REG_TYPE_MXCSR: {
-      //EVOASM_TRY(enc_failed, evoasm_x64_emit_mxcsr_load_store, data, tmp_reg1, buf, load);
+      EVOASM_TRY(enc_failed, evoasm_x64_emit_mxcsr_load_store, data, tmp_reg1, buf, load);
       break;
     }
     default: {
@@ -738,7 +738,13 @@ evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
   }
 }
 
-EVOASM_DEF_ZERO_INIT_FUNC(x64_cpu_state)
+void
+evoasm_x64_cpu_state_init(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_cpu_state_flags_t flags) {
+  static evoasm_x64_cpu_state_t zero_cpu_state = {0};
+  *cpu_state = zero_cpu_state;
+  cpu_state->flags = flags;
+}
+
 
 EVOASM_DEF_EMPTY_DESTROY_FUNC(x64_cpu_state)
 
@@ -755,8 +761,11 @@ evoasm_x64_cpu_state_free(evoasm_x64_cpu_state_t *cpu_state) {
 
 evoasm_success_t
 evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state,
-                                     bool ip, bool sp,
                                      evoasm_buf_t *buf, bool load) {
+
+  bool ip = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_IP;
+  bool sp = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_SP;
+  bool mxcsr = cpu_state->flags & EVOASM_X64_CPU_STATE_FLAG_MXCSR;
 
   static const evoasm_x64_reg_id_t tmp_reg1 = EVOASM_X64_REG_14;
   static const evoasm_x64_reg_id_t tmp_reg2 = EVOASM_X64_REG_15;
@@ -772,6 +781,7 @@ evoasm_x64_cpu_state_emit_load_store(evoasm_x64_cpu_state_t *cpu_state,
 
     if(!ip && reg_id == EVOASM_X64_REG_IP) continue;
     if(!sp && reg_id == EVOASM_X64_REG_SP) continue;
+    if(!mxcsr && reg_id == EVOASM_X64_REG_MXCSR) continue;
 
     uint8_t *data = (uint8_t *) evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
     EVOASM_TRY(enc_failed, evoasm_x64_emit_load_store, reg_id, data, tmp_reg1, tmp_reg2, buf, load);
@@ -799,15 +809,14 @@ enc_failed:
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_emit_load(evoasm_x64_cpu_state_t *cpu_state, bool ip, bool sp, evoasm_buf_t *buf) {
-  return evoasm_x64_cpu_state_emit_load_store(cpu_state, ip, sp, buf, true);
+evoasm_x64_cpu_state_emit_load(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
+  return evoasm_x64_cpu_state_emit_load_store(cpu_state, buf, true);
 }
 
 evoasm_success_t
-evoasm_x64_cpu_state_emit_store(evoasm_x64_cpu_state_t *cpu_state, bool ip, bool sp, evoasm_buf_t *buf) {
-  return evoasm_x64_cpu_state_emit_load_store(cpu_state, ip, sp, buf, false);
+evoasm_x64_cpu_state_emit_store(evoasm_x64_cpu_state_t *cpu_state, evoasm_buf_t *buf) {
+  return evoasm_x64_cpu_state_emit_load_store(cpu_state, buf, false);
 }
-
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(x64_params)
 
