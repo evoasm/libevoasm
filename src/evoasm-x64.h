@@ -33,6 +33,7 @@ typedef struct {
 
 typedef enum {
   EVOASM_X64_INSTS_FLAG_INCLUDE_USELESS = (1 << 0),
+  EVOASM_X64_INSTS_FLAG_ONLY_BASIC = (1 << 1),
 } evoasm_x64_insts_flags_t;
 
 typedef enum {
