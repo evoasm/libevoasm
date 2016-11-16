@@ -680,10 +680,15 @@ enc_failed:
 }
 
 void
-evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint64_t *data,
+evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t *data,
                          size_t len) {
-  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)], len * sizeof(uint64_t));
-  memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id), data, bytes_len);
+  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], len * sizeof(uint64_t));
+  memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), data, bytes_len);
+
+  if(reg == EVOASM_X64_REG_RFLAGS) {
+    /* Mask away dangerous and useless flags */
+    cpu_state->rflags[0] &= 0x8c5;
+  }
 }
 
 void
@@ -692,9 +697,15 @@ evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
 }
 
 size_t
-evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg_id, const uint64_t **data) {
-  *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg_id);
-  size_t len = EVOASM_MAX(1, evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg_id)] / sizeof(uint64_t));
+evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t **data) {
+  if(reg == EVOASM_X64_REG_RFLAGS) {
+    /* Mask away dangerous and useless flags */
+    cpu_state->rflags[0] &= 0x8c5;
+  }
+
+  *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg);
+  size_t len = EVOASM_MAX(1, evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)] / sizeof(uint64_t));
+
   return len;
 }
 
