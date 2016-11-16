@@ -1412,7 +1412,6 @@ evoasm_success_t evoasm_x64_sqrtsd_xmm_xmmm64(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_vsqrtsd_xmm_xmm_xmmm64(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_sqrtss_xmm_xmmm32(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_vsqrtss_xmm_xmm_xmmm32(evoasm_x64_enc_ctx_t *ctx);
-evoasm_success_t evoasm_x64_stac(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_stc(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_std(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_stmxcsr_m32(evoasm_x64_enc_ctx_t *ctx);
