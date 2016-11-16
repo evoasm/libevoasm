@@ -235,6 +235,7 @@ evoasm_x64_is_useful_inst(evoasm_x64_inst_id_t inst) {
     case EVOASM_X64_INST_LOOP_REL8:
     case EVOASM_X64_INST_LOOPE_REL8:
     case EVOASM_X64_INST_LOOPNE_REL8:
+    case EVOASM_X64_INST_UD2:
       return false;
     default:
       return true;
