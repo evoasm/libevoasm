@@ -235,10 +235,6 @@ evoasm_x64_is_useful_inst(evoasm_x64_inst_id_t inst) {
     case EVOASM_X64_INST_LOOP_REL8:
     case EVOASM_X64_INST_LOOPE_REL8:
     case EVOASM_X64_INST_LOOPNE_REL8:
-    case EVOASM_X64_INST_ENTERQ_IMM16_IMM8:
-    case EVOASM_X64_INST_ENTERW_IMM16_IMM8:
-    case EVOASM_X64_INST_LEAVEQ:
-    case EVOASM_X64_INST_LEAVEW:
       return false;
     default:
       return true;
@@ -269,7 +265,7 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
 
       if(operand->type == EVOASM_X64_OPERAND_TYPE_REG ||
          operand->type == EVOASM_X64_OPERAND_TYPE_RM) {
-        if((flags & EVOASM_X64_INSTS_FLAG_INCLUDE_USELESS) &&
+        if(!include_useless &&
            (operand->reg_id == EVOASM_X64_REG_SP ||
             operand->reg_id == EVOASM_X64_REG_IP))
           goto skip;
