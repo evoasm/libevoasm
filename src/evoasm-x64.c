@@ -714,8 +714,8 @@ enc_failed:
 
 void
 evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t *data,
-                         size_t n_elems) {
-  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], n_elems * sizeof(uint64_t));
+                         size_t len) {
+  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], len);
   memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), data, bytes_len);
 
   if(reg == EVOASM_X64_REG_RFLAGS) {
