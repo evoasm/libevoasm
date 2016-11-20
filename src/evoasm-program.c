@@ -312,6 +312,7 @@ hb:
     }
     case EVOASM_X64_REG_WORD_W:
       evoasm_bitmap_or64(mask, 0, 0xffffu);
+      break;
     case EVOASM_X64_REG_WORD_DW:
       /* 32bit writes clear the whole register */
       if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
@@ -320,7 +321,6 @@ hb:
         /* xmm[0..31] does this for example */
         evoasm_bitmap_or64(mask, 0, 0xffffffffu);
       }
-      break;
       break;
     case EVOASM_X64_REG_WORD_LQW:
       evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
@@ -393,9 +393,9 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
    *       _input registers are register that are read from without
    *       a previous write
    */
-  evoasm_x64_reg_liveness_t reg_livenesss[EVOASM_X64_REG_NONE];
+  evoasm_x64_reg_liveness_t reg_livenesses[EVOASM_X64_REG_NONE];
   for(int i = 0; i < EVOASM_X64_REG_NONE; i++) {
-    evoasm_x64_reg_liveness_init(&reg_livenesss[i]);
+    evoasm_x64_reg_liveness_init(&reg_livenesses[i]);
   }
 
   kernel->n_input_regs = 0;
@@ -426,7 +426,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
         } else {
           evoasm_x64_reg_id_t reg_id = evoasm_kernel_get_operand_reg_id_x64(kernel, op, (uint16_t) i);
           evoasm_kernel_x64_reg_info_reg_t *reg_info = &kernel->reg_info.x64.regs[reg_id];
-          evoasm_x64_reg_liveness_t *reg_liveness = &reg_livenesss[reg_id];
+          evoasm_x64_reg_liveness_t *reg_liveness = &reg_livenesses[reg_id];
 
           /*
            * Conditional writes (cond_written) might or might not do the write.
