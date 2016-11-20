@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define EVOASM_BITMAP_INDEX_DECLS(key) \
+#define EVOASM_BITMAP_IDX_DECLS(key) \
   size_t size = sizeof(uint64_t) * 8;\
   size_t ary_idx = ((size_t) key) / size;\
   size_t bit_idx = ((size_t) key) % size;
@@ -41,23 +41,38 @@ typedef uint64_t evoasm_bitmap_t;
 
 static inline void
 evoasm_bitmap_set(evoasm_bitmap_t *bitmap, size_t idx) {
-  EVOASM_BITMAP_INDEX_DECLS(idx);
+  EVOASM_BITMAP_IDX_DECLS(idx);
   bitmap[ary_idx] |= (1ull << bit_idx);
 }
 
 static inline void
 evoasm_bitmap_unset(evoasm_bitmap_t *bitmap, size_t idx) {
-  EVOASM_BITMAP_INDEX_DECLS(idx);
+  EVOASM_BITMAP_IDX_DECLS(idx);
   /* unset values must be 0*/
   bitmap[ary_idx] &= ~(1ull << bit_idx);
 }
 
 static inline bool
 evoasm_bitmap_get(evoasm_bitmap_t *bitmap, size_t idx) {
-  EVOASM_BITMAP_INDEX_DECLS(idx);
+  EVOASM_BITMAP_IDX_DECLS(idx);
   return (bitmap[ary_idx] & (1ull << bit_idx)) != 0;
 }
 
+static inline void
+evoasm_bitmap_set64(evoasm_bitmap_t *bitmap, size_t idx, uint64_t bits) {
+  EVOASM_BITMAP_IDX_DECLS(idx);
+  (void) bit_idx;
+  bitmap[ary_idx] = bits;
+}
+
+#define EVOASM_BITMAP_DECL_IS_ZERO(width) \
+  static inline bool evoasm_bitmap ## width ## _is_zero(evoasm_bitmap##width##_t *bitmap) { \
+    size_t i;\
+    for(i = 0; i < width / 64; i++) {\
+      if(bitmap->data[i] != 0) return false;\
+    }\
+    return true;\
+  }
 
 #define EVOASM_BITMAP_DECL_UNOP(name, width, op) \
   static inline void evoasm_bitmap ## width ## _ ## name (evoasm_bitmap##width##_t *bitmap, evoasm_bitmap##width##_t *result) { \
@@ -120,5 +135,7 @@ EVOASM_BITMAP_DECL_BINOP(or, 64, |)
 EVOASM_BITMAP_DECL_POPCOUNT(64)
 EVOASM_BITMAP_DECL_EQL(64)
 
+EVOASM_BITMAP_DECL_BINOP(andn, 512, &~)
+EVOASM_BITMAP_DECL_IS_ZERO(512)
 
 EVOASM_BITMAP_DECL_EQL(1024)

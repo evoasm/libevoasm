@@ -44,7 +44,6 @@ typedef enum {
 } evoasm_x64_cpu_state_flags_t;
 
 typedef enum {
-  EVOASM_X64_OPERAND_SIZE_1,
   EVOASM_X64_OPERAND_SIZE_8,
   EVOASM_X64_OPERAND_SIZE_16,
   EVOASM_X64_OPERAND_SIZE_32,
@@ -56,7 +55,22 @@ typedef enum {
 } evoasm_x64_operand_size_t;
 
 #define EVOASM_X64_OPERAND_SIZE_BITSIZE 3
-#define EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT 4
+#define EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT 3
+
+typedef enum {
+  EVOASM_X64_OPERAND_WORD_LB,
+  EVOASM_X64_OPERAND_WORD_HB,
+  EVOASM_X64_OPERAND_WORD_W,
+  EVOASM_X64_OPERAND_WORD_DW,
+  EVOASM_X64_OPERAND_WORD_LQW,
+  EVOASM_X64_OPERAND_WORD_HQW,
+  EVOASM_X64_OPERAND_WORD_DQW,
+  EVOASM_X64_OPERAND_WORD_VW,
+  EVOASM_X64_OPERAND_WORD_NONE,
+} evoasm_x64_operand_word_t;
+
+#define EVOASM_X64_OPERAND_WORD_BITSIZE 3
+#define EVOASM_X64_OPERAND_WORD_BITSIZE_OPT 4
 
 typedef struct {
   uint64_t ip[1];
@@ -124,23 +138,22 @@ typedef struct {
 typedef struct {
   unsigned read: 1;
   unsigned written: 1;
-  unsigned undefined: 1;
   unsigned cond_written: 1;
   unsigned implicit: 1;
   unsigned mnem: 1;
   unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
-  unsigned size1: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
-  unsigned size2: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
+  unsigned word: EVOASM_X64_OPERAND_WORD_BITSIZE_OPT;
+  unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_OPT;
-  unsigned read_mask: EVOASM_X64_BITMASK_BITSIZE;
-  unsigned write_mask: EVOASM_X64_BITMASK_BITSIZE;
-  unsigned undefined_mask: EVOASM_X64_BITMASK_BITSIZE;
-  unsigned cond_write_mask: EVOASM_X64_BITMASK_BITSIZE;
-  unsigned flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
   union {
+    struct {
+      unsigned read_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
+      unsigned written_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
+    };
     uint8_t reg_id;
     int8_t imm;
+    uint8_t unused;
   };
 } evoasm_x64_operand_t;
 
@@ -220,6 +233,22 @@ static inline evoasm_success_t
 evoasm_x64_enc_basic_(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
   evoasm_x64_inst_t *inst = evoasm_x64_inst_(inst_id);
   return evoasm_x64_inst_enc_basic_(inst, params, buf_ref);
+}
+
+static inline evoasm_x64_reg_id_t
+evoasm_x64_operand_get_reg_id_(evoasm_x64_operand_t *operand) {
+  /* Flag registers store the flags inside the reg_id union */
+  if(operand->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) return EVOASM_X64_REG_RFLAGS;
+  if(operand->reg_type == EVOASM_X64_REG_TYPE_MXCSR) return EVOASM_X64_REG_MXCSR;
+  return (evoasm_x64_reg_id_t) operand->reg_id;
+}
+
+static inline evoasm_x64_operand_size_t
+evoasm_x64_operand_get_reg_size_(evoasm_x64_operand_t *operand) {
+  if(operand->type != EVOASM_X64_OPERAND_TYPE_REG && operand->type != EVOASM_X64_OPERAND_TYPE_RM) {
+    return EVOASM_X64_OPERAND_SIZE_NONE;
+  }
+  return (evoasm_x64_operand_size_t) operand->size;
 }
 
 evoasm_success_t

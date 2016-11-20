@@ -11,6 +11,7 @@
 #include "evoasm-arch.h"
 #include "evoasm.h"
 #include "evoasm-x64.h"
+#include "evoasm-param.h"
 
 
 EVOASM_DEF_LOG_TAG("program")
@@ -276,7 +277,7 @@ evoasm_kernel_get_operand_reg_id_x64(evoasm_kernel_t *kernel, evoasm_x64_operand
 
   if(op->param_idx < inst->n_params) {
     return (evoasm_x64_reg_id_t) evoasm_x64_basic_params_get_(&kernel->params.x64[inst_idx],
-                                                              (evoasm_x64_param_id_t) inst->params[op->param_idx].id);
+                                                              (evoasm_x64_basic_param_id_t) inst->params[op->param_idx].id);
   } else if(op->reg_id < EVOASM_X64_REG_NONE) {
     return (evoasm_x64_reg_id_t) op->reg_id;
   } else {
@@ -286,67 +287,83 @@ evoasm_kernel_get_operand_reg_id_x64(evoasm_kernel_t *kernel, evoasm_x64_operand
 }
 
 typedef struct {
-  bool high_byte_reg : 1;
-  uint64_t mask;
-  size_t size;
-} evoasm_x64_reg_write_acc_t;
-
+  evoasm_bitmap512_t mask;
+} evoasm_x64_reg_liveness_t;
 
 static void
-evoasm_x64_reg_write_acc_update(evoasm_x64_reg_write_acc_t *reg_write_acc,
-                                evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params) {
-  if(reg_write_acc->size < EVOASM_X64_OPERAND_SIZE_NONE) {
-    reg_write_acc->size = EVOASM_MAX(reg_write_acc->size, op->size1);
-  } else {
-    reg_write_acc->size = op->size1;
+evoasm_x64_reg_liveness_set_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params,
+                                 evoasm_bitmap_t *mask) {
+  switch(op->word) {
+    case EVOASM_X64_OPERAND_WORD_LB:
+      if(!op->implicit && op->param_idx < inst->n_params &&
+         (
+             (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG0 && params->reg0_high_byte)
+             ||
+             (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG1 && params->reg1_high_byte)
+         )) {
+        goto hb;
+      }
+      evoasm_bitmap_set64(mask, 0, 0xffu);
+      break;
+    case EVOASM_X64_OPERAND_WORD_HB: {
+hb:
+      evoasm_bitmap_set64(mask, 0, 0xff00u);
+      break;
+    }
+    case EVOASM_X64_OPERAND_WORD_W:
+      /* 32bit writes clear the whole register */
+      if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
+        evoasm_bitmap_set64(mask, 0, 0xffffffffu);
+      } else {
+        /* xmm[0..31] does this for example */
+        evoasm_bitmap_set64(mask, 0, 0xffffu);
+      }
+      break;
+    case EVOASM_X64_OPERAND_WORD_DW:
+      evoasm_bitmap_set64(mask, 0, 0xffffffffu);
+      break;
+    case EVOASM_X64_OPERAND_WORD_LQW:
+      evoasm_bitmap_set64(mask, 0, 0xffffffffffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_HQW:
+      evoasm_bitmap_set64(mask, 1, 0xffffffffffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_DQW:
+      evoasm_bitmap_set64(mask, 0, 0xffffffffffffffffull);
+      evoasm_bitmap_set64(mask, 1, 0xffffffffffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_VW:
+      evoasm_bitmap_set64(mask, 0, 0xffffffffffffffffull);
+      evoasm_bitmap_set64(mask, 1, 0xffffffffffffffffull);
+      evoasm_bitmap_set64(mask, 2, 0xffffffffffffffffull);
+      evoasm_bitmap_set64(mask, 3, 0xffffffffffffffffull);
+      break;
+    default:
+      evoasm_assert_not_reached();
   }
-
-  reg_write_acc->mask |= op->write_mask;
-  reg_write_acc->high_byte_reg |= params->reg0_high_byte || params->reg1_high_byte;
 }
 
+static void
+evoasm_x64_reg_liveness_update(evoasm_x64_reg_liveness_t *reg_liveness, evoasm_x64_inst_t *inst,
+                               evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params) {
+  evoasm_x64_reg_liveness_set_mask(inst, op, params, (evoasm_bitmap_t *) &reg_liveness->mask);
+}
 
 static bool
-evoasm_x64_reg_write_acc_is_dirty_read(evoasm_x64_reg_write_acc_t *reg_write_acc, evoasm_x64_operand_t *op,
-                                       evoasm_x64_basic_params_t *params) {
-  bool dirty_read;
-  bool high_byte_reg = params->reg0_high_byte || params->reg1_high_byte;
+evoasm_x64_reg_liveness_is_dirty_read(evoasm_x64_reg_liveness_t *reg_liveness, evoasm_x64_inst_t *inst,
+                                      evoasm_x64_operand_t *op,
+                                      evoasm_x64_basic_params_t *params) {
 
-  assert(reg_write_acc->size <= EVOASM_X64_OPERAND_SIZE_NONE);
-  if(reg_write_acc->size == EVOASM_X64_OPERAND_SIZE_NONE) {
-    return true;
-  }
+  evoasm_bitmap512_t mask;
+  evoasm_x64_reg_liveness_set_mask(inst, op, params, (evoasm_bitmap_t *) &mask);
 
-  if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
-    /* 32bit writes clear the whole register */
-    if(reg_write_acc->size >= EVOASM_X64_OPERAND_SIZE_32) {
-      dirty_read = false;
-    } else {
-      if(op->size1 == EVOASM_X64_OPERAND_SIZE_8 &&
-         reg_write_acc->size == EVOASM_X64_OPERAND_SIZE_8) {
-        dirty_read = high_byte_reg != reg_write_acc->high_byte_reg;
-      } else {
-        dirty_read = reg_write_acc->size < op->size1;
-      }
-    }
-  } else if(op->reg_type == EVOASM_X64_REG_TYPE_XMM) {
-    uint64_t mask;
-    if(op->size1 == EVOASM_X64_OPERAND_SIZE_128) {
-      mask = EVOASM_X64_BITMASK_0_127;
-    } else {
-      mask = EVOASM_X64_BITMASK_ALL;
-    }
-    dirty_read = ((mask & (~reg_write_acc->mask)) != 0);
-  } else {
-    dirty_read = false;
-  }
-
-  return dirty_read;
+  evoasm_bitmap512_andn(&mask, &reg_liveness->mask, &mask);
+  return !evoasm_bitmap512_is_zero(&mask);
 }
 
 static bool
 evoasm_kernel_is_writing_inst_x64(evoasm_kernel_t *kernel, size_t inst_idx, evoasm_reg_id_t reg_id,
-                                  evoasm_x64_reg_write_acc_t *reg_write_acc) {
+                                  evoasm_x64_reg_liveness_t *reg_liveness) {
   evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[inst_idx]);
 
   for(size_t i = 0; i < x64_inst->n_operands; i++) {
@@ -355,8 +372,8 @@ evoasm_kernel_is_writing_inst_x64(evoasm_kernel_t *kernel, size_t inst_idx, evoa
     evoasm_x64_basic_params_t *x64_basic_params = &kernel->params.x64[inst_idx];
 
     if(op->written && op_reg_id == reg_id &&
-       evoasm_x64_reg_write_acc_is_dirty_read(reg_write_acc, op, x64_basic_params)) {
-      evoasm_x64_reg_write_acc_update(reg_write_acc, op, x64_basic_params);
+       evoasm_x64_reg_liveness_is_dirty_read(reg_liveness, x64_inst, op, x64_basic_params)) {
+      evoasm_x64_reg_liveness_update(reg_liveness, x64_inst, op, x64_basic_params);
       return true;
     }
   }
@@ -365,11 +382,9 @@ evoasm_kernel_is_writing_inst_x64(evoasm_kernel_t *kernel, size_t inst_idx, evoa
 
 
 static void
-evoasm_x64_reg_write_acc_init(evoasm_x64_reg_write_acc_t *reg_write_acc) {
-  static evoasm_x64_reg_write_acc_t zero_reg_write_acc = {0};
-  *reg_write_acc = zero_reg_write_acc;
-
-  reg_write_acc->size = EVOASM_X64_OPERAND_SIZE_NONE;
+evoasm_x64_reg_liveness_init(evoasm_x64_reg_liveness_t *reg_liveness) {
+  static evoasm_x64_reg_liveness_t zero_reg_liveness = {0};
+  *reg_liveness = zero_reg_liveness;
 }
 
 static void
@@ -378,10 +393,16 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
    *       _input registers are register that are read from without
    *       a previous write
    */
-  evoasm_x64_reg_write_acc_t reg_write_accs[EVOASM_X64_REG_NONE];
+  evoasm_x64_reg_liveness_t reg_livenesss[EVOASM_X64_REG_NONE];
   for(int i = 0; i < EVOASM_X64_REG_NONE; i++) {
-    evoasm_x64_reg_write_acc_init(&reg_write_accs[i]);
+    evoasm_x64_reg_liveness_init(&reg_livenesss[i]);
   }
+
+  kernel->n_input_regs = 0;
+  kernel->n_output_regs = 0;
+
+  static evoasm_kernel_reg_info_t zero_reg_info = {0};
+  kernel->reg_info = zero_reg_info;
 
   for(size_t i = 0; i < kernel->size; i++) {
     evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
@@ -396,14 +417,16 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
         if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
           if(op->read) {
             program->reset_rflags = true;
-          } else if(op->written) {
-            kernel->reg_info.x64.written_flags = (kernel->reg_info.x64.written_flags | op->flags) & EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
-            kernel->reg_info.x64.regs[op->reg_id].written = true;
+          }
+          if(op->written) {
+            kernel->reg_info.x64.written_flags =
+                (kernel->reg_info.x64.written_flags | op->written_flags) & EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
+            kernel->reg_info.x64.regs[EVOASM_X64_REG_RFLAGS].written = true;
           }
         } else {
           evoasm_x64_reg_id_t reg_id = evoasm_kernel_get_operand_reg_id_x64(kernel, op, (uint16_t) i);
           evoasm_kernel_x64_reg_info_reg_t *reg_info = &kernel->reg_info.x64.regs[reg_id];
-          evoasm_x64_reg_write_acc_t *reg_write_acc = &reg_write_accs[reg_id];
+          evoasm_x64_reg_liveness_t *reg_liveness = &reg_livenesss[reg_id];
 
           /*
            * Conditional writes (cond_written) might or might not do the write.
@@ -422,7 +445,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
                */
 
               if(reg_info->written && reg_info->writer_rank < i) {
-                dirty_read = evoasm_x64_reg_write_acc_is_dirty_read(reg_write_acc, op, x64_basic_params);
+                dirty_read = evoasm_x64_reg_liveness_is_dirty_read(reg_liveness, x64_inst, op, x64_basic_params);
               } else {
                 dirty_read = true;
               }
@@ -444,7 +467,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
               kernel->n_output_regs++;
             }
 
-            evoasm_x64_reg_write_acc_update(reg_write_acc, op, x64_basic_params);
+            evoasm_x64_reg_liveness_update(reg_liveness, x64_inst, op, x64_basic_params);
           }
         }
       }
@@ -697,17 +720,18 @@ evoasm_program_x64_emit_kernel_transitions(evoasm_program_t *program,
     }
 
     if((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_ZF)) &&
-        (EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_CF))) {
+       (EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_CF))) {
       if(jmp_inst_id == EVOASM_X64_INST_JA_REL32) goto branch_transition;
     }
 
     if((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_SF)) &&
-        (EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_OF))) {
+       (EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_OF))) {
 
       if(jmp_inst_id == EVOASM_X64_INST_JL_REL32 ||
          jmp_inst_id == EVOASM_X64_INST_JGE_REL32 ||
          jmp_inst_id == EVOASM_X64_INST_JLE_REL32 ||
-         ((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_ZF)) && jmp_inst_id == EVOASM_X64_INST_JG_REL32)) {
+         ((EVOASM_X64_RFLAGS_FLAGS_GET(kernel->reg_info.x64.written_flags, EVOASM_X64_RFLAGS_FLAG_ZF)) &&
+          jmp_inst_id == EVOASM_X64_INST_JG_REL32)) {
         goto branch_transition;
       }
     }
@@ -1374,31 +1398,15 @@ evoasm_program_emit(evoasm_program_t *program,
   }
 }
 
-static void
-evoasm_program_unprepare_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel) {
-  kernel->n_input_regs = 0;
-  kernel->n_output_regs = 0;
-
-  static evoasm_kernel_reg_info_t zero_reg_info = {0};
-  kernel->reg_info = zero_reg_info;
-}
-
-void
-evoasm_program_unprepare(evoasm_program_t *program) {
-  for(size_t i = 0; i < program->size; i++) {
-    evoasm_program_unprepare_kernel(program, &program->kernels[i]);
-  }
-}
-
 static size_t
 evoasm_program_x64_find_writers_(evoasm_program_t *program, evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id,
                                  size_t idx, size_t *writers) {
   size_t len = 0;
   for(int i = (int) idx; i >= 0; i--) {
-    evoasm_x64_reg_write_acc_t reg_write_acc;
-    evoasm_x64_reg_write_acc_init(&reg_write_acc);
+    evoasm_x64_reg_liveness_t reg_liveness;
+    evoasm_x64_reg_liveness_init(&reg_liveness);
 
-    if(evoasm_kernel_is_writing_inst_x64(kernel, (size_t) i, reg_id, &reg_write_acc)) {
+    if(evoasm_kernel_is_writing_inst_x64(kernel, (size_t) i, reg_id, &reg_liveness)) {
       writers[len++] = (size_t) i;
     }
   }
@@ -1658,8 +1666,7 @@ evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level) {
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Program: size: %d", program->size);
 
-  for(size_t i = 0; i < program->size; i++)
-  {
+  for(size_t i = 0; i < program->size; i++) {
     evoasm_kernel_log(&program->kernels[i], (evoasm_arch_id_t) program->arch_info->id, log_level);
   }
   evoasm_log(log_level, EVOASM_LOG_TAG, " \n ");

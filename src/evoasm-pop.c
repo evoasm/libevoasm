@@ -540,7 +540,6 @@ static evoasm_success_t
 evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *loss) {
   evoasm_pop_params_t *params = deme->params;
 
-  evoasm_program_unprepare(program);
   //bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping
   evoasm_program_emit_flags_t emit_flags =
       EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
