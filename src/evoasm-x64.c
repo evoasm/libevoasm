@@ -194,6 +194,19 @@ evoasm_x64_operand_size_t evoasm_x64_operand_get_mem_size(evoasm_x64_operand_t *
     case EVOASM_X64_OPERAND_WORD_LQW:
     case EVOASM_X64_OPERAND_WORD_HQW:
       return EVOASM_X64_OPERAND_SIZE_64;
+    case EVOASM_X64_OPERAND_WORD_DQW:
+      return EVOASM_X64_OPERAND_SIZE_128;
+    case EVOASM_X64_OPERAND_WORD_VW:
+      switch(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM]) {
+        case 16:
+          return EVOASM_X64_OPERAND_SIZE_128;
+        case 32:
+          return EVOASM_X64_OPERAND_SIZE_256;
+        case 64:
+          return EVOASM_X64_OPERAND_SIZE_512;
+        default:
+          evoasm_assert_not_reached();
+      }
     default:
       evoasm_assert_not_reached();
   }
