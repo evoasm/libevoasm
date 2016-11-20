@@ -781,7 +781,7 @@ evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t 
 
   for(size_t i = clear_from_idx; i < n_elems; i++) data[i] = 0;
 
-  return len;
+  return n_elems;
 }
 
 bool
