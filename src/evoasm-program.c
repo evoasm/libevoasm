@@ -576,28 +576,28 @@ enc_failed:
 
 static evoasm_success_t
 evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
-                                          evoasm_kernel_t *kernel,
-                                          evoasm_kernel_t *target_kernel,
+                                          evoasm_kernel_t *from_kernel,
+                                          evoasm_kernel_t *to_kernel,
                                           evoasm_buf_t *buf,
                                           size_t trans_idx,
                                           bool set_io_mapping) {
   size_t input_reg_idx;
   evoasm_x64_reg_id_t input_reg_id;
 
-  assert(kernel->n_output_regs > 0);
+  assert(from_kernel->n_output_regs > 0);
 
   for(input_reg_id = (evoasm_x64_reg_id_t) 0, input_reg_idx = 0; input_reg_id < EVOASM_X64_REG_NONE; input_reg_id++) {
-    if(!target_kernel->reg_info.x64.regs[input_reg_id].input) continue;
+    if(!to_kernel->reg_info.x64.regs[input_reg_id].input) continue;
 
     evoasm_x64_reg_id_t output_reg_id;
 
     if(set_io_mapping) {
-      size_t output_reg_idx = input_reg_idx % kernel->n_output_regs;
-      output_reg_id = kernel->output_regs.x64[output_reg_idx];
+      size_t output_reg_idx = input_reg_idx % from_kernel->n_output_regs;
+      output_reg_id = from_kernel->output_regs.x64[output_reg_idx];
 
-      kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx] = output_reg_id;
+      from_kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx] = output_reg_id;
     } else {
-      output_reg_id = kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx];
+      output_reg_id = from_kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx];
     }
 
     evoasm_x64_reg_type_t output_reg_type = evoasm_x64_get_reg_type(output_reg_id);

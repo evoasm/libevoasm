@@ -22,6 +22,7 @@ typedef struct {
   bool written : 1;
   bool output : 1;
   uint16_t writer_rank;
+  /*registers in following kernels whose input is this register */
   evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS];
 } evoasm_kernel_x64_reg_info_reg_t;
 
