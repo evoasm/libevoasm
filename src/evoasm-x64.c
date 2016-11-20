@@ -715,7 +715,7 @@ enc_failed:
 void
 evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t *data,
                          size_t len) {
-  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], len);
+  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], len * sizeof(uint64_t));
   memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), data, bytes_len);
 
   if(reg == EVOASM_X64_REG_RFLAGS) {
@@ -732,7 +732,7 @@ evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
 size_t
 evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, evoasm_x64_reg_word_t word, uint64_t *data, size_t len) {
   size_t size  = evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)];
-  size_t cpy_len = EVOASM_MIN(len, size);
+  size_t cpy_len = EVOASM_MIN(len * sizeof(uint64_t), size);
   memcpy(data, evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), cpy_len);
 
   size_t n_elems = EVOASM_MAX(1, cpy_len / sizeof(uint64_t));
