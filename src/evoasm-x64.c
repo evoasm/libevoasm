@@ -179,7 +179,7 @@ evoasm_x64_operand_get_index_reg_size(evoasm_x64_operand_t *operand) {
 }
 
 evoasm_x64_operand_size_t evoasm_x64_operand_get_mem_size(evoasm_x64_operand_t *operand) {
-  if(operand->type != EVOASM_X64_OPERAND_TYPE_MEM && operand->type != EVOASM_X64_OPERAND_TYPE_RM) {
+  if(operand->type != EVOASM_X64_OPERAND_TYPE_MEM && operand->type != EVOASM_X64_OPERAND_TYPE_RM && operand->type != EVOASM_X64_OPERAND_TYPE_VSIB) {
     return EVOASM_X64_OPERAND_SIZE_NONE;
   }
 
