@@ -291,10 +291,10 @@ typedef struct {
 } evoasm_x64_reg_liveness_t;
 
 static void
-evoasm_x64_reg_liveness_set_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params,
-                                 evoasm_bitmap_t *mask) {
+evoasm_x64_reg_liveness_or_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params,
+                                evoasm_bitmap_t *mask) {
   switch(op->word) {
-    case EVOASM_X64_OPERAND_WORD_LB:
+    case EVOASM_X64_REG_WORD_LB:
       if(!op->implicit && op->param_idx < inst->n_params &&
          (
              (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG0 && params->reg0_high_byte)
@@ -303,40 +303,40 @@ evoasm_x64_reg_liveness_set_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *
          )) {
         goto hb;
       }
-      evoasm_bitmap_set64(mask, 0, 0xffu);
+      evoasm_bitmap_or64(mask, 0, 0x00ffu);
       break;
-    case EVOASM_X64_OPERAND_WORD_HB: {
+    case EVOASM_X64_REG_WORD_HB: {
 hb:
-      evoasm_bitmap_set64(mask, 0, 0xff00u);
+      evoasm_bitmap_or64(mask, 0, 0xff00u);
       break;
     }
-    case EVOASM_X64_OPERAND_WORD_W:
+    case EVOASM_X64_REG_WORD_W:
+      evoasm_bitmap_or64(mask, 0, 0xffffu);
+    case EVOASM_X64_REG_WORD_DW:
       /* 32bit writes clear the whole register */
       if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
-        evoasm_bitmap_set64(mask, 0, 0xffffffffu);
+        evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
       } else {
         /* xmm[0..31] does this for example */
-        evoasm_bitmap_set64(mask, 0, 0xffffu);
+        evoasm_bitmap_or64(mask, 0, 0xffffffffu);
       }
       break;
-    case EVOASM_X64_OPERAND_WORD_DW:
-      evoasm_bitmap_set64(mask, 0, 0xffffffffu);
       break;
-    case EVOASM_X64_OPERAND_WORD_LQW:
-      evoasm_bitmap_set64(mask, 0, 0xffffffffffffffffull);
+    case EVOASM_X64_REG_WORD_LQW:
+      evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
       break;
-    case EVOASM_X64_OPERAND_WORD_HQW:
-      evoasm_bitmap_set64(mask, 1, 0xffffffffffffffffull);
+    case EVOASM_X64_REG_WORD_HQW:
+      evoasm_bitmap_or64(mask, 1, 0xffffffffffffffffull);
       break;
-    case EVOASM_X64_OPERAND_WORD_DQW:
-      evoasm_bitmap_set64(mask, 0, 0xffffffffffffffffull);
-      evoasm_bitmap_set64(mask, 1, 0xffffffffffffffffull);
+    case EVOASM_X64_REG_WORD_DQW:
+      evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(mask, 1, 0xffffffffffffffffull);
       break;
-    case EVOASM_X64_OPERAND_WORD_VW:
-      evoasm_bitmap_set64(mask, 0, 0xffffffffffffffffull);
-      evoasm_bitmap_set64(mask, 1, 0xffffffffffffffffull);
-      evoasm_bitmap_set64(mask, 2, 0xffffffffffffffffull);
-      evoasm_bitmap_set64(mask, 3, 0xffffffffffffffffull);
+    case EVOASM_X64_REG_WORD_VW:
+      evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(mask, 1, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(mask, 2, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(mask, 3, 0xffffffffffffffffull);
       break;
     default:
       evoasm_assert_not_reached();
@@ -346,7 +346,7 @@ hb:
 static void
 evoasm_x64_reg_liveness_update(evoasm_x64_reg_liveness_t *reg_liveness, evoasm_x64_inst_t *inst,
                                evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params) {
-  evoasm_x64_reg_liveness_set_mask(inst, op, params, (evoasm_bitmap_t *) &reg_liveness->mask);
+  evoasm_x64_reg_liveness_or_mask(inst, op, params, (evoasm_bitmap_t *) &reg_liveness->mask);
 }
 
 static bool
@@ -354,8 +354,8 @@ evoasm_x64_reg_liveness_is_dirty_read(evoasm_x64_reg_liveness_t *reg_liveness, e
                                       evoasm_x64_operand_t *op,
                                       evoasm_x64_basic_params_t *params) {
 
-  evoasm_bitmap512_t mask;
-  evoasm_x64_reg_liveness_set_mask(inst, op, params, (evoasm_bitmap_t *) &mask);
+  evoasm_bitmap512_t mask = {0};
+  evoasm_x64_reg_liveness_or_mask(inst, op, params, (evoasm_bitmap_t *) &mask);
 
   evoasm_bitmap512_andn(&mask, &reg_liveness->mask, &mask);
   return !evoasm_bitmap512_is_zero(&mask);

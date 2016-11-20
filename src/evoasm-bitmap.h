@@ -65,6 +65,14 @@ evoasm_bitmap_set64(evoasm_bitmap_t *bitmap, size_t idx, uint64_t bits) {
   bitmap[ary_idx] = bits;
 }
 
+static inline void
+evoasm_bitmap_or64(evoasm_bitmap_t *bitmap, size_t idx, uint64_t bits) {
+  EVOASM_BITMAP_IDX_DECLS(idx);
+  (void) bit_idx;
+  bitmap[ary_idx] |= bits;
+}
+
+
 #define EVOASM_BITMAP_DECL_IS_ZERO(width) \
   static inline bool evoasm_bitmap ## width ## _is_zero(evoasm_bitmap##width##_t *bitmap) { \
     size_t i;\

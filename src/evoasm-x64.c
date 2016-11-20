@@ -184,19 +184,19 @@ evoasm_x64_operand_size_t evoasm_x64_operand_get_mem_size(evoasm_x64_operand_t *
   }
 
   switch(operand->word) {
-    case EVOASM_X64_OPERAND_WORD_LB:
-    case EVOASM_X64_OPERAND_WORD_HB:
+    case EVOASM_X64_REG_WORD_LB:
+    case EVOASM_X64_REG_WORD_HB:
       return EVOASM_X64_OPERAND_SIZE_8;
-    case EVOASM_X64_OPERAND_WORD_W:
+    case EVOASM_X64_REG_WORD_W:
       return EVOASM_X64_OPERAND_SIZE_16;
-    case EVOASM_X64_OPERAND_WORD_DW:
+    case EVOASM_X64_REG_WORD_DW:
       return EVOASM_X64_OPERAND_SIZE_32;
-    case EVOASM_X64_OPERAND_WORD_LQW:
-    case EVOASM_X64_OPERAND_WORD_HQW:
+    case EVOASM_X64_REG_WORD_LQW:
+    case EVOASM_X64_REG_WORD_HQW:
       return EVOASM_X64_OPERAND_SIZE_64;
-    case EVOASM_X64_OPERAND_WORD_DQW:
+    case EVOASM_X64_REG_WORD_DQW:
       return EVOASM_X64_OPERAND_SIZE_128;
-    case EVOASM_X64_OPERAND_WORD_VW:
+    case EVOASM_X64_REG_WORD_VW:
       switch(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM]) {
         case 16:
           return EVOASM_X64_OPERAND_SIZE_128;
@@ -714,8 +714,8 @@ enc_failed:
 
 void
 evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t *data,
-                         size_t len) {
-  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], len * sizeof(uint64_t));
+                         size_t n_elems) {
+  size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)], n_elems * sizeof(uint64_t));
   memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), data, bytes_len);
 
   if(reg == EVOASM_X64_REG_RFLAGS) {
@@ -730,14 +730,56 @@ evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
 }
 
 size_t
-evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t **data) {
+evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, evoasm_x64_reg_word_t word, uint64_t *data, size_t len) {
+  size_t size  = evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)];
+  size_t cpy_len = EVOASM_MIN(len, size);
+  memcpy(data, evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), cpy_len);
+
+  size_t n_elems = EVOASM_MAX(1, cpy_len / sizeof(uint64_t));
+  size_t clear_from_idx = n_elems;
+
   if(reg == EVOASM_X64_REG_RFLAGS) {
     /* Mask away dangerous and useless flags */
-    cpu_state->rflags[0] &= 0x8c5;
+    data[0] &= 0x8c5;
   }
 
-  *data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg);
-  size_t len = EVOASM_MAX(1, evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)] / sizeof(uint64_t));
+  switch(word) {
+    case EVOASM_X64_REG_WORD_LB:
+      data[0] &= 0x00FF;
+      clear_from_idx = 1;
+      break;
+    case EVOASM_X64_REG_WORD_HB:
+      data[0] &= 0xFF00;
+      clear_from_idx = 1;
+      break;
+    case EVOASM_X64_REG_WORD_W:
+      data[0] &= 0xFFFF;
+      clear_from_idx = 1;
+      break;
+    case EVOASM_X64_REG_WORD_DW:
+      data[0] &= 0xFFFFFFFF;
+      clear_from_idx = 1;
+      break;
+    case EVOASM_X64_REG_WORD_LQW:
+      data[0] &= 0xFFFFFFFFFFFFFFFF;
+      clear_from_idx = 1;
+      break;
+    case EVOASM_X64_REG_WORD_HQW:
+      data[0] = 0;
+      clear_from_idx = 2;
+      break;
+    case EVOASM_X64_REG_WORD_DQW:
+      clear_from_idx = 2;
+      break;
+    case EVOASM_X64_REG_WORD_VW:
+      break;
+    case EVOASM_X64_REG_WORD_NONE:
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
+
+  for(size_t i = clear_from_idx; i < n_elems; i++) data[i] = 0;
 
   return len;
 }
