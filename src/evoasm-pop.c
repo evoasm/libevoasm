@@ -572,10 +572,10 @@ evoasm_deme_register_loss_sample(evoasm_deme_t *deme, size_t row, size_t indiv_i
 
 static evoasm_deme_t *
 evoasm_pop_find_best_deme(evoasm_pop_t *pop) {
-  evoasm_loss_t best_loss = INFINITY;
-  evoasm_deme_t *best_deme = NULL;
+  evoasm_deme_t *best_deme = &pop->demes[0];
+  evoasm_loss_t best_loss = best_deme->best_loss;
 
-  for(size_t i = 0; i < pop->params->n_demes; i++) {
+  for(size_t i = 1; i < pop->params->n_demes; i++) {
     evoasm_deme_t *deme = &pop->demes[i];
     if(deme->best_loss < best_loss) {
       best_loss = deme->best_loss;
