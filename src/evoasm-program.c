@@ -1259,6 +1259,7 @@ evoasm_program_eval(evoasm_program_t *program,
   evoasm_loss_t loss;
 
   if(evoasm_unlikely(kernel->n_output_regs == 0)) {
+    evoasm_log_info("program %p has no output", (void *) program);
     return INFINITY;
   }
 
@@ -1270,7 +1271,7 @@ evoasm_program_eval(evoasm_program_t *program,
     evoasm_buf_exec(program->buf);
     loss = evoasm_program_assess(program, output);
   } else {
-    evoasm_log_debug("program %p signaled", (void *) program);
+    evoasm_log_info("program %p signaled", (void *) program);
     loss = INFINITY;
   }
   return loss;
