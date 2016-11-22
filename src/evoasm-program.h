@@ -1,9 +1,18 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -21,7 +30,6 @@ typedef struct {
   bool input : 1;
   bool written : 1;
   bool output : 1;
-  uint16_t writer_rank;
   /*registers in following kernels whose input is this register */
   evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS];
 } evoasm_kernel_x64_reg_info_reg_t;
@@ -53,6 +61,11 @@ typedef struct {
   uint16_t idx;
   uint16_t buf_start;
   uint16_t buf_end;
+
+#ifdef EVOASM_ENABLE_PARANOID_MODE
+  evoasm_program_io_val_t rand_vals[EVOASM_X64_REG_NONE];
+#endif
+
 } evoasm_kernel_t;
 
 typedef enum {
@@ -95,6 +108,7 @@ typedef struct {
     /* register at index i has _input i % input_arity */
     uint8_t x64[EVOASM_X64_REG_NONE];
   } reg_inputs;
+
 } evoasm_program_t;
 
 evoasm_success_t

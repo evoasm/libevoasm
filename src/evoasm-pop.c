@@ -1,9 +1,23 @@
-//
-// Created by jap on 9/16/16.
-//
+/*
+ * Copyright (C) 2016 Julian Aron Prenner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "evoasm-pop.h"
 #include "evoasm-signal.h"
+#include "evoasm-util.h"
 #include "evoasm-program.h"
 
 #ifdef _OPENMP
@@ -537,7 +551,7 @@ evoasm_deme_load_program(evoasm_deme_t *deme,
 
 
 static evoasm_success_t
-evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *loss) {
+evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *ret_loss) {
   evoasm_pop_params_t *params = deme->params;
 
   //bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping
@@ -548,12 +562,12 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_
       EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
   if(!evoasm_program_emit(program, params->program_input, emit_flags)) {
-    *loss = INFINITY;
+    *ret_loss = INFINITY;
     return false;
   }
 
-  *loss = evoasm_program_eval(program, params->program_output);
-  //evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_INFO);
+  *ret_loss = evoasm_program_eval(program, params->program_output);
+
   return true;
 }
 
@@ -857,10 +871,7 @@ static int evoasm_pop_loss_cmp_func(const void *a, const void *b) {
 static inline evoasm_loss_t
 evoasm_pop_find_median_loss_(evoasm_loss_t *losses, size_t len) {
 
-  qsort(losses, len, sizeof(evoasm_loss_t), evoasm_pop_loss_cmp_func);
-  return losses[(len - 1) / 2];
-
-#if 0
+  evoasm_loss_t median;
   assert(len >= EVOASM_DEME_MIN_LOSS_SAMPLES && len <= EVOASM_DEME_MAX_LOSS_SAMPLES);
 
   size_t trunc_len = EVOASM_ALIGN_DOWN(len, EVOASM_POP_FIND_MEDIAN_RUN_LEN);
@@ -913,12 +924,21 @@ evoasm_pop_find_median_loss_(evoasm_loss_t *losses, size_t len) {
         front_idxs[min_run_idx]++;
         scratch[i] = min_loss;
       }
-      return scratch[merge_len - 1];
+      median = scratch[merge_len - 1];
+      break;
     }
     default:
       evoasm_assert_not_reached();
   }
+
+#ifdef EVOASM_ENABLE_PARANOID_MODE
+  evoasm_loss_t median_;
+  qsort(losses, len, sizeof(evoasm_loss_t), evoasm_pop_loss_cmp_func);
+  median_ = losses[(len - 1) / 2];
+  assert(median == median_);
 #endif
+
+  return median;
 }
 
 evoasm_loss_t
@@ -960,6 +980,15 @@ evoasm_deme_eval_update(evoasm_deme_t *deme) {
       }
     }
   }
+}
+
+size_t
+evoasm_pop_get_loss_samples(evoasm_pop_t *pop, size_t deme_idx, const evoasm_loss_t **losses) {
+  evoasm_deme_t *deme = &pop->demes[deme_idx];
+  size_t len = EVOASM_DEME_N_INDIVS(deme) * EVOASM_DEME_MAX_LOSS_SAMPLES;
+  *losses =  deme->loss_data.samples;
+
+  return len;
 }
 
 static evoasm_success_t

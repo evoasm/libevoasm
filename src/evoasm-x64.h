@@ -1,9 +1,18 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
@@ -138,7 +147,7 @@ typedef struct {
 typedef struct {
   unsigned read: 1;
   unsigned written: 1;
-  unsigned cond_written: 1;
+  unsigned maybe_written: 1;
   unsigned implicit: 1;
   unsigned mnem: 1;
   unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
@@ -259,3 +268,9 @@ evoasm_x64_emit_func_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf);
 
 const char *
 evoasm_x64_inst_get_mnem(evoasm_x64_inst_t *inst);
+
+evoasm_success_t
+evoasm_x64_emit_pop(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf);
+
+evoasm_success_t
+evoasm_x64_emit_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf);

@@ -1,9 +1,18 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "evoasm-x64.h"
@@ -145,7 +154,7 @@ EVOASM_X64_OPERAND_DEF_BOOL_GETTER(written)
 
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(implicit)
 
-EVOASM_X64_OPERAND_DEF_BOOL_GETTER(cond_written)
+EVOASM_X64_OPERAND_DEF_BOOL_GETTER(maybe_written)
 
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
 EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_reg_word_t)
@@ -488,12 +497,12 @@ enc_failed:
   return false;
 }
 
-static evoasm_success_t
+evoasm_success_t
 evoasm_x64_emit_pop(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf) {
   return evoasm_x64_emit_pop_push(reg_id, buf, true);
 }
 
-static evoasm_success_t
+evoasm_success_t
 evoasm_x64_emit_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf) {
   return evoasm_x64_emit_pop_push(reg_id, buf, false);
 }
