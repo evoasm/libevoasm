@@ -1097,9 +1097,15 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
   evoasm_prng_t *prng = &deme->prng;
 
   size_t indiv_size = evoasm_deme_get_indiv_size(deme, programs);
+
+  size_t parent_idxs[2] = {
+      deme->selected_parent_idxs[idx],
+      deme->selected_parent_idxs[idx + 1],
+  };
+
   size_t parent_indiv_loss_offs[2] = {
-      EVOASM_DEME_LOSS_OFF(deme, row, idx),
-      EVOASM_DEME_LOSS_OFF(deme, row, idx + 1),
+      EVOASM_DEME_LOSS_OFF(deme, row, parent_idxs[0]),
+      EVOASM_DEME_LOSS_OFF(deme, row, parent_idxs[1])
   };
 
   evoasm_loss_t parent_losses[2] = {
@@ -1113,11 +1119,11 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
   /* save parents to local storage, we override originals with children */
   for(size_t j = 0; j < 2; j++) {
     if(programs) {
-      size_t program_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, idx + j, 0);
+      size_t program_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, parent_idxs[j], 0);
       evoasm_pop_program_data_copy(program_data, program_pos0_off, &deme->parent_program_data,
                                    j * deme->params->program_size, deme->params->program_size);
     } else {
-      size_t kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, row, idx + j, 0);
+      size_t kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, row, parent_idxs[j], 0);
       evoasm_pop_kernel_data_copy(kernel_data, deme->arch_id, kernel_inst0_off,
                                   &deme->parent_kernel_data,
                                   j * deme->params->kernel_size, deme->params->kernel_size);
@@ -1136,7 +1142,7 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
     loss_data->samples[parent_indiv_loss_offs[j]] = child_loss;
 
     if(programs) {
-      size_t program_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, idx + j, 0);
+      size_t program_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, parent_idxs[j], 0);
 
       evoasm_pop_program_data_copy(&deme->parent_program_data,
                                    seg1_src_off, program_data, program_pos0_off, seg1_len);
@@ -1144,7 +1150,7 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
                                    seg2_src_off, program_data, program_pos0_off + seg1_len, seg2_len);
 
     } else {
-      size_t kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, row, idx + j, 0);
+      size_t kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, row, parent_idxs[j], 0);
       evoasm_pop_kernel_data_copy(&deme->parent_kernel_data, deme->arch_id,
                                   seg1_src_off, kernel_data, kernel_inst0_off, seg1_len);
       evoasm_pop_kernel_data_copy(&deme->parent_kernel_data, deme->arch_id,
