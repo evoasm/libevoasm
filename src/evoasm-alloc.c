@@ -28,7 +28,7 @@ evoasm_malloc(size_t size) {
   void *ptr = malloc(size);
   if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
-                 "Allocationg %zu bytes via malloc failed: %s", size, strerror(errno));
+                 "Allocating %zu bytes via malloc failed: %s", size, strerror(errno));
     return NULL;
   }
   return ptr;
@@ -39,7 +39,7 @@ evoasm_aligned_alloc(size_t align, size_t size) {
   void *ptr = aligned_alloc(align, size);
   if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
-                 "Allocationg %zu bytes via aligned_alloc failed: %s", size, strerror(errno));
+                 "Allocating %zu bytes via aligned_alloc failed: %s", size, strerror(errno));
     return NULL;
   }
   return ptr;
@@ -51,7 +51,7 @@ evoasm_calloc(size_t n, size_t size) {
 
   if(evoasm_unlikely(!ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
-                 "Allocationg %zux%zu (%zu) bytes via calloc failed: %s", n, size, n * size, strerror(errno));
+                 "Allocating %zux%zu (%zu) bytes via calloc failed: %s", n, size, n * size, strerror(errno));
     return NULL;
   }
   return ptr;
@@ -61,12 +61,12 @@ void *
 evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
   if(evoasm_unlikely(size == 0 || n >= SIZE_MAX / size)) {
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
-                 "Allocationg %zux%zu bytes via aligned_calloc failed: integer overflow", n, size);
+                 "Allocating %zux%zu bytes via aligned_calloc failed: integer overflow", n, size);
     return NULL;
   }
 
   size_t len = n * size;
-  void *ptr = evoasm_aligned_alloc(align, n * size);
+  void *ptr = evoasm_aligned_alloc(align, len);
 
   if(evoasm_likely(ptr != NULL)) {
     memset(ptr, 0, len);
@@ -123,7 +123,7 @@ evoasm_mmap(size_t size, void *p) {
 
 error:
   evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
-               "Allocationg %zu bytes via mmap failed: %s", size, strerror(errno));
+               "Allocating %zu bytes via mmap failed: %s", size, strerror(errno));
   return NULL;
 }
 

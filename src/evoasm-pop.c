@@ -360,7 +360,7 @@ evoasm_pop_init(evoasm_pop_t *pop,
   EVOASM_TRY(error, evoasm_pop_init_domains, pop);
   EVOASM_TRY(error, evoasm_pop_module_data_init, &pop->module_data, params->library_size);
 
-  EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, (size_t) max_threads,
+  EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, (size_t) params->n_demes,
                    sizeof(evoasm_deme_t));
 
   for(int i = 0; i < params->n_demes; i++) {
