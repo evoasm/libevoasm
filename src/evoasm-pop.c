@@ -193,7 +193,7 @@ void
 evoasm_pop_destroy(evoasm_pop_t *pop) {
   evoasm_free(pop->domains);
 
-  for(int i = 0; i < pop->max_threads; i++) {
+  for(int i = 0; i < pop->params->deme_size; i++) {
     evoasm_deme_destroy(&pop->demes[i]);
   }
   evoasm_free(pop->demes);
@@ -340,6 +340,7 @@ evoasm_pop_init(evoasm_pop_t *pop,
   evoasm_prng_t seed_prng;
 #ifdef _OPENMP
   max_threads = omp_get_max_threads();
+  evoasm_log_info("Using OpenMP with %d threads", max_threads);
 #else
   max_threads = 1;
 #endif
@@ -347,13 +348,9 @@ evoasm_pop_init(evoasm_pop_t *pop,
   *pop = zero_pop;
 
   if(!evoasm_pop_params_validate(params)) goto error;
-  if(params->n_demes == 0) {
-    params->n_demes = (uint16_t) max_threads;
-  }
 
   pop->params = params;
   pop->max_threads = max_threads;
-
 
   evoasm_prng_init(&seed_prng, &params->seed);
 
