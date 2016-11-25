@@ -45,12 +45,12 @@ typedef struct {
   uint64_t features;
 } evoasm_arch_info_t;
 
+
 typedef enum {
-  EVOASM_ENC_ERROR_CODE_NOT_ENCODABLE = EVOASM_ERROR_CODE_NONE,
-  EVOASM_ENC_ERROR_CODE_MISSING_PARAM,
-  EVOASM_ENC_ERROR_CODE_INVALID_ACCESS,
-  EVOASM_ENC_ERROR_CODE_MISSING_FEATURE,
-} evoasm_enc_error_code_t;
+  EVOASM_ARCH_ERROR_CODE_NOT_ENCODABLE,
+  EVOASM_ARCH_ERROR_CODE_MISSING_PARAM,
+  EVOASM_ARCH_ERROR_CODE_MISSING_FEATURE,
+} evoasm_arch_error_code_t;
 
 typedef struct {
   uint8_t reg;

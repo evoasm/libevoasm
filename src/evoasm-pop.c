@@ -19,6 +19,7 @@
 #include "evoasm-signal.h"
 #include "evoasm-util.h"
 #include "evoasm-program.h"
+#include "evoasm-error.h"
 
 #ifdef _OPENMP
 
@@ -325,8 +326,8 @@ fail:
   return false;
 
 empty_domain:
-  evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-               NULL, "Empty domain");
+  evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
+               "Empty domain");
   return false;
 }
 
@@ -563,6 +564,11 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_
 
   if(!evoasm_program_emit(program, params->program_input, emit_flags)) {
     *ret_loss = INFINITY;
+
+    if(evoasm_last_error.code == EVOASM_PROGRAM_ERROR_CODE_NO_OUTPUT) {
+      /* do not abort on this error, instead just let loss be infinity */
+      return true;
+    }
     return false;
   }
 
@@ -1026,8 +1032,8 @@ evoasm_pop_eval(evoasm_pop_t *pop) {
 
   if(!pop->seeded) {
     retval = false;
-    evoasm_error(EVOASM_ERROR_TYPE_RUNTIME, EVOASM_ERROR_CODE_NONE,
-                 NULL, "not seeded");
+    evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
+                 "not seeded");
     goto done;
   }
 

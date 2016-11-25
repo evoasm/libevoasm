@@ -68,6 +68,11 @@ typedef struct {
 
 } evoasm_kernel_t;
 
+
+typedef enum {
+  EVOASM_PROGRAM_ERROR_CODE_NO_OUTPUT
+} evoasm_program_error_code_t;
+
 typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_PREPARE = (1 << 0),
   EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS = (1 << 1),

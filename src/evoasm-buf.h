@@ -33,6 +33,10 @@ typedef enum {
   EVOASM_BUF_TYPE_NONE
 } evoasm_buf_type_t;
 
+typedef enum {
+  EVOASM_BUF_ERROR_CODE_NO_SPACE
+} evoasm_buf_error_code_t;
+
 typedef struct {
     size_t  capa;
     size_t  pos;

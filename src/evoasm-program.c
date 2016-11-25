@@ -407,7 +407,7 @@ evoasm_x64_reg_liveness_init(evoasm_x64_reg_liveness_t *reg_liveness) {
   *reg_liveness = zero_reg_liveness;
 }
 
-static void
+static evoasm_success_t
 evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel) {
   /* NOTE: output register are register that are written to
    *       _input registers are register that are read from without
@@ -537,16 +537,27 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
 #endif
 
   assert(kernel->n_output_regs <= EVOASM_KERNEL_MAX_OUTPUT_REGS);
-  assert(kernel->n_output_regs > 0);
   assert(kernel->n_input_regs <= EVOASM_KERNEL_MAX_INPUT_REGS);
+
+  if(kernel->n_output_regs == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_PROGRAM_ERROR_CODE_NO_OUTPUT, NULL);
+    return false;
+  }
+
+  return true;
 }
 
-static void
+static evoasm_success_t
 evoasm_program_x64_prepare(evoasm_program_t *program) {
   for(size_t i = 0; i < program->size; i++) {
     evoasm_kernel_t *kernel = &program->kernels[i];
-    evoasm_program_x64_prepare_kernel(program, kernel);
+    EVOASM_TRY(error, evoasm_program_x64_prepare_kernel, program, kernel);
   }
+
+  return true;
+
+error:
+  return false;
 
 }
 
@@ -1028,7 +1039,7 @@ evoasm_program_x64_emit(evoasm_program_t *program,
   bool set_io_mapping = emit_flags & EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
   if(emit_flags & EVOASM_PROGRAM_EMIT_FLAG_PREPARE) {
-    evoasm_program_x64_prepare(program);
+    EVOASM_TRY(error, evoasm_program_x64_prepare, program);
   }
 
   if(emit_flags & EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS) {
@@ -1461,21 +1472,21 @@ evoasm_program_run(evoasm_program_t *program,
   evoasm_program_output_t *output;
 
   if(input->arity != program->_input.arity) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE, NULL,
+    evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
                  "example arity mismatch (%d for %d)", input->arity, program->_input.arity);
     return NULL;
   }
 
   size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(input);
   if(n_examples > program->max_examples) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE, NULL,
+    evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
                  "Maximum number of examples exceeded (%zu > %d)", n_examples, program->max_examples);
     return NULL;
   }
 
   for(size_t i = 0; i < input->arity; i++) {
     if(input->types[i] != program->_input.types[i]) {
-      evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE, NULL,
+      evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
                    "example type mismatch (%d != %d)", input->types[i], program->_input.types[i]);
       return NULL;
     }

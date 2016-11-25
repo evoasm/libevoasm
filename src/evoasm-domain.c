@@ -92,8 +92,8 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
       enum_domain->len = (uint16_t) len;
 
       if(len > EVOASM_ENUM_DOMAIN_LEN_MAX) {
-        evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                         NULL, "Exceeded maximum enumeration domain length (%d > %d)",
+        evoasm_error(EVOASM_ERROR_TYPE_NONE, EVOASM_ERROR_CODE_NONE,
+                         "Exceeded maximum enumeration domain length (%d > %d)",
                          enum_domain->len, EVOASM_ENUM_DOMAIN_LEN_MAX);
         return false;
       }

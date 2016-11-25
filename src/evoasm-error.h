@@ -39,16 +39,17 @@
   char msg[EVOASM_ERROR_MAX_MSG_LEN];
 
 typedef enum {
-  EVOASM_ERROR_CODE_MISSING_PARAM,
-  EVOASM_ERROR_CODE_NOT_ENCODABLE,
   EVOASM_ERROR_CODE_NONE
 } evoasm_error_code_t;
 
 typedef enum {
-  EVOASM_ERROR_TYPE_ARG,
-  EVOASM_ERROR_TYPE_MEMORY,
-  EVOASM_ERROR_TYPE_ENC,
-  EVOASM_ERROR_TYPE_RUNTIME,
+  EVOASM_ERROR_TYPE_BUF,
+  EVOASM_ERROR_TYPE_ALLOC,
+  EVOASM_ERROR_TYPE_ARCH,
+  EVOASM_ERROR_TYPE_PROGRAM,
+  EVOASM_ERROR_TYPE_POP_PARAMS,
+  EVOASM_ERROR_TYPE_POP,
+  EVOASM_ERROR_TYPE_NONE,
 } evoasm_error_type_t;
 
 typedef struct {
@@ -78,7 +79,7 @@ evoasm_get_last_error();
 void
 evoasm_set_last_error(evoasm_error_t *error);
 
-extern _Thread_local evoasm_error_t _evoasm_last_error;
+extern _Thread_local evoasm_error_t evoasm_last_error;
 
 #define EVOASM_TRY(label, func, ...) \
   do { if(!func(__VA_ARGS__)) {goto label;} } while(0)
@@ -93,8 +94,10 @@ extern _Thread_local evoasm_error_t _evoasm_last_error;
 
 #define evoasm_success_t evoasm_check_return bool
 
-#define evoasm_error(type, code, data, ...) \
-  evoasm_error_set(&_evoasm_last_error, (type), (code), (data),\
+#define evoasm_error(type, code, ...) evoasm_error2(type, code, NULL, __VA_ARGS__)
+
+#define evoasm_error2(type, code, data, ...) \
+  evoasm_error_set(&evoasm_last_error, (type), (code), (data),\
                    __FILE__, __LINE__, __VA_ARGS__)
 
 #define evoasm_assert_not_reached() \

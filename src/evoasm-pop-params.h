@@ -28,6 +28,10 @@ typedef float evoasm_loss_t;
 
 #define EVOASM_POP_PARAMS_MAX_PARAMS 32
 
+typedef enum {
+  EVOASM_POP_PARAMS_ERROR_CODE_INVALID
+} evoasm_pop_params_error_code_t;
+
 typedef struct evoasm_pop_params_s {
   evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
   evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];

@@ -19,6 +19,7 @@
 #include "evoasm-util.h"
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
+
 EVOASM_DEF_ZERO_INIT_FUNC(pop_params)
 
 #define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, value_type, field_type) \
@@ -26,14 +27,23 @@ EVOASM_DEF_ZERO_INIT_FUNC(pop_params)
   EVOASM_DEF_SETTER(pop_params, field, value_type, field_type)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_size, size_t, uint16_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_size, size_t, uint16_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(deme_size, size_t, uint16_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(mut_rate, float, float)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, size_t, uint32_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, size_t, uint16_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_input, evoasm_program_io_t *, evoasm_program_io_t *)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_output, evoasm_program_io_t *, evoasm_program_io_t *)
 
 static evoasm_domain_t **
@@ -104,62 +114,62 @@ evoasm_pop_params_get_inst(evoasm_pop_params_t *pop_params, size_t idx) {
 bool
 evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
   if(pop_params->n_params == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "No parameters given");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "No parameters given");
     goto fail;
   }
 
   if(pop_params->deme_size == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Deme size cannot be zero");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Deme size cannot be zero");
     goto fail;
   }
 
   if(pop_params->mut_rate < 0.0 || pop_params->mut_rate > 1.0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Mutatin rate must be in the range [0..1]");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Mutatin rate must be in the range [0..1]");
     goto fail;
   }
 
   if(pop_params->kernel_size > EVOASM_KERNEL_MAX_SIZE) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
     goto fail;
   }
 
   if(pop_params->kernel_size == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Kernel size cannot be zero");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Kernel size cannot be zero");
     goto fail;
   }
 
   if(pop_params->program_size > EVOASM_PROGRAM_MAX_SIZE) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
     goto fail;
   }
 
   if(pop_params->program_size == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Program size cannot be zero");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Program size cannot be zero");
     goto fail;
   }
 
   if(pop_params->n_insts == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "No instructions given");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "No instructions given");
     goto fail;
   }
 
   if(pop_params->program_input == NULL || pop_params->program_input->len == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "No input values given");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "No input values given");
     goto fail;
   }
 
   if(pop_params->program_output == NULL || pop_params->program_output->len == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "No output values given");
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "No output values given");
     goto fail;
   }
 

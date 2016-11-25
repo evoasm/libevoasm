@@ -17,7 +17,7 @@
 
 #include "evoasm-error.h"
 
-_Thread_local evoasm_error_t _evoasm_last_error;
+_Thread_local evoasm_error_t evoasm_last_error;
 
 void
 evoasm_error_setv(evoasm_error_t *error, unsigned error_type, unsigned error_code,
@@ -37,12 +37,12 @@ evoasm_error_setv(evoasm_error_t *error, unsigned error_type, unsigned error_cod
 
 evoasm_error_t *
 evoasm_get_last_error() {
-  return &_evoasm_last_error;
+  return &evoasm_last_error;
 }
 
 void
 evoasm_set_last_error(evoasm_error_t *error) {
-  _evoasm_last_error = *error;
+  evoasm_last_error = *error;
 }
 
 void

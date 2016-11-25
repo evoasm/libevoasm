@@ -19,7 +19,7 @@
 #include "evoasm-program-io.h"
 #include <stdarg.h>
 
-static const char * const _evoasm_example_type_names[] = {
+static const char *const _evoasm_example_type_names[] = {
     "i64",
     "u64",
     "f64"
@@ -39,8 +39,8 @@ evoasm_program_io_init(evoasm_program_io_t *program_io, size_t arity, ...) {
   bool retval = true;
 
   if(arity > EVOASM_PROGRAM_IO_MAX_ARITY) {
-    evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                 NULL, "Maximum arity exceeded (%zu > %d)", arity, EVOASM_PROGRAM_IO_MAX_ARITY);
+    evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
+                 "Maximum arity exceeded (%zu > %d)", arity, EVOASM_PROGRAM_IO_MAX_ARITY);
     retval = false;
     goto done;
   }
@@ -72,9 +72,9 @@ evoasm_program_io_init(evoasm_program_io_t *program_io, size_t arity, ...) {
       evoasm_program_io_val_type_t prev_type = program_io->types[type_idx];
 
       if(prev_type != type) {
-        evoasm_error(EVOASM_ERROR_TYPE_ARG, EVOASM_ERROR_CODE_NONE,
-                         NULL, "Example value type mismatch (previously %s, now %s)",
-                         _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
+        evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
+                     "Example value type mismatch (previously %s, now %s)",
+                     _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
         retval = false;
         goto done;
       }
@@ -111,5 +111,6 @@ evoasm_program_io_get_type(evoasm_program_io_t *program_io, size_t idx) {
 EVOASM_DEF_FREE_FUNC(program_io)
 
 EVOASM_DEF_GETTER(program_io, arity, size_t)
+
 EVOASM_DEF_GETTER(program_io, len, size_t)
 
