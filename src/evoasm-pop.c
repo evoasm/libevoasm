@@ -998,7 +998,7 @@ evoasm_deme_eval(evoasm_deme_t *deme) {
   evoasm_signal_install();
 
   EVOASM_MEMSET_N(deme->loss_data.counters, 0, EVOASM_DEME_N_INDIVS(deme));
-  EVOASM_MEMSET_N(deme->loss_data.samples, 0, EVOASM_DEME_N_INDIVS(deme) * EVOASM_DEME_MAX_LOSS_SAMPLES);
+  //EVOASM_MEMSET_N(deme->loss_data.samples, 0, EVOASM_DEME_N_INDIVS(deme) * EVOASM_DEME_MAX_LOSS_SAMPLES);
 
   if(deme->params->program_size > 1) {
     if(!evoasm_deme_test_programs(deme)) {
@@ -1250,14 +1250,14 @@ static void
 evoasm_deme_next_gen(evoasm_deme_t *deme) {
   for(size_t i = 0; i < deme->params->program_size; i++) {
     evoasm_deme_select_indivs(deme, i, false);
-//    evoasm_deme_combine(deme, i, false);
-//    evoasm_deme_mutate(deme, i, false);
+    evoasm_deme_combine(deme, i, false);
+    evoasm_deme_mutate(deme, i, false);
   }
 
   if(deme->params->program_size > 1) {
-//    evoasm_deme_select_indivs(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
-//    evoasm_deme_combine(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
-//    evoasm_deme_mutate(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+    evoasm_deme_select_indivs(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+    evoasm_deme_combine(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+    evoasm_deme_mutate(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
   }
 }
 
