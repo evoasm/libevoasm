@@ -1,22 +1,45 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "evoasm-alloc.h"
+#include "evoasm.h"
 
 #include <stdlib.h>
 #include <errno.h>
 
+EVOASM_DEF_LOG_TAG("alloc")
+
 void *
 evoasm_malloc(size_t size) {
   void *ptr = malloc(size);
-  if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-      NULL, "Allocationg %zu bytes via malloc failed", size);
+  if(evoasm_unlikely(!ptr)) {
+    evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+                 "Allocating %zu bytes via malloc failed: %s", size, strerror(errno));
+    return NULL;
+  }
+  return ptr;
+}
+
+void *
+evoasm_aligned_alloc(size_t align, size_t size) {
+  void *ptr = aligned_alloc(align, size);
+  if(evoasm_unlikely(!ptr)) {
+    evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+                 "Allocating %zu bytes via aligned_alloc failed: %s", size, strerror(errno));
     return NULL;
   }
   return ptr;
@@ -26,10 +49,27 @@ void *
 evoasm_calloc(size_t n, size_t size) {
   void *ptr = calloc(n, size);
 
-  if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-      NULL, "Allocationg %zux%zu () bytes via calloc failed", n, size, n * size);
+  if(evoasm_unlikely(!ptr)) {
+    evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+                 "Allocating %zux%zu (%zu) bytes via calloc failed: %s", n, size, n * size, strerror(errno));
     return NULL;
+  }
+  return ptr;
+}
+
+void *
+evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
+  if(evoasm_unlikely(size == 0 || n >= SIZE_MAX / size)) {
+    evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+                 "Allocating %zux%zu bytes via aligned_calloc failed: integer overflow", n, size);
+    return NULL;
+  }
+
+  size_t len = n * size;
+  void *ptr = evoasm_aligned_alloc(align, len);
+
+  if(evoasm_likely(ptr != NULL)) {
+    memset(ptr, 0, len);
   }
   return ptr;
 }
@@ -38,9 +78,9 @@ void *
 evoasm_realloc(void *ptr, size_t size) {
   void *new_ptr = realloc(ptr, size);
 
-  if(EVOASM_UNLIKELY(!ptr)) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-        NULL, "Allocating %zu bytes via realloc failed", size);
+  if(evoasm_unlikely(!ptr)) {
+    evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+                 "Allocating %zu bytes via realloc failed: %s", size, strerror(errno));
     return NULL;
   }
   return new_ptr;
@@ -58,33 +98,33 @@ evoasm_mmap(size_t size, void *p) {
    * VirtualAlloc, on the other hand, will return NULL if the address is
    * not available
    */
-    void *mem;
+  void *mem;
 
 #if defined(_WIN32)
-retry:
-    mem = VirtualAlloc(p, size, MEM_COMMIT, PAGE_READWRITE);
-    if(mem == NULL) {
-      if(p != NULL) {
-        goto retry;
-      } else {
-        goto error;
+  retry:
+      mem = VirtualAlloc(p, size, MEM_COMMIT, PAGE_READWRITE);
+      if(mem == NULL) {
+        if(p != NULL) {
+          goto retry;
+        } else {
+          goto error;
+        }
       }
-    }
-    return mem;
+      return mem;
 #elif defined(_POSIX_VERSION)
-    mem = mmap(p, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-    if(mem == MAP_FAILED) {
-      goto error;
-    }
+  mem = mmap(p, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+  if(mem == MAP_FAILED) {
+    goto error;
+  }
 #else
 #error
 #endif
   return mem;
 
 error:
-    evoasm_set_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-        NULL, "Allocationg %zu bytes via mmap failed: %s", size, strerror(errno));
-    return NULL;
+  evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+               "Allocating %zu bytes via mmap failed: %s", size, strerror(errno));
+  return NULL;
 }
 
 evoasm_success_t
@@ -99,23 +139,51 @@ evoasm_munmap(void *p, size_t size) {
 #endif
 
   if(!ret) {
-    evoasm_set_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-        NULL, "Unmapping %zu bytes via munmap failed: %s", size, strerror(errno));
+    evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+                 "Unmapping %zu bytes via munmap failed: %s", size, strerror(errno));
   }
 
   return ret;
 }
 
-evoasm_success_t
-evoasm_mprot(void *p, size_t size, int mode)
-{
 
 #if defined(_WIN32)
-  if(VirtualProtect(p, size, mode, NULL) != 0) {
+#define EVOASM_MPROT_RW PAGE_READWRITE
+#define EVOASM_MPROT_RX PAGE_EXECUTE_READ
+#define EVOASM_MPROT_RWX PAGE_EXECUTE_READWRITE
+#elif defined(_POSIX_VERSION)
+#define EVOASM_MPROT_RW (PROT_READ|PROT_WRITE)
+#define EVOASM_MPROT_RX (PROT_READ|PROT_EXEC)
+#define EVOASM_MPROT_RWX (PROT_READ|PROT_WRITE|PROT_EXEC)
+#else
+#error
+#endif
+
+evoasm_success_t
+evoasm_mprot(void *p, size_t size, evoasm_mprot_mode_t mode) {
+  int mode_;
+
+  switch(mode) {
+    case EVOASM_MPROT_MODE_RW:
+      mode_ = EVOASM_MPROT_RW;
+      break;
+    case EVOASM_MPROT_MODE_RWX:
+      mode_ = EVOASM_MPROT_RWX;
+      break;
+    case EVOASM_MPROT_MODE_RX:
+      mode_ = EVOASM_MPROT_RX;
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
+
+
+#if defined(_WIN32)
+  if(VirtualProtect(p, size, mode_, NULL) != 0) {
     goto error;
   }
 #elif defined(_POSIX_VERSION)
-  if(mprotect(p, size, mode) != 0) {
+  if(mprotect(p, size, mode_) != 0) {
     goto error;
   }
 #else
@@ -124,12 +192,12 @@ evoasm_mprot(void *p, size_t size, int mode)
   return true;
 
 error:
-  evoasm_set_error(EVOASM_ERROR_TYPE_MEMORY, EVOASM_N_ERROR_CODES,
-      NULL, "Changing memory protection failed: %s", strerror(errno));
+  evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
+               "Changing memory protection failed: %s", strerror(errno));
   return false;
 }
 
-static long _evoasm_page_size = -1;
+static size_t _evoasm_page_size = 0;
 
 static long
 evoasm_query_page_size() {
@@ -144,10 +212,15 @@ evoasm_query_page_size() {
 #endif
 }
 
-long
-evoasm_page_size() {
-  if(_evoasm_page_size == -1) {
-    _evoasm_page_size = evoasm_query_page_size();
+size_t
+evoasm_get_page_size() {
+  if(_evoasm_page_size == 0) {
+    long page_size = evoasm_query_page_size();
+    if(page_size == -1) {
+      page_size = 4096;
+      evoasm_log_warn("requesting page size failed. This might cause problems.");
+    }
+    _evoasm_page_size = (size_t) page_size;
   }
-  return _evoasm_page_size;
+  return (size_t) _evoasm_page_size;
 }

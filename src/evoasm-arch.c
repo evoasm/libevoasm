@@ -1,39 +1,52 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "evoasm-arch.h"
 
-EVOASM_DECL_LOG_TAG("arch")
+EVOASM_DEF_LOG_TAG("arch")
 
 evoasm_arch_info_t _evoasm_arch_infos[] = {
     {
         EVOASM_ARCH_X64,
-        EVOASM_X64_N_PARAMS,
+        EVOASM_X64_PARAM_NONE,
         15,
-        EVOASM_X64_N_INSTS,
+        EVOASM_X64_INST_NONE,
         0ull
     }
 };
 
+evoasm_arch_id_t _evoasm_current_arch = EVOASM_ARCH_NONE;
+
 evoasm_arch_info_t *
-evoasm_arch_info(evoasm_arch_id_t arch_id) {
+evoasm_get_arch_info(evoasm_arch_id_t arch_id) {
   return &_evoasm_arch_infos[arch_id];
 }
 
-#define _EVOASM_ARCH_INFO_DEF_FIELD_READER(field, type) \
-type evoasm_arch_info_##field(evoasm_arch_info_t *arch_info) { \
-  return (type) arch_info->field; \
+evoasm_arch_id_t
+evoasm_get_current_arch() {
+  return _evoasm_current_arch;
 }
 
-_EVOASM_ARCH_INFO_DEF_FIELD_READER(id, evoasm_arch_id_t)
-_EVOASM_ARCH_INFO_DEF_FIELD_READER(n_params, unsigned)
-_EVOASM_ARCH_INFO_DEF_FIELD_READER(max_inst_len, unsigned)
-_EVOASM_ARCH_INFO_DEF_FIELD_READER(n_insts, unsigned)
-_EVOASM_ARCH_INFO_DEF_FIELD_READER(features, unsigned)
+#define EVOASM_ARCH_INFO_DEF_GETTER(field, type) EVOASM_DEF_GETTER(arch_info, field, type)
+
+EVOASM_ARCH_INFO_DEF_GETTER(id, evoasm_arch_id_t)
+EVOASM_ARCH_INFO_DEF_GETTER(n_params, size_t)
+EVOASM_ARCH_INFO_DEF_GETTER(max_inst_len, size_t)
+EVOASM_ARCH_INFO_DEF_GETTER(n_insts, size_t)
+EVOASM_ARCH_INFO_DEF_GETTER(features, uint64_t)
 
 

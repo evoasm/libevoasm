@@ -1,20 +1,25 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #pragma once
 
-#if defined(__linux__) || defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#  if !defined(_DEFAULT_SOURCE)
-#    define _DEFAULT_SOURCE
-#  endif
-#  if defined(__linux__) && !defined(_GNU_SOURCE)
-#    define _GNU_SOURCE
-#  endif
+#include "evoasm-util.h"
+
+#ifdef EVOASM_UNIX
 #  include <unistd.h>
 #  include <sys/mman.h>
 #  if !defined(MAP_ANONYMOUS) && defined(MAP_ANON)
@@ -35,36 +40,45 @@
 #  define EVOASM_MALLOC_ATTRS  __attribute__((malloc))
 #  define EVOASM_CALLOC_ATTRS  __attribute__((malloc))
 #  define EVOASM_REALLOC_ATTRS __attribute__((malloc))
+#  define EVOASM_ALIGNED_ALLOC_ATTRS __attribute__((malloc))
+#  define EVOASM_ALIGNED_CALLOC_ATTRS __attribute__((malloc))
 #else
 #  define EVOASM_MALLOC_ATTRS
 #  define EVOASM_CALLOC_ATTRS
 #  define EVOASM_REALLOC_ATTRS
+#  define EVOASM_ALIGNED_ALLOC_ATTRS
+#  define EVOASM_ALIGNED_CALLOC_ATTRS
 #endif
 
-#if defined(_WIN32)
-#define EVOASM_MPROT_RW PAGE_READWRITE
-#define EVOASM_MPROT_RX PAGE_EXECUTE_READ
-#define EVOASM_MPROT_RWX PAGE_EXECUTE_READWRITE
-#elif defined(_POSIX_VERSION)
-#define EVOASM_MPROT_RW (PROT_READ|PROT_WRITE)
-#define EVOASM_MPROT_RX (PROT_READ|PROT_EXEC)
-#define EVOASM_MPROT_RWX (PROT_READ|PROT_WRITE|PROT_EXEC)
-#else
-#error
-#endif
+typedef enum {
+  EVOASM_MPROT_MODE_RW,
+  EVOASM_MPROT_MODE_RX,
+  EVOASM_MPROT_MODE_RWX,
+} evoasm_mprot_mode_t;
 
 void *evoasm_malloc(size_t) EVOASM_MALLOC_ATTRS;
 void *evoasm_calloc(size_t, size_t) EVOASM_CALLOC_ATTRS;
 void *evoasm_realloc(void *, size_t) EVOASM_REALLOC_ATTRS;
+void *evoasm_aligned_alloc(size_t, size_t) EVOASM_ALIGNED_ALLOC_ATTRS;
+void *evoasm_aligned_calloc(size_t align, size_t n, size_t size) EVOASM_ALIGNED_CALLOC_ATTRS;
 void evoasm_free(void *);
 
 void *evoasm_mmap(size_t size, void *p);
 evoasm_success_t evoasm_munmap(void *p, size_t size);
-evoasm_success_t evoasm_mprot(void *p, size_t size, int mode);
-long evoasm_page_size();
+evoasm_success_t evoasm_mprot(void *p, size_t size, evoasm_mprot_mode_t mode);
+size_t evoasm_get_page_size();
+
+#define EVOASM_TRY_ALLOC(label, func, var, ...) \
+do { \
+  if(!(var = evoasm_##func(__VA_ARGS__))) goto label; \
+} while(0);
 
 #if defined(_WIN32)
   #define evoasm_alloca(s) _malloca(s);
 #else
   #define evoasm_alloca(s) alloca(s);
+#endif
+
+#ifndef EVOASM_CACHE_LINE_SIZE
+#define EVOASM_CACHE_LINE_SIZE 64
 #endif

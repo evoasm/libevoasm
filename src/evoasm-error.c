@@ -1,14 +1,23 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "evoasm-error.h"
 
-_Thread_local evoasm_error_t _evoasm_last_error;
+_Thread_local evoasm_error_t evoasm_last_error;
 
 void
 evoasm_error_setv(evoasm_error_t *error, unsigned error_type, unsigned error_code,
@@ -27,8 +36,13 @@ evoasm_error_setv(evoasm_error_t *error, unsigned error_type, unsigned error_cod
 }
 
 evoasm_error_t *
-evoasm_last_error() {
-  return &_evoasm_last_error;
+evoasm_get_last_error() {
+  return &evoasm_last_error;
+}
+
+void
+evoasm_set_last_error(evoasm_error_t *error) {
+  evoasm_last_error = *error;
 }
 
 void
@@ -43,9 +57,9 @@ evoasm_error_set(evoasm_error_t *error, unsigned error_type, unsigned error_code
   va_end(args);
 }
 
-_EVOASM_DEF_FIELD_READER(error, type, evoasm_error_type_t)
-_EVOASM_DEF_FIELD_READER(error, code, evoasm_error_code_t)
-_EVOASM_DEF_FIELD_READER(error, line, uint32_t)
-_EVOASM_DEF_FIELD_READER(error, filename, char *)
-_EVOASM_DEF_FIELD_READER(error, msg, char *)
+EVOASM_DEF_GETTER(error, type, evoasm_error_type_t)
+EVOASM_DEF_GETTER(error, code, evoasm_error_code_t)
+EVOASM_DEF_GETTER(error, line, unsigned)
+EVOASM_DEF_GETTER(error, filename, char *)
+EVOASM_DEF_GETTER(error, msg, char *)
 

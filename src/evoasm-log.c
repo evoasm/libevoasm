@@ -1,20 +1,25 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * Copyright (C) 2016 Julian Aron Prenner <jap@polyadic.com>
  *
- * Copyright (c) 2016, Julian Aron Prenner <jap@polyadic.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#define _DEFAULT_SOURCE
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <alloca.h>
 
 #ifdef _WIN32
 #include <io.h>
@@ -34,7 +39,7 @@ evoasm_set_min_log_level(evoasm_log_level_t min_log_level) {
   _evoasm_min_log_level = min_log_level;
 }
 
-static const char *const log_levels[EVOASM_N_LOG_LEVELS] = {
+static const char *const log_levels[EVOASM_LOG_LEVEL_NONE] = {
   "TRACE",
   "DEBUG",
   "INFO",
@@ -43,7 +48,7 @@ static const char *const log_levels[EVOASM_N_LOG_LEVELS] = {
   "FATAL"
 };
 
-static const char *const log_colors[EVOASM_N_LOG_LEVELS] = {
+static const char *const log_colors[EVOASM_LOG_LEVEL_NONE] = {
   "\x1b[30;1m",
   "\x1b[30;1m",
   "\x1b[32;1m",

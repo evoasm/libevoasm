@@ -1,2 +1,3 @@
 .idea
 *.project
+cmake-build-debug
