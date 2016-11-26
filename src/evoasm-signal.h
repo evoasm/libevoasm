@@ -30,7 +30,6 @@ typedef struct  {
   volatile uint64_t exception_mask;
   volatile evoasm_arch_id_t arch_id;
   sigjmp_buf env;
-  struct sigaction prev_action;
   int last_exception;
 } evoasm_signal_ctx_t;
 
@@ -54,3 +53,6 @@ evoasm_signal_install();
 
 void
 evoasm_signal_set_exception_mask(uint64_t exception_mask);
+
+void
+evoasm_signal_clear_exception_mask();

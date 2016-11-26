@@ -1498,7 +1498,6 @@ evoasm_program_run(evoasm_program_t *program,
   }
 
   evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
-  evoasm_signal_install();
   evoasm_signal_set_exception_mask(program->exception_mask);
 
   if(!evoasm_buf_protect(program->buf, EVOASM_MPROT_MODE_RX)) {
@@ -1521,7 +1520,7 @@ evoasm_program_run(evoasm_program_t *program,
     evoasm_assert_not_reached();
   }
 
-  evoasm_signal_uninstall();
+  evoasm_signal_clear_exception_mask();
 
   return output;
 }

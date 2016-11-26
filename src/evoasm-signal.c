@@ -55,6 +55,8 @@ evoasm_signal_handler(int sig, siginfo_t *siginfo, void *ctx) {
   }
 }
 
+static struct sigaction prev_action;
+
 void
 evoasm_signal_install() {
   struct sigaction action = {0};
@@ -70,7 +72,7 @@ evoasm_signal_install() {
   sigemptyset(&action.sa_mask);
   action.sa_flags = SA_SIGINFO;
 
-  if(sigaction(SIGFPE, &action, &_evoasm_signal_ctx.prev_action) < 0) {
+  if(sigaction(SIGFPE, &action, &prev_action) < 0) {
     perror("sigaction");
     exit(1);
   }
@@ -81,6 +83,11 @@ evoasm_signal_set_exception_mask(uint64_t exception_mask) {
   _evoasm_signal_ctx.exception_mask = exception_mask;
 }
 
+void
+evoasm_signal_clear_exception_mask() {
+  _evoasm_signal_ctx.exception_mask = 0;
+}
+
 int
 evoasm_signal_get_last_exception() {
   return _evoasm_signal_ctx.last_exception;
@@ -88,7 +95,7 @@ evoasm_signal_get_last_exception() {
 
 void
 evoasm_signal_uninstall() {
-  if(sigaction(SIGFPE, &_evoasm_signal_ctx.prev_action, NULL) < 0) {
+  if(sigaction(SIGFPE, &prev_action, NULL) < 0) {
     perror("sigaction");
     exit(1);
   }

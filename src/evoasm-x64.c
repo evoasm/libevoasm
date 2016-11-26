@@ -17,6 +17,7 @@
 
 #include "evoasm-x64.h"
 #include "evoasm.h"
+#include "evoasm-signal.h"
 
 EVOASM_DEF_LOG_TAG("x64")
 
@@ -103,6 +104,8 @@ evoasm_x64_init() {
 
   _evoasm_arch_infos[EVOASM_ARCH_X64].features = features;
   _evoasm_current_arch = EVOASM_ARCH_X64;
+
+  evoasm_signal_install();
 
   return true;
 
