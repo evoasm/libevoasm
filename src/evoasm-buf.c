@@ -130,6 +130,9 @@ evoasm_buf_safe_exec(evoasm_buf_t *buf, uint64_t exception_mask, intptr_t *retva
     *retval = evoasm_signal_get_last_exception();
     success = false;
   }
+
+  evoasm_signal_clear_exception_mask();
+
   return success;
 }
 

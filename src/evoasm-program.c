@@ -1395,6 +1395,9 @@ evoasm_program_eval_(evoasm_program_t *program,
     evoasm_log_debug("program %p signaled", (void *) program);
     loss = INFINITY;
   }
+
+  evoasm_signal_clear_exception_mask();
+
   return loss;
 }
 
