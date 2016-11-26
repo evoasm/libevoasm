@@ -47,7 +47,8 @@ typedef struct  {
 
 struct evoasm_deme_s {
   evoasm_prng_t prng;
-  uint16_t *selected_parent_idxs;
+  uint16_t *blessed_indiv_idxs;
+  uint16_t *doomed_indiv_idxs;
   evoasm_pop_program_data_t parent_program_data;
   evoasm_pop_kernel_data_t parent_kernel_data;
   evoasm_program_t program;
@@ -62,6 +63,8 @@ struct evoasm_deme_s {
   evoasm_pop_program_data_t best_program_data;
   evoasm_pop_kernel_data_t best_kernel_data;
 
+  uint16_t n_doomed_indivs;
+  uint16_t n_blessed_indivs;
   uint16_t n_examples;
   evoasm_arch_id_t arch_id;
   evoasm_pop_params_t *params;
