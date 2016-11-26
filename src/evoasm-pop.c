@@ -978,8 +978,8 @@ evoasm_deme_eval_update(evoasm_deme_t *deme) {
       loss_data->samples[sample0_off] = indiv_loss;
 
       if(indiv_loss < deme->top_losses[i]) {
+        evoasm_log_info("new top loss %zu: %f -> %f", i, indiv_loss, deme->top_losses[i]);
         deme->top_losses[i] = indiv_loss;
-        evoasm_log_info("new top loss %zu: %f", i, indiv_loss);
       }
     }
   }
@@ -1062,14 +1062,23 @@ evoasm_deme_select_indivs(evoasm_deme_t *deme, size_t row, bool programs) {
   uint16_t *parent_idxs = deme->selected_parent_idxs;
   uint32_t n = 0;
   size_t deme_size = deme->params->deme_size;
-  evoasm_loss_t top_loss = deme->top_losses[row];
+//  evoasm_loss_t top_loss = deme->top_losses[row];
+
+  evoasm_loss_t avg = 0.0;
+  for(size_t i = 0; i < deme_size; i++) {
+    evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
+    if(!isinf(loss)) {
+      avg += loss;
+    }
+  }
+  avg /= (evoasm_loss_t) deme_size;
 
   while(true) {
     for(size_t i = 0; i < deme_size; i++) {
       float r = evoasm_prng_randf_(prng);
       evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
 
-      if(r < (top_loss + 1.0) / (loss + 1.0)) {
+      if(r < 1 - ((loss + 1.0) / (avg + 1.0))) {
         parent_idxs[n++] = (uint16_t) i;
         if(n >= deme_size) goto done;
       }
@@ -1104,8 +1113,11 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
 
   evoasm_loss_t parent_losses[2] = {
       loss_data->samples[parent_indiv_loss_offs[0]],
-      loss_data->samples[parent_indiv_loss_offs[0]]
+      loss_data->samples[parent_indiv_loss_offs[1]]
   };
+
+  assert(isfinite(parent_losses[0]));
+  assert(isfinite(parent_losses[1]));
 
   /* rough estimate */
   evoasm_loss_t child_loss = 0.5f * parent_losses[0] + 0.5f * parent_losses[1];
@@ -1173,7 +1185,9 @@ evoasm_deme_calc_summary(evoasm_deme_t *deme, evoasm_loss_t *summary_losses, evo
 
     for(size_t j = 0; j < deme_size; j++) {
       size_t loss_off = EVOASM_DEME_LOSS_OFF(deme, i, j);
-      summary_losses[j] = loss_data->samples[loss_off];
+      evoasm_loss_t loss = loss_data->samples[loss_off];
+      assert(isfinite(loss));
+      summary_losses[j] = loss;
     }
 
     qsort(summary_losses, deme_size, sizeof(evoasm_loss_t), evoasm_pop_loss_cmp_func);
@@ -1257,13 +1271,18 @@ evoasm_deme_next_gen(evoasm_deme_t *deme) {
   for(size_t i = 0; i < deme->params->program_size; i++) {
     evoasm_deme_select_indivs(deme, i, false);
     evoasm_deme_combine(deme, i, false);
-    evoasm_deme_mutate(deme, i, false);
+    if(deme->params->mut_rate > 0) {
+      evoasm_deme_mutate(deme, i, false);
+    }
   }
 
   if(deme->params->program_size > 1) {
     evoasm_deme_select_indivs(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
     evoasm_deme_combine(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
-    evoasm_deme_mutate(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+
+    if(deme->params->mut_rate > 0) {
+      evoasm_deme_mutate(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+    }
   }
 }
 
