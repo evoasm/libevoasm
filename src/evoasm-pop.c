@@ -982,7 +982,7 @@ evoasm_deme_eval_update(evoasm_deme_t *deme) {
       loss_data->samples[sample0_off] = indiv_loss;
 
       if(indiv_loss < deme->top_losses[i]) {
-        evoasm_log_info("new top loss %zu: %f -> %f", i, indiv_loss, deme->top_losses[i]);
+        evoasm_log_info("new top loss %zu: %f -> %f", i, deme->top_losses[i], indiv_loss);
         deme->top_losses[i] = indiv_loss;
       }
     }
