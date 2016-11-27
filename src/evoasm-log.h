@@ -32,6 +32,17 @@ typedef int evoasm_log_level_t;
 #define EVOASM_LOG_LEVEL_FATAL   5
 #define EVOASM_LOG_LEVEL_NONE      6
 
+
+#define EVOASM_ANSI_CODE_BLACK "\x1b[30;1m"
+#define EVOASM_ANSI_CODE_RED "\x1b[31;1m"
+#define EVOASM_ANSI_CODE_GREEN "\x1b[32;1m"
+#define EVOASM_ANSI_CODE_YELLOW "\x1b[33;1m"
+#define EVOASM_ANSI_CODE_BLUE "\x1b[34;1m"
+#define EVOASM_ANSI_CODE_MAGENTA "\x1b[35;1m"
+#define EVOASM_ANSI_CODE_CYAN "\x1b[36;1m"
+#define EVOASM_ANSI_CODE_WHITE "\x1b[37;1m"
+#define EVOASM_ANSI_CODE_RESET "\x1b[0m"
+
 #ifndef EVOASM_MIN_LOG_LEVEL
 #  define EVOASM_MIN_LOG_LEVEL EVOASM_LOG_LEVEL_INFO
 #endif

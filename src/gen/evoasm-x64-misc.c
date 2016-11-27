@@ -18,6 +18,7 @@
  */
 
 #include "evoasm-x64.h"
+#include "evoasm-log.h"
 
 static const char *_evoasm_log_tag = "x64";
 
@@ -163,165 +164,165 @@ evoasm_x64_get_features(uint64_t *features_) {
 
   if(vals[0][0] & (1ull << 8)) {
     features |= (1ull << EVOASM_X64_FEATURE_CX8);
-    evoasm_log_info("Found support for CX8");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "CX8" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for CX8");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " CX8" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][0] & (1ull << 15)) {
     features |= (1ull << EVOASM_X64_FEATURE_CMOV);
-    evoasm_log_info("Found support for CMOV");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "CMOV" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for CMOV");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " CMOV" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][0] & (1ull << 23)) {
     features |= (1ull << EVOASM_X64_FEATURE_MMX);
-    evoasm_log_info("Found support for MMX");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "MMX" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for MMX");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " MMX" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][0] & (1ull << 25)) {
     features |= (1ull << EVOASM_X64_FEATURE_SSE);
-    evoasm_log_info("Found support for SSE");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SSE" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SSE");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SSE" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][0] & (1ull << 26)) {
     features |= (1ull << EVOASM_X64_FEATURE_SSE2);
-    evoasm_log_info("Found support for SSE2");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SSE2" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SSE2");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SSE2" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 0)) {
     features |= (1ull << EVOASM_X64_FEATURE_SSE3);
-    evoasm_log_info("Found support for SSE3");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SSE3" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SSE3");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SSE3" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 1)) {
     features |= (1ull << EVOASM_X64_FEATURE_PCLMULQDQ);
-    evoasm_log_info("Found support for PCLMULQDQ");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "PCLMULQDQ" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for PCLMULQDQ");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " PCLMULQDQ" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 9)) {
     features |= (1ull << EVOASM_X64_FEATURE_SSSE3);
-    evoasm_log_info("Found support for SSSE3");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SSSE3" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SSSE3");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SSSE3" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 12)) {
     features |= (1ull << EVOASM_X64_FEATURE_FMA);
-    evoasm_log_info("Found support for FMA");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "FMA" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for FMA");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " FMA" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 13)) {
     features |= (1ull << EVOASM_X64_FEATURE_CX16);
-    evoasm_log_info("Found support for CX16");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "CX16" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for CX16");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " CX16" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 19)) {
     features |= (1ull << EVOASM_X64_FEATURE_SSE4_1);
-    evoasm_log_info("Found support for SSE4_1");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SSE4_1" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SSE4_1");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SSE4_1" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 20)) {
     features |= (1ull << EVOASM_X64_FEATURE_SSE4_2);
-    evoasm_log_info("Found support for SSE4_2");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SSE4_2" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SSE4_2");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SSE4_2" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 22)) {
     features |= (1ull << EVOASM_X64_FEATURE_MOVBE);
-    evoasm_log_info("Found support for MOVBE");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "MOVBE" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for MOVBE");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " MOVBE" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 23)) {
     features |= (1ull << EVOASM_X64_FEATURE_POPCNT);
-    evoasm_log_info("Found support for POPCNT");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "POPCNT" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for POPCNT");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " POPCNT" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 25)) {
     features |= (1ull << EVOASM_X64_FEATURE_AES);
-    evoasm_log_info("Found support for AES");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "AES" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for AES");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " AES" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 28)) {
     features |= (1ull << EVOASM_X64_FEATURE_AVX);
-    evoasm_log_info("Found support for AVX");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "AVX" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for AVX");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " AVX" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[0][1] & (1ull << 29)) {
     features |= (1ull << EVOASM_X64_FEATURE_F16C);
-    evoasm_log_info("Found support for F16C");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "F16C" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for F16C");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " F16C" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 3)) {
     features |= (1ull << EVOASM_X64_FEATURE_BMI1);
-    evoasm_log_info("Found support for BMI1");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "BMI1" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for BMI1");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " BMI1" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 5)) {
     features |= (1ull << EVOASM_X64_FEATURE_AVX2);
-    evoasm_log_info("Found support for AVX2");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "AVX2" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for AVX2");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " AVX2" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 8)) {
     features |= (1ull << EVOASM_X64_FEATURE_BMI2);
-    evoasm_log_info("Found support for BMI2");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "BMI2" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for BMI2");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " BMI2" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 11)) {
     features |= (1ull << EVOASM_X64_FEATURE_RTM);
-    evoasm_log_info("Found support for RTM");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "RTM" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for RTM");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " RTM" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 18)) {
     features |= (1ull << EVOASM_X64_FEATURE_RDSEED);
-    evoasm_log_info("Found support for RDSEED");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "RDSEED" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for RDSEED");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " RDSEED" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 19)) {
     features |= (1ull << EVOASM_X64_FEATURE_ADX);
-    evoasm_log_info("Found support for ADX");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "ADX" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for ADX");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " ADX" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 23)) {
     features |= (1ull << EVOASM_X64_FEATURE_CLFLUSHOPT);
-    evoasm_log_info("Found support for CLFLUSHOPT");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "CLFLUSHOPT" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for CLFLUSHOPT");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " CLFLUSHOPT" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][0] & (1ull << 28)) {
     features |= (1ull << EVOASM_X64_FEATURE_SHA);
-    evoasm_log_info("Found support for SHA");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "SHA" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for SHA");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " SHA" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[1][1] & (1ull << 0)) {
     features |= (1ull << EVOASM_X64_FEATURE_PREFETCHWT1);
-    evoasm_log_info("Found support for PREFETCHWT1");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "PREFETCHWT1" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for PREFETCHWT1");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " PREFETCHWT1" EVOASM_ANSI_CODE_RESET);
   }
   if(vals[2][1] & (1ull << 0)) {
     features |= (1ull << EVOASM_X64_FEATURE_LAHF_LM);
-    evoasm_log_info("Found support for LAHF_LM");
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "LAHF_LM" EVOASM_ANSI_CODE_RESET);
   } else {
-    evoasm_log_info("Missing support for LAHF_LM");
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " LAHF_LM" EVOASM_ANSI_CODE_RESET);
   }
 
 

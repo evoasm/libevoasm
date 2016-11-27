@@ -49,12 +49,12 @@ static const char *const log_levels[EVOASM_LOG_LEVEL_NONE] = {
 };
 
 static const char *const log_colors[EVOASM_LOG_LEVEL_NONE] = {
-  "\x1b[30;1m",
-  "\x1b[30;1m",
-  "\x1b[32;1m",
-  "\x1b[33;1m",
-  "\x1b[31;1m",
-  "\x1b[31;1m",
+  EVOASM_ANSI_CODE_BLACK,
+  EVOASM_ANSI_CODE_BLACK,
+  EVOASM_ANSI_CODE_GREEN,
+  EVOASM_ANSI_CODE_YELLOW,
+  EVOASM_ANSI_CODE_RED,
+  EVOASM_ANSI_CODE_RED,
 };
 
 
@@ -68,8 +68,8 @@ evoasm_log(evoasm_log_level_t level, const char *tag, const char *format, ...)
   static const char *prefix = "evoasm:";
   static const char *sep1 = ":";
   static const char *sep2 = ": ";
-  static const char *color_reset = "\x1b[0m";
-  bool is_tty = isatty(fileno(_evoasm_log_file));
+  static const char *color_reset = EVOASM_ANSI_CODE_RESET;
+  bool is_tty = isatty(fileno(_evoasm_log_file)) != 0;
 
   size_t prefix_len = strlen(prefix);
   size_t color_len = is_tty ? strlen(log_colors[level]) : 0;
