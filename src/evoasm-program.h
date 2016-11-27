@@ -31,11 +31,17 @@ typedef struct {
   bool written : 1;
   bool output : 1;
   /*registers in following kernels whose input is this register */
-  evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS];
 } evoasm_kernel_x64_reg_info_reg_t;
 
 typedef struct {
   evoasm_kernel_x64_reg_info_reg_t regs[EVOASM_X64_REG_NONE];
+
+  /* trans_regs[trans_idx][reg_id] stores the register in this kernel that is used
+   * to initialize reg_id in the trans_idx'th transition kernel.
+   * Right now, trans_idx=0 is the next kernel in line,
+   * while trans_idx=1 is the kernel jumped to using the programs jmp_offs table.
+   */
+  evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS][EVOASM_X64_REG_NONE];
   unsigned written_flags : EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
 } evoasm_kernel_x64_reg_info_t;
 

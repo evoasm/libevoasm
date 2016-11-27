@@ -707,9 +707,9 @@ evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
       size_t output_reg_idx = input_reg_idx % from_kernel->n_output_regs;
       output_reg_id = from_kernel->output_regs.x64[output_reg_idx];
 
-      from_kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx] = output_reg_id;
+      from_kernel->reg_info.x64.trans_regs[trans_idx][input_reg_id] = output_reg_id;
     } else {
-      output_reg_id = from_kernel->reg_info.x64.regs[input_reg_id].trans_regs[trans_idx];
+      output_reg_id = from_kernel->reg_info.x64.trans_regs[trans_idx][input_reg_id];
     }
 
     evoasm_x64_reg_type_t output_reg_type = evoasm_x64_get_reg_type(output_reg_id);
@@ -1365,7 +1365,7 @@ evoasm_program_reset_recur_counters(evoasm_program_t *program) {
 
 static inline evoasm_loss_t
 evoasm_program_eval_(evoasm_program_t *program,
-                    evoasm_program_output_t *output) {
+                     evoasm_program_output_t *output) {
 
   evoasm_kernel_t *last_kernel = &program->kernels[program->size - 1];
   evoasm_loss_t loss;
@@ -1598,17 +1598,24 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
           }
 
           if(kernel->reg_info.x64.regs[op_reg_id].input) {
-            size_t trans_kernels_idxs[] = {kernel->idx + 1u,
-                                           evoasm_program_branch_kernel_idx(program, i)};
-            for(size_t k = 0; k < EVOASM_ARY_LEN(trans_kernels_idxs); k++) {
-              //evoasm_kernel_t *trans_kernel = &program->kernels[trans_kernels_idxs[k]];
-              for(size_t l = 0; l < EVOASM_X64_REG_NONE; l++) {
-                if(kernel->reg_info.x64.regs[l].trans_regs[k] == op_reg_id) {
-                  evoasm_bitmap_set((evoasm_bitmap_t *) &ctx->output_reg_bitmaps[trans_kernels_idxs[k]], l);
+            for(int k = kernel->idx - 1; k >= 0; k--) {
+              size_t trans_idx = SIZE_MAX;
+              if(k + 1 == kernel->idx) {
+                trans_idx = 0;
+              } else if(evoasm_program_branch_kernel_idx(program, (size_t) k) == kernel->idx) {
+                trans_idx = 1;
+              };
+
+              if(trans_idx != SIZE_MAX) {
+                evoasm_kernel_t *trans_kernel = &program->kernels[k];
+
+                for(size_t l = 0; l < EVOASM_X64_REG_NONE; l++) {
+                  if(trans_kernel->reg_info.x64.trans_regs[trans_idx][op_reg_id] == l) {
+                    evoasm_bitmap_set((evoasm_bitmap_t *) &ctx->output_reg_bitmaps[k], l);
+                  }
                 }
               }
             }
-          } else {
           }
         }
       }
