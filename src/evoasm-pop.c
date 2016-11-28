@@ -1077,7 +1077,7 @@ evoasm_deme_select_indivs(evoasm_deme_t *deme, size_t row, bool programs) {
     }
   }
 
-  avg_loss += 0.0001;
+  avg_loss += 0.0001f;
   for(size_t i = 0; i < deme_size; i++) {
     evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
 
