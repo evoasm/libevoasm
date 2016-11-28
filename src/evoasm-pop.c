@@ -1066,23 +1066,29 @@ evoasm_deme_select_indivs(evoasm_deme_t *deme, size_t row, bool programs) {
   size_t n_blessed_indivs = 0;
   size_t deme_size = deme->params->deme_size;
 
-  float loss_weight = 1.0f / (float) deme_size;
+
+  size_t n = 1;
   evoasm_loss_t avg_loss = 0.0;
   for(size_t i = 0; i < deme_size; i++) {
     evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
     if(!isinf(loss)) {
-      avg_loss += loss * loss_weight;
+      avg_loss += (loss - avg_loss) / (evoasm_loss_t) n;
+      n++;
     }
   }
 
   for(size_t i = 0; i < deme_size; i++) {
     evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
-    if(loss >= avg_loss) {
+
+    if(loss > avg_loss) {
       deme->doomed_indiv_idxs[n_doomed_indivs++] = (uint16_t) i;
     } else {
       deme->blessed_indiv_idxs[n_blessed_indivs++] = (uint16_t) i;
     }
   }
+
+  assert(n_blessed_indivs > 0);
+  assert(n_doomed_indivs > 0);
 
   deme->n_blessed_indivs = (uint16_t) n_blessed_indivs;
   deme->n_doomed_indivs = (uint16_t) n_doomed_indivs;
