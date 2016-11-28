@@ -1173,7 +1173,6 @@ evoasm_deme_calc_summary(evoasm_deme_t *deme, evoasm_loss_t *summary_losses, evo
     for(size_t j = 0; j < deme_size; j++) {
       size_t loss_off = EVOASM_DEME_LOSS_OFF(deme, i, j);
       evoasm_loss_t loss = loss_data->samples[loss_off];
-      assert(isfinite(loss));
       summary_losses[j] = loss;
     }
 
