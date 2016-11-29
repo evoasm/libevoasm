@@ -351,10 +351,10 @@ evoasm_pop_init(evoasm_pop_t *pop,
 
   *pop = zero_pop;
 
-  if(!evoasm_pop_params_validate(params)) goto error;
-
   pop->params = params;
   pop->max_threads = max_threads;
+
+  if(!evoasm_pop_params_validate(params)) goto error;
 
   evoasm_prng_init(&seed_prng, &params->seed);
 
