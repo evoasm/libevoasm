@@ -77,7 +77,6 @@ typedef struct evoasm_pop_s {
   evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
   evoasm_deme_t *demes;
-  int max_threads;
   evoasm_pop_module_data_t module_data;
   bool seeded : 1;
   evoasm_loss_t *summary_losses;

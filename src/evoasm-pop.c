@@ -339,22 +339,25 @@ evoasm_success_t
 evoasm_pop_init(evoasm_pop_t *pop,
                 evoasm_arch_id_t arch_id,
                 evoasm_pop_params_t *params) {
-  int max_threads;
   static evoasm_pop_t zero_pop = {0};
   evoasm_prng_t seed_prng;
-#ifdef _OPENMP
-  max_threads = omp_get_max_threads();
-  evoasm_log_info("Using OpenMP with %d threads", max_threads);
-#else
-  max_threads = 1;
-#endif
 
   *pop = zero_pop;
 
   pop->params = params;
-  pop->max_threads = max_threads;
 
   if(!evoasm_pop_params_validate(params)) goto error;
+
+#ifdef _OPENMP
+  {
+    int max_threads;
+    max_threads = omp_get_max_threads();
+    omp_set_dynamic(0);
+    int n_threads = EVOASM_MIN(max_threads, params->n_demes);
+    omp_set_num_threads(n_threads);
+    evoasm_log_info("Using OpenMP with %d threads", n_threads);
+  }
+#endif
 
   evoasm_prng_init(&seed_prng, &params->seed);
 
