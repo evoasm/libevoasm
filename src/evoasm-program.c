@@ -1345,7 +1345,7 @@ evoasm_program_assess(evoasm_program_t *program,
     }
   }
 
-#if EVOASM_log_level <= EVOASM_LOG_LEVEL_DEBUG
+#if EVOASM_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
   if(loss == 0.0) {
     evoasm_program_log_program_output(program,
                                       kernel,
@@ -1457,14 +1457,13 @@ next:;
   load_output->arity = output->arity;
   memcpy(load_output->types, output->types, EVOASM_ARY_LEN(output->types));
 
-//#if EVOASM_log_level <= EVOASM_LOG_LEVEL_INFO
-
+#if EVOASM_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
   evoasm_program_log_program_output(program,
                                     kernel,
                                     load_output,
                                     matching,
-                                    EVOASM_LOG_LEVEL_WARN);
-//#endif
+                                    EVOASM_LOG_LEVEL_DEBUG);
+#endif
   return load_output;
 }
 
