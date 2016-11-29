@@ -47,8 +47,8 @@ typedef evoasm_program_io_t evoasm_program_output_t;
 typedef evoasm_program_io_t evoasm_program_input_t;
 
 #define EVOASM_PROGRAM_IO_N_EXAMPLES(program_io) ((size_t)((program_io)->len / (program_io)->arity))
-#define EVOASM_PROGRAM_INPUT_N_EXAMPLES(program_input) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_input)
-#define EVOASM_PROGRAM_OUTPUT_N_EXAMPLES(program_output) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_output)
+#define EVOASM_PROGRAM_INPUT_N_TUPLES(program_input) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_input)
+#define EVOASM_PROGRAM_OUTPUT_N_TUPLES(program_output) EVOASM_PROGRAM_IO_N_EXAMPLES((evoasm_program_io_t *)program_output)
 
 evoasm_program_io_t *
 evoasm_program_io_alloc(size_t len);

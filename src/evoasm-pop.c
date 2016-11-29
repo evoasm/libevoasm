@@ -210,7 +210,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  evoasm_prng_state_t *seed,
                  evoasm_domain_t *domains) {
 
-  size_t n_examples = EVOASM_PROGRAM_INPUT_N_EXAMPLES(params->program_input);
+  size_t n_examples = EVOASM_PROGRAM_INPUT_N_TUPLES(params->program_input);
   static evoasm_deme_t zero_deme = {0};
 
   *deme = zero_deme;

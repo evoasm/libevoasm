@@ -97,7 +97,7 @@ typedef struct {
   bool shallow : 1;
   uint32_t recur_limit;
   uint16_t size;
-  uint16_t max_examples;
+  uint16_t max_tuples;
   uint32_t exception_mask;
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
@@ -130,7 +130,7 @@ evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_info_t *arch_info,
                     size_t program_size,
                     size_t kernel_size,
-                    size_t max_examples,
+                    size_t max_tuples,
                     size_t recur_limit,
                     bool shallow);
 
