@@ -1694,6 +1694,7 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
     }
 
     if(dst_kernel != kernel) {
+      dst_kernel->size = (uint16_t) k;
       dst_kernel->reg_info = kernel->reg_info;
       dst_kernel->output_regs = kernel->output_regs;
       dst_kernel->n_input_regs = kernel->n_input_regs;
