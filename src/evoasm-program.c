@@ -305,7 +305,7 @@ evoasm_x64_reg_liveness_or_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *o
                                 evoasm_bitmap512_t *mask512) {
   evoasm_bitmap_t *mask = (evoasm_bitmap_t *) mask512;
   switch(op->word) {
-    case EVOASM_X64_REG_WORD_LB:
+    case EVOASM_X64_OPERAND_WORD_LB:
       if(!op->implicit && op->param_idx < inst->n_params &&
          (
              (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG0 && params->reg0_high_byte)
@@ -316,15 +316,15 @@ evoasm_x64_reg_liveness_or_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *o
       }
       evoasm_bitmap_or64(mask, 0, 0x00ffu);
       break;
-    case EVOASM_X64_REG_WORD_HB: {
+    case EVOASM_X64_OPERAND_WORD_HB: {
 hb:
       evoasm_bitmap_or64(mask, 0, 0xff00u);
       break;
     }
-    case EVOASM_X64_REG_WORD_W:
+    case EVOASM_X64_OPERAND_WORD_W:
       evoasm_bitmap_or64(mask, 0, 0xffffu);
       break;
-    case EVOASM_X64_REG_WORD_DW:
+    case EVOASM_X64_OPERAND_WORD_DW:
       /* 32bit writes clear the whole register */
       if(op->reg_type == EVOASM_X64_REG_TYPE_GP) {
         evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
@@ -333,17 +333,17 @@ hb:
         evoasm_bitmap_or64(mask, 0, 0xffffffffu);
       }
       break;
-    case EVOASM_X64_REG_WORD_LQW:
+    case EVOASM_X64_OPERAND_WORD_LQW:
       evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
       break;
-    case EVOASM_X64_REG_WORD_HQW:
+    case EVOASM_X64_OPERAND_WORD_HQW:
       evoasm_bitmap_or64(mask, 1, 0xffffffffffffffffull);
       break;
-    case EVOASM_X64_REG_WORD_DQW:
+    case EVOASM_X64_OPERAND_WORD_DQW:
       evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
       evoasm_bitmap_or64(mask, 1, 0xffffffffffffffffull);
       break;
-    case EVOASM_X64_REG_WORD_VW:
+    case EVOASM_X64_OPERAND_WORD_VW:
       evoasm_bitmap_or64(mask, 0, 0xffffffffffffffffull);
       evoasm_bitmap_or64(mask, 1, 0xffffffffffffffffull);
       evoasm_bitmap_or64(mask, 2, 0xffffffffffffffffull);

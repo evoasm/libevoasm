@@ -160,7 +160,7 @@ EVOASM_X64_OPERAND_DEF_BOOL_GETTER(implicit)
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(maybe_written)
 
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
-EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_reg_word_t)
+EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_operand_word_t)
 
 EVOASM_X64_OPERAND_DEF_GETTER(type, evoasm_x64_operand_type_t)
 
@@ -197,19 +197,19 @@ evoasm_x64_operand_size_t evoasm_x64_operand_get_mem_size(evoasm_x64_operand_t *
   }
 
   switch(operand->word) {
-    case EVOASM_X64_REG_WORD_LB:
-    case EVOASM_X64_REG_WORD_HB:
+    case EVOASM_X64_OPERAND_WORD_LB:
+    case EVOASM_X64_OPERAND_WORD_HB:
       return EVOASM_X64_OPERAND_SIZE_8;
-    case EVOASM_X64_REG_WORD_W:
+    case EVOASM_X64_OPERAND_WORD_W:
       return EVOASM_X64_OPERAND_SIZE_16;
-    case EVOASM_X64_REG_WORD_DW:
+    case EVOASM_X64_OPERAND_WORD_DW:
       return EVOASM_X64_OPERAND_SIZE_32;
-    case EVOASM_X64_REG_WORD_LQW:
-    case EVOASM_X64_REG_WORD_HQW:
+    case EVOASM_X64_OPERAND_WORD_LQW:
+    case EVOASM_X64_OPERAND_WORD_HQW:
       return EVOASM_X64_OPERAND_SIZE_64;
-    case EVOASM_X64_REG_WORD_DQW:
+    case EVOASM_X64_OPERAND_WORD_DQW:
       return EVOASM_X64_OPERAND_SIZE_128;
-    case EVOASM_X64_REG_WORD_VW:
+    case EVOASM_X64_OPERAND_WORD_VW:
       switch(evoasm_x64_reg_type_sizes[EVOASM_X64_REG_TYPE_XMM]) {
         case 16:
           return EVOASM_X64_OPERAND_SIZE_128;
@@ -743,7 +743,7 @@ evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
 }
 
 size_t
-evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, evoasm_x64_reg_word_t word, uint64_t *data, size_t len) {
+evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, evoasm_x64_operand_word_t word, uint64_t *data, size_t len) {
   size_t size  = evoasm_x64_reg_type_sizes[evoasm_x64_get_reg_type(reg)];
   size_t cpy_len = EVOASM_MIN(len * sizeof(uint64_t), size);
   memcpy(data, evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), cpy_len);
@@ -757,36 +757,36 @@ evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t 
   }
 
   switch(word) {
-    case EVOASM_X64_REG_WORD_LB:
+    case EVOASM_X64_OPERAND_WORD_LB:
       data[0] &= 0x00FF;
       clear_from_idx = 1;
       break;
-    case EVOASM_X64_REG_WORD_HB:
+    case EVOASM_X64_OPERAND_WORD_HB:
       data[0] &= 0xFF00;
       clear_from_idx = 1;
       break;
-    case EVOASM_X64_REG_WORD_W:
+    case EVOASM_X64_OPERAND_WORD_W:
       data[0] &= 0xFFFF;
       clear_from_idx = 1;
       break;
-    case EVOASM_X64_REG_WORD_DW:
+    case EVOASM_X64_OPERAND_WORD_DW:
       data[0] &= 0xFFFFFFFF;
       clear_from_idx = 1;
       break;
-    case EVOASM_X64_REG_WORD_LQW:
+    case EVOASM_X64_OPERAND_WORD_LQW:
       data[0] &= 0xFFFFFFFFFFFFFFFF;
       clear_from_idx = 1;
       break;
-    case EVOASM_X64_REG_WORD_HQW:
+    case EVOASM_X64_OPERAND_WORD_HQW:
       data[0] = 0;
       clear_from_idx = 2;
       break;
-    case EVOASM_X64_REG_WORD_DQW:
+    case EVOASM_X64_OPERAND_WORD_DQW:
       clear_from_idx = 2;
       break;
-    case EVOASM_X64_REG_WORD_VW:
+    case EVOASM_X64_OPERAND_WORD_VW:
       break;
-    case EVOASM_X64_REG_WORD_NONE:
+    case EVOASM_X64_OPERAND_WORD_NONE:
       break;
     default:
       evoasm_assert_not_reached();
