@@ -194,7 +194,7 @@ void
 evoasm_pop_destroy(evoasm_pop_t *pop) {
   evoasm_free(pop->domains);
 
-  for(int i = 0; i < pop->params->deme_size; i++) {
+  for(int i = 0; i < pop->params->n_demes; i++) {
     evoasm_deme_destroy(&pop->demes[i]);
   }
   evoasm_free(pop->demes);
