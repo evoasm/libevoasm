@@ -1345,7 +1345,7 @@ evoasm_program_assess(evoasm_program_t *program,
     }
   }
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_DEBUG
   if(loss == 0.0) {
     evoasm_program_log_program_output(program,
                                       kernel,
@@ -1457,7 +1457,7 @@ next:;
   load_output->arity = output->arity;
   memcpy(load_output->types, output->types, EVOASM_ARY_LEN(output->types));
 
-//#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_INFO
+//#if EVOASM_log_level <= EVOASM_LOG_LEVEL_INFO
 
   evoasm_program_log_program_output(program,
                                     kernel,
@@ -1797,7 +1797,7 @@ error:
 
 void
 evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_arch_id_t arch_id, evoasm_log_level_t log_level) {
-  if(_evoasm_min_log_level > log_level) return;
+  if(_evoasm_log_level > log_level) return;
 
   switch(arch_id) {
     case EVOASM_ARCH_X64:
@@ -1814,7 +1814,7 @@ evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_arch_id_t arch_id, evoasm_log_
 
 void
 evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level) {
-  if(_evoasm_min_log_level > log_level) return;
+  if(_evoasm_log_level > log_level) return;
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Program: size: %d", program->size);
 

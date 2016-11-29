@@ -31,12 +31,12 @@
 #include "evoasm-log.h"
 #include "evoasm-alloc.h"
 
-evoasm_log_level_t _evoasm_min_log_level = EVOASM_LOG_LEVEL_WARN;
+evoasm_log_level_t _evoasm_log_level = EVOASM_LOG_LEVEL_WARN;
 FILE *          _evoasm_log_file;
 
 void
-evoasm_set_min_log_level(evoasm_log_level_t min_log_level) {
-  _evoasm_min_log_level = min_log_level;
+evoasm_set_log_level(evoasm_log_level_t log_level) {
+  _evoasm_log_level = log_level;
 }
 
 static const char *const log_levels[EVOASM_LOG_LEVEL_NONE] = {
@@ -61,7 +61,7 @@ static const char *const log_colors[EVOASM_LOG_LEVEL_NONE] = {
 void
 evoasm_log(evoasm_log_level_t level, const char *tag, const char *format, ...)
 {
-  if(level < _evoasm_min_log_level) return;
+  if(level < _evoasm_log_level) return;
 
   va_list args;
 

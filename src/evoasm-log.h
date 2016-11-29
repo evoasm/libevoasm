@@ -43,11 +43,11 @@ typedef int evoasm_log_level_t;
 #define EVOASM_ANSI_CODE_WHITE "\x1b[37;1m"
 #define EVOASM_ANSI_CODE_RESET "\x1b[0m"
 
-#ifndef EVOASM_MIN_LOG_LEVEL
-#  define EVOASM_MIN_LOG_LEVEL EVOASM_LOG_LEVEL_INFO
+#ifndef EVOASM_log_level
+#  define EVOASM_log_level EVOASM_LOG_LEVEL_INFO
 #endif
 
-extern evoasm_log_level_t _evoasm_min_log_level;
+extern evoasm_log_level_t _evoasm_log_level;
 extern FILE *          _evoasm_log_file;
 
 #define EVOASM_DEF_LOG_TAG(tag) evoasm_used static const char *_evoasm_log_tag = tag;
@@ -56,37 +56,37 @@ extern FILE *          _evoasm_log_file;
 void
 evoasm_log(evoasm_log_level_t level, const char *tag, const char *format, ...) evoasm_printf(3, 4);
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_TRACE
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_TRACE
 #  define evoasm_log_trace(...) evoasm_log(EVOASM_LOG_LEVEL_TRACE, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
 #  define evoasm_log_trace(...)
 #endif
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_DEBUG
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_DEBUG
 #  define evoasm_log_debug(...) evoasm_log(EVOASM_LOG_LEVEL_DEBUG, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
 #  define evoasm_log_debug(...)
 #endif
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_INFO
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_INFO
 #  define evoasm_log_info(...) evoasm_log(EVOASM_LOG_LEVEL_INFO, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
 #  define evoasm_log_info(...)
 #endif
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_WARN
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_WARN
 #  define evoasm_log_warn(...) evoasm_log(EVOASM_LOG_LEVEL_WARN, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
 #  define evoasm_log_warn(...)
 #endif
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_ERROR
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_ERROR
 #  define evoasm_log_error(...) evoasm_log(EVOASM_LOG_LEVEL_ERROR, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
 #  define evoasm_log_error(...)
 #endif
 
-#if EVOASM_MIN_LOG_LEVEL <= EVOASM_LOG_LEVEL_FATAL
+#if EVOASM_log_level <= EVOASM_LOG_LEVEL_FATAL
 #  define evoasm_log_fatal(...) evoasm_log(EVOASM_LOG_LEVEL_FATAL, EVOASM_LOG_TAG, __VA_ARGS__)
 #else
 #  define evoasm_log_fatal(...)
