@@ -264,6 +264,12 @@ evoasm_x64_get_features(uint64_t *features_) {
   } else {
     evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " F16C" EVOASM_ANSI_CODE_RESET);
   }
+  if(vals[0][1] & (1ull << 30)) {
+    features |= (1ull << EVOASM_X64_FEATURE_RDRAND);
+    evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "RDRAND" EVOASM_ANSI_CODE_RESET);
+  } else {
+    evoasm_log_info("Missing support for " EVOASM_ANSI_CODE_RED " RDRAND" EVOASM_ANSI_CODE_RESET);
+  }
   if(vals[1][0] & (1ull << 3)) {
     features |= (1ull << EVOASM_X64_FEATURE_BMI1);
     evoasm_log_info("Found support for " EVOASM_ANSI_CODE_GREEN "BMI1" EVOASM_ANSI_CODE_RESET);
