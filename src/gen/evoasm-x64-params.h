@@ -434,11 +434,11 @@ static inline evoasm_x64_param_type_t evoasm_x64_params_get_type_(evoasm_x64_par
     case EVOASM_X64_PARAM_FORCE_REX:
       return EVOASM_X64_PARAM_TYPE_BOOL;
     case EVOASM_X64_PARAM_REX_R:
-      return EVOASM_X64_PARAM_TYPE_BOOL;
+      return EVOASM_X64_PARAM_TYPE_UINT1;
     case EVOASM_X64_PARAM_REX_X:
-      return EVOASM_X64_PARAM_TYPE_BOOL;
+      return EVOASM_X64_PARAM_TYPE_UINT1;
     case EVOASM_X64_PARAM_REX_B:
-      return EVOASM_X64_PARAM_TYPE_BOOL;
+      return EVOASM_X64_PARAM_TYPE_UINT1;
     case EVOASM_X64_PARAM_LEGACY_PREFIX_ORDER:
       return EVOASM_X64_PARAM_TYPE_INT3;
     case EVOASM_X64_PARAM_LOCK:
@@ -450,7 +450,7 @@ static inline evoasm_x64_param_type_t evoasm_x64_params_get_type_(evoasm_x64_par
     case EVOASM_X64_PARAM_REG_INDEX:
       return EVOASM_X64_PARAM_TYPE_REG;
     case EVOASM_X64_PARAM_REX_W:
-      return EVOASM_X64_PARAM_TYPE_BOOL;
+      return EVOASM_X64_PARAM_TYPE_UINT1;
     case EVOASM_X64_PARAM_DISP:
       return EVOASM_X64_PARAM_TYPE_INT32;
     case EVOASM_X64_PARAM_SCALE:
@@ -472,7 +472,7 @@ static inline evoasm_x64_param_type_t evoasm_x64_params_get_type_(evoasm_x64_par
     case EVOASM_X64_PARAM_MOFFS:
       return EVOASM_X64_PARAM_TYPE_INT64;
     case EVOASM_X64_PARAM_VEX_L:
-      return EVOASM_X64_PARAM_TYPE_BOOL;
+      return EVOASM_X64_PARAM_TYPE_UINT1;
     case EVOASM_X64_PARAM_MODRM_REG:
       return EVOASM_X64_PARAM_TYPE_INT3;
     case EVOASM_X64_PARAM_VEX_V:
