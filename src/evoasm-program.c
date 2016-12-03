@@ -290,6 +290,8 @@ evoasm_kernel_get_operand_reg_id_x64(evoasm_kernel_t *kernel, evoasm_x64_operand
                                                               (evoasm_x64_basic_param_id_t) inst->params[op->param_idx].id);
   } else if(op->reg_id < EVOASM_X64_REG_NONE) {
     return (evoasm_x64_reg_id_t) op->reg_id;
+  } else if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
+    return EVOASM_X64_REG_RFLAGS;
   } else {
     evoasm_assert_not_reached();
     return EVOASM_X64_REG_NONE;
@@ -421,8 +423,8 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
   kernel->n_input_regs = 0;
   kernel->n_output_regs = 0;
 
-  static evoasm_kernel_reg_info_t zero_reg_info = {0};
-  kernel->reg_info = zero_reg_info;
+  kernel->reg_info.x64.written_flags = 0;
+  memset(kernel->reg_info.x64.regs, 0, sizeof(kernel->reg_info.x64.regs));
 
   /* First, handle read ops, so that writing ops do not disturb us */
   for(size_t i = 0; i < kernel->size; i++) {

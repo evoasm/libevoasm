@@ -1110,8 +1110,8 @@ evoasm_deme_select_indivs(evoasm_deme_t *deme, size_t row, bool programs) {
     }
   }
 
-  assert(n_blessed_indivs > 0);
-  assert(n_doomed_indivs > 0);
+  //assert(n_blessed_indivs > 0);
+  //assert(n_doomed_indivs > 0);
 
   deme->n_blessed_indivs = (uint16_t) n_blessed_indivs;
   deme->n_doomed_indivs = (uint16_t) n_doomed_indivs;
@@ -1263,11 +1263,14 @@ evoasm_deme_mutate_indiv(evoasm_deme_t *deme, size_t row, size_t indiv_idx, bool
   evoasm_prng_t *prng = &deme->prng;
   size_t indiv_size = evoasm_deme_get_indiv_size(deme, program);
 
-  if(evoasm_prng_randf_(prng) < (float) indiv_size * deme->mut_rate) {
-    for(size_t i = 0; i < indiv_size; i++) {
-      uint64_t r = evoasm_prng_rand64_(prng);
+  float r1 = evoasm_prng_randf_(prng);
+  float mut_rate = (float) indiv_size * deme->mut_rate;
 
-      if(r < deme->mut_rate) {
+  if(r1 < mut_rate) {
+    for(size_t i = 0; i < indiv_size; i++) {
+      float r2 = evoasm_prng_randf_(prng);
+
+      if(r2 < deme->mut_rate) {
         if(program) {
           evoasm_deme_seed_program_pos(deme, indiv_idx, i);
         } else {
@@ -1307,7 +1310,9 @@ evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme, size_t row
 
 static evoasm_force_inline inline void
 evoasm_deme_save_elite(evoasm_deme_t *deme, size_t row, bool program) {
-  evoasm_deme_inject_best(deme, deme, row, program);
+  if(deme->n_doomed_indivs > 0) {
+    evoasm_deme_inject_best(deme, deme, row, program);
+  }
 }
 
 static evoasm_force_inline inline void
@@ -1316,13 +1321,14 @@ evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t ro
     for(size_t i = 0; i < demes->params->n_demes; i++) {
       evoasm_deme_t *immigration_deme = &demes[i];
 
+      if(deme->n_doomed_indivs == 0) {
+        break;
+      }
+
       if(deme != immigration_deme) {
         evoasm_deme_inject_best(deme, immigration_deme, row, program);
       }
 
-      if(deme->n_doomed_indivs == 0) {
-        break;
-      }
     }
   }
 }

@@ -33,6 +33,7 @@ typedef struct {
   /*registers in following kernels whose input is this register */
 } evoasm_kernel_x64_reg_info_reg_t;
 
+
 typedef struct {
   evoasm_kernel_x64_reg_info_reg_t regs[EVOASM_X64_REG_NONE];
 
