@@ -66,9 +66,11 @@ struct evoasm_deme_s {
   uint16_t n_doomed_indivs;
   uint16_t n_blessed_indivs;
   uint16_t n_examples;
+  float mut_rate;
   evoasm_arch_id_t arch_id;
   evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
+  uint16_t stagn_counter;
 } evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
 
 typedef struct evoasm_deme_s evoasm_deme_t;
@@ -78,8 +80,9 @@ typedef struct evoasm_pop_s {
   evoasm_domain_t *domains;
   evoasm_deme_t *demes;
   evoasm_pop_module_data_t module_data;
-  bool seeded : 1;
   evoasm_loss_t *summary_losses;
+  bool seeded : 1;
+  uint16_t gen_counter;
 
 } evoasm_pop_t;
 

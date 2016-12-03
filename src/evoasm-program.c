@@ -1020,6 +1020,7 @@ evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
     EVOASM_TRY(error, evoasm_program_x64_emit_input_load, program, input_vals, input->types, input->arity,
                io_mapping);
     size_t r = evoasm_buf_append(program->buf, program->body_buf);
+    (void) r;
     assert(r == 0);
     EVOASM_TRY(error, evoasm_program_x64_emit_output_store, program, i);
   }

@@ -203,6 +203,9 @@ evoasm_pop_destroy(evoasm_pop_t *pop) {
   evoasm_pop_module_data_destroy(&pop->module_data);
 }
 
+#define EVOASM_DEME_MIN_MUT_RATE 0.008f
+#define EVOASM_DEME_MAX_MUT_RATE 0.3f
+
 static evoasm_success_t
 evoasm_deme_init(evoasm_deme_t *deme,
                  evoasm_arch_id_t arch_id,
@@ -218,6 +221,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
   deme->arch_id = arch_id;
   deme->params = params;
   deme->domains = domains;
+  deme->mut_rate = EVOASM_DEME_MIN_MUT_RATE;
 
   evoasm_prng_init(&deme->prng, seed);
 
@@ -650,6 +654,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
 
   evoasm_signal_set_exception_mask(program->exception_mask);
   evoasm_loss_t loss = evoasm_program_eval(program, params->program_output);
+  (void) loss;
   assert(loss == best_deme->best_loss);
   evoasm_signal_clear_exception_mask();
 
@@ -756,7 +761,7 @@ evoasm_pop_kernel_data_move(evoasm_pop_kernel_data_t *kernel_data,
   }
 }
 
-static inline void
+static inline bool
 evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t program_idx, size_t *kernel_idxs) {
 
   if(loss < deme->best_loss) {
@@ -784,11 +789,14 @@ evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t program_
                                   &deme->best_kernel_data, dst_kernel_inst0_off, kernel_size);
 
     }
+    return true;
   }
+
+  return false;
 }
 
 static evoasm_success_t
-evoasm_deme_test_programs(evoasm_deme_t *deme) {
+evoasm_deme_test_programs(evoasm_deme_t *deme, bool *new_best) {
   evoasm_prng_t *prng = &deme->prng;
   size_t program_size = deme->params->program_size;
 
@@ -804,7 +812,9 @@ evoasm_deme_test_programs(evoasm_deme_t *deme) {
       }
 
       EVOASM_TRY(error, evoasm_deme_test_program, deme, i, kernel_idxs, &loss);
-      evoasm_deme_update_best(deme, loss, i, kernel_idxs);
+      if(evoasm_deme_update_best(deme, loss, i, kernel_idxs)) {
+        *new_best = true;
+      }
     }
 
     assert(deme->loss_data.counters[EVOASM_DEME_INDIV_OFF(deme, EVOASM_DEME_PROGRAMS_ROW(deme), i)] ==
@@ -817,10 +827,8 @@ error:
   return false;
 }
 
-#include <stdlib.h>
-
 static evoasm_success_t
-evoasm_deme_test_kernels(evoasm_deme_t *deme) {
+evoasm_deme_test_kernels(evoasm_deme_t *deme, bool *new_best) {
 
   evoasm_prng_t *prng = &deme->prng;
   size_t kernel_idxs[EVOASM_PROGRAM_MAX_SIZE];
@@ -850,7 +858,9 @@ evoasm_deme_test_kernels(evoasm_deme_t *deme) {
           kernel_idxs[l] = load_kernel_idx;
         }
         EVOASM_TRY(error, evoasm_deme_test_program, deme, program_idx, kernel_idxs, &loss);
-        evoasm_deme_update_best(deme, loss, program_idx, kernel_idxs);
+        if(evoasm_deme_update_best(deme, loss, program_idx, kernel_idxs)) {
+          *new_best = true;
+        }
       }
     }
   }
@@ -963,7 +973,7 @@ evoasm_pop_get_best_loss(evoasm_pop_t *pop) {
 }
 
 static void
-evoasm_deme_eval_update(evoasm_deme_t *deme) {
+evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
 
   evoasm_pop_loss_data_t *loss_data = &deme->loss_data;
 
@@ -990,6 +1000,14 @@ evoasm_deme_eval_update(evoasm_deme_t *deme) {
       }
     }
   }
+
+  if(!new_best) {
+    deme->mut_rate = EVOASM_MIN(EVOASM_DEME_MAX_MUT_RATE, deme->mut_rate * 4);
+    deme->stagn_counter++;
+  } else {
+    deme->mut_rate = EVOASM_MAX(EVOASM_DEME_MIN_MUT_RATE, deme->mut_rate / 4);
+    deme->stagn_counter++;
+  }
 }
 
 size_t
@@ -1004,23 +1022,24 @@ evoasm_pop_get_loss_samples(evoasm_pop_t *pop, size_t deme_idx, const evoasm_los
 static evoasm_success_t
 evoasm_deme_eval(evoasm_deme_t *deme) {
   bool retval = true;
+  bool new_best = false;
 
   EVOASM_MEMSET_N(deme->loss_data.counters, 0, EVOASM_DEME_N_INDIVS(deme));
   //EVOASM_MEMSET_N(deme->loss_data.samples, 0, EVOASM_DEME_N_INDIVS(deme) * EVOASM_DEME_MAX_LOSS_SAMPLES);
 
   if(deme->params->program_size > 1) {
-    if(!evoasm_deme_test_programs(deme)) {
+    if(!evoasm_deme_test_programs(deme, &new_best)) {
       retval = false;
       goto done;
     }
   }
 
-  if(!evoasm_deme_test_kernels(deme)) {
+  if(!evoasm_deme_test_kernels(deme, &new_best)) {
     retval = false;
     goto done;
   }
 
-  evoasm_deme_eval_update(deme);
+  evoasm_deme_eval_update(deme, new_best);
 
 done:
   return retval;
@@ -1124,7 +1143,7 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
 
   /* rough estimate */
   evoasm_loss_t child_loss = 0.5f * loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, parent_idxs[0])]
-                           + 0.5f * loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, parent_idxs[1])];
+                             + 0.5f * loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, parent_idxs[1])];
 
   assert(isfinite(child_loss));
 
@@ -1137,8 +1156,8 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
 
     if(programs) {
       size_t parent_pos0_offs[] = {
-        EVOASM_DEME_PROGRAM_POS_OFF(deme, parent_idxs[j], 0),
-        EVOASM_DEME_PROGRAM_POS_OFF(deme, parent_idxs[1 - j], 0)
+          EVOASM_DEME_PROGRAM_POS_OFF(deme, parent_idxs[j], 0),
+          EVOASM_DEME_PROGRAM_POS_OFF(deme, parent_idxs[1 - j], 0)
       };
 
       size_t child_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, child_idxs[j], 0);
@@ -1149,7 +1168,7 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
                                    program_data, child_pos0_off + seg1_len, seg2_len);
 
     } else {
-      size_t parent_inst0_offs [] = {
+      size_t parent_inst0_offs[] = {
           EVOASM_DEME_KERNEL_INST_OFF(deme, row, parent_idxs[j], 0),
           EVOASM_DEME_KERNEL_INST_OFF(deme, row, parent_idxs[1 - j], 0)
       };
@@ -1165,7 +1184,8 @@ evoasm_deme_combine_indivs(evoasm_deme_t *deme, size_t row, size_t idx, bool pro
 
 static evoasm_force_inline inline void
 evoasm_deme_combine(evoasm_deme_t *deme, size_t row, bool programs) {
-  for(size_t i = 0; i < deme->n_doomed_indivs; i += 2) {
+  size_t n_doomed = EVOASM_ALIGN_DOWN(deme->n_doomed_indivs, 2u);
+  for(size_t i = 0; i < n_doomed; i += 2) {
     evoasm_deme_combine_indivs(deme, row, i, programs);
   }
 }
@@ -1243,14 +1263,17 @@ evoasm_deme_mutate_indiv(evoasm_deme_t *deme, size_t row, size_t indiv_idx, bool
   evoasm_prng_t *prng = &deme->prng;
   size_t indiv_size = evoasm_deme_get_indiv_size(deme, program);
 
-  if(evoasm_prng_randf_(prng) < deme->params->mut_rate) {
-    uint64_t r = evoasm_prng_rand64_(prng);
-    size_t elem_idx = (r % indiv_size);
+  if(evoasm_prng_randf_(prng) < (float) indiv_size * deme->mut_rate) {
+    for(size_t i = 0; i < indiv_size; i++) {
+      uint64_t r = evoasm_prng_rand64_(prng);
 
-    if(program) {
-      evoasm_deme_seed_program_pos(deme, indiv_idx, elem_idx);
-    } else {
-      evoasm_deme_seed_kernel_inst(deme, row, indiv_idx, elem_idx);
+      if(r < deme->mut_rate) {
+        if(program) {
+          evoasm_deme_seed_program_pos(deme, indiv_idx, i);
+        } else {
+          evoasm_deme_seed_kernel_inst(deme, row, indiv_idx, i);
+        }
+      }
     }
   }
 }
@@ -1262,23 +1285,68 @@ evoasm_deme_mutate(evoasm_deme_t *deme, size_t row, bool programs) {
   }
 }
 
+static evoasm_force_inline inline void
+evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme, size_t row, bool program) {
+  assert(deme->n_doomed_indivs > 0);
+
+  if(program) {
+    size_t src_program_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF_(deme->params->program_size, 0, 0);
+    size_t dst_program_pos0_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, deme->doomed_indiv_idxs[deme->n_doomed_indivs - 1],
+                                                              0);
+    evoasm_pop_program_data_copy(&src_deme->best_program_data, src_program_pos0_off, &deme->program_data,
+                                 dst_program_pos0_off, deme->params->program_size);
+  } else {
+    size_t src_kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(1, deme->params->kernel_size, row, 0, 0);
+    size_t dst_kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, row,
+                                                              deme->doomed_indiv_idxs[deme->n_doomed_indivs - 1], 0);
+    evoasm_pop_kernel_data_copy(&src_deme->best_kernel_data, deme->arch_id, src_kernel_inst0_off, &deme->kernel_data,
+                                dst_kernel_inst0_off, deme->params->program_size);
+  }
+  deme->n_doomed_indivs--;
+}
+
+static evoasm_force_inline inline void
+evoasm_deme_save_elite(evoasm_deme_t *deme, size_t row, bool program) {
+  evoasm_deme_inject_best(deme, deme, row, program);
+}
+
+static evoasm_force_inline inline void
+evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t row, bool program) {
+  if(deme->stagn_counter % 4) {
+    for(size_t i = 0; i < demes->params->n_demes; i++) {
+      evoasm_deme_t *immigration_deme = &demes[i];
+
+      if(deme != immigration_deme) {
+        evoasm_deme_inject_best(deme, immigration_deme, row, program);
+      }
+
+      if(deme->n_doomed_indivs == 0) {
+        break;
+      }
+    }
+  }
+}
+
 static void
-evoasm_deme_next_gen(evoasm_deme_t *deme) {
+evoasm_deme_next_gen(evoasm_deme_t *deme, evoasm_deme_t *demes) {
   for(size_t i = 0; i < deme->params->program_size; i++) {
     evoasm_deme_select_indivs(deme, i, false);
+    evoasm_deme_save_elite(deme, i, false);
+    evoasm_deme_immigrate_elite(deme, demes, i, false);
+
     evoasm_deme_combine(deme, i, false);
-    if(deme->params->mut_rate > 0) {
-      evoasm_deme_mutate(deme, i, false);
-    }
+    evoasm_deme_mutate(deme, i, false);
   }
 
   if(deme->params->program_size > 1) {
     evoasm_deme_select_indivs(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+
+    evoasm_deme_save_elite(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+    evoasm_deme_immigrate_elite(deme, demes, EVOASM_DEME_PROGRAMS_ROW(deme), true);
+
     evoasm_deme_combine(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
 
-    if(deme->params->mut_rate > 0) {
-      evoasm_deme_mutate(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
-    }
+    evoasm_deme_mutate(deme, EVOASM_DEME_PROGRAMS_ROW(deme), true);
   }
 }
 
@@ -1286,8 +1354,11 @@ void
 evoasm_pop_next_gen(evoasm_pop_t *pop) {
 #pragma omp parallel for
   for(size_t i = 0; i < pop->params->n_demes; i++) {
-    evoasm_deme_next_gen(&pop->demes[i]);
+    evoasm_deme_next_gen(&pop->demes[i], pop->demes);
   }
+
+  pop->gen_counter++;
+
 }
 
 #if 0

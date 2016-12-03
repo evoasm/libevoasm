@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}\
     -Wswitch-default  -Wstrict-aliasing=3 -Wunreachable-code\
     -Wundef -Wpointer-arith -Wwrite-strings -Wconversion -Winit-self -Wno-unused-parameter")
 
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DEVOASM_LOG_LEVEL=EVOASM_LOG_LEVEL_DEBUG")
+set(CMAKE_C_FLAGS_DEBUG "-O0 -ggdb3 -DEVOASM_LOG_LEVEL=EVOASM_LOG_LEVEL_DEBUG")
 set(CMAKE_C_STANDARD 11)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -53,9 +53,9 @@ set(SOURCE_FILES
 
 find_package(Threads)
 find_package(OpenMP REQUIRED)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+if(OPENMP_FOUND)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
 add_library(evoasm SHARED ${SOURCE_FILES})

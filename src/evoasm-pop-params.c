@@ -36,8 +36,6 @@ EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(mut_rate, float, float)
-
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, size_t, uint32_t)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, size_t, uint16_t)
@@ -131,11 +129,11 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->mut_rate < 0.0 || pop_params->mut_rate > 1.0) {
-    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
-                 "Mutatin rate must be in the range [0..1]");
-    goto fail;
-  }
+//  if(pop_params->mut_rate < 0.0 || pop_params->mut_rate > 1.0) {
+//    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+//                 "Mutatin rate must be in the range [0..1]");
+//    goto fail;
+//  }
 
   if(pop_params->kernel_size > EVOASM_KERNEL_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
