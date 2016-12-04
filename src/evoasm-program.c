@@ -1639,6 +1639,7 @@ evoasm_program_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kernel,
 static evoasm_success_t
 evoasm_program_mark_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel,
                            evoasm_program_intron_elimination_ctx *ctx) {
+
   for(size_t i = 0; i < EVOASM_X64_REG_NONE; i++) {
     evoasm_bitmap_t *bitmap = (evoasm_bitmap_t *) &ctx->output_reg_bitmaps[kernel->idx];
     if(evoasm_bitmap_get(bitmap, i)) {
@@ -1646,8 +1647,6 @@ evoasm_program_mark_kernel(evoasm_program_t *program, evoasm_kernel_t *kernel,
                                   ctx);
     }
   }
-
-  evoasm_program_mark_writers(program, kernel, (evoasm_reg_id_t) EVOASM_X64_REG_RFLAGS, (size_t) (kernel->size - 1), ctx);
 
   return true;
 }
