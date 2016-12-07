@@ -4,6 +4,6 @@ Backend library for *Evoasm*. Please see the [Ruby Evoasm frontent](https://gith
 for more information.
 
 #License
-[MPL-2.0][license]
+[AGPL-3.0][license]
 
 [license]: https://github.com/furunkel/libevoasm/blob/master/LICENSE.txt

@@ -52,7 +52,6 @@ typedef union {
 
 
 typedef struct {
-  uint16_t size;
   evoasm_inst_id_t *insts;
   union {
     evoasm_x64_basic_params_t *x64;
@@ -63,8 +62,10 @@ typedef struct {
     evoasm_x64_reg_id_t x64[EVOASM_KERNEL_MAX_OUTPUT_REGS];
   } output_regs;
 
+  bool dead_branch_succ :1;
   uint_fast8_t n_input_regs;
   uint_fast8_t n_output_regs;
+  uint16_t size;
   uint16_t idx;
   uint16_t buf_start;
   uint16_t buf_end;
@@ -88,7 +89,7 @@ typedef enum {
 } evoasm_program_emit_flags_t;
 
 #define EVOASM_PROGRAM_MAX_SIZE 256
-#define EVOASM_KERNEL_MAX_SIZE 2048
+#define EVOASM_KERNEL_MAX_SIZE 1024
 
 typedef struct {
   evoasm_arch_info_t *arch_info;
@@ -103,7 +104,7 @@ typedef struct {
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
   evoasm_kernel_t *kernels;
-  int16_t *jmp_offs;
+  uint16_t *jmp_offs;
   uint8_t *jmp_conds;
   uint32_t *recur_counters;
 

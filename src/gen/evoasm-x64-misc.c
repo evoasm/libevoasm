@@ -346,3 +346,70 @@ alloc_failed:
   return false;
 }
 
+const char *
+evoasm_x64_get_reg_name(evoasm_x64_reg_id_t reg) {
+  switch(reg) {
+  case EVOASM_X64_REG_IP: return "IP";
+  case EVOASM_X64_REG_RFLAGS: return "RFLAGS";
+  case EVOASM_X64_REG_MXCSR: return "MXCSR";
+  case EVOASM_X64_REG_A: return "A";
+  case EVOASM_X64_REG_C: return "C";
+  case EVOASM_X64_REG_D: return "D";
+  case EVOASM_X64_REG_B: return "B";
+  case EVOASM_X64_REG_SP: return "SP";
+  case EVOASM_X64_REG_BP: return "BP";
+  case EVOASM_X64_REG_SI: return "SI";
+  case EVOASM_X64_REG_DI: return "DI";
+  case EVOASM_X64_REG_8: return "8";
+  case EVOASM_X64_REG_9: return "9";
+  case EVOASM_X64_REG_10: return "10";
+  case EVOASM_X64_REG_11: return "11";
+  case EVOASM_X64_REG_12: return "12";
+  case EVOASM_X64_REG_13: return "13";
+  case EVOASM_X64_REG_14: return "14";
+  case EVOASM_X64_REG_15: return "15";
+  case EVOASM_X64_REG_MM0: return "MM0";
+  case EVOASM_X64_REG_MM1: return "MM1";
+  case EVOASM_X64_REG_MM2: return "MM2";
+  case EVOASM_X64_REG_MM3: return "MM3";
+  case EVOASM_X64_REG_MM4: return "MM4";
+  case EVOASM_X64_REG_MM5: return "MM5";
+  case EVOASM_X64_REG_MM6: return "MM6";
+  case EVOASM_X64_REG_MM7: return "MM7";
+  case EVOASM_X64_REG_XMM0: return "XMM0";
+  case EVOASM_X64_REG_XMM1: return "XMM1";
+  case EVOASM_X64_REG_XMM2: return "XMM2";
+  case EVOASM_X64_REG_XMM3: return "XMM3";
+  case EVOASM_X64_REG_XMM4: return "XMM4";
+  case EVOASM_X64_REG_XMM5: return "XMM5";
+  case EVOASM_X64_REG_XMM6: return "XMM6";
+  case EVOASM_X64_REG_XMM7: return "XMM7";
+  case EVOASM_X64_REG_XMM8: return "XMM8";
+  case EVOASM_X64_REG_XMM9: return "XMM9";
+  case EVOASM_X64_REG_XMM10: return "XMM10";
+  case EVOASM_X64_REG_XMM11: return "XMM11";
+  case EVOASM_X64_REG_XMM12: return "XMM12";
+  case EVOASM_X64_REG_XMM13: return "XMM13";
+  case EVOASM_X64_REG_XMM14: return "XMM14";
+  case EVOASM_X64_REG_XMM15: return "XMM15";
+  case EVOASM_X64_REG_ZMM16: return "ZMM16";
+  case EVOASM_X64_REG_ZMM17: return "ZMM17";
+  case EVOASM_X64_REG_ZMM18: return "ZMM18";
+  case EVOASM_X64_REG_ZMM19: return "ZMM19";
+  case EVOASM_X64_REG_ZMM20: return "ZMM20";
+  case EVOASM_X64_REG_ZMM21: return "ZMM21";
+  case EVOASM_X64_REG_ZMM22: return "ZMM22";
+  case EVOASM_X64_REG_ZMM23: return "ZMM23";
+  case EVOASM_X64_REG_ZMM24: return "ZMM24";
+  case EVOASM_X64_REG_ZMM25: return "ZMM25";
+  case EVOASM_X64_REG_ZMM26: return "ZMM26";
+  case EVOASM_X64_REG_ZMM27: return "ZMM27";
+  case EVOASM_X64_REG_ZMM28: return "ZMM28";
+  case EVOASM_X64_REG_ZMM29: return "ZMM29";
+  case EVOASM_X64_REG_ZMM30: return "ZMM30";
+  case EVOASM_X64_REG_ZMM31: return "ZMM31";
+  default:
+   evoasm_log_fatal("invalid register id %d", reg);
+   evoasm_assert_not_reached();
+  }
+}

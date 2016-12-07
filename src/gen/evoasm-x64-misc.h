@@ -89,5 +89,8 @@ evoasm_x64_get_reg_type(evoasm_x64_reg_id_t reg) {
 evoasm_success_t
 evoasm_x64_get_features(uint64_t *features);
 
+const char *
+evoasm_x64_get_reg_name(evoasm_x64_reg_id_t reg);
+
 #define EVOASM_X64_INSTS_VAR_NAME _evoasm_x64_insts
 

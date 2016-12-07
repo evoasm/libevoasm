@@ -83,9 +83,11 @@ evoasm_pop_loss_data_destroy(evoasm_pop_loss_data_t *loss_data) {
 static evoasm_success_t
 evoasm_pop_program_data_init(evoasm_pop_program_data_t *program_data, size_t n_pos) {
 
+  assert(sizeof(*program_data->jmp_offs) == sizeof(uint16_t));
+
   EVOASM_TRY_ALLOC(error, aligned_calloc, program_data->jmp_offs, EVOASM_CACHE_LINE_SIZE,
                    n_pos,
-                   sizeof(int16_t));
+                   sizeof(*program_data->jmp_offs));
   EVOASM_TRY_ALLOC(error, aligned_calloc, program_data->jmp_cond, EVOASM_CACHE_LINE_SIZE,
                    n_pos,
                    sizeof(uint8_t));
@@ -455,13 +457,11 @@ evoasm_deme_seed_program_pos(evoasm_deme_t *deme,
   size_t program_pos_off = EVOASM_DEME_PROGRAM_POS_OFF(deme, program_idx, pos);
   evoasm_pop_program_data_t *program_data = &deme->program_data;
   evoasm_prng_t *prng = &deme->prng;
-  size_t program_size = deme->params->program_size;
 
   program_data->jmp_cond[program_pos_off] =
       (uint8_t) evoasm_prng_rand8_(prng);
 
-  program_data->jmp_offs[program_pos_off] =
-      (int16_t) (evoasm_prng_rand_between_(prng, 0, (int64_t) (program_size - 1)) - (int64_t) (program_size / 2));
+  program_data->jmp_offs[program_pos_off] = evoasm_prng_rand16_(prng);
 }
 
 static void
@@ -701,10 +701,13 @@ evoasm_pop_program_data_copy(evoasm_pop_program_data_t *program_data,
                              size_t dst_off,
                              size_t len) {
 
+  assert(sizeof(*dst->jmp_offs) == sizeof(uint16_t));
+  assert(sizeof(*dst->jmp_cond) == sizeof(uint8_t));
+
   memcpy(dst->jmp_offs + dst_off, program_data->jmp_offs + off,
-         sizeof(int16_t) * len);
+         sizeof(*dst->jmp_offs) * len);
   memcpy(dst->jmp_cond + dst_off, program_data->jmp_cond + off,
-         sizeof(uint8_t) * len);
+         sizeof(*dst->jmp_cond) * len);
 }
 
 static evoasm_used void
@@ -714,9 +717,9 @@ evoasm_pop_program_data_move(evoasm_pop_program_data_t *program_data,
                              size_t len) {
 
   memmove(program_data->jmp_offs + dst_off, program_data->jmp_offs + src_off,
-          sizeof(int16_t) * len);
+          sizeof(*program_data->jmp_offs) * len);
   memmove(program_data->jmp_cond + dst_off, program_data->jmp_cond + src_off,
-          sizeof(uint8_t) * len);
+          sizeof(*program_data->jmp_cond) * len);
 }
 
 
