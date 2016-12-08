@@ -324,9 +324,6 @@ typedef enum evoasm_x64_word_size_t {
 #define EVOASM_X64_WORD_SIZE_0_63 (EVOASM_X64_WORD_SIZE_0_31 | EVOASM_X64_WORD_SIZE_32_63)
 #define EVOASM_X64_WORD_SIZE_0_127 (EVOASM_X64_WORD_SIZE_0_63 | EVOASM_X64_WORD_SIZE_64_127)
 
-#define EVOASM_X64_RFLAGS_FLAGS_GET(flags, flag) ((flags) & (1 << (flag)))
-#define EVOASM_X64_RFLAGS_FLAGS_SET(flags, flag) ((flags) = (flags) | (1 << (flag)))
-
 #define EVOASM_X64_RFLAGS_FLAGS_BITSIZE 5
 #define EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE 5
 

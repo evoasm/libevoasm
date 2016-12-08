@@ -26,6 +26,9 @@
 #include "gen/evoasm-x64-enums.h"
 #include "gen/evoasm-x64-params.h"
 
+#define EVOASM_X64_RFLAGS_FLAGS_GET(flags, flag) ((flags) & (1u << (flag)))
+#define EVOASM_X64_RFLAGS_FLAGS_SET(flags, flag) ((flags) = (flags) | (1u << (flag)))
+
 typedef struct {
   evoasm_buf_ref_t buf_ref;
   struct {
@@ -151,15 +154,17 @@ typedef struct {
   unsigned maybe_written: 1;
   unsigned implicit: 1;
   unsigned mnem: 1;
-  unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
-  unsigned word: EVOASM_X64_OPERAND_WORD_BITSIZE_OPT;
   unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
+  unsigned word: EVOASM_X64_OPERAND_WORD_BITSIZE_OPT;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_OPT;
+  unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
   union {
     struct {
       unsigned read_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
       unsigned written_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
+      unsigned cleared_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
+      unsigned set_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
     };
     uint8_t reg_id;
     int8_t imm;
@@ -260,6 +265,27 @@ evoasm_x64_operand_get_reg_size_(evoasm_x64_operand_t *operand) {
   }
   return (evoasm_x64_operand_size_t) operand->size;
 }
+
+static inline size_t
+evoasm_x64_get_reg_type_bytesize(evoasm_x64_reg_type_t reg_type) {
+  extern uint8_t evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_NONE];
+  return evoasm_x64_reg_type_bytesizes[reg_type];
+}
+
+static inline uint64_t
+evoasm_x64_rflags_flag_get_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
+  switch(rflags_flag) {
+    case EVOASM_X64_RFLAGS_FLAG_OF:return 1u << 11u;
+    case EVOASM_X64_RFLAGS_FLAG_SF: return 1u << 7u;
+    case EVOASM_X64_RFLAGS_FLAG_ZF: return 1u << 6u;
+    case EVOASM_X64_RFLAGS_FLAG_PF: return 1u << 2u;
+    case EVOASM_X64_RFLAGS_FLAG_CF:return 1u << 0u;
+    default: evoasm_assert_not_reached();
+  }
+}
+
+const char *
+evoasm_x64_get_rflags_flag_name(evoasm_x64_rflags_flag_t flag);
 
 evoasm_success_t
 evoasm_x64_emit_func_prolog(evoasm_x64_abi_t abi, evoasm_buf_t *buf);
