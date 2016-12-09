@@ -163,8 +163,7 @@ typedef struct {
     struct {
       unsigned read_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
       unsigned written_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
-      unsigned cleared_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
-      unsigned set_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
+      unsigned maybe_written_flags : EVOASM_X64_OPERAND_MAX_FLAGS_BITSIZE;
     };
     uint8_t reg_id;
     int8_t imm;
@@ -273,7 +272,7 @@ evoasm_x64_get_reg_type_bytesize(evoasm_x64_reg_type_t reg_type) {
 }
 
 static inline uint64_t
-evoasm_x64_rflags_flag_get_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
+evoasm_x64_get_rflags_flag_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
   switch(rflags_flag) {
     case EVOASM_X64_RFLAGS_FLAG_OF:return 1u << 11u;
     case EVOASM_X64_RFLAGS_FLAG_SF: return 1u << 7u;

@@ -29,38 +29,36 @@
 typedef struct {
   bool input : 1;
   bool written : 1;
-  bool output : 1;
   /*registers in following kernels whose input is this register */
 } evoasm_kernel_x64_reg_info_reg_t;
 
+typedef struct {
+  evoasm_kernel_x64_reg_info_reg_t reg_info[EVOASM_X64_REG_NONE];
+} evoasm_kernel_reg_info_x64_t;
 
 typedef struct {
-  evoasm_kernel_x64_reg_info_reg_t regs[EVOASM_X64_REG_NONE];
-
   /* trans_regs[trans_idx][reg_id] stores the register in this kernel that is used
    * to initialize reg_id in the trans_idx'th transition kernel.
    * Right now, trans_idx=0 is the next kernel in line,
    * while trans_idx=1 is the kernel jumped to using the programs jmp_offs table.
    */
   evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS][EVOASM_X64_REG_NONE];
+} evoasm_kernel_trans_regs_x64_t;
+
+typedef struct {
+  evoasm_x64_basic_params_t *params;
+  evoasm_kernel_reg_info_x64_t reg_info;
+  evoasm_kernel_trans_regs_x64_t trans_regs;
   unsigned written_flags : EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
-} evoasm_kernel_x64_reg_info_t;
-
-typedef union {
-  evoasm_kernel_x64_reg_info_t x64;
-} evoasm_kernel_reg_info_t;
-
+  evoasm_x64_reg_id_t output_regs[EVOASM_KERNEL_MAX_OUTPUT_REGS];
+} evoasm_kernel_x64_t;
 
 typedef struct {
   evoasm_inst_id_t *insts;
-  union {
-    evoasm_x64_basic_params_t *x64;
-  } params;
-  evoasm_kernel_reg_info_t reg_info;
 
   union {
-    evoasm_x64_reg_id_t x64[EVOASM_KERNEL_MAX_OUTPUT_REGS];
-  } output_regs;
+    evoasm_kernel_x64_t x64;
+  };
 
   bool dead_branch_succ :1;
   uint_fast8_t n_input_regs;
@@ -85,7 +83,8 @@ typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_PREPARE = (1 << 0),
   EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS = (1 << 1),
   EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE = (1 << 2),
-  EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING = (1 << 3)
+  EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING = (1 << 3),
+  EVOASM_PROGRAM_EMIT_FLAG_PRESERVE_OUTPUT_REGS = (1 << 4)
 } evoasm_program_emit_flags_t;
 
 #define EVOASM_PROGRAM_MAX_SIZE 256
@@ -108,7 +107,7 @@ typedef struct {
   uint8_t *jmp_conds;
   uint32_t *recur_counters;
 
-  /* these two are incomplete (values missig)
+  /* these two are incomplete (values missing)
    * We only need arity and types */
   evoasm_program_input_t _input;
   evoasm_program_output_t _output;

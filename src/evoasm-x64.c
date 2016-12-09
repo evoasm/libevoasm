@@ -800,7 +800,7 @@ evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t 
 bool
 evoasm_x64_cpu_state_get_rflags_flag(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_rflags_flag_t flag) {
   uint64_t rflags = cpu_state->rflags[0];
-  uint64_t mask = evoasm_x64_rflags_flag_get_mask_(flag);
+  uint64_t mask = evoasm_x64_get_rflags_flag_mask_(flag);
   return (rflags & mask) != 0;
 }
 

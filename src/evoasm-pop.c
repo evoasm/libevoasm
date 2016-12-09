@@ -525,9 +525,9 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
     switch(deme->arch_id) {
       case EVOASM_ARCH_X64:
         if(program->shallow) {
-          kernel->params.x64 = &kernel_data->params.x64[inst0_off];
+          kernel->x64.params = &kernel_data->params.x64[inst0_off];
         } else {
-          EVOASM_MEMCPY_N(kernel->params.x64,
+          EVOASM_MEMCPY_N(kernel->x64.params,
                           &kernel_data->params.x64[inst0_off], kernel->size);
         }
         break;
