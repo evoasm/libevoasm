@@ -1617,25 +1617,30 @@ evoasm_program_emit(evoasm_program_t *program,
 
 static size_t
 evoasm_program_x64_find_writers(evoasm_program_t *program, evoasm_kernel_t *kernel,
-                                size_t reader_idx, evoasm_x64_reg_id_t reg_id,
+                                size_t reader_inst_idx, evoasm_x64_reg_id_t reg_id,
                                 evoasm_x64_operand_t *op, size_t *writers, bool *check_preds) {
-  size_t len = 0;
 
+  if(reader_inst_idx == 0) {
+    *check_preds = true;
+    return 0;
+  }
+
+  size_t len = 0;
   evoasm_x64_reg_cover_t reg_cover;
   evoasm_x64_reg_cover_init(&reg_cover);
 
   evoasm_x64_basic_params_t *params;
   evoasm_x64_inst_t *inst;
 
-  if(reader_idx < kernel->size) {
-    params = &kernel->x64.params[reader_idx];
-    inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[reader_idx]);
+  if(reader_inst_idx < kernel->size) {
+    params = &kernel->x64.params[reader_inst_idx];
+    inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[reader_inst_idx]);
   } else {
     params = NULL;
     inst = NULL;
   }
 
-  for(int i = (int) reader_idx - 1; i >= 0; i--) {
+  for(int i = (int) reader_inst_idx - 1; i >= 0; i--) {
     evoasm_x64_inst_t *writer_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
 
     for(size_t j = 0; j < writer_inst->n_operands; j++) {
@@ -1718,9 +1723,7 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
         evoasm_x64_reg_id_t op_reg_id = evoasm_kernel_get_operand_reg_id_x64(kernel, op, (uint16_t) writer_inst_idx);
         fprintf(stderr, "\t%s (%zu) reads %s\n", x64_inst->mnem, writer_inst_idx, evoasm_x64_get_reg_name(op_reg_id));
 
-        if(writer_inst_idx > 0) {
           evoasm_program_x64_mark_writers(program, kernel, writer_inst_idx, op, ctx);
-        }
       }
     }
   }
