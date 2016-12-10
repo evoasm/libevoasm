@@ -608,7 +608,8 @@ evoasm_program_x64_emit_input_reg_load(evoasm_program_t *program,
   evoasm_x64_reg_type_t reg_type = evoasm_x64_get_reg_type(input_reg_id);
   evoasm_x64_params_t params = {0};
 
-  evoasm_log_debug("emitting _input register initialization of register %d to value %"PRId64, input_reg_id, tuple->i64);
+  evoasm_log_debug("emitting _input register initialization of register %d to value %"
+                       PRId64, input_reg_id, tuple->i64);
 
   switch(reg_type) {
     case EVOASM_X64_REG_TYPE_GP: {
@@ -743,7 +744,8 @@ evoasm_program_x64_emit_kernel_transition(evoasm_program_t *program,
       evoasm_bitmap_set((evoasm_bitmap_t *) &output_regs_bitmap, output_reg_id);
     }
 
-    for(evoasm_x64_reg_id_t input_reg_id = (evoasm_x64_reg_id_t) 0; input_reg_id < EVOASM_X64_REG_NONE; input_reg_id++) {
+    for(evoasm_x64_reg_id_t input_reg_id = (evoasm_x64_reg_id_t) 0;
+        input_reg_id < EVOASM_X64_REG_NONE; input_reg_id++) {
       if(!to_kernel->x64.reg_info.reg_info[input_reg_id].input) continue;
       if(input_reg_id == EVOASM_X64_REG_RFLAGS) continue;
 
@@ -1677,16 +1679,19 @@ typedef struct {
     bool set;
     evoasm_x64_operand_t x64[EVOASM_X64_REG_NONE];
   } output_reg_operands[EVOASM_PROGRAM_MAX_SIZE];
-} evoasm_program_intron_elimination_ctx_t;
+} evoasm_program_intron_elim_ctx_t;
+
+
+#define EVOASM_LOG_INTRON_ELIM(...) evoasm_log(EVOASM_LOG_LEVEL_DEBUG, "program:intron_elim", __VA_ARGS__)
 
 static void
 evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kernel, size_t inst_idx,
-                                evoasm_x64_operand_t *op, evoasm_program_intron_elimination_ctx_t *ctx) {
+                                evoasm_x64_operand_t *op, evoasm_program_intron_elim_ctx_t *ctx) {
   size_t writer_inst_idxs[EVOASM_KERNEL_MAX_SIZE];
 
   bool check_preds = true;
 
-  fprintf(stderr, "Marking writers %d[%zu]\n", kernel->idx, inst_idx);
+  EVOASM_LOG_INTRON_ELIM("Marking writers %d[%zu]\n", kernel->idx, inst_idx);
 
   evoasm_x64_reg_id_t reg_id = evoasm_kernel_get_operand_reg_id_x64(kernel, op, inst_idx);
   assert(reg_id != EVOASM_X64_REG_IP);
@@ -1694,13 +1699,13 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
   size_t writers_len = evoasm_program_x64_find_writers(program, kernel, inst_idx, reg_id, op, writer_inst_idxs,
                                                        &check_preds);
 
-  fprintf(stderr, "%d: Marking %zu writers to %s (check preds: %d) ---------------------\n", kernel->idx,writers_len,
-          evoasm_x64_get_reg_name(reg_id), check_preds);
+  EVOASM_LOG_INTRON_ELIM("%d: Marking %zu writers to %s (check preds: %d) ---------------------\n",
+                                 kernel->idx, writers_len, evoasm_x64_get_reg_name(reg_id), check_preds);
 
   if(reg_id == EVOASM_X64_REG_RFLAGS) {
     for(size_t l = 0; l < EVOASM_X64_RFLAGS_FLAG_NONE; l++) {
       if(EVOASM_X64_RFLAGS_FLAGS_GET(op->read_flags, l)) {
-        fprintf(stderr, "\tRFLAG: %s\n", evoasm_x64_get_rflags_flag_name(l));
+        EVOASM_LOG_INTRON_ELIM("\tRFLAG: %s\n", evoasm_x64_get_rflags_flag_name(l));
       }
     }
   }
@@ -1713,7 +1718,7 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
 
     evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[writer_inst_idx]);
     evoasm_bitmap_set(inst_bitmap, writer_inst_idx);
-    fprintf(stderr, "\tMarking %zuth writer to %s: %s (%zu)\n", i, evoasm_x64_get_reg_name(reg_id) ,x64_inst->mnem, writer_inst_idx);
+    EVOASM_LOG_INTRON_ELIM("\tMarking %zuth writer to %s: %s (%zu)\n", i, evoasm_x64_get_reg_name(reg_id), x64_inst->mnem, writer_inst_idx);
     ctx->change = true;
 
     for(size_t j = 0; j < x64_inst->n_operands; j++) {
@@ -1721,9 +1726,9 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
 
       if(op->read && (op->type == EVOASM_X64_OPERAND_TYPE_REG || op->type == EVOASM_X64_OPERAND_TYPE_RM)) {
         evoasm_x64_reg_id_t op_reg_id = evoasm_kernel_get_operand_reg_id_x64(kernel, op, (uint16_t) writer_inst_idx);
-        fprintf(stderr, "\t%s (%zu) reads %s\n", x64_inst->mnem, writer_inst_idx, evoasm_x64_get_reg_name(op_reg_id));
+        EVOASM_LOG_INTRON_ELIM("\t%s (%zu) reads %s\n", x64_inst->mnem, writer_inst_idx, evoasm_x64_get_reg_name(op_reg_id));
 
-          evoasm_program_x64_mark_writers(program, kernel, writer_inst_idx, op, ctx);
+        evoasm_program_x64_mark_writers(program, kernel, writer_inst_idx, op, ctx);
       }
     }
   }
@@ -1753,11 +1758,11 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
           trans_reg_id = trans_kernel->x64.trans_regs.trans_regs[trans_idx][reg_id];
         }
 
-        fprintf(stderr, "\t\tMarking %zu.%s (trans %zu)\n", k, evoasm_x64_get_reg_name(trans_reg_id), trans_idx);
+        EVOASM_LOG_INTRON_ELIM("\t\tMarking %zu.%s (trans %zu)\n", k, evoasm_x64_get_reg_name(trans_reg_id), trans_idx);
         if(reg_id == EVOASM_X64_REG_RFLAGS) {
           for(size_t l = 0; l < EVOASM_X64_RFLAGS_FLAG_NONE; l++) {
             if(EVOASM_X64_RFLAGS_FLAGS_GET(op->read_flags, l)) {
-              fprintf(stderr, "\t\t\tRFLAG: %s\n", evoasm_x64_get_rflags_flag_name(l));
+              EVOASM_LOG_INTRON_ELIM("\t\t\tRFLAG: %s\n", evoasm_x64_get_rflags_flag_name(l));
             }
           }
         }
@@ -1788,20 +1793,19 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
     }
   }
 
-  fprintf(stderr, "---------------------------------\n");
+  EVOASM_LOG_INTRON_ELIM("---------------------------------\n");
 }
 
 static evoasm_success_t
 evoasm_program_mark_kernel(evoasm_program_t *program, evoasm_program_t *dst_program, size_t kernel_idx,
-                           evoasm_program_intron_elimination_ctx_t *ctx) {
+                           evoasm_program_intron_elim_ctx_t *ctx) {
   evoasm_kernel_t *kernel = &program->kernels[kernel_idx];
   evoasm_kernel_t *dst_kernel = &dst_program->kernels[kernel_idx];
-  fprintf(stderr, "Marking kernel %zu\n", kernel_idx);
+  EVOASM_LOG_INTRON_ELIM("Marking kernel %zu\n", kernel_idx);
   for(evoasm_x64_reg_id_t reg_id = (evoasm_x64_reg_id_t) 0; reg_id < EVOASM_X64_REG_NONE; reg_id++) {
     evoasm_x64_operand_t *output_reg_operand = &ctx->output_reg_operands[kernel_idx].x64[reg_id];
     if(evoasm_bitmap_get((evoasm_bitmap_t *) &ctx->output_regs_bitmaps[kernel_idx], reg_id)) {
-      fprintf(stderr, "Marking kernel %d, output reg %s\n", kernel->idx,
-              evoasm_x64_get_reg_name(reg_id));
+      EVOASM_LOG_INTRON_ELIM("Marking kernel %d, output reg %s\n", kernel->idx, evoasm_x64_get_reg_name(reg_id));
       assert(output_reg_operand->implicit);
       evoasm_program_x64_mark_writers(program, kernel, kernel->size, output_reg_operand, ctx);
 
@@ -1815,9 +1819,9 @@ evoasm_program_mark_kernel(evoasm_program_t *program, evoasm_program_t *dst_prog
 }
 
 evoasm_success_t
-evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *dst_program) {
+evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dst_program) {
   size_t last_kernel_idx = (size_t) (program->size - 1);
-  evoasm_program_intron_elimination_ctx_t ctx = {0};
+  evoasm_program_intron_elim_ctx_t ctx = {0};
 
 
   EVOASM_TRY(error, evoasm_program_init,
@@ -1860,7 +1864,7 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
       default:
         evoasm_assert_not_reached();
     }
-    fprintf(stderr, "Marking %s as output\n", evoasm_x64_get_reg_name(output_reg));
+    EVOASM_LOG_INTRON_ELIM("Marking %s as output\n", evoasm_x64_get_reg_name(output_reg));
 
   }
 
@@ -1876,7 +1880,6 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
     evoasm_kernel_t *kernel = &program->kernels[i];
     evoasm_kernel_t *dst_kernel = &dst_program->kernels[i];
     evoasm_bitmap_t *inst_bitmap = (evoasm_bitmap_t *) &ctx.inst_bitmaps[i];
-    evoasm_bitmap_t *output_regs_bitmap = (evoasm_bitmap_t *) &ctx.output_regs_bitmaps[i];
 
     size_t k = 0;
     for(size_t j = 0; j < kernel->size; j++) {
@@ -1905,7 +1908,6 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
   }
 
 
-
   if(dst_program != program) {
     dst_program->_input = program->_input;
     dst_program->_output = program->_output;
@@ -1926,6 +1928,8 @@ evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *ds
 error:
   return false;
 }
+
+#undef EVOASM_LOG_INTRON_ELIM
 
 
 #define EVOASM_PROGRAM_PROLOG_EPILOG_SIZE UINT32_C(1024)

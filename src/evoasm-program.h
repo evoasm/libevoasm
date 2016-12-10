@@ -145,7 +145,7 @@ evoasm_success_t
 evoasm_program_destroy(evoasm_program_t *program);
 
 evoasm_success_t
-evoasm_program_eliminate_introns(evoasm_program_t *program, evoasm_program_t *dest_program);
+evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dest_program);
 
 evoasm_success_t
 evoasm_program_emit(evoasm_program_t *program,
