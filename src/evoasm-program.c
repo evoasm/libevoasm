@@ -1898,12 +1898,6 @@ evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dst_pro
       dst_kernel->dead_branch_succ = kernel->dead_branch_succ;
     }
 
-//    dst_kernel->n_output_regs = 0;
-//    for(evoasm_x64_reg_id_t reg_id = (evoasm_x64_reg_id_t) 0; reg_id < EVOASM_X64_REG_NONE; reg_id++) {
-//      if(evoasm_bitmap_get(output_regs_bitmap, reg_id)) {
-//        dst_kernel->x64.output_regs[dst_kernel->n_output_regs++] = reg_id;
-//      }
-//    }
     assert(dst_kernel->n_output_regs > 0);
   }
 
