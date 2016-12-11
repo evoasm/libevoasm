@@ -150,6 +150,8 @@ evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dest_pr
 evoasm_success_t
 evoasm_program_emit(evoasm_program_t *program,
                 evoasm_program_input_t *input,
+                size_t input_off,
+                size_t input_len,
                 evoasm_program_emit_flags_t emit_flags);
 
 evoasm_loss_t

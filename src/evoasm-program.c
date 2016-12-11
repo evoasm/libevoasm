@@ -1082,20 +1082,25 @@ error:
 static evoasm_success_t
 evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
                                       evoasm_program_input_t *input,
+                                      size_t input_win_off,
+                                      size_t input_win_size,
                                       bool io_mapping) {
+
   size_t n_tuples = EVOASM_PROGRAM_INPUT_N_TUPLES(input);
+  input_win_size = EVOASM_MIN(n_tuples, input_win_size);
 
   evoasm_buf_reset(program->buf);
   EVOASM_TRY(error, evoasm_x64_emit_func_prolog, EVOASM_X64_ABI_SYSV, program->buf);
 
-  for(size_t i = 0; i < n_tuples; i++) {
-    evoasm_program_io_val_t *input_vals = input->vals + i * input->arity;
+  for(size_t i = 0; i < input_win_size; i++) {
+    size_t tuple_idx = (input_win_off + i) % n_tuples;
+    evoasm_program_io_val_t *input_vals = input->vals + tuple_idx * input->arity;
     EVOASM_TRY(error, evoasm_program_x64_emit_input_load, program, input_vals, input->types, input->arity,
                io_mapping);
     size_t r = evoasm_buf_append(program->buf, program->body_buf);
     (void) r;
     assert(r == 0);
-    EVOASM_TRY(error, evoasm_program_x64_emit_output_store, program, i);
+    EVOASM_TRY(error, evoasm_program_x64_emit_output_store, program, tuple_idx);
   }
 
   EVOASM_TRY(error, evoasm_x64_emit_func_epilog, EVOASM_X64_ABI_SYSV, program->buf);
@@ -1108,6 +1113,8 @@ error:
 static evoasm_success_t
 evoasm_program_x64_emit(evoasm_program_t *program,
                         evoasm_program_input_t *input,
+                        size_t input_win_off,
+                        size_t input_win_size,
                         evoasm_program_emit_flags_t emit_flags) {
 
   bool set_io_mapping = emit_flags & EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
@@ -1122,7 +1129,7 @@ evoasm_program_x64_emit(evoasm_program_t *program,
   }
 
   if(emit_flags & EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE) {
-    EVOASM_TRY(error, evoasm_program_x64_emit_io_load_store, program, input, set_io_mapping);
+    EVOASM_TRY(error, evoasm_program_x64_emit_io_load_store, program, input, input_win_off, input_win_size, set_io_mapping);
   }
 
   evoasm_buf_log(program->buf, EVOASM_LOG_LEVEL_DEBUG);
@@ -1570,7 +1577,7 @@ evoasm_program_run(evoasm_program_t *program,
   }
 
   evoasm_program_emit_flags_t emit_flags = EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE;
-  if(!evoasm_program_emit(program, input, emit_flags)) {
+  if(!evoasm_program_emit(program, input, 0, SIZE_MAX, emit_flags)) {
     return NULL;
   }
 
@@ -1605,11 +1612,12 @@ evoasm_program_run(evoasm_program_t *program,
 evoasm_success_t
 evoasm_program_emit(evoasm_program_t *program,
                     evoasm_program_input_t *input,
+                    size_t input_win_off,
+                    size_t input_win_size,
                     evoasm_program_emit_flags_t emit_flags) {
   switch(program->arch_info->id) {
     case EVOASM_ARCH_X64: {
-      return evoasm_program_x64_emit(program, input,
-                                     emit_flags);
+      return evoasm_program_x64_emit(program, input, input_win_off, input_win_size, emit_flags);
       break;
     }
     default:
@@ -1916,7 +1924,7 @@ evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dst_pro
       EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS |
       EVOASM_PROGRAM_EMIT_FLAG_PRESERVE_OUTPUT_REGS;
 
-  EVOASM_TRY(error, evoasm_program_emit, dst_program, NULL, emit_flags);
+  EVOASM_TRY(error, evoasm_program_emit, dst_program, NULL, 0, SIZE_MAX, emit_flags);
 
   return true;
 error:

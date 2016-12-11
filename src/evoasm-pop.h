@@ -65,7 +65,8 @@ struct evoasm_deme_s {
 
   uint16_t n_doomed_indivs;
   uint16_t n_blessed_indivs;
-  uint16_t n_examples;
+
+  uint16_t input_win_off;
   float mut_rate;
   evoasm_arch_id_t arch_id;
   evoasm_pop_params_t *params;
