@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <hdf5.h>
-#include <hdf5_hl.h>
 #include "evoasm-signal.h"
 #include "evoasm-program.h"
 #include "evoasm-arch.h"
