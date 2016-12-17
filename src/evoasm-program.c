@@ -1362,10 +1362,11 @@ static inline evoasm_loss_t
 evoasm_program_calc_loss(evoasm_program_t *program,
                          evoasm_kernel_t *kernel,
                          size_t height,
+                         size_t n_tuples,
                          double *dist_mat,
                          uint_fast8_t *matching) {
   size_t width = kernel->n_output_regs;
-  double scale = 1.0 / (double) width;
+  double scale = 1.0 / (double) (width * n_tuples);
   double loss = 0.0;
 
   for(size_t i = 0; i < height; i++) {
@@ -1400,7 +1401,7 @@ evoasm_program_assess(evoasm_program_t *program,
     }
 
     if(evoasm_program_match(program, width, dist_mat, matching)) {
-      loss = evoasm_program_calc_loss(program, kernel, 1, dist_mat, matching);
+      loss = evoasm_program_calc_loss(program, kernel, 1, n_tuples, dist_mat, matching);
     } else {
       loss = INFINITY;
     }
@@ -1410,7 +1411,7 @@ evoasm_program_assess(evoasm_program_t *program,
     }
 
     evoasm_program_calc_stable_matching(program, kernel, height, dist_mat, matching);
-    loss = evoasm_program_calc_loss(program, kernel, height, dist_mat, matching);
+    loss = evoasm_program_calc_loss(program, kernel, height, n_tuples, dist_mat, matching);
   }
 
 

@@ -178,6 +178,7 @@ evoasm_deme_destroy(evoasm_deme_t *deme) {
   evoasm_free(deme->doomed_indiv_idxs);
   evoasm_free(deme->error_counters);
   evoasm_free(deme->top_losses);
+  evoasm_free(deme->avg_losses);
 
   evoasm_pop_kernel_data_destroy(&deme->kernel_data);
   evoasm_pop_loss_data_destroy(&deme->loss_data);
@@ -207,7 +208,7 @@ evoasm_pop_destroy(evoasm_pop_t *pop) {
 }
 
 #define EVOASM_DEME_MIN_MUT_RATE 0.008f
-#define EVOASM_DEME_MAX_MUT_RATE 0.3f
+#define EVOASM_DEME_MAX_MUT_RATE 0.15f
 
 static evoasm_success_t
 evoasm_deme_init(evoasm_deme_t *deme,
@@ -273,6 +274,10 @@ evoasm_deme_init(evoasm_deme_t *deme,
   deme->best_loss = INFINITY;
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, deme->top_losses, EVOASM_CACHE_LINE_SIZE,
+                   height,
+                   sizeof(evoasm_loss_t));
+
+  EVOASM_TRY_ALLOC(error, aligned_calloc, deme->avg_losses, EVOASM_CACHE_LINE_SIZE,
                    height,
                    sizeof(evoasm_loss_t));
 
@@ -981,6 +986,11 @@ evoasm_pop_get_best_loss(evoasm_pop_t *pop) {
   return best_deme->best_loss;
 }
 
+size_t
+evoasm_pop_get_gen_counter(evoasm_pop_t *pop) {
+  return pop->gen_counter;
+}
+
 static void
 evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
 
@@ -988,11 +998,18 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
 
   size_t height = evoasm_pop_params_get_deme_height_(deme->params);
 
-  for(size_t i = 0; i < height; i++) {
-    deme->top_losses[i] = INFINITY;
-  }
+  evoasm_loss_t prev_avg_losses[EVOASM_PROGRAM_MAX_SIZE + 1];
 
   for(size_t i = 0; i < height; i++) {
+    prev_avg_losses[i] = deme->avg_losses[i];
+    deme->top_losses[i] = INFINITY;
+    deme->avg_losses[i] = 0;
+  }
+
+
+  for(size_t i = 0; i < height; i++) {
+    size_t indiv_loss_n = 1;
+
     for(size_t j = 0; j < deme->params->deme_size; j++) {
       size_t indiv_off = EVOASM_DEME_INDIV_OFF(deme, i, j);
       size_t sample0_off = EVOASM_DEME_LOSS_SAMPLE_OFF(deme, i, j, 0);
@@ -1003,6 +1020,11 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
 
       loss_data->samples[sample0_off] = indiv_loss;
 
+      if(!isinf(indiv_loss)) {
+        deme->avg_losses[i] += (indiv_loss - deme->avg_losses[i]) / (evoasm_loss_t) (indiv_loss_n);
+        indiv_loss_n++;
+      }
+
       if(indiv_loss < deme->top_losses[i]) {
         evoasm_log_info("new top loss %zu: %f -> %f", i, deme->top_losses[i], indiv_loss);
         deme->top_losses[i] = indiv_loss;
@@ -1010,12 +1032,19 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
     }
   }
 
-  if(!new_best) {
-    deme->mut_rate = EVOASM_MIN(EVOASM_DEME_MAX_MUT_RATE, deme->mut_rate * 4);
+  double avg_losses_diff = 0.0;
+  for(size_t i = 0; i < height; i++) {
+    avg_losses_diff += fabs(prev_avg_losses[i] - deme->avg_losses[i]);
+  }
+
+  fprintf(stderr, "MUT RATE: %f| LOSS DIFF %f\n", deme->mut_rate, avg_losses_diff);
+
+  if(avg_losses_diff < 0.05) {
+    deme->mut_rate = EVOASM_MIN(EVOASM_DEME_MAX_MUT_RATE, deme->mut_rate * 1.01f);
     deme->stagn_counter++;
   } else {
-    deme->mut_rate = EVOASM_MAX(EVOASM_DEME_MIN_MUT_RATE, deme->mut_rate / 4);
-    deme->stagn_counter++;
+    deme->mut_rate = EVOASM_MAX(EVOASM_DEME_MIN_MUT_RATE, deme->mut_rate / 1.02f);
+    deme->stagn_counter = 0;
   }
 }
 
@@ -1104,17 +1133,19 @@ evoasm_deme_select_indivs(evoasm_deme_t *deme, size_t row, bool programs) {
   size_t deme_size = deme->params->deme_size;
 
 
-  size_t n = 1;
-  evoasm_loss_t avg_loss = 0.0;
-  for(size_t i = 0; i < deme_size; i++) {
-    evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
-    if(!isinf(loss)) {
-      avg_loss += (loss - avg_loss) / (evoasm_loss_t) n;
-      n++;
-    }
-  }
+//  size_t n = 1;
+//  evoasm_loss_t avg_loss = 0.0;
+//  for(size_t i = 0; i < deme_size; i++) {
+//    evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
+//    if(!isinf(loss)) {
+//      avg_loss += (loss - avg_loss) / (evoasm_loss_t) n;
+//      n++;
+//    }
+//  }
 
-  avg_loss += 0.0001f;
+  /* floating-point inaccuracy */
+  evoasm_loss_t avg_loss = deme->avg_losses[row] + 0.0001f;
+
   for(size_t i = 0; i < deme_size; i++) {
     evoasm_loss_t loss = loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, row, i)];
 
@@ -1332,7 +1363,7 @@ evoasm_deme_save_elite(evoasm_deme_t *deme, size_t row, bool program) {
 
 static evoasm_force_inline inline void
 evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t row, bool program) {
-  if(deme->stagn_counter % 4) {
+  if(deme->stagn_counter > 0 && deme->stagn_counter % 4) {
     for(size_t i = 0; i < demes->params->n_demes; i++) {
       evoasm_deme_t *immigration_deme = &demes[i];
 
