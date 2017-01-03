@@ -49,7 +49,7 @@ typedef struct {
   evoasm_x64_basic_params_t *params;
   evoasm_kernel_reg_info_x64_t reg_info;
   evoasm_kernel_trans_regs_x64_t trans_regs;
-  unsigned written_flags : EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
+  unsigned maybe_written_flags : EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
   evoasm_x64_reg_id_t output_regs[EVOASM_KERNEL_MAX_OUTPUT_REGS];
 } evoasm_kernel_x64_t;
 
@@ -60,7 +60,6 @@ typedef struct {
     evoasm_kernel_x64_t x64;
   };
 
-  bool dead_branch_succ :1;
   uint_fast8_t n_input_regs;
   uint_fast8_t n_output_regs;
   uint16_t size;
@@ -87,8 +86,20 @@ typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_PRESERVE_OUTPUT_REGS = (1 << 4)
 } evoasm_program_emit_flags_t;
 
-#define EVOASM_PROGRAM_MAX_SIZE 256
+#define EVOASM_PROGRAM_MAX_SIZE 32
 #define EVOASM_KERNEL_MAX_SIZE 1024
+
+typedef evoasm_bitmap64_t evoasm_bitmap_max_program_size_t;
+typedef evoasm_bitmap1024_t evoasm_bitmap_max_kernel_size_t;
+typedef evoasm_bitmap256_t evoasm_bitmap_max_output_regs_t;
+
+typedef struct {
+  uint8_t default_depth;
+  uint32_t cycle_bitmap;
+  uint32_t depth_bitmap;
+  uint8_t mat[EVOASM_PROGRAM_MAX_SIZE][EVOASM_X64_JMP_COND_NONE + 1];
+  uint32_t depth_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
+} evoasm_program_topology_t;
 
 typedef struct {
   evoasm_arch_info_t *arch_info;
@@ -103,8 +114,7 @@ typedef struct {
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
   evoasm_kernel_t *kernels;
-  uint16_t *jmp_offs;
-  uint8_t *jmp_conds;
+  evoasm_program_topology_t *topology;
   uint32_t *recur_counters;
 
   /* these two are incomplete (values missing)
@@ -112,6 +122,7 @@ typedef struct {
   evoasm_program_input_t _input;
   evoasm_program_output_t _output;
 
+  evoasm_program_topology_t _topology;
   evoasm_reg_id_t output_regs[EVOASM_PROGRAM_IO_MAX_ARITY];
   evoasm_buf_t _buf;
   evoasm_buf_t _body_buf;
@@ -121,7 +132,9 @@ typedef struct {
     uint8_t x64[EVOASM_X64_REG_NONE];
   } reg_inputs;
 
+
 } evoasm_program_t;
+
 
 evoasm_success_t
 evoasm_program_clone(evoasm_program_t *program, evoasm_program_t *cloned_program);

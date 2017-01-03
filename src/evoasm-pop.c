@@ -509,6 +509,7 @@ evoasm_pop_seed(evoasm_pop_t *pop) {
   return true;
 }
 
+
 static void
 evoasm_deme_load_program_(evoasm_deme_t *deme,
                           evoasm_program_t *program,
@@ -551,7 +552,7 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
     for(size_t i = 0; i < program_size; i++) {
       size_t program_pos_off = EVOASM_DEME_PROGRAM_POS_OFF_(program_size, program_idx, i);
       program->jmp_offs[i] = program_data->jmp_offs[program_pos_off];
-      program->jmp_conds[i] = program_data->jmp_cond[program_pos_off];
+      program->topology[i] = program_data->jmp_cond[program_pos_off];
     }
   }
 }
@@ -1316,13 +1317,20 @@ evoasm_deme_mutate_indiv(evoasm_deme_t *deme, size_t row, size_t indiv_idx, bool
     for(size_t i = 0; i < indiv_size; i++) {
       float r2 = evoasm_prng_randf_(prng);
 
-      if(r2 < deme->mut_rate) {
-        if(program) {
+      if(program) {
+        /* FIXME: it seems a bad idea to
+         * mutate this too strongly, as it hurts
+         * kernel specialization. */
+        if(r2 < 0.1 * deme->mut_rate) {
           evoasm_deme_seed_program_pos(deme, indiv_idx, i);
-        } else {
+        }
+      }
+      else {
+        if(r2 < deme->mut_rate) {
           evoasm_deme_seed_kernel_inst(deme, row, indiv_idx, i);
         }
       }
+
     }
   }
 }
