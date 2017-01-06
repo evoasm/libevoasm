@@ -24,8 +24,6 @@
 #define EVOASM_KERNEL_MAX_OUTPUT_REGS 254
 #define EVOASM_KERNEL_MAX_INPUT_REGS 254
 
-#define EVOASM_KERNEL_REG_INFO_N_TRANS_REGS 2
-
 typedef struct {
   bool input : 1;
   bool written : 1;
@@ -42,7 +40,7 @@ typedef struct {
    * Right now, trans_idx=0 is the next kernel in line,
    * while trans_idx=1 is the kernel jumped to using the programs jmp_offs table.
    */
-  evoasm_x64_reg_id_t trans_regs[EVOASM_KERNEL_REG_INFO_N_TRANS_REGS][EVOASM_X64_REG_NONE];
+  evoasm_x64_reg_id_t trans_regs[EVOASM_X64_JMP_COND_NONE + 1][EVOASM_X64_REG_NONE];
 } evoasm_kernel_trans_regs_x64_t;
 
 typedef struct {
@@ -86,18 +84,20 @@ typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_PRESERVE_OUTPUT_REGS = (1 << 4)
 } evoasm_program_emit_flags_t;
 
-#define EVOASM_PROGRAM_MAX_SIZE 32
+#define EVOASM_PROGRAM_MAX_SIZE 24
 #define EVOASM_KERNEL_MAX_SIZE 1024
 
 typedef evoasm_bitmap64_t evoasm_bitmap_max_program_size_t;
 typedef evoasm_bitmap1024_t evoasm_bitmap_max_kernel_size_t;
 typedef evoasm_bitmap256_t evoasm_bitmap_max_output_regs_t;
 
+#define EVOASM_PROGRAM_TOPOLOGY_MIN_BACKBONE_LEN 2
+
 typedef struct {
-  uint8_t default_depth;
   uint32_t cycle_bitmap;
   uint32_t depth_bitmap;
   uint8_t mat[EVOASM_PROGRAM_MAX_SIZE][EVOASM_X64_JMP_COND_NONE + 1];
+  uint8_t backbone_len;
   uint32_t depth_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
 } evoasm_program_topology_t;
 

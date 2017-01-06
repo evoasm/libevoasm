@@ -27,14 +27,14 @@ typedef struct {
 } evoasm_pop_loss_data_t;
 
 typedef struct {
-  uint16_t *jmp_offs;
-  uint8_t *jmp_cond;
-} evoasm_pop_program_data_t;
+  uint8_t *backbone_lens;
+  uint8_t *edges;
+} evoasm_pop_topology_data_t;
 
 typedef struct {
   float *pheromones;
   uint16_t *sizes;
-  evoasm_pop_program_data_t program_data;
+  evoasm_pop_topology_data_t topology_data;
 } evoasm_pop_module_data_t;
 
 typedef struct  {
@@ -49,19 +49,19 @@ struct evoasm_deme_s {
   evoasm_prng_t prng;
   uint16_t *blessed_indiv_idxs;
   uint16_t *doomed_indiv_idxs;
-  evoasm_pop_program_data_t parent_program_data;
+  evoasm_pop_topology_data_t parent_topology_data;
   evoasm_pop_kernel_data_t parent_kernel_data;
   evoasm_program_t program;
   uint64_t *error_counters;
   uint64_t error_counter;
   evoasm_pop_loss_data_t loss_data;
-  evoasm_pop_program_data_t program_data;
+  evoasm_pop_topology_data_t topology_data;
   evoasm_pop_kernel_data_t kernel_data;
   evoasm_loss_t *top_losses;
   evoasm_loss_t *avg_losses;
 
   evoasm_loss_t best_loss;
-  evoasm_pop_program_data_t best_program_data;
+  evoasm_pop_topology_data_t best_topology_data;
   evoasm_pop_kernel_data_t best_kernel_data;
 
   uint16_t n_doomed_indivs;
