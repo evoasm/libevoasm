@@ -21,6 +21,17 @@
 
 EVOASM_DEF_LOG_TAG("x64")
 
+extern evoasm_arch_info_t evoasm_arch_infos[EVOASM_ARCH_NONE];
+
+static evoasm_arch_info_t evoasm_arch_x64 = {
+    EVOASM_ARCH_X64,
+    EVOASM_X64_PARAM_NONE,
+    EVOASM_X64_JMP_COND_NONE,
+    15,
+    EVOASM_X64_INST_NONE,
+    0ull
+};
+
 uint8_t evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_NONE] = {0};
 
 static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
@@ -70,8 +81,8 @@ evoasm_x64_emit_func_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf) {
 
 evoasm_success_t
 evoasm_x64_init() {
-  extern evoasm_arch_info_t _evoasm_arch_infos[EVOASM_ARCH_NONE];
-  extern evoasm_arch_id_t _evoasm_current_arch;
+  extern evoasm_arch_id_t evoasm_current_arch;
+
   uint64_t features;
   EVOASM_TRY(cpuid_failed, evoasm_x64_get_features, &features);
 
@@ -102,8 +113,9 @@ evoasm_x64_init() {
     evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] = 16;
   }
 
-  _evoasm_arch_infos[EVOASM_ARCH_X64].features = features;
-  _evoasm_current_arch = EVOASM_ARCH_X64;
+  evoasm_arch_x64.features = features;
+  evoasm_current_arch = EVOASM_ARCH_X64;
+  evoasm_arch_infos[EVOASM_ARCH_X64] = evoasm_arch_x64;
 
   evoasm_signal_install();
 
@@ -160,6 +172,7 @@ EVOASM_X64_OPERAND_DEF_BOOL_GETTER(implicit)
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(maybe_written)
 
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
+
 EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_operand_word_t)
 
 EVOASM_X64_OPERAND_DEF_GETTER(type, evoasm_x64_operand_type_t)
@@ -192,7 +205,8 @@ evoasm_x64_operand_get_index_reg_size(evoasm_x64_operand_t *operand) {
 }
 
 evoasm_x64_operand_size_t evoasm_x64_operand_get_mem_size(evoasm_x64_operand_t *operand) {
-  if(operand->type != EVOASM_X64_OPERAND_TYPE_MEM && operand->type != EVOASM_X64_OPERAND_TYPE_RM && operand->type != EVOASM_X64_OPERAND_TYPE_VSIB) {
+  if(operand->type != EVOASM_X64_OPERAND_TYPE_MEM && operand->type != EVOASM_X64_OPERAND_TYPE_RM &&
+     operand->type != EVOASM_X64_OPERAND_TYPE_VSIB) {
     return EVOASM_X64_OPERAND_SIZE_NONE;
   }
 
@@ -743,8 +757,9 @@ evoasm_x64_cpu_state_memset(evoasm_x64_cpu_state_t *cpu_state, int value) {
 }
 
 size_t
-evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, evoasm_x64_operand_word_t word, uint64_t *data, size_t len) {
-  size_t size  = evoasm_x64_reg_type_bytesizes[evoasm_x64_get_reg_type(reg)];
+evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, evoasm_x64_operand_word_t word,
+                         uint64_t *data, size_t len) {
+  size_t size = evoasm_x64_reg_type_bytesizes[evoasm_x64_get_reg_type(reg)];
   size_t cpy_len = EVOASM_MIN(len * sizeof(uint64_t), size);
   memcpy(data, evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), cpy_len);
 
@@ -914,11 +929,17 @@ EVOASM_DEF_ALLOC_FREE_FUNCS(x64_basic_params)
 const char *
 evoasm_x64_get_rflags_flag_name(evoasm_x64_rflags_flag_t flag) {
   switch(flag) {
-    case EVOASM_X64_RFLAGS_FLAG_OF:return "OF";
-    case EVOASM_X64_RFLAGS_FLAG_SF: return "SF";
-    case EVOASM_X64_RFLAGS_FLAG_ZF: return "ZF";
-    case EVOASM_X64_RFLAGS_FLAG_PF: return "PF";
-    case EVOASM_X64_RFLAGS_FLAG_CF:return "CF";
-    default: evoasm_assert_not_reached();
+    case EVOASM_X64_RFLAGS_FLAG_OF:
+      return "OF";
+    case EVOASM_X64_RFLAGS_FLAG_SF:
+      return "SF";
+    case EVOASM_X64_RFLAGS_FLAG_ZF:
+      return "ZF";
+    case EVOASM_X64_RFLAGS_FLAG_PF:
+      return "PF";
+    case EVOASM_X64_RFLAGS_FLAG_CF:
+      return "CF";
+    default:
+      evoasm_assert_not_reached();
   }
 }

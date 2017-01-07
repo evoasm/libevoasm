@@ -19,26 +19,17 @@
 
 EVOASM_DEF_LOG_TAG("arch")
 
-evoasm_arch_info_t _evoasm_arch_infos[] = {
-    {
-        EVOASM_ARCH_X64,
-        EVOASM_X64_PARAM_NONE,
-        15,
-        EVOASM_X64_INST_NONE,
-        0ull
-    }
-};
-
-evoasm_arch_id_t _evoasm_current_arch = EVOASM_ARCH_NONE;
+evoasm_arch_info_t evoasm_arch_infos[EVOASM_ARCH_NONE];
+evoasm_arch_id_t evoasm_current_arch = EVOASM_ARCH_NONE;
 
 evoasm_arch_info_t *
 evoasm_get_arch_info(evoasm_arch_id_t arch_id) {
-  return &_evoasm_arch_infos[arch_id];
+  return &evoasm_arch_infos[arch_id];
 }
 
 evoasm_arch_id_t
 evoasm_get_current_arch() {
-  return _evoasm_current_arch;
+  return evoasm_current_arch;
 }
 
 #define EVOASM_ARCH_INFO_DEF_GETTER(field, type) EVOASM_DEF_GETTER(arch_info, field, type)

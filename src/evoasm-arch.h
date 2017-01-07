@@ -40,6 +40,7 @@ typedef enum {
 typedef struct {
   uint8_t id;
   uint8_t n_params;
+  uint8_t n_conds;
   uint8_t max_inst_len;
   uint16_t n_insts;
   uint64_t features;

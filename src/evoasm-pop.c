@@ -50,11 +50,11 @@ EVOASM_DEF_LOG_TAG("pop")
 #define EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(program_size) (4u * program_size)
 #define EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme) EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(deme->params->program_size)
 
-#define EVOASM_DEME_TOPOLOGY_EDGE_OFF_(program_size, program_idx, pos) \
-  (3u * (((program_idx) * EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(program_size)) + (pos)))
+#define EVOASM_DEME_TOPOLOGY_EDGE_OFF_(program_size, topology_idx, edge_idx) \
+  (3u * (((topology_idx) * EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(program_size)) + (edge_idx)))
 
-#define EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, program_idx, pos) \
-  EVOASM_DEME_TOPOLOGY_EDGE_OFF_((deme)->params->program_size, program_idx, pos)
+#define EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, pos) \
+  EVOASM_DEME_TOPOLOGY_EDGE_OFF_((deme)->params->program_size, topology_idx, pos)
 
 #define EVOASM_DEME_KERNEL_INST_OFF_(deme_size, kernel_size, pos, kernel_idx, inst_idx) \
   ((((pos) * (deme_size) + (kernel_idx)) * (kernel_size) + (inst_idx)))
@@ -599,7 +599,7 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
                           evoasm_program_t *program,
                           evoasm_pop_topology_data_t *topology_data,
                           evoasm_pop_kernel_data_t *kernel_data,
-                          size_t program_idx,
+                          size_t topology_idx,
                           size_t *kernel_idxs,
                           size_t deme_size) {
 
@@ -633,10 +633,10 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
   }
 
   if(program_size > 1) {
-    // evoasm_program_update_topology
-    evoasm_assert_not_reached();
-//    evoasm_
-//    program->topology = topology_data->topologies[program_pos_off];
+    size_t edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, 0);
+    size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
+
+    evoasm_program_update_topology(program, &topology_data->edges[edge0_off], n_edges);
   }
 }
 
