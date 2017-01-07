@@ -109,7 +109,7 @@ typedef struct {
   bool reset_rflags : 1;
   bool shallow : 1;
   uint32_t recur_limit;
-  uint16_t size;
+  uint16_t n_kernels;
   uint16_t max_tuples;
   uint32_t exception_mask;
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];

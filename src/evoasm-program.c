@@ -51,7 +51,7 @@ evoasm_program_destroy(evoasm_program_t *program) {
   bool retval = true;
 
   if(!program->shallow) {
-    for(size_t i = 0; i < program->size; i++) {
+    for(size_t i = 0; i < program->n_kernels; i++) {
       evoasm_kernel_t *kernel = &program->kernels[i];
       evoasm_free(kernel->insts);
       switch(program->arch_info->id) {
@@ -149,7 +149,7 @@ evoasm_program_get_buf(evoasm_program_t *program, bool body) {
 
 size_t
 evoasm_program_get_size(evoasm_program_t *program) {
-  return program->size;
+  return program->n_kernels;
 }
 
 size_t
@@ -590,7 +590,7 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
 
 static evoasm_success_t
 evoasm_program_x64_prepare(evoasm_program_t *program, bool preserve_output_regs) {
-  for(size_t i = 0; i < program->size; i++) {
+  for(size_t i = 0; i < program->n_kernels; i++) {
     evoasm_kernel_t *kernel = &program->kernels[i];
     EVOASM_TRY(error, evoasm_program_x64_prepare_kernel, program, kernel, preserve_output_regs);
   }
@@ -1109,7 +1109,7 @@ evoasm_program_update_topology(evoasm_program_t *program, uint8_t *edges, size_t
   evoasm_program_topology_dfs(program_topology, 0, 0, gray_depths);
 
   uint32_t depth_bitmap = 0;
-  for(size_t i = 0; i < program->size; i++) {
+  for(size_t i = 0; i < program->n_kernels; i++) {
     depth_bitmap |= program_topology->depth_bitmaps[i];
   }
   program_topology->depth_bitmap = depth_bitmap;
@@ -1119,16 +1119,16 @@ static evoasm_success_t
 evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_mapping) {
   evoasm_buf_t *buf = program->body_buf;
   evoasm_kernel_t *kernel;
-  size_t program_size = program->size;
+  size_t n_kernels = program->n_kernels;
   uint32_t *jmp_reloc_addrs[EVOASM_PROGRAM_MAX_SIZE][EVOASM_X64_JMP_COND_NONE + 1] = {0};
   uint8_t *kernel_addrs[EVOASM_PROGRAM_MAX_SIZE];
 
   evoasm_buf_reset(buf);
 
-  assert(program_size > 0);
+  assert(n_kernels > 0);
 
   /* emit */
-  for(size_t i = 0; i < program_size; i++) {
+  for(size_t i = 0; i < n_kernels; i++) {
     /* no depth bit set means unreachable */
     if(!program->topology.depth_bitmaps[i]) continue;
 
@@ -1147,10 +1147,10 @@ evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_m
   }
 
   /* link relocations */
-  for(size_t i = 0; i < program_size; i++) {
+  for(size_t i = 0; i < n_kernels; i++) {
     for(size_t j = 0; j < EVOASM_X64_JMP_COND_NONE + 1; j++) {
       size_t succ_kernel_idx = program->topology.mat[i][j];
-      if(succ_kernel_idx < program->size) {
+      if(succ_kernel_idx < program->n_kernels) {
         uint32_t *jmp_reloc_addr = jmp_reloc_addrs[i][j];
         uint8_t *succ_kernel_addr = kernel_addrs[succ_kernel_idx];
         assert(*jmp_reloc_addr == 0xdeadbeef);
@@ -1529,7 +1529,7 @@ evoasm_program_assess(evoasm_program_t *program,
 
 static void
 evoasm_program_reset_recur_counters(evoasm_program_t *program) {
-  memset(program->recur_counters, 0, sizeof(program->recur_counters[0]) * program->size);
+  memset(program->recur_counters, 0, sizeof(program->recur_counters[0]) * program->n_kernels);
 }
 
 static inline evoasm_loss_t
@@ -1834,7 +1834,7 @@ evoasm_program_x64_mark_writers(evoasm_program_t *program, evoasm_kernel_t *kern
      * since loops are possible we use a fixpoint approach
      * and just set the output register operand on the predecessor kernel */
 
-    for(size_t k = 0; k < program->size; k++) {
+    for(size_t k = 0; k < program->n_kernels; k++) {
       if(k == kernel->idx) continue;
 
       for(size_t cond = 0; cond < EVOASM_X64_JMP_COND_NONE + 1; cond++) {
@@ -1918,7 +1918,7 @@ evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dst_pro
   EVOASM_TRY(error, evoasm_program_init,
              dst_program,
              program->arch_info,
-             program->size,
+             program->n_kernels,
              program->kernels[0].size,
              program->max_tuples,
              program->recur_limit,
@@ -2021,25 +2021,25 @@ error:
 evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_info_t *arch_info,
-                    size_t program_size,
+                    size_t n_kernels,
                     size_t kernel_size,
                     size_t max_tuples,
                     size_t recur_limit,
                     bool shallow) {
 
   static evoasm_program_t zero_program = {0};
-  size_t n_transitions = program_size - 1u;
+  size_t n_transitions = n_kernels - 1u;
 
   *program = zero_program;
   program->arch_info = arch_info;
   program->recur_limit = (uint32_t) recur_limit;
   program->shallow = shallow;
-  program->size = (uint16_t) program_size;
+  program->n_kernels = (uint16_t) n_kernels;
   program->max_tuples = (uint16_t) max_tuples;
 
   size_t body_buf_size =
       (size_t) (n_transitions * EVOASM_PROGRAM_TRANSITION_SIZE
-                + program_size * kernel_size * program->arch_info->max_inst_len);
+                + n_kernels * kernel_size * program->arch_info->max_inst_len);
 
   size_t buf_size = max_tuples * (body_buf_size + EVOASM_PROGRAM_PROLOG_EPILOG_SIZE);
 
@@ -2055,10 +2055,10 @@ evoasm_program_init(evoasm_program_t *program,
   size_t output_vals_len = max_tuples * EVOASM_KERNEL_MAX_OUTPUT_REGS;
 
   EVOASM_TRY_ALLOC(error, calloc, program->output_vals, output_vals_len, sizeof(evoasm_program_io_val_t));
-  EVOASM_TRY_ALLOC(error, calloc, program->kernels, program_size, sizeof(evoasm_kernel_t));
-  EVOASM_TRY_ALLOC(error, calloc, program->recur_counters, program_size, sizeof(uint32_t));
+  EVOASM_TRY_ALLOC(error, calloc, program->kernels, n_kernels, sizeof(evoasm_kernel_t));
+  EVOASM_TRY_ALLOC(error, calloc, program->recur_counters, n_kernels, sizeof(uint32_t));
 
-  for(uint16_t i = 0; i < program_size; i++) {
+  for(uint16_t i = 0; i < n_kernels; i++) {
     evoasm_kernel_t *kernel = &program->kernels[i];
 
     kernel->idx = i;
@@ -2106,9 +2106,9 @@ void
 evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level) {
   if(_evoasm_log_level > log_level) return;
 
-  evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Program: size: %d", program->size);
+  evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Program: size: %d", program->n_kernels);
 
-  for(size_t i = 0; i < program->size; i++) {
+  for(size_t i = 0; i < program->n_kernels; i++) {
     evoasm_kernel_log(&program->kernels[i], (evoasm_arch_id_t) program->arch_info->id, log_level);
   }
   evoasm_log(log_level, EVOASM_LOG_TAG, " \n ");
