@@ -978,19 +978,6 @@ evoasm_deme_select(evoasm_deme_t *deme) {
   deme->n_doomed_indivs = (uint16_t) n_doomed_indivs;
 }
 
-static inline evoasm_force_inline void
-evoasm_deme_get_trivial_mutate_crossover_gene_range(evoasm_deme_t *deme, size_t *start, size_t *len,
-                                                    bool topologies) {
-  if(topologies) {
-    size_t topology_size = deme->params->topology_size;
-    *start = topology_size;
-    *len = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size);
-  } else {
-    *start = 0;
-    *len = deme->params->kernel_size;
-  }
-}
-
 static void
 evoasm_deme_crossover(evoasm_deme_t *deme, size_t parent_topology1_idx, size_t parent_topology2_idx, size_t child_topology1_idx,
                       size_t child_topology2_idx) {
@@ -1028,7 +1015,7 @@ evoasm_deme_crossover(evoasm_deme_t *deme, size_t parent_topology1_idx, size_t p
   }
 }
 
-static evoasm_force_inline inline void
+static void
 evoasm_deme_combine(evoasm_deme_t *deme) {
   size_t n_doomed = EVOASM_ALIGN_DOWN(deme->n_doomed_indivs, 2u);
   for(size_t i = 0; i < n_doomed; i += 2) {
@@ -1190,13 +1177,13 @@ evoasm_deme_mutate_kernels(evoasm_deme_t *deme) {
   }
 }
 
-static evoasm_force_inline inline void
+static void
 evoasm_deme_mutate(evoasm_deme_t *deme) {
   evoasm_deme_mutate_topologies(deme);
   evoasm_deme_mutate_kernels(deme);
 }
 
-static evoasm_force_inline inline void
+static void
 evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme) {
   assert(deme->n_doomed_indivs > 0);
 
@@ -1220,14 +1207,14 @@ evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme) {
   deme->n_doomed_indivs--;
 }
 
-static evoasm_force_inline inline void
+static void
 evoasm_deme_save_elite(evoasm_deme_t *deme) {
   if(deme->n_doomed_indivs > 0) {
     evoasm_deme_inject_best(deme, deme);
   }
 }
 
-static evoasm_force_inline inline void
+static void
 evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes) {
   if(deme->stagn_counter > 0 && deme->stagn_counter % 4) {
     for(size_t i = 0; i < demes->params->n_demes; i++) {
