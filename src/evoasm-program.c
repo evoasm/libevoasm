@@ -1061,26 +1061,25 @@ error:
 }
 
 static void
-evoasm_program_topology_dfs(evoasm_program_topology_t *program_topology, size_t kernel_idx, size_t depth,
-                            uint32_t *gray_depths) {
-  size_t depth_bit = 1u << depth;
+evoasm_program_topology_dfs(evoasm_program_topology_t *program_topology, size_t kernel_idx, uint32_t *gray_used_bitmap) {
+  uint32_t kernel_bit = 1u << kernel_idx;
 
-  gray_depths[kernel_idx] |= (uint32_t) depth_bit;
-  program_topology->depth_bitmaps[kernel_idx] |= (uint32_t) depth_bit;
+  (*gray_used_bitmap) |= kernel_bit;
+  program_topology->used_bitmap |= kernel_bit;
 
   for(size_t i = 0; i < EVOASM_X64_JMP_COND_NONE + 1; i++) {
     size_t succ_kernel_idx = program_topology->mat[kernel_idx][i];
+    size_t succ_kernel_bit = 1u << succ_kernel_idx;
 
-    if(gray_depths[succ_kernel_idx] != 0) {
-      program_topology->cycle_bitmap &= (1u << kernel_idx);
+    if((*gray_used_bitmap) & succ_kernel_bit) {
+      program_topology->cycle_bitmap &= kernel_bit;
     }
-
-    if(!(program_topology->depth_bitmaps[kernel_idx] & (1u << (depth + 1u)))) {
-      evoasm_program_topology_dfs(program_topology, succ_kernel_idx, depth + 1, gray_depths);
+    if(!(program_topology->used_bitmap & kernel_bit)) {
+      evoasm_program_topology_dfs(program_topology, succ_kernel_idx, gray_used_bitmap);
     }
   }
 
-  gray_depths[kernel_idx] &= ~(uint32_t)depth_bit;
+  (*gray_used_bitmap) &= ~kernel_bit;
 }
 
 void
@@ -1088,6 +1087,9 @@ evoasm_program_update_topology(evoasm_program_t *program, uint8_t *edges, size_t
   evoasm_program_topology_t *program_topology = &program->topology;
 
   memset(program_topology->mat, 0, sizeof(program_topology->mat));
+  program_topology->used_bitmap = 0;
+  program_topology->cycle_bitmap = 0;
+
   uint8_t n_conds = program->arch_info->n_conds;
 
   for(size_t i = 0; i < 3u * n_edges; i += 3) {
@@ -1105,14 +1107,8 @@ evoasm_program_update_topology(evoasm_program_t *program, uint8_t *edges, size_t
     program_topology->mat[kernel_idx][arch_cond] = succ_kernel_idx;
   }
 
-  uint32_t *gray_depths = evoasm_alloca(sizeof(uint32_t));
-  evoasm_program_topology_dfs(program_topology, 0, 0, gray_depths);
-
-  uint32_t depth_bitmap = 0;
-  for(size_t i = 0; i < program->n_kernels; i++) {
-    depth_bitmap |= program_topology->depth_bitmaps[i];
-  }
-  program_topology->depth_bitmap = depth_bitmap;
+  uint32_t gray_used_bitmap = 0;
+  evoasm_program_topology_dfs(program_topology, 0, &gray_used_bitmap);
 }
 
 static evoasm_success_t
@@ -1120,8 +1116,8 @@ evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_m
   evoasm_buf_t *buf = program->body_buf;
   evoasm_kernel_t *kernel;
   size_t n_kernels = program->n_kernels;
-  uint32_t *jmp_reloc_addrs[EVOASM_PROGRAM_MAX_SIZE][EVOASM_X64_JMP_COND_NONE + 1] = {0};
-  uint8_t *kernel_addrs[EVOASM_PROGRAM_MAX_SIZE];
+  uint32_t *jmp_reloc_addrs[EVOASM_PROGRAM_MAX_KERNELS][EVOASM_X64_JMP_COND_NONE + 1] = {0};
+  uint8_t *kernel_addrs[EVOASM_PROGRAM_MAX_KERNELS];
 
   evoasm_buf_reset(buf);
 
@@ -1129,8 +1125,8 @@ evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_m
 
   /* emit */
   for(size_t i = 0; i < n_kernels; i++) {
-    /* no depth bit set means unreachable */
-    if(!program->topology.depth_bitmaps[i]) continue;
+    /* unreachable */
+    if(!(program->topology.used_bitmap & (1u << i))) continue;
 
     kernel = &program->kernels[i];
 
@@ -1768,11 +1764,11 @@ done:
 
 typedef struct {
   bool change;
-  evoasm_bitmap_max_kernel_size_t inst_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
-  evoasm_bitmap_max_output_regs_t output_regs_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
+  evoasm_bitmap_max_kernel_size_t inst_bitmaps[EVOASM_PROGRAM_MAX_KERNELS];
+  evoasm_bitmap_max_output_regs_t output_regs_bitmaps[EVOASM_PROGRAM_MAX_KERNELS];
   struct {
     evoasm_x64_operand_t x64[EVOASM_X64_REG_NONE];
-  } output_reg_operands[EVOASM_PROGRAM_MAX_SIZE];
+  } output_reg_operands[EVOASM_PROGRAM_MAX_KERNELS];
 } evoasm_program_intron_elim_ctx_t;
 
 

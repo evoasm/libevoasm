@@ -84,7 +84,7 @@ typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_PRESERVE_OUTPUT_REGS = (1 << 4)
 } evoasm_program_emit_flags_t;
 
-#define EVOASM_PROGRAM_MAX_SIZE 24
+#define EVOASM_PROGRAM_MAX_KERNELS 24
 #define EVOASM_KERNEL_MAX_SIZE 1024
 
 typedef evoasm_bitmap64_t evoasm_bitmap_max_program_size_t;
@@ -96,10 +96,9 @@ typedef evoasm_bitmap256_t evoasm_bitmap_max_output_regs_t;
 
 typedef struct {
   uint32_t cycle_bitmap;
-  uint32_t depth_bitmap;
-  uint8_t mat[EVOASM_PROGRAM_MAX_SIZE][EVOASM_PROGRAM_TOPOLOGY_N_CONDS];
+  uint32_t used_bitmap;
   uint8_t backbone_len;
-  uint32_t depth_bitmaps[EVOASM_PROGRAM_MAX_SIZE];
+  uint8_t mat[EVOASM_PROGRAM_MAX_KERNELS][EVOASM_PROGRAM_TOPOLOGY_N_CONDS];
 } evoasm_program_topology_t;
 
 typedef struct {

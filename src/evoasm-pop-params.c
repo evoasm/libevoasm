@@ -26,7 +26,7 @@ EVOASM_DEF_ZERO_INIT_FUNC(pop_params)
   EVOASM_DEF_GETTER(pop_params, field, value_type) \
   EVOASM_DEF_SETTER(pop_params, field, value_type, field_type)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_kernels, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(topology_size, size_t, uint16_t)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_size, size_t, uint16_t)
 
@@ -137,7 +137,7 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
 
   if(pop_params->kernel_size > EVOASM_KERNEL_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
-                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_KERNELS);
     goto fail;
   }
 
@@ -147,13 +147,13 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->n_kernels > EVOASM_PROGRAM_MAX_SIZE) {
+  if(pop_params->topology_size > EVOASM_PROGRAM_MAX_KERNELS) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
-                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_SIZE);
+                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_KERNELS);
     goto fail;
   }
 
-  if(pop_params->n_kernels == 0) {
+  if(pop_params->topology_size == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "Program size cannot be zero");
     goto fail;
