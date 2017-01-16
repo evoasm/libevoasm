@@ -84,7 +84,7 @@ typedef enum {
   EVOASM_PROGRAM_EMIT_FLAG_PRESERVE_OUTPUT_REGS = (1 << 4)
 } evoasm_program_emit_flags_t;
 
-#define EVOASM_PROGRAM_MAX_KERNELS 24
+#define EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE 24
 #define EVOASM_KERNEL_MAX_SIZE 1024
 
 typedef evoasm_bitmap64_t evoasm_bitmap_max_program_size_t;
@@ -92,13 +92,13 @@ typedef evoasm_bitmap1024_t evoasm_bitmap_max_kernel_size_t;
 typedef evoasm_bitmap256_t evoasm_bitmap_max_output_regs_t;
 
 #define EVOASM_PROGRAM_TOPOLOGY_MIN_BACKBONE_LEN 2
-#define EVOASM_PROGRAM_TOPOLOGY_N_CONDS (EVOASM_X64_JMP_COND_NONE + 1)
+#define EVOASM_PROGRAM_TOPOLOGY_MAX_CONDS (EVOASM_X64_JMP_COND_NONE + 1)
 
 typedef struct {
   uint32_t cycle_bitmap;
   uint32_t used_bitmap;
   uint8_t backbone_len;
-  uint8_t mat[EVOASM_PROGRAM_MAX_KERNELS][EVOASM_PROGRAM_TOPOLOGY_N_CONDS];
+  uint8_t succs[EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE][EVOASM_PROGRAM_TOPOLOGY_MAX_CONDS];
 } evoasm_program_topology_t;
 
 typedef struct {
@@ -153,7 +153,7 @@ evoasm_program_run(evoasm_program_t *program,
                evoasm_program_input_t *input);
 
 void
-evoasm_program_update_topology(evoasm_program_t *program, uint8_t *edges, size_t n_edges);
+evoasm_program_update_topology(evoasm_program_t *program, size_t backbone_len, uint8_t *edges, size_t n_edges);
 
 evoasm_success_t
 evoasm_program_destroy(evoasm_program_t *program);

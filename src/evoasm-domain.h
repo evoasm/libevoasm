@@ -78,7 +78,7 @@ evoasm_domain_rand_(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;
-      return evoasm_prng_rand_between_(prng, range_domain->min, range_domain->max);
+      return evoasm_prng_rand_between_(prng, range_domain->min, range_domain->max + 1);
     }
     case EVOASM_DOMAIN_TYPE_INT64: {
       return (int64_t) evoasm_prng_rand64_(prng);

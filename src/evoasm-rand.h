@@ -71,6 +71,6 @@ evoasm_prng_randf_(evoasm_prng_t *prng) {
 }
 
 static inline int64_t
-evoasm_prng_rand_between_(evoasm_prng_t *prng, int64_t min, int64_t max) {
-  return min + (int64_t)(evoasm_prng_rand64_(prng) % (uint64_t)(max - min + 1ll));
+evoasm_prng_rand_between_(evoasm_prng_t *prng, int64_t min, int64_t bound) {
+  return min + (int64_t)(evoasm_prng_rand64_(prng) % (uint64_t)(bound - min));
 }

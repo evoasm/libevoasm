@@ -137,7 +137,7 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
 
   if(pop_params->kernel_size > EVOASM_KERNEL_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
-                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_KERNELS);
+                 "Program size cannot exceed %d", EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE);
     goto fail;
   }
 
@@ -147,9 +147,9 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->topology_size > EVOASM_PROGRAM_MAX_KERNELS) {
+  if(pop_params->topology_size > EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
-                 "Program size cannot exceed %d", EVOASM_PROGRAM_MAX_KERNELS);
+                 "Topology size cannot exceed %d", EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE);
     goto fail;
   }
 

@@ -35,6 +35,7 @@ evoasm_get_current_arch() {
 #define EVOASM_ARCH_INFO_DEF_GETTER(field, type) EVOASM_DEF_GETTER(arch_info, field, type)
 
 EVOASM_ARCH_INFO_DEF_GETTER(id, evoasm_arch_id_t)
+EVOASM_ARCH_INFO_DEF_GETTER(n_conds, size_t)
 EVOASM_ARCH_INFO_DEF_GETTER(n_params, size_t)
 EVOASM_ARCH_INFO_DEF_GETTER(max_inst_len, size_t)
 EVOASM_ARCH_INFO_DEF_GETTER(n_insts, size_t)
