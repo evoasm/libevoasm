@@ -64,6 +64,7 @@ typedef struct {
   uint16_t idx;
   uint16_t buf_start;
   uint16_t buf_end;
+  uint32_t active_succs[EVOASM_X64_JMP_COND_NONE + 1];
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
   evoasm_program_io_val_t rand_vals[EVOASM_X64_REG_NONE];

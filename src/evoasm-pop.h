@@ -58,7 +58,6 @@ struct evoasm_deme_s {
   evoasm_deme_kernel_data_t kernel_data;
   evoasm_loss_t top_loss;
   evoasm_loss_t avg_loss;
-
   evoasm_loss_t best_loss;
   evoasm_deme_topology_data_t best_topology_data;
   evoasm_deme_kernel_data_t best_kernel_data;
