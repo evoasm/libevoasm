@@ -461,6 +461,10 @@ evoasm_program_x64_prepare_kernel(evoasm_program_t *program, evoasm_kernel_t *ke
   static evoasm_kernel_reg_info_x64_t zero_reg_info = {0};
   kernel->x64.reg_info = zero_reg_info;
 
+  /* FIXME: this could in theory happen after intron elimination
+   * in which case the eliminate process should remove the whole kernel */
+  assert(kernel->size > 0);
+
   /* First, handle read ops, so that writing ops do not disturb us */
   for(size_t i = 0; i < kernel->size; i++) {
     evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
@@ -1162,10 +1166,10 @@ evoasm_program_update_topology(evoasm_program_t *program, size_t backbone_len, u
     program_topology->succs[kernel_idx][arch_cond] = succ_kernel_idx;
   }
 
-  evoasm_program_topology_warshall(program_topology);
+//  evoasm_program_topology_warshall(program_topology);
 
-  program_topology->used_bitmap = UINT32_MAX;
-  program_topology->cycle_bitmap = UINT32_MAX;
+//  program_topology->used_bitmap = UINT32_MAX;
+//  program_topology->cycle_bitmap = UINT32_MAX;
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
   for(size_t i = 0; i < program->n_kernels; i++) {
@@ -2010,7 +2014,7 @@ evoasm_success_t
 evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dst_program) {
   size_t term_kernel_idx = (size_t) program->topology.backbone_len - 1;
   evoasm_program_intron_elim_ctx_t ctx = {0};
-
+  size_t n_kernels = program->n_kernels;
 
   EVOASM_TRY(error, evoasm_program_init,
              dst_program,
@@ -2058,13 +2062,13 @@ evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dst_pro
 
   do {
     ctx.change = false;
-    for(int i = (int) term_kernel_idx; i >= 0; i--) {
+    for(int i = (int) (n_kernels - 1); i >= 0; i--) {
       EVOASM_TRY(error, evoasm_program_mark_kernel, program, dst_program, (size_t) i, &ctx);
     }
   } while(ctx.change);
 
   /* sweep */
-  for(size_t i = 0; i <= term_kernel_idx; i++) {
+  for(size_t i = 0; i < n_kernels; i++) {
     evoasm_kernel_t *kernel = &program->kernels[i];
     evoasm_kernel_t *dst_kernel = &dst_program->kernels[i];
     evoasm_bitmap_t *inst_bitmap = (evoasm_bitmap_t *) &ctx.inst_bitmaps[i];
