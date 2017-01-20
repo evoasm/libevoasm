@@ -24,7 +24,7 @@ EVOASM_DEF_LOG_TAG("rand")
 EVOASM_DEF_ALLOC_FREE_FUNCS(prng)
 
 void
-evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_state_t *seed) {
+evoasm_prng_init(evoasm_prng_t *prng, const evoasm_prng_state_t *seed) {
   prng->state = *seed;
   prng->p = 0;
 }

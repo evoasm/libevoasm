@@ -178,7 +178,7 @@ void
 evoasm_pop_destroy(evoasm_pop_t *pop) {
   evoasm_free(pop->domains);
 
-  for(size_t i = 0; i < pop->params->n_demes; i++) {
+  for(size_t i = 0; i < pop->n_demes; i++) {
     evoasm_deme_destroy(&pop->demes[i]);
   }
   evoasm_free(pop->demes);
@@ -194,8 +194,8 @@ static evoasm_success_t
 evoasm_deme_init(evoasm_deme_t *deme,
                  size_t deme_idx,
                  evoasm_arch_id_t arch_id,
-                 evoasm_pop_params_t *params,
-                 evoasm_prng_state_t *seed,
+                 const evoasm_pop_params_t *params,
+                 const evoasm_prng_state_t *seed,
                  evoasm_domain_t *domains) {
 
   size_t n_examples = EVOASM_PROGRAM_INPUT_N_TUPLES(params->program_input);
@@ -265,7 +265,7 @@ evoasm_pop_init_domains(evoasm_pop_t *pop) {
   size_t i, j, k;
   evoasm_domain_t cloned_domain;
 
-  evoasm_pop_params_t *params = pop->params;
+  const evoasm_pop_params_t *params = pop->params;
 
   size_t domains_len = (size_t) (params->n_insts * params->n_params);
   pop->domains = evoasm_calloc(domains_len,
@@ -319,22 +319,23 @@ empty_domain:
 evoasm_success_t
 evoasm_pop_init(evoasm_pop_t *pop,
                 evoasm_arch_id_t arch_id,
-                evoasm_pop_params_t *params) {
+                const evoasm_pop_params_t *params) {
   static evoasm_pop_t zero_pop = {0};
   evoasm_prng_t seed_prng;
 
   *pop = zero_pop;
 
-  pop->params = params;
+  if(!evoasm_pop_params_validate((evoasm_pop_params_t *) params)) goto error;
 
-  if(!evoasm_pop_params_validate(params)) goto error;
+  pop->params = params;
+  pop->n_demes = params->n_demes;
 
 #ifdef _OPENMP
   {
     int max_threads;
     max_threads = omp_get_max_threads();
     omp_set_dynamic(0);
-    int n_threads = EVOASM_MIN(max_threads, params->n_demes);
+    int n_threads = EVOASM_MIN(max_threads, pop->n_demes);
     omp_set_num_threads(n_threads);
     evoasm_log_info("Using OpenMP with %d threads", n_threads);
   }
@@ -345,10 +346,10 @@ evoasm_pop_init(evoasm_pop_t *pop,
   EVOASM_TRY(error, evoasm_pop_init_domains, pop);
   EVOASM_TRY(error, evoasm_pop_module_data_init, &pop->module_data, params->library_size);
 
-  EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, (size_t) params->n_demes,
+  EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, (size_t) pop->n_demes,
                    sizeof(evoasm_deme_t));
 
-  for(size_t i = 0; i < params->n_demes; i++) {
+  for(size_t i = 0; i < pop->n_demes; i++) {
     evoasm_prng_state_t seed;
 
     for(size_t j = 0; j < EVOASM_PRNG_SEED_LEN; j++) {
@@ -374,7 +375,7 @@ error:
 static void
 evoasm_deme_seed_kernel_param_x64(evoasm_deme_t *deme, evoasm_inst_id_t *inst_id_ptr,
                                   evoasm_x64_basic_params_t *params_ptr) {
-  evoasm_pop_params_t *params = deme->params;
+  const evoasm_pop_params_t *params = deme->params;
   size_t n_params = params->n_params;
   evoasm_prng_t *prng = &deme->prng;
 
@@ -542,7 +543,7 @@ evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop) {
 
 #pragma omp parallel for
-  for(size_t i = 0; i < pop->params->n_demes; i++) {
+  for(size_t i = 0; i < pop->n_demes; i++) {
     evoasm_deme_seed(&pop->demes[i]);
   }
   pop->seeded = true;
@@ -609,7 +610,7 @@ evoasm_deme_load_program(evoasm_deme_t *deme,
 
 static evoasm_success_t
 evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *ret_loss) {
-  evoasm_pop_params_t *params = deme->params;
+  const evoasm_pop_params_t *params = deme->params;
 
   //bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping
   evoasm_program_emit_flags_t emit_flags =
@@ -639,7 +640,7 @@ evoasm_pop_find_best_deme(evoasm_pop_t *pop) {
   evoasm_deme_t *best_deme = &pop->demes[0];
   evoasm_loss_t best_loss = best_deme->best_loss;
 
-  for(size_t i = 1; i < pop->params->n_demes; i++) {
+  for(size_t i = 1; i < pop->n_demes; i++) {
     evoasm_deme_t *deme = &pop->demes[i];
     if(deme->best_loss < best_loss) {
       best_loss = deme->best_loss;
@@ -653,7 +654,7 @@ evoasm_success_t
 evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
 
   evoasm_deme_t *best_deme = evoasm_pop_find_best_deme(pop);
-  evoasm_pop_params_t *params = best_deme->params;
+  const evoasm_pop_params_t *params = best_deme->params;
 
   EVOASM_TRY(error, evoasm_program_init, program,
              evoasm_get_arch_info(best_deme->arch_id),
@@ -781,7 +782,9 @@ evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t topology
 
     evoasm_log_info("new best program loss: %g", loss);
 
-    evoasm_program_log(&deme->program, EVOASM_LOG_LEVEL_INFO);
+    evoasm_buf_log(deme->program.buf, EVOASM_LOG_LEVEL_DEBUG);
+
+//    for(size_t i = 0; i < deme->program.output_regs)
 
     deme->best_loss = loss;
 
@@ -894,7 +897,7 @@ done:
 evoasm_success_t
 evoasm_pop_eval(evoasm_pop_t *pop) {
   bool retval = true;
-  size_t n_demes = pop->params->n_demes;
+  size_t n_demes = pop->n_demes;
 
   if(!pop->seeded) {
     retval = false;
@@ -1087,7 +1090,7 @@ evoasm_deme_calc_summary(evoasm_deme_t *deme, evoasm_loss_t *summary_losses, evo
 
 size_t
 evoasm_pop_summary_len(evoasm_pop_t *pop) {
-  return pop->params->n_demes * EVOASM_POP_SUMMARY_LEN;
+  return pop->n_demes * EVOASM_POP_SUMMARY_LEN;
 }
 
 evoasm_success_t
@@ -1099,7 +1102,7 @@ evoasm_pop_calc_summary(evoasm_pop_t *pop, evoasm_loss_t *summary) {
     }
   }
 
-  for(size_t i = 0; i < pop->params->n_demes; i++) {
+  for(size_t i = 0; i < pop->n_demes; i++) {
     evoasm_deme_calc_summary(&pop->demes[i], pop->summary_losses, &summary[i * EVOASM_POP_SUMMARY_LEN]);
   }
 
@@ -1258,9 +1261,9 @@ evoasm_deme_save_elite(evoasm_deme_t *deme) {
 }
 
 static void
-evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes) {
+evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t demes_len) {
   if(deme->stagn_counter > 0 && deme->stagn_counter % 4) {
-    for(size_t i = 0; i < demes->params->n_demes; i++) {
+    for(size_t i = 0; i < demes_len; i++) {
       evoasm_deme_t *immigration_deme = &demes[i];
 
       if(deme->n_doomed_indivs == 0) {
@@ -1276,10 +1279,10 @@ evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes) {
 }
 
 static void
-evoasm_deme_next_gen(evoasm_deme_t *deme, evoasm_deme_t *demes) {
+evoasm_deme_next_gen(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t demes_len) {
   evoasm_deme_select(deme);
   evoasm_deme_save_elite(deme);
-  evoasm_deme_immigrate_elite(deme, demes);
+  evoasm_deme_immigrate_elite(deme, demes, demes_len);
   evoasm_deme_combine(deme);
   evoasm_deme_mutate(deme);
 }
@@ -1287,8 +1290,8 @@ evoasm_deme_next_gen(evoasm_deme_t *deme, evoasm_deme_t *demes) {
 void
 evoasm_pop_next_gen(evoasm_pop_t *pop) {
 #pragma omp parallel for
-  for(size_t i = 0; i < pop->params->n_demes; i++) {
-    evoasm_deme_next_gen(&pop->demes[i], pop->demes);
+  for(size_t i = 0; i < pop->n_demes; i++) {
+    evoasm_deme_next_gen(&pop->demes[i], pop->demes, pop->n_demes);
   }
 
   pop->gen_counter++;

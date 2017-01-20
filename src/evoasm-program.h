@@ -103,15 +103,17 @@ typedef struct {
 } evoasm_program_topology_t;
 
 typedef struct {
+  bool reset_rflags : 1;
+  bool shallow : 1;
+  uint16_t n_kernels;
+  uint16_t max_tuples;
+  uint16_t max_kernel_size;
+  uint32_t recur_limit;
+  uint32_t exception_mask;
+
   evoasm_arch_info_t *arch_info;
   evoasm_buf_t *buf;
   evoasm_buf_t *body_buf;
-  bool reset_rflags : 1;
-  bool shallow : 1;
-  uint32_t recur_limit;
-  uint16_t n_kernels;
-  uint16_t max_tuples;
-  uint32_t exception_mask;
   evoasm_program_io_val_type_t types[EVOASM_PROGRAM_OUTPUT_MAX_ARITY];
   evoasm_program_io_val_t *output_vals;
   evoasm_kernel_t *kernels;
@@ -143,7 +145,7 @@ evoasm_success_t
 evoasm_program_init(evoasm_program_t *program,
                     evoasm_arch_info_t *arch_info,
                     size_t program_size,
-                    size_t kernel_size,
+                    size_t max_kernel_size,
                     size_t max_tuples,
                     size_t recur_limit,
                     bool shallow);

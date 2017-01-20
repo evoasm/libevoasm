@@ -45,7 +45,7 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
 
 static evoasm_success_t
 evoasm_x64_func_emit_prolog_or_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf, bool prolog) {
-  size_t regs_len = EVOASM_ARY_LEN(evoasm_x64_sysv_callee_save_regs);
+  size_t regs_len = EVOASM_ARRAY_LEN(evoasm_x64_sysv_callee_save_regs);
   evoasm_x64_params_t params = {0};
 
   for(size_t i = 0; i < regs_len; i++) {

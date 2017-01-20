@@ -29,11 +29,11 @@ typedef struct {
 typedef struct evoasm_prng64 {
   /* xorshift1024star */
   evoasm_prng_state_t state;
-  int p;
+  size_t p;
 } evoasm_prng_t;
 
 void
-evoasm_prng_init(evoasm_prng_t *prng, evoasm_prng_state_t *seed);
+evoasm_prng_init(evoasm_prng_t *prng, const evoasm_prng_state_t *seed);
 
 void
 evoasm_prng_destroy(evoasm_prng_t *prng);

@@ -68,7 +68,7 @@ struct evoasm_deme_s {
   uint16_t input_win_off;
   float mut_rate;
   evoasm_arch_id_t arch_id;
-  evoasm_pop_params_t *params;
+  const evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
   uint16_t stagn_counter;
 } evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
@@ -76,20 +76,21 @@ struct evoasm_deme_s {
 typedef struct evoasm_deme_s evoasm_deme_t;
 
 typedef struct evoasm_pop_s {
-  evoasm_pop_params_t *params;
+  const evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
   evoasm_deme_t *demes;
   evoasm_pop_module_data_t module_data;
   evoasm_loss_t *summary_losses;
   bool seeded : 1;
   uint16_t gen_counter;
+  uint16_t n_demes;
 
 } evoasm_pop_t;
 
 evoasm_success_t
 evoasm_pop_init(evoasm_pop_t *pop,
                 evoasm_arch_id_t arch_id,
-                evoasm_pop_params_t *params);
+                const evoasm_pop_params_t *params);
 
 
 evoasm_success_t
