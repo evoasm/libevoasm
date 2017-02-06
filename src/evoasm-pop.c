@@ -31,7 +31,7 @@
 
 EVOASM_DEF_LOG_TAG("pop")
 
-#define EVOASM_DEME_EXAMPLE_WIN_SIZE 64
+#define EVOASM_DEME_EXAMPLE_WIN_SIZE 32
 
 #define EVOASM_DEME_LOSS_OFF(deme, indiv_idx) (indiv_idx)
 
@@ -198,7 +198,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
                  const evoasm_prng_state_t *seed,
                  evoasm_domain_t *domains) {
 
-  size_t n_examples = EVOASM_PROGRAM_INPUT_N_TUPLES(params->program_input);
+  size_t n_examples = evoasm_program_io_get_n_tuples(params->program_input);
   static evoasm_deme_t zero_deme = {0};
 
   *deme = zero_deme;
@@ -909,7 +909,7 @@ evoasm_pop_eval(evoasm_pop_t *pop) {
   bool *retvals = evoasm_alloca(sizeof(bool) * n_demes);
   evoasm_error_t *errors = evoasm_alloca(sizeof(evoasm_error_t) * n_demes);
 
-  if(pop->gen_counter > 0 && EVOASM_PROGRAM_INPUT_N_TUPLES(pop->params->program_input) > EVOASM_DEME_EXAMPLE_WIN_SIZE) {
+  if(pop->gen_counter > 0 && evoasm_program_input_get_n_tuples(pop->params->program_input) > EVOASM_DEME_EXAMPLE_WIN_SIZE) {
     for(size_t i = 0; i < n_demes; i++) {
       pop->demes[i].input_win_off++;
     }
@@ -974,7 +974,7 @@ evoasm_deme_select(evoasm_deme_t *deme) {
 }
 
 static void
-evoasm_deme_copy_indivs(evoasm_deme_t *deme, size_t parent_idx, size_t child_idx) {
+evoasm_deme_copy_indiv(evoasm_deme_t *deme, size_t parent_idx, size_t child_idx) {
 
   evoasm_deme_kernel_data_t *kernel_data = &deme->kernel_data;
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
@@ -1044,11 +1044,11 @@ evoasm_deme_combine(evoasm_deme_t *deme) {
     size_t parent_idx = deme->blessed_indiv_idxs[i % deme->n_blessed_indivs];
     size_t child_idx = deme->doomed_indiv_idxs[i];
 
-    evoasm_deme_copy_indivs(deme, parent_idx, child_idx);
+    evoasm_deme_copy_indiv(deme, parent_idx, child_idx);
   }
 }
 
-static void
+static void evoasm_used
 evoasm_deme_crossover(evoasm_deme_t *deme) {
   size_t n_doomed = EVOASM_ALIGN_DOWN(deme->n_doomed_indivs, 2u);
   for(size_t i = 0; i < n_doomed; i += 2) {
@@ -1109,24 +1109,6 @@ evoasm_pop_calc_summary(evoasm_pop_t *pop, evoasm_loss_t *summary) {
   return true;
 }
 
-
-#if 0
-size_t i;
-double scale = 1.0 / pop->params->size;
-double pop_loss = 0.0;
-*n_invalid = 0;
-for(i = 0; i < pop->params->size; i++) {
-  double loss = pop->top_loss[i];
-  if(loss != INFINITY) {
-    pop_loss += scale * loss;
-  } else {
-    (*n_invalid)++;
-  }
-}
-
-if(per_example) pop_loss /= pop->n_examples;
-#endif
-
 static void
 evoasm_deme_resize_backbone(evoasm_deme_t *deme, size_t topology_idx, int change) {
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
@@ -1152,9 +1134,6 @@ evoasm_deme_resize_backbone(evoasm_deme_t *deme, size_t topology_idx, int change
     topology_data->edges[edge_off + 0] = (uint8_t) (i + 1u);
     topology_data->edges[edge_off + 1] = (uint8_t) succ_kernel_idx;
   }
-
-
-
 }
 
 static inline void
@@ -1184,12 +1163,13 @@ evoasm_deme_mutate_topology(evoasm_deme_t *deme, size_t topology_idx) {
   float r1 = evoasm_prng_randf_(prng);
   float topology_mut_rate = (float) topology_size * deme->mut_rate;
 
-  if(r1 < (1.0 / 20.0) * deme->mut_rate) {
+  float edge_mut_rate = (1.0f / 10.0f) * deme->mut_rate;
+  float backbone_mut_rate =  (1.0f / 20.0f) * deme->mut_rate;
+
+  if(r1 < backbone_mut_rate) {
     uint64_t r2 = evoasm_prng_rand64_(prng);
     evoasm_deme_resize_backbone(deme, topology_idx, (int) (r2 % 5) - 2);
   }
-
-  float edge_mut_rate = (1.0f / 10.0f) * deme->mut_rate;
 
   if(r1 < topology_mut_rate) {
     for(size_t i = topology_size - 1; i < n_edges; i++) {
@@ -1297,35 +1277,5 @@ evoasm_pop_next_gen(evoasm_pop_t *pop) {
   pop->gen_counter++;
 
 }
-
-#if 0
-
-evoasm_pop_select(pop, blessed_indiv_idxs, pop->params->size);
-  {
-    double scale = 1.0 / pop->params->size;
-    double pop_loss = 0.0;
-    size_t n_inf = 0;
-    for(i = 0; i < pop->params->size; i++) {
-      double loss = pop->pop.top_loss[blessed_indiv_idxs[i]];
-      if(loss != INFINITY) {
-        pop_loss += scale * loss;
-      }
-      else {
-        n_inf++;
-      }
-    }
-
-    evoasm_log_info("pop selected loss: %g/%u", pop_loss, n_inf);
-  }
-
-  size_t i;
-  for(i = 0; i < pop->params->size; i++) {
-    evoasm_program_params_t *program_params = EVOASM_SEARCH_PROGRAM_PARAMS(pop, pop->pop.indivs, blessed_indiv_idxs[i]);
-    assert(program_params->size > 0);
-  }
-
-  return evoasm_pop_combine_parents(pop, blessed_indiv_idxs);
-}
-#endif
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop)

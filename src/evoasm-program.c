@@ -1270,7 +1270,7 @@ evoasm_program_x64_emit_io_load_store(evoasm_program_t *program,
                                       size_t input_win_size,
                                       bool io_mapping) {
 
-  size_t n_tuples = EVOASM_PROGRAM_INPUT_N_TUPLES(input);
+  size_t n_tuples = evoasm_program_input_get_n_tuples(input);
   input_win_size = EVOASM_MIN(n_tuples, input_win_size);
 
   evoasm_buf_reset(program->buf);
@@ -1380,7 +1380,7 @@ evoasm_program_log_program_output(evoasm_program_t *program,
                                   uint_fast8_t *const matching,
                                   evoasm_log_level_t log_level) {
 
-  size_t n_tuples = EVOASM_PROGRAM_OUTPUT_N_TUPLES(output);
+  size_t n_tuples = evoasm_program_output_get_n_tuples(output);
   size_t height = output->arity;
   size_t width = kernel->n_output_regs;
 
@@ -1565,7 +1565,7 @@ static evoasm_loss_t
 evoasm_program_assess(evoasm_program_t *program,
                       evoasm_program_output_t *output) {
 
-  size_t n_tuples = EVOASM_PROGRAM_OUTPUT_N_TUPLES(output);
+  size_t n_tuples = evoasm_program_output_get_n_tuples(output);
   size_t height = output->arity;
   evoasm_kernel_t *terminal_kernel = evoasm_program_get_terminal_kernel(program);
   size_t width = terminal_kernel->n_output_regs;
@@ -1710,11 +1710,11 @@ evoasm_program_load_output(evoasm_program_t *program,
   size_t width = kernel->n_output_regs;
   evoasm_program_output_t *output = &program->_output;
   size_t height = output->arity;
-  size_t n_tuples = EVOASM_PROGRAM_INPUT_N_TUPLES(input);
+  size_t n_tuples = evoasm_program_input_get_n_tuples(input);
   uint_fast8_t *matching = evoasm_alloca(height * sizeof(uint_fast8_t));
 
   evoasm_program_output_t *load_output = evoasm_program_io_alloc(
-      (uint16_t) (EVOASM_PROGRAM_INPUT_N_TUPLES(input) * height));
+      (uint16_t) (evoasm_program_input_get_n_tuples(input) * height));
 
   for(size_t i = 0; i < height; i++) {
     for(size_t j = 0; j < kernel->n_output_regs; j++) {
@@ -1759,7 +1759,7 @@ evoasm_program_run(evoasm_program_t *program,
     return NULL;
   }
 
-  size_t n_tuples = EVOASM_PROGRAM_INPUT_N_TUPLES(input);
+  size_t n_tuples = evoasm_program_input_get_n_tuples(input);
   if(n_tuples > program->max_tuples) {
     evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
                  "Maximum number of input/output tuples exceeded (%zu > %d)", n_tuples, program->max_tuples);
@@ -2234,7 +2234,7 @@ evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level) {
 ssize_t
 evoasm_program_get_succ_kernel_idx(evoasm_program_t *program, size_t kernel_idx, size_t cond) {
   uint8_t succ_kernel_idx = program->topology.succs[kernel_idx][cond];
-  if(succ_kernel_idx == program->arch_info->n_conds) return -1;
+  if(succ_kernel_idx == UINT8_MAX) return -1;
   return succ_kernel_idx;
 }
 

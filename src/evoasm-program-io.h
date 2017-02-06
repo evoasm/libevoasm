@@ -46,9 +46,14 @@ typedef struct {
 typedef evoasm_program_io_t evoasm_program_output_t;
 typedef evoasm_program_io_t evoasm_program_input_t;
 
-#define EVOASM_PROGRAM_IO_N_TUPLES(program_io) ((size_t)((program_io)->len / (program_io)->arity))
-#define EVOASM_PROGRAM_INPUT_N_TUPLES(program_input) EVOASM_PROGRAM_IO_N_TUPLES((evoasm_program_io_t *)program_input)
-#define EVOASM_PROGRAM_OUTPUT_N_TUPLES(program_output) EVOASM_PROGRAM_IO_N_TUPLES((evoasm_program_io_t *)program_output)
+
+static inline size_t
+evoasm_program_io_get_n_tuples(evoasm_program_io_t *program_io) {
+  return (size_t) program_io->len / program_io->arity;
+}
+
+#define evoasm_program_input_get_n_tuples evoasm_program_io_get_n_tuples
+#define evoasm_program_output_get_n_tuples evoasm_program_io_get_n_tuples
 
 evoasm_program_io_t *
 evoasm_program_io_alloc(size_t len);
