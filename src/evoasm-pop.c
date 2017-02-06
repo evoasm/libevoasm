@@ -980,7 +980,6 @@ evoasm_deme_copy_indiv(evoasm_deme_t *deme, size_t parent_idx, size_t child_idx)
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
 
   size_t n_insts = (size_t)(deme->params->topology_size * deme->params->kernel_size);
-  size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
 
   size_t parent_kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, parent_idx, 0);
   size_t parent_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, parent_kernel0_off, 0);
@@ -988,15 +987,21 @@ evoasm_deme_copy_indiv(evoasm_deme_t *deme, size_t parent_idx, size_t child_idx)
   size_t child_kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, child_idx, 0);
   size_t child_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, child_kernel0_off, 0);
 
-  size_t parent_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, parent_idx, 0);
-  size_t child_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, child_idx, 0);
 
-  deme->topology_data.backbone_lens[child_idx] = deme->topology_data.backbone_lens[parent_idx];
 
   evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent_inst0_off,
                                      kernel_data, child_inst0_off, n_insts);
 
-  evoasm_deme_topology_data_copy_edges(topology_data, parent_edge0_off, topology_data, child_edge0_off, n_edges);
+  if(deme->params->topology_size > 1) {
+    size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
+    size_t parent_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, parent_idx, 0);
+    size_t child_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, child_idx, 0);
+
+    deme->topology_data.backbone_lens[child_idx] = deme->topology_data.backbone_lens[parent_idx];
+
+    evoasm_deme_topology_data_copy_edges(topology_data, parent_edge0_off,
+                                         topology_data, child_edge0_off, n_edges);
+  }
 }
 
 static void
@@ -1204,7 +1209,9 @@ evoasm_deme_mutate_kernels(evoasm_deme_t *deme) {
 
 static void
 evoasm_deme_mutate(evoasm_deme_t *deme) {
-  evoasm_deme_mutate_topologies(deme);
+  if(deme->params->topology_size > 1) {
+    evoasm_deme_mutate_topologies(deme);
+  }
   evoasm_deme_mutate_kernels(deme);
 }
 
@@ -1212,17 +1219,19 @@ static void
 evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme) {
   assert(deme->n_doomed_indivs > 0);
 
+  size_t topology_size = deme->params->topology_size;
   size_t doomed_topology_idx = deme->doomed_indiv_idxs[deme->n_doomed_indivs - 1];
 
-  size_t src_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF_(deme->params->topology_size, 0, 0);
-  size_t dst_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme,
-                                                       doomed_topology_idx,
-                                                       0);
+  if(topology_size > 1) {
+    size_t src_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF_(deme->params->topology_size, 0, 0);
+    size_t dst_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme,
+                                                         doomed_topology_idx,
+                                                         0);
 
-  deme->topology_data.backbone_lens[doomed_topology_idx] = src_deme->best_topology_data.backbone_lens[0];
-  evoasm_deme_topology_data_copy_edges(&src_deme->best_topology_data, src_edge0_off, &deme->topology_data,
-                                       dst_edge0_off, deme->params->topology_size);
-
+    deme->topology_data.backbone_lens[doomed_topology_idx] = src_deme->best_topology_data.backbone_lens[0];
+    evoasm_deme_topology_data_copy_edges(&src_deme->best_topology_data, src_edge0_off, &deme->topology_data,
+                                         dst_edge0_off, deme->params->topology_size);
+  }
 
   size_t src_inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme->params->kernel_size, 0, 0);
   size_t kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, doomed_topology_idx, 0);

@@ -1213,47 +1213,51 @@ evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_m
     kernel_addrs[i] = buf->data + buf->pos;
     kernel->buf_start = (uint16_t) buf->pos;
 
-    uint32_t *guard_jmp_reloc_addr;
-    EVOASM_TRY(error, evoasm_program_x64_emit_kernel, program, kernel, buf);
-    EVOASM_TRY(error, evoasm_program_x64_emit_cycle_guard, program, kernel, buf, &guard_jmp_reloc_addr);
-    EVOASM_TRY(error, evoasm_program_x64_emit_cond_transes, program, kernel, buf, trans_reloc_addrs[i],
-               set_io_mapping);
+    if(n_kernels > 1) {
+      uint32_t *guard_jmp_reloc_addr;
+      EVOASM_TRY(error, evoasm_program_x64_emit_kernel, program, kernel, buf);
+      EVOASM_TRY(error, evoasm_program_x64_emit_cycle_guard, program, kernel, buf, &guard_jmp_reloc_addr);
+      EVOASM_TRY(error, evoasm_program_x64_emit_cond_transes, program, kernel, buf, trans_reloc_addrs[i],
+                 set_io_mapping);
 
-    uint8_t *default_trans_load_addr;
-    EVOASM_TRY(error, evoasm_program_x64_emit_default_trans, program, kernel, buf, trans_reloc_addrs[i],
-               &default_trans_load_addr, set_io_mapping);
+      uint8_t *default_trans_load_addr;
+      EVOASM_TRY(error, evoasm_program_x64_emit_default_trans, program, kernel, buf, trans_reloc_addrs[i],
+                 &default_trans_load_addr, set_io_mapping);
 
-    if(guard_jmp_reloc_addr) {
-      /* link the guard - on failure jump to default trans (i.e. where it is loaded) */
-      EVOASM_BUF_SET_RELOC_ADDR32(guard_jmp_reloc_addr, default_trans_load_addr);
+      if(guard_jmp_reloc_addr) {
+        /* link the guard - on failure jump to default trans (i.e. where it is loaded) */
+        EVOASM_BUF_SET_RELOC_ADDR32(guard_jmp_reloc_addr, default_trans_load_addr);
+      }
     }
 
     kernel->buf_end = (uint16_t) buf->pos;
   }
 
-  /* link relocations */
-  for(size_t i = 0; i < n_kernels; i++) {
-    for(size_t j = 0; j < EVOASM_X64_JMP_COND_NONE + 1; j++) {
-      size_t succ_kernel_idx = program->topology.succs[i][j];
-      if(succ_kernel_idx != UINT8_MAX) {
-        uint32_t *jmp_reloc_addr = trans_reloc_addrs[i][j];
-        if(jmp_reloc_addr != NULL) {
-          assert(*jmp_reloc_addr == 0xdeadbeef);
-          uint8_t *succ_kernel_addr = kernel_addrs[succ_kernel_idx];
-          EVOASM_BUF_SET_RELOC_ADDR32(jmp_reloc_addr, succ_kernel_addr);
+  if(n_kernels > 1) {
+    /* link relocations */
+    for(size_t i = 0; i < n_kernels; i++) {
+      for(size_t j = 0; j < EVOASM_X64_JMP_COND_NONE + 1; j++) {
+        size_t succ_kernel_idx = program->topology.succs[i][j];
+        if(succ_kernel_idx != UINT8_MAX) {
+          uint32_t *jmp_reloc_addr = trans_reloc_addrs[i][j];
+          if(jmp_reloc_addr != NULL) {
+            assert(*jmp_reloc_addr == 0xdeadbeef);
+            uint8_t *succ_kernel_addr = kernel_addrs[succ_kernel_idx];
+            EVOASM_BUF_SET_RELOC_ADDR32(jmp_reloc_addr, succ_kernel_addr);
+          }
         }
       }
     }
-  }
 
-  /* link terminal relocation (jump to epilog) */
-  {
-    uint32_t *terminal_jmp_reloc_addr =
-        trans_reloc_addrs[program->topology.backbone_len - 1][EVOASM_X64_JMP_COND_NONE];
+    /* link terminal relocation (jump to epilog) */
+    {
+      uint32_t *terminal_jmp_reloc_addr =
+          trans_reloc_addrs[program->topology.backbone_len - 1][EVOASM_X64_JMP_COND_NONE];
 
-    if(terminal_jmp_reloc_addr != NULL) {
-      /* link terminal kernel */
-      EVOASM_BUF_SET_RELOC_ADDR32(terminal_jmp_reloc_addr, EVOASM_BUF_GET_POS_ADDR(buf));
+      if(terminal_jmp_reloc_addr != NULL) {
+        /* link terminal kernel */
+        EVOASM_BUF_SET_RELOC_ADDR32(terminal_jmp_reloc_addr, EVOASM_BUF_GET_POS_ADDR(buf));
+      }
     }
   }
 
@@ -2194,6 +2198,11 @@ evoasm_program_init(evoasm_program_t *program,
     }
   }
 
+  if(n_kernels == 1) {
+    program->topology.used_bitmap = 1;
+    program->topology.cycle_bitmap = 0;
+    program->topology.backbone_len = 1;
+  }
 
   return true;
 
