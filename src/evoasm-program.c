@@ -1213,9 +1213,10 @@ evoasm_program_x64_emit_program_kernels(evoasm_program_t *program, bool set_io_m
     kernel_addrs[i] = buf->data + buf->pos;
     kernel->buf_start = (uint16_t) buf->pos;
 
+    EVOASM_TRY(error, evoasm_program_x64_emit_kernel, program, kernel, buf);
+
     if(n_kernels > 1) {
       uint32_t *guard_jmp_reloc_addr;
-      EVOASM_TRY(error, evoasm_program_x64_emit_kernel, program, kernel, buf);
       EVOASM_TRY(error, evoasm_program_x64_emit_cycle_guard, program, kernel, buf, &guard_jmp_reloc_addr);
       EVOASM_TRY(error, evoasm_program_x64_emit_cond_transes, program, kernel, buf, trans_reloc_addrs[i],
                  set_io_mapping);
@@ -1417,12 +1418,12 @@ evoasm_program_log_program_output(evoasm_program_t *program,
 }
 
 static void
-evoasm_program_log_dist_dist_mat(evoasm_program_t *program,
-                                 size_t width,
-                                 size_t height,
-                                 double *dist_mat,
-                                 uint_fast8_t *matching,
-                                 evoasm_log_level_t log_level) {
+evoasm_program_log_dist_mat(evoasm_program_t *program,
+                            size_t width,
+                            size_t height,
+                            double *dist_mat,
+                            uint_fast8_t *matching,
+                            evoasm_log_level_t log_level) {
 
   evoasm_log(log_level, EVOASM_LOG_TAG, "DIST MATRIX: (%zu, %zu)\n", height, width);
   for(size_t i = 0; i < height; i++) {
@@ -1463,7 +1464,7 @@ evoasm_program_match(evoasm_program_t *program,
     *matching = best_index;
     return true;
   } else {
-    /*evoasm_program_log_dist_dist_mat(program,
+    /*evoasm_program_log_dist_mat(program,
                                   1,
                                   dist_mat,
                                   matching,
@@ -1535,12 +1536,12 @@ evoasm_program_calc_stable_matching(evoasm_program_t *program,
         }
       }
     } else {
-      evoasm_program_log_dist_dist_mat(program,
-                                       width,
-                                       height,
-                                       dist_mat,
-                                       matching,
-                                       EVOASM_LOG_LEVEL_DEBUG);
+      evoasm_program_log_dist_mat(program,
+                                  width,
+                                  height,
+                                  dist_mat,
+                                  matching,
+                                  EVOASM_LOG_LEVEL_DEBUG);
       evoasm_assert_not_reached();
     }
   }
@@ -1615,7 +1616,7 @@ evoasm_program_assess(evoasm_program_t *program,
   }
 
 
-//    evoasm_program_log_dist_dist_mat(program,
+//    evoasm_program_log_dist_mat(program,
 //                                     width,
 //                                     height,
 //                                     dist_mat,
