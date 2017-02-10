@@ -208,9 +208,6 @@ evoasm_program_get_arity(evoasm_program_t *program) {
   return program->_output.arity;
 }
 
-#define EVOASM_PROGRAM_X64_TMP_REG1 EVOASM_X64_REG_14
-#define EVOASM_PROGRAM_X64_TMP_REG2 EVOASM_X64_REG_15
-
 static evoasm_success_t
 evoasm_program_x64_emit_rflags_reset(evoasm_program_t *program) {
   evoasm_x64_params_t params = {0};
@@ -235,7 +232,7 @@ evoasm_program_x64_emit_mxcsr_reset(evoasm_program_t *program) {
   evoasm_buf_t *buf = program->buf;
 
   evoasm_param_val_t addr_imm = (evoasm_param_val_t) (uintptr_t) &default_mxcsr_val;
-  evoasm_x64_reg_id_t reg_tmp0 = EVOASM_PROGRAM_X64_TMP_REG1;
+  evoasm_x64_reg_id_t reg_tmp0 = EVOASM_X64_SCRATCH_REG1;
 
   EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg_tmp0);
   EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
@@ -275,31 +272,31 @@ evoasm_program_x64_emit_output_store(evoasm_program_t *program,
 
     evoasm_param_val_t addr_imm = (evoasm_param_val_t) (uintptr_t) val_addr;
 
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_PROGRAM_X64_TMP_REG1);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_SCRATCH_REG1);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
 
     switch(reg_type) {
       case EVOASM_X64_REG_TYPE_GP: {
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_PROGRAM_X64_TMP_REG1);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg_id);
         EVOASM_X64_ENC(mov_rm64_r64);
         break;
       }
       case EVOASM_X64_REG_TYPE_XMM: {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg_id);
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_PROGRAM_X64_TMP_REG1);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
         EVOASM_X64_ENC(movsd_xmmm64_xmm);
         break;
       }
       case EVOASM_X64_REG_TYPE_RFLAGS: {
         EVOASM_X64_ENC(pushfq);
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_PROGRAM_X64_TMP_REG2);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_SCRATCH_REG2);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_REG_SP);
         EVOASM_X64_ENC(mov_r64_rm64);
 
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_PROGRAM_X64_TMP_REG1);
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_PROGRAM_X64_TMP_REG2);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, EVOASM_X64_SCRATCH_REG2);
         EVOASM_X64_ENC(mov_rm64_r64);
         EVOASM_X64_ENC(popfq);
         break;
@@ -635,12 +632,12 @@ evoasm_program_x64_emit_input_reg_load(evoasm_program_t *program,
   switch(reg_type) {
     case EVOASM_X64_REG_TYPE_GP: {
       if(force_load) {
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_PROGRAM_X64_TMP_REG1);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_SCRATCH_REG1);
         EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) &tuple->i64);
         EVOASM_X64_ENC(mov_r64_imm64);
 
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_PROGRAM_X64_TMP_REG1);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
         EVOASM_X64_ENC(mov_r64_rm64);
       } else {
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
@@ -653,7 +650,7 @@ evoasm_program_x64_emit_input_reg_load(evoasm_program_t *program,
     case EVOASM_X64_REG_TYPE_XMM: {
       /* load address of tuple into tmp_reg */
       if(loaded_tuple != tuple) {
-        EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_PROGRAM_X64_TMP_REG1);
+        EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_SCRATCH_REG1);
         EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) &tuple->f64);
         EVOASM_X64_ENC(mov_r64_imm64);
         loaded_tuple = tuple;
@@ -662,7 +659,7 @@ evoasm_program_x64_emit_input_reg_load(evoasm_program_t *program,
       /* load into xmm via address in tmp_reg */
       /*FIXME: hard-coded tuple type */
       EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, input_reg_id);
-      EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_PROGRAM_X64_TMP_REG1);
+      EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
       EVOASM_X64_ENC(movsd_xmm_xmmm64);
       break;
     }
@@ -725,7 +722,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
   }
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
-  EVOASM_TRY(error, evoasm_x64_emit_push, EVOASM_PROGRAM_X64_TMP_REG1, buf);
+  EVOASM_TRY(error, evoasm_x64_emit_push, EVOASM_X64_SCRATCH_REG1, buf);
   for(evoasm_x64_reg_id_t non_input_reg = (evoasm_x64_reg_id_t) EVOASM_X64_REG_A;
       non_input_reg < EVOASM_X64_REG_15; non_input_reg++) {
     if(kernel->x64.reg_info.reg_info[non_input_reg].input) continue;
@@ -734,7 +731,7 @@ evoasm_program_x64_emit_input_load(evoasm_program_t *program,
     evoasm_program_io_val_t *tuple = &kernel->rand_vals[non_input_reg];
     EVOASM_TRY(error, evoasm_program_x64_emit_input_reg_load, program, non_input_reg, buf, tuple, NULL, true);
   }
-  EVOASM_TRY(error, evoasm_x64_emit_pop, EVOASM_PROGRAM_X64_TMP_REG1, buf);
+  EVOASM_TRY(error, evoasm_x64_emit_pop, EVOASM_X64_SCRATCH_REG1, buf);
 #endif
 
   if(program->reset_rflags) {
@@ -854,11 +851,11 @@ evoasm_program_x64_emit_cycle_guard(evoasm_program_t *program, evoasm_kernel_t *
     uint32_t *counter = &program->recur_counters[kernel->idx];
     uintptr_t addr_imm = (uintptr_t) counter;
 
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_PROGRAM_X64_TMP_REG1);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, EVOASM_X64_SCRATCH_REG1);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) addr_imm);
     EVOASM_X64_ENC(mov_r64_imm64);
 
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_PROGRAM_X64_TMP_REG1);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
     EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, program->recur_limit);
     EVOASM_X64_ENC(cmp_rm32_imm32);
 
@@ -1645,6 +1642,8 @@ evoasm_program_eval_(evoasm_program_t *program,
   evoasm_kernel_t *terminal_kernel = evoasm_program_get_terminal_kernel(program);
   evoasm_loss_t loss;
 
+//  evoasm_program_log(program, EVOASM_LOG_LEVEL_DEBUG);
+
   if(evoasm_unlikely(terminal_kernel->n_output_regs == 0)) {
     evoasm_log_info("program %p has no output", (void *) program);
     return INFINITY;
@@ -2246,6 +2245,11 @@ evoasm_program_get_succ_kernel_idx(evoasm_program_t *program, size_t kernel_idx,
   uint8_t succ_kernel_idx = program->topology.succs[kernel_idx][cond];
   if(succ_kernel_idx == UINT8_MAX) return -1;
   return succ_kernel_idx;
+}
+
+size_t
+evoasm_program_get_kernel_size(evoasm_program_t *program, size_t kernel_idx) {
+  return program->kernels[kernel_idx].size;
 }
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(program)

@@ -46,8 +46,7 @@ typedef struct  {
 
 struct evoasm_deme_s {
   evoasm_prng_t prng;
-  uint16_t *blessed_indiv_idxs;
-  uint16_t *doomed_indiv_idxs;
+  uint8_t *surviv_counters;
   evoasm_deme_topology_data_t parent_topology_data;
   evoasm_deme_kernel_data_t parent_kernel_data;
   evoasm_program_t program;
@@ -57,20 +56,18 @@ struct evoasm_deme_s {
   evoasm_deme_topology_data_t topology_data;
   evoasm_deme_kernel_data_t kernel_data;
   evoasm_loss_t top_loss;
-  evoasm_loss_t avg_loss;
   evoasm_loss_t best_loss;
   evoasm_deme_topology_data_t best_topology_data;
   evoasm_deme_kernel_data_t best_kernel_data;
 
-  uint16_t n_doomed_indivs;
-  uint16_t n_blessed_indivs;
-
   uint16_t input_win_off;
+  uint16_t stagn_counter;
+  uint16_t idx;
   float mut_rate;
   evoasm_arch_id_t arch_id;
   const evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
-  uint16_t stagn_counter;
+  uint16_t *immig_idxs;
 } evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
 
 typedef struct evoasm_deme_s evoasm_deme_t;

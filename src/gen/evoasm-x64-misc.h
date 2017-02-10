@@ -94,3 +94,6 @@ evoasm_x64_get_reg_name(evoasm_x64_reg_id_t reg);
 
 #define EVOASM_X64_INSTS_VAR_NAME _evoasm_x64_insts
 
+#define EVOASM_X64_SCRATCH_REG1 EVOASM_X64_REG_14
+#define EVOASM_X64_SCRATCH_REG2 EVOASM_X64_REG_15
+

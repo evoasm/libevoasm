@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/furunkel/evoasm-gen.git
-  revision: 02cc3ae906f880114a2754cdf9c51fe6abde8633
+  revision: 0ab9632479fda058857f126abbe6d7890b35b16f
   branch: master
   specs:
     evoasm-gen (0.0.1)
@@ -25,4 +25,4 @@ DEPENDENCIES
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.12.5
+   1.13.7

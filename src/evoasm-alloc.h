@@ -73,6 +73,11 @@ do { \
   if(!(var = evoasm_##func(__VA_ARGS__))) goto label; \
 } while(0);
 
+#define EVOASM_TRY_ALLOC_N(label, func, var, ...) \
+do { \
+  if(!(var = evoasm_##func(__VA_ARGS__, sizeof((var)[0])))) goto label; \
+} while(0);
+
 #if defined(_WIN32)
   #define evoasm_alloca(s) _malloca(s);
 #else
