@@ -35,11 +35,14 @@ EVOASM_DEF_LOG_TAG("pop")
 
 #define EVOASM_DEME_LOSS_OFF(deme, indiv_idx) (indiv_idx)
 
-#define EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size) ((size_t)(4u * topology_size))
+#define EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size) ((size_t)(1 * topology_size))
 #define EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme) EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(deme->params->topology_size)
 
 #define EVOASM_DEME_TOPOLOGY_EDGE_OFF_(topology_size, topology_idx, edge_idx) \
   (3u * (((topology_idx) * EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size)) + (edge_idx)))
+
+#define EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF_(topology_size, topology_idx, kernel_idx) \
+  (((topology_idx) * EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE) + (kernel_idx))
 
 #define EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF_(topology_size, topology_idx, pos) \
   (((topology_idx) * (topology_size)) + (pos))
@@ -49,6 +52,9 @@ EVOASM_DEF_LOG_TAG("pop")
 
 #define EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, edge_idx) \
   EVOASM_DEME_TOPOLOGY_EDGE_OFF_((deme)->params->topology_size, topology_idx, edge_idx)
+
+#define EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, topology_idx, kernel_idx) \
+  EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF_((deme)->params->topology_size, topology_idx, kernel_idx)
 
 #define EVOASM_DEME_KERNEL_INST_OFF_(kernel_size, kernel_idx, inst_idx) \
   (size_t)((kernel_idx) * (kernel_size) + (inst_idx))
@@ -77,13 +83,13 @@ evoasm_deme_loss_data_destroy(evoasm_deme_loss_data_t *loss_data) {
 static evoasm_success_t
 evoasm_deme_topology_data_init(evoasm_deme_topology_data_t *topology_data, size_t n_topologies, size_t topology_size) {
 
-  EVOASM_TRY_ALLOC(error, aligned_calloc, topology_data->backbone_lens, EVOASM_CACHE_LINE_SIZE,
-                   n_topologies,
-                   sizeof(*topology_data->backbone_lens));
+  EVOASM_TRY_ALLOC(error, aligned_calloc, topology_data->default_edges, EVOASM_CACHE_LINE_SIZE,
+                   n_topologies * EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE,
+                   sizeof(topology_data->default_edges[0]));
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, topology_data->edges, EVOASM_CACHE_LINE_SIZE,
                    n_topologies * EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size) * 3,
-                   sizeof(uint8_t));
+                   sizeof(topology_data->edges[0]));
   return true;
 
 error:
@@ -92,7 +98,7 @@ error:
 
 static void
 evoasm_deme_topology_data_destroy(evoasm_deme_topology_data_t *topology_data) {
-  evoasm_free(topology_data->backbone_lens);
+  evoasm_free(topology_data->default_edges);
   evoasm_free(topology_data->edges);
 }
 
@@ -205,7 +211,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
   deme->idx = (uint16_t) deme_idx;
 
   if(n_examples > EVOASM_DEME_EXAMPLE_WIN_SIZE) {
-    deme->input_win_off = (uint16_t) (n_examples / params->n_demes * deme_idx);
+    deme->example_win_off = (uint16_t) (n_examples / params->n_demes * deme_idx);
   }
   deme->arch_id = arch_id;
   deme->params = params;
@@ -438,17 +444,14 @@ evoasm_deme_seed_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
 }
 
 static void
-evoasm_deme_mutate_topology_edge(evoasm_deme_t *deme,
-                                 size_t topology_idx,
-                                 size_t edge_idx) {
+evoasm_deme_seed_topology_edge(evoasm_deme_t *deme,
+                          size_t topology_idx, size_t edge_idx) {
+
 
   size_t topology_size = deme->params->topology_size;
   evoasm_prng_t *prng = &deme->prng;
   size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, edge_idx);
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
-
-  /* conditional edges - can be mutated freely */
-  /* FIXME: should this be softer, like only change one side of the edge ? */
 
   uint8_t kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
   uint8_t succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
@@ -460,72 +463,42 @@ evoasm_deme_mutate_topology_edge(evoasm_deme_t *deme,
 }
 
 static void
-evoam_deme_set_backbone_topology_edges(evoasm_deme_t *deme,
-                                       size_t topology_idx,
-                                       size_t backbone_len) {
+evoasm_deme_mutate_topology_edge(evoasm_deme_t *deme,
+                                 size_t topology_idx,
+                                 size_t edge_idx) {
 
-  /* backbone of length backbone_len */
-  evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
-  topology_data->backbone_lens[topology_idx] = (uint8_t) backbone_len;
-
-  for(size_t i = 0; i < backbone_len - 1; i++) {
-    size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, i);
-    topology_data->edges[edge_off + 0] = (uint8_t) i;
-    topology_data->edges[edge_off + 1] = (uint8_t) (i + 1);
-    topology_data->edges[edge_off + 2] = UINT8_MAX;
-  }
+  /* conditional edges - can be mutated freely */
+  /* FIXME: should this be softer, like only change one side of the edge ? */
+  evoasm_deme_seed_topology_edge(deme, topology_idx, edge_idx);
 }
 
-
 static void
-evoasm_deme_seed_default_topology_edges(evoasm_deme_t *deme,
-                                        size_t topology_idx,
-                                        size_t backbone_len) {
-
-  /* backbone of length backbone_len */
+evoasm_deme_seed_default_topology_edge(evoasm_deme_t *deme, size_t topology_idx, size_t kernel_idx) {
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
   evoasm_prng_t *prng = &deme->prng;
   size_t topology_size = deme->params->topology_size;
 
-  for(size_t i = backbone_len - 1; i < topology_size - 1; i++) {
-    uint8_t succ_kernel_idx;
-    succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 1, (int64_t) (i + 1));
+  size_t default_edge_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, topology_idx, kernel_idx);
+  uint8_t default_succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
 
-    size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, i);
-    uint8_t cond = UINT8_MAX;
-
-    assert(succ_kernel_idx != i + 1);
-
-    topology_data->edges[edge_off + 0] = (uint8_t) (i + 1u);
-    topology_data->edges[edge_off + 1] = (uint8_t) succ_kernel_idx;
-    topology_data->edges[edge_off + 2] = cond;
-  }
+  topology_data->default_edges[default_edge_off] = default_succ_kernel_idx;
 }
 
 static void
 evoasm_deme_seed_topology(evoasm_deme_t *deme,
                           size_t topology_idx) {
 
-
-  evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
   size_t topology_size = deme->params->topology_size;
-  evoasm_prng_t *prng = &deme->prng;
-  size_t backbone_len = (size_t) evoasm_prng_rand_between_(prng, EVOASM_PROGRAM_TOPOLOGY_MIN_BACKBONE_LEN,
-                                                           (int64_t) topology_size + 1u);
+  size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size);
 
-  evoam_deme_set_backbone_topology_edges(deme, topology_idx, backbone_len);
-  evoasm_deme_seed_default_topology_edges(deme, topology_idx, backbone_len);
-
-  for(size_t i = topology_size - 1; i < EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size); i++) {
-    uint8_t kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
-    uint8_t succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
-    uint8_t cond = (uint8_t) evoasm_prng_rand_between_(prng, 0, UINT8_MAX);
-
-    size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, i);
-    topology_data->edges[edge_off + 0] = (uint8_t) kernel_idx;
-    topology_data->edges[edge_off + 1] = (uint8_t) succ_kernel_idx;
-    topology_data->edges[edge_off + 2] = cond;
+  for(size_t i = 0; i < n_edges; i++) {
+    evoasm_deme_seed_topology_edge(deme, topology_idx, i);
   }
+
+  for(size_t i = 0; i < topology_size; i++) {
+    evoasm_deme_seed_default_topology_edge(deme, topology_idx, i);
+  }
+
 }
 
 static void
@@ -593,18 +566,20 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
   if(topology_size > 1) {
     size_t edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, 0);
     size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
-    size_t backbone_len = topology_data->backbone_lens[topology_idx];
 
-    evoasm_program_update_topology(program, backbone_len, &topology_data->edges[edge0_off], n_edges);
+    size_t default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, topology_idx, 0);
+    evoasm_program_update_topology(program, &topology_data->edges[edge0_off], n_edges,
+                                   &topology_data->default_edges[default_edge0_off]);
   }
 }
 
 static inline void
 evoasm_deme_load_program(evoasm_deme_t *deme,
-                         evoasm_program_t *program,
-                         evoasm_deme_topology_data_t *topology_data,
-                         evoasm_deme_kernel_data_t *kernel_data,
                          size_t topology_idx) {
+
+  evoasm_program_t *program = &deme->program;
+  evoasm_deme_kernel_data_t *kernel_data = &deme->kernel_data;
+  evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
 
   evoasm_deme_load_program_(deme, program, topology_data,
                             kernel_data, topology_idx);
@@ -612,17 +587,22 @@ evoasm_deme_load_program(evoasm_deme_t *deme,
 
 
 static evoasm_success_t
-evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_loss_t *ret_loss) {
+evoasm_deme_eval_program(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_loss) {
   const evoasm_pop_params_t *params = deme->params;
+  evoasm_program_t *program = &deme->program;
 
   //bool prepare, bool emit_kernels, bool emit_io_load_store, bool set_io_mapping
-  evoasm_program_emit_flags_t emit_flags =
-      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE |
-      EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
+  evoasm_program_emit_flags_t emit_flags = EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
-  if(!evoasm_program_emit(program, params->program_input, deme->input_win_off, EVOASM_DEME_EXAMPLE_WIN_SIZE,
+  size_t win_off = 0;
+  size_t win_size = SIZE_MAX;
+
+  if(!major) {
+    win_off = deme->example_win_off;
+    win_size = EVOASM_DEME_EXAMPLE_WIN_SIZE;
+  }
+
+  if(!evoasm_program_emit(program, params->program_input, win_off, win_size,
                           emit_flags)) {
     *ret_loss = INFINITY;
 
@@ -633,7 +613,7 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, evoasm_program_t *program, evoasm_
     return false;
   }
 
-  *ret_loss = evoasm_program_eval(program, params->program_output);
+  *ret_loss = evoasm_program_eval(program, params->program_output, win_off, win_size);
 
   return true;
 }
@@ -658,12 +638,13 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
 
   evoasm_deme_t *best_deme = evoasm_pop_find_best_deme(pop);
   const evoasm_pop_params_t *params = best_deme->params;
+  size_t n_examples = evoasm_program_io_get_n_tuples(params->program_input);
 
   EVOASM_TRY(error, evoasm_program_init, program,
              evoasm_get_arch_info(best_deme->arch_id),
              params->topology_size,
              params->kernel_size,
-             EVOASM_DEME_EXAMPLE_WIN_SIZE,
+             n_examples,
              params->recur_limit,
              false);
 
@@ -680,17 +661,12 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
   program->_input.len = 0;
   program->_output.len = 0;
 
-  evoasm_program_emit_flags_t emit_flags =
-      EVOASM_PROGRAM_EMIT_FLAG_PREPARE |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_KERNELS |
-      EVOASM_PROGRAM_EMIT_FLAG_EMIT_IO_LOAD_STORE |
-      EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
+  evoasm_program_emit_flags_t emit_flags = EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
-  EVOASM_TRY(error, evoasm_program_emit, program, params->program_input, best_deme->input_win_off,
-             EVOASM_DEME_EXAMPLE_WIN_SIZE, emit_flags);
+  EVOASM_TRY(error, evoasm_program_emit, program, params->program_input, 0, SIZE_MAX, emit_flags);
 
   evoasm_signal_set_exception_mask(program->exception_mask);
-  evoasm_loss_t loss = evoasm_program_eval(program, params->program_output);
+  evoasm_loss_t loss = evoasm_program_eval(program, params->program_output, 0, SIZE_MAX);
   (void) loss;
   assert(loss == best_deme->best_loss);
   evoasm_signal_clear_exception_mask();
@@ -702,17 +678,14 @@ error:
 }
 
 static evoasm_success_t
-evoasm_deme_test_indiv(evoasm_deme_t *deme, size_t topology_idx, evoasm_loss_t *ret_loss) {
+evoasm_deme_test_indiv(evoasm_deme_t *deme, bool major, size_t topology_idx, evoasm_loss_t *ret_loss) {
 
   evoasm_loss_t loss;
-  evoasm_program_t *program = &deme->program;
-  evoasm_deme_kernel_data_t *kernel_data = &deme->kernel_data;
-  evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
   evoasm_deme_loss_data_t *loss_data = &deme->loss_data;
 
-  evoasm_deme_load_program(deme, program, topology_data, kernel_data, topology_idx);
+  evoasm_deme_load_program(deme, topology_idx);
 
-  EVOASM_TRY(error, evoasm_deme_eval_program, deme, program, &loss);
+  EVOASM_TRY(error, evoasm_deme_eval_program, deme, major, &loss);
 
   loss_data->samples[EVOASM_DEME_LOSS_OFF(deme, topology_idx)] = loss;
   *ret_loss = loss;
@@ -730,6 +703,15 @@ evoasm_deme_topology_data_copy_edges(evoasm_deme_topology_data_t *topology_data,
                                      size_t len) {
 
   memcpy(dst->edges + dst_off, topology_data->edges + off, sizeof(*dst->edges) * 3 * len);
+}
+
+static void
+evoasm_deme_topology_data_copy_default_edges(evoasm_deme_topology_data_t *topology_data,
+                                             size_t off,
+                                             evoasm_deme_topology_data_t *dst,
+                                             size_t dst_off,
+                                             size_t len) {
+  memcpy(dst->default_edges + dst_off, topology_data->default_edges + off, sizeof(*dst->default_edges) * len);
 }
 
 static void
@@ -773,56 +755,59 @@ evoasm_deme_kernel_data_move(evoasm_deme_kernel_data_t *kernel_data,
   }
 }
 
-static inline bool
+static inline void
 evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t topology_idx) {
 
-  if(loss < deme->best_loss) {
-    size_t src_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, 0);
-    size_t dst_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF_(deme->params->topology_size, 0, 0);
 
-    size_t topology_size = deme->params->topology_size;
-    size_t kernel_size = deme->params->kernel_size;
+  size_t topology_size = deme->params->topology_size;
+  size_t kernel_size = deme->params->kernel_size;
 
-    evoasm_log_info("new best program loss: %g", loss);
+  evoasm_log_info("new best program loss: %g", loss);
 
-    evoasm_buf_log(deme->program.buf, EVOASM_LOG_LEVEL_DEBUG);
+  evoasm_buf_log(deme->program.buf, EVOASM_LOG_LEVEL_DEBUG);
 
-//    for(size_t i = 0; i < deme->program.output_regs)
+//    for(size_t i = 0; i < deme->program.output_regs_mapping)
 
-    deme->best_loss = loss;
+  deme->best_loss = loss;
 
-    if(topology_size > 1) {
-      deme->best_topology_data.backbone_lens[0] = deme->topology_data.backbone_lens[topology_idx];
+  if(topology_size > 1) {
+    {
+      size_t src_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, 0);
+      size_t dst_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF_(deme->params->topology_size, 0, 0);
+
       evoasm_deme_topology_data_copy_edges(&deme->topology_data, src_edge0_off,
                                            &deme->best_topology_data, dst_edge0_off,
                                            EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme));
     }
 
-    for(size_t i = 0; i < topology_size; i++) {
-      size_t kernel_idx = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, topology_idx, i);
-      size_t src_kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, kernel_idx, 0);
-      size_t dst_kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme->params->kernel_size, i, 0);
+    {
+      size_t src_default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, topology_idx, 0);
+      size_t dst_default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF_(deme->params->topology_size, 0, 0);
 
-      evoasm_deme_kernel_data_copy_insts(&deme->kernel_data, deme->arch_id, src_kernel_inst0_off,
-                                         &deme->best_kernel_data, dst_kernel_inst0_off, kernel_size);
-
+      evoasm_deme_topology_data_copy_default_edges(&deme->topology_data, src_default_edge0_off,
+                                           &deme->best_topology_data, dst_default_edge0_off,
+                                           deme->params->topology_size);
     }
-    return true;
   }
 
-  return false;
+  for(size_t i = 0; i < topology_size; i++) {
+    size_t kernel_idx = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, topology_idx, i);
+    size_t src_kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, kernel_idx, 0);
+    size_t dst_kernel_inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme->params->kernel_size, i, 0);
+
+    evoasm_deme_kernel_data_copy_insts(&deme->kernel_data, deme->arch_id, src_kernel_inst0_off,
+                                       &deme->best_kernel_data, dst_kernel_inst0_off, kernel_size);
+
+  }
 }
 
 static evoasm_success_t
-evoasm_deme_test(evoasm_deme_t *deme, bool *new_best) {
+evoasm_deme_test(evoasm_deme_t *deme, bool major) {
 
   for(size_t i = 0; i < deme->params->deme_size; i++) {
     evoasm_loss_t loss;
 
-    EVOASM_TRY(error, evoasm_deme_test_indiv, deme, i, &loss);
-    if(evoasm_deme_update_best(deme, loss, i)) {
-      *new_best = true;
-    }
+    EVOASM_TRY(error, evoasm_deme_test_indiv, deme, major, i, &loss);
   }
 
   return true;
@@ -843,12 +828,13 @@ evoasm_pop_get_gen_counter(evoasm_pop_t *pop) {
 }
 
 static void
-evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
+evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
 
   evoasm_deme_loss_data_t *loss_data = &deme->loss_data;
 
   evoasm_loss_t prev_top_loss = deme->top_loss;
   deme->top_loss = INFINITY;
+  size_t top_indiv_idx = SIZE_MAX;
 
   {
     for(size_t i = 0; i < deme->params->deme_size; i++) {
@@ -859,8 +845,13 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
       if(indiv_loss < deme->top_loss) {
         evoasm_log_info("new top loss: %f -> %f", deme->top_loss, indiv_loss);
         deme->top_loss = indiv_loss;
+        top_indiv_idx = i;
       }
     }
+  }
+
+  if(major && deme->top_loss < deme->best_loss) {
+    evoasm_deme_update_best(deme, deme->top_loss, top_indiv_idx);
   }
 
   double top_loss_diff = fabs(prev_top_loss - deme->top_loss);
@@ -875,23 +866,22 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool new_best) {
 }
 
 static evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme) {
+evoasm_deme_eval(evoasm_deme_t *deme, bool major) {
   bool retval = true;
-  bool new_best = false;
 
-  if(!evoasm_deme_test(deme, &new_best)) {
+  if(!evoasm_deme_test(deme, major)) {
     retval = false;
     goto done;
   }
 
-  evoasm_deme_eval_update(deme, new_best);
+  evoasm_deme_eval_update(deme, major);
 
 done:
   return retval;
 }
 
-evoasm_success_t
-evoasm_pop_eval(evoasm_pop_t *pop) {
+static evoasm_success_t
+evoasm_pop_eval_(evoasm_pop_t *pop, bool major) {
   bool retval = true;
   size_t n_demes = pop->n_demes;
 
@@ -905,16 +895,17 @@ evoasm_pop_eval(evoasm_pop_t *pop) {
   bool *retvals = evoasm_alloca(sizeof(bool) * n_demes);
   evoasm_error_t *errors = evoasm_alloca(sizeof(evoasm_error_t) * n_demes);
 
-  if(pop->gen_counter > 0 &&
+  if(!major &&
+     pop->gen_counter > 0 &&
      evoasm_program_input_get_n_tuples(pop->params->program_input) > EVOASM_DEME_EXAMPLE_WIN_SIZE) {
     for(size_t i = 0; i < n_demes; i++) {
-      pop->demes[i].input_win_off++;
+      pop->demes[i].example_win_off++;
     }
   }
 
 #pragma omp parallel for
   for(size_t i = 0; i < n_demes; i++) {
-    retvals[i] = evoasm_deme_eval(&pop->demes[i]);
+    retvals[i] = evoasm_deme_eval(&pop->demes[i], major);
     if(!retvals[i]) {
       errors[i] = *evoasm_get_last_error();
     }
@@ -932,7 +923,7 @@ done:
   return retval;
 }
 
-#define EVOASM_DEME_TOURN_SIZE 3
+#define EVOASM_DEME_TOURN_SIZE 5
 
 static inline void
 evoasm_deme_select(evoasm_deme_t *deme) {
@@ -985,65 +976,38 @@ evoasm_deme_copy_indiv(evoasm_deme_t *deme, size_t parent_idx, size_t child_idx)
   evoasm_deme_kernel_data_t *kernel_data = &deme->kernel_data;
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
 
-  size_t n_insts = (size_t) (deme->params->topology_size * deme->params->kernel_size);
-
-  size_t parent_kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, parent_idx, 0);
-  size_t parent_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, parent_kernel0_off, 0);
-
-  size_t child_kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, child_idx, 0);
-  size_t child_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, child_kernel0_off, 0);
-
-
-  evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent_inst0_off,
-                                     kernel_data, child_inst0_off, n_insts);
 
   if(deme->params->topology_size > 1) {
-    size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
-    size_t parent_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, parent_idx, 0);
-    size_t child_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, child_idx, 0);
+    {
+      size_t parent_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, parent_idx, 0);
+      size_t child_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, child_idx, 0);
 
-    deme->topology_data.backbone_lens[child_idx] = deme->topology_data.backbone_lens[parent_idx];
-
-    evoasm_deme_topology_data_copy_edges(topology_data, parent_edge0_off,
-                                         topology_data, child_edge0_off, n_edges);
-  }
-}
-
-static void
-evoasm_deme_crossover_indivs(evoasm_deme_t *deme, size_t parent1_idx, size_t parent2_idx,
-                             size_t child1_idx,
-                             size_t child2_idx) {
-  evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
-  evoasm_deme_kernel_data_t *kernel_data = &deme->kernel_data;
-
-  size_t kernel_size = deme->params->kernel_size;
-  size_t parent1_backbone_len = topology_data->backbone_lens[parent1_idx];
-  size_t parent2_backbone_len = topology_data->backbone_lens[parent2_idx];
-
-  size_t backbone_len = EVOASM_MIN(parent1_backbone_len, parent2_backbone_len);
-
-  for(size_t i = 0; i < backbone_len; i++) {
-    size_t parent1_kernel_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, parent1_idx, i);
-    size_t parent2_kernel_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, parent2_idx, i);
-    size_t parent1_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, parent1_kernel_off, 0);
-    size_t parent2_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, parent2_kernel_off, 0);
-
-    size_t child1_kernel_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, child1_idx, i);
-    size_t child2_kernel_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, child2_idx, i);
-    size_t child1_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, child1_kernel_off, 0);
-    size_t child2_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, child2_kernel_off, 0);
-
-    if(i % 2) {
-      evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent1_inst0_off,
-                                         kernel_data, child1_inst0_off, kernel_size);
-      evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent2_inst0_off,
-                                         kernel_data, child2_inst0_off, kernel_size);
-    } else {
-      evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent1_inst0_off,
-                                         kernel_data, child2_inst0_off, kernel_size);
-      evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent1_inst0_off,
-                                         kernel_data, child1_inst0_off, kernel_size);
+      evoasm_deme_topology_data_copy_edges(topology_data, parent_edge0_off,
+                                           topology_data, child_edge0_off,
+                                           EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme));
     }
+    
+    {
+      size_t parent_default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, parent_idx, 0);
+      size_t child_default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, child_idx, 0);
+
+      evoasm_deme_topology_data_copy_default_edges(topology_data, parent_default_edge0_off,
+                                           topology_data, child_default_edge0_off,
+                                           deme->params->topology_size);
+    }
+  }
+
+  {
+    size_t n_insts = (size_t) (deme->params->topology_size * deme->params->kernel_size);
+    size_t parent_kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, parent_idx, 0);
+    size_t parent_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, parent_kernel0_off, 0);
+
+    size_t child_kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, child_idx, 0);
+    size_t child_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, child_kernel0_off, 0);
+
+
+    evoasm_deme_kernel_data_copy_insts(kernel_data, deme->arch_id, parent_inst0_off,
+                                       kernel_data, child_inst0_off, n_insts);
   }
 }
 
@@ -1138,33 +1102,6 @@ evoasm_pop_calc_summary(evoasm_pop_t *pop, evoasm_loss_t *summary) {
   return true;
 }
 
-static void
-evoasm_deme_resize_backbone(evoasm_deme_t *deme, size_t topology_idx, int change) {
-  evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
-  size_t old_backbone_len = (size_t) deme->topology_data.backbone_lens[topology_idx];
-  size_t new_backbone_len = (size_t) EVOASM_CLAMP((int) old_backbone_len + change,
-                                                  EVOASM_PROGRAM_TOPOLOGY_MIN_BACKBONE_LEN,
-                                                  deme->params->topology_size);
-  deme->topology_data.backbone_lens[topology_idx] = (uint8_t) new_backbone_len;
-
-  /* grow */
-  for(size_t i = old_backbone_len - 1; i < new_backbone_len - 1; i++) {
-    size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, i);
-
-    topology_data->edges[edge_off + 0] = (uint8_t) i;
-    topology_data->edges[edge_off + 1] = (uint8_t) (i + 1u);
-  }
-
-  /* shrink */
-  for(size_t i = new_backbone_len - 1; i < old_backbone_len - 1; i++) {
-    size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, i);
-    uint8_t succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(&deme->prng, 1, (int64_t) (i + 1u));
-
-    topology_data->edges[edge_off + 0] = (uint8_t) (i + 1u);
-    topology_data->edges[edge_off + 1] = (uint8_t) succ_kernel_idx;
-  }
-}
-
 static inline void
 evoasm_deme_mutate_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
   evoasm_prng_t *prng = &deme->prng;
@@ -1187,18 +1124,13 @@ evoasm_deme_mutate_topology(evoasm_deme_t *deme, size_t topology_idx) {
   evoasm_prng_t *prng = &deme->prng;
 
   size_t topology_size = deme->params->topology_size;
-  size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
+//  size_t n_edges = EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme);
+  size_t n_edges = topology_size;
 
   float r1 = evoasm_prng_randf_(prng);
   float topology_mut_rate = (float) topology_size * deme->mut_rate;
 
   float edge_mut_rate = (1.0f / 10.0f) * deme->mut_rate;
-  float backbone_mut_rate = (1.0f / 20.0f) * deme->mut_rate;
-
-  if(r1 < backbone_mut_rate) {
-    uint64_t r2 = evoasm_prng_rand64_(prng);
-    evoasm_deme_resize_backbone(deme, topology_idx, (int) (r2 % 5) - 2);
-  }
 
   if(r1 < topology_mut_rate) {
     for(size_t i = topology_size - 1; i < n_edges; i++) {
@@ -1246,21 +1178,30 @@ evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme) {
   size_t dead_topology_idx = deme->immig_idxs[src_deme->idx];
 
   if(topology_size > 1) {
-    size_t src_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF_(deme->params->topology_size, 0, 0);
-    size_t dst_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme,
-                                                         dead_topology_idx,
-                                                         0);
+    {
+      size_t src_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF_(deme->params->topology_size, 0, 0);
+      size_t dst_edge0_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, dead_topology_idx, 0);
 
-    deme->topology_data.backbone_lens[dead_topology_idx] = src_deme->best_topology_data.backbone_lens[0];
-    evoasm_deme_topology_data_copy_edges(&src_deme->best_topology_data, src_edge0_off, &deme->topology_data,
-                                         dst_edge0_off, deme->params->topology_size);
+      evoasm_deme_topology_data_copy_edges(&src_deme->best_topology_data, src_edge0_off, &deme->topology_data,
+                                           dst_edge0_off, EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM(deme));
+    }
+
+    {
+      size_t src_default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF_(deme->params->topology_size, 0, 0);
+      size_t dst_default_edge0_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, dead_topology_idx, 0);
+
+      evoasm_deme_topology_data_copy_default_edges(&src_deme->best_topology_data, src_default_edge0_off, &deme->topology_data,
+                                           dst_default_edge0_off, deme->params->topology_size);
+    }
   }
 
-  size_t src_inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme->params->kernel_size, 0, 0);
-  size_t kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, dead_topology_idx, 0);
-  size_t dst_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, kernel0_off, 0);
-  evoasm_deme_kernel_data_copy_insts(&src_deme->best_kernel_data, deme->arch_id, src_inst0_off, &deme->kernel_data,
-                                     dst_inst0_off, deme->params->topology_size);
+  {
+    size_t src_inst0_off = EVOASM_DEME_KERNEL_INST_OFF_(deme->params->kernel_size, 0, 0);
+    size_t kernel0_off = EVOASM_DEME_TOPOLOGY_KERNEL_IDX_OFF(deme, dead_topology_idx, 0);
+    size_t dst_inst0_off = EVOASM_DEME_KERNEL_INST_OFF(deme, kernel0_off, 0);
+    evoasm_deme_kernel_data_copy_insts(&src_deme->best_kernel_data, deme->arch_id, src_inst0_off, &deme->kernel_data,
+                                       dst_inst0_off, deme->params->topology_size);
+  }
 }
 
 static void
@@ -1281,23 +1222,43 @@ evoasm_deme_immigrate_elite(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t de
 }
 
 static void
-evoasm_deme_next_gen(evoasm_deme_t *deme, evoasm_deme_t *demes, size_t demes_len) {
+evoasm_deme_next_gen(evoasm_deme_t *deme, bool major, evoasm_deme_t *demes, size_t demes_len) {
   evoasm_deme_select(deme);
-  evoasm_deme_save_elite(deme);
-  evoasm_deme_immigrate_elite(deme, demes, demes_len);
+
+  if(major) {
+    evoasm_deme_save_elite(deme);
+    evoasm_deme_immigrate_elite(deme, demes, demes_len);
+  }
   evoasm_deme_combine(deme);
   evoasm_deme_mutate(deme);
 }
 
-void
-evoasm_pop_next_gen(evoasm_pop_t *pop) {
+static void
+evoasm_pop_next_gen_(evoasm_pop_t *pop, bool major) {
 #pragma omp parallel for
   for(size_t i = 0; i < pop->n_demes; i++) {
-    evoasm_deme_next_gen(&pop->demes[i], pop->demes, pop->n_demes);
+    evoasm_deme_next_gen(&pop->demes[i], major, pop->demes, pop->n_demes);
   }
 
   pop->gen_counter++;
+}
 
+void
+evoasm_pop_next_gen(evoasm_pop_t *pop) {
+  evoasm_pop_next_gen_(pop, true);
+}
+
+evoasm_success_t
+evoasm_pop_eval(evoasm_pop_t *pop, size_t n_minor_gens) {
+  for(size_t i = 0; i < n_minor_gens; i++) {
+    EVOASM_TRY(error, evoasm_pop_eval_, pop, false);
+    evoasm_pop_next_gen_(pop, false);
+  }
+  EVOASM_TRY(error, evoasm_pop_eval_, pop, true);
+  return true;
+
+error:
+  return false;
 }
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop)

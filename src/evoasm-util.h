@@ -24,6 +24,8 @@
 #define EVOASM_ALIGN_DOWN(s, a) ((s) &~ ((a) - 1))
 #define EVOASM_ALIGN_UP(s, a) EVOASM_ALIGN_DOWN(((s) + (a) - 1), a)
 
+#define EVOASM_DIV_UP(v, d) ((((v) + ((d) - 1))) / d)
+
 #define EVOASM_ARRAY_LEN(array) (sizeof(array) / sizeof(array[0]))
 
 #ifdef __GNUC__

@@ -160,7 +160,7 @@ evoasm_buf_write(evoasm_buf_t *buf, uint8_t *data, size_t len) {
   size_t free = buf->capa - buf->pos;
   if(len > free) {
     evoasm_error(EVOASM_ERROR_TYPE_BUF, EVOASM_BUF_ERROR_CODE_NO_SPACE,
-                 "buffer does not fit (need %zu bytes but only %zu free)", len, free);
+                 "buffer does not fit (need %zu bytes but only %zu free, capacity %zu)", len, free, buf->capa);
     return len - free;
   }
   memcpy(buf->data + buf->pos, data, len);

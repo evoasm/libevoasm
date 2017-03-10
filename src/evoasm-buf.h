@@ -107,3 +107,18 @@ evoasm_buf_ref_write64(evoasm_buf_ref_t *buf_ref, int64_t datum) {
   *((int64_t *)(buf_ref->data + pos)) = (int64_t) datum;
   *buf_ref->pos = new_pos;
 }
+
+static inline uint8_t *
+evoasm_buf_get_pos_addr_(evoasm_buf_t *buf) {
+  return buf->data + buf->pos;
+}
+
+static inline void
+evoasm_buf_set_pos_(evoasm_buf_t *buf, size_t pos) {
+  buf->pos = pos;
+}
+
+static inline size_t
+evoasm_buf_get_pos_(evoasm_buf_t *buf) {
+  return buf->pos;
+}

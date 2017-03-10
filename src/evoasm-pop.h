@@ -26,8 +26,8 @@ typedef struct {
 } evoasm_deme_loss_data_t;
 
 typedef struct {
-  uint8_t *backbone_lens;
   uint8_t *edges;
+  uint8_t *default_edges;
 } evoasm_deme_topology_data_t;
 
 typedef struct {
@@ -60,7 +60,7 @@ struct evoasm_deme_s {
   evoasm_deme_topology_data_t best_topology_data;
   evoasm_deme_kernel_data_t best_kernel_data;
 
-  uint16_t input_win_off;
+  uint16_t example_win_off;
   uint16_t stagn_counter;
   uint16_t idx;
   float mut_rate;
@@ -91,11 +91,10 @@ evoasm_pop_init(evoasm_pop_t *pop,
 
 
 evoasm_success_t
-evoasm_pop_eval(evoasm_pop_t *pop);
+evoasm_pop_eval(evoasm_pop_t *pop, size_t n_minor_gens);
 
 void
 evoasm_pop_next_gen(evoasm_pop_t *pop);
-
 
 evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop);

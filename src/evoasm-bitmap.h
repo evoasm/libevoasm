@@ -48,7 +48,7 @@ typedef struct {
 
 typedef uint64_t evoasm_bitmap_t;
 
-#define EVOASM_BITMAP_BYTESIZE(n_bits) (sizeof(evoasm_bitmap64_t) + (((n_bits - 64u) + (64u - 1u)) / 64u) / CHAR_BIT)
+#define EVOASM_BITMAP_BYTESIZE(n_bits) (sizeof(evoasm_bitmap64_t) + EVOASM_DIV_UP(n_bits - 64u , 64u) / CHAR_BIT)
 
 static inline void
 evoasm_bitmap_set(evoasm_bitmap_t *bitmap, size_t idx) {
