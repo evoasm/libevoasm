@@ -31,8 +31,6 @@
 
 EVOASM_DEF_LOG_TAG("pop")
 
-#define EVOASM_DEME_EXAMPLE_WIN_SIZE 32
-
 #define EVOASM_DEME_LOSS_OFF(deme, indiv_idx) (indiv_idx)
 
 #define EVOASM_DEME_N_TOPOLOGY_EDGES_PER_PROGAM_(topology_size) ((size_t)(1 * topology_size))
@@ -207,14 +205,15 @@ evoasm_deme_init(evoasm_deme_t *deme,
   *deme = zero_deme;
   deme->idx = (uint16_t) deme_idx;
 
-  if(n_examples > EVOASM_DEME_EXAMPLE_WIN_SIZE) {
-    deme->example_win_off = (uint16_t) (n_examples / params->n_demes * deme_idx);
-  }
   deme->pop = pop;
   deme->params = pop->params;
   deme->domains = pop->domains;
   deme->arch_id = arch_id;
   deme->mut_rate = EVOASM_DEME_MIN_MUT_RATE;
+
+  if(n_examples > deme->params->example_win_size) {
+    deme->example_win_off = (uint16_t) (n_examples / params->n_demes * deme_idx);
+  }
 
   evoasm_prng_init(&deme->prng, seed);
 
@@ -590,7 +589,7 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_los
 
   if(!major) {
     win_off = deme->example_win_off;
-    win_size = EVOASM_DEME_EXAMPLE_WIN_SIZE;
+    win_size = deme->params->example_win_size;
   }
 
   if(!evoasm_program_emit(program, params->program_input, win_off, win_size,
@@ -897,7 +896,7 @@ evoasm_pop_eval_(evoasm_pop_t *pop, bool major) {
 
   if(!major &&
      pop->gen_counter > 0 &&
-     evoasm_program_input_get_n_tuples(pop->params->program_input) > EVOASM_DEME_EXAMPLE_WIN_SIZE) {
+     evoasm_program_input_get_n_tuples(pop->params->program_input) > pop->params->example_win_size) {
     for(size_t i = 0; i < n_demes; i++) {
       pop->demes[i].example_win_off++;
     }

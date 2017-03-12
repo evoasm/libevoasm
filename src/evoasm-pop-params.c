@@ -36,6 +36,8 @@ EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
 
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(example_win_size, size_t, uint16_t)
+
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, size_t, uint32_t)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, size_t, uint16_t)
@@ -126,6 +128,12 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
   if(pop_params->n_demes == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "Number of demes cannot be zero");
+    goto fail;
+  }
+
+  if(pop_params->example_win_size == 0) {
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "Example window cannot be zero");
     goto fail;
   }
 
