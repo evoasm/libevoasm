@@ -98,7 +98,6 @@ typedef struct {
   uint16_t size;
   uint32_t cycle_bitmap;
   uint32_t used_bitmap;
-  uint32_t terminal_bitmap;
   uint8_t succs[EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE][EVOASM_PROGRAM_TOPOLOGY_MAX_CONDS];
 } evoasm_program_topology_t;
 
@@ -110,11 +109,9 @@ typedef struct {
   bool reset_rflags : 1;
   bool shallow : 1;
   uint8_t n_output_regs;
-  uint16_t n_kernels;
   uint16_t max_tuples;
   uint16_t max_kernel_size;
   uint32_t recur_limit;
-  uint8_t timed_out[EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE];
   uint32_t exception_mask;
   uint16_t buf_pos_kernels_start;
   uint16_t buf_pos_kernels_end;
@@ -172,7 +169,7 @@ evoasm_program_run(evoasm_program_t *program,
 void
 evoasm_program_update_topology(evoasm_program_t *program,
                                uint8_t *edges, size_t n_edges,
-                               uint8_t *default_edges);
+                               uint8_t *default_succs);
 
 evoasm_success_t
 evoasm_program_destroy(evoasm_program_t *program);

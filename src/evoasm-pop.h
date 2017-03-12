@@ -27,7 +27,7 @@ typedef struct {
 
 typedef struct {
   uint8_t *edges;
-  uint8_t *default_edges;
+  uint8_t *default_succs;
 } evoasm_deme_topology_data_t;
 
 typedef struct {
@@ -44,30 +44,32 @@ typedef struct  {
   } params;
 } evoasm_deme_kernel_data_t;
 
+struct evoasm_pop_s;
+
 struct evoasm_deme_s {
-  evoasm_prng_t prng;
-  uint8_t *surviv_counters;
-  evoasm_deme_topology_data_t parent_topology_data;
-  evoasm_deme_kernel_data_t parent_kernel_data;
-  evoasm_program_t program;
-  uint64_t *error_counters;
-  uint64_t error_counter;
-  evoasm_deme_loss_data_t loss_data;
-  evoasm_deme_topology_data_t topology_data;
-  evoasm_deme_kernel_data_t kernel_data;
-  evoasm_loss_t top_loss;
-  evoasm_loss_t best_loss;
-  evoasm_deme_topology_data_t best_topology_data;
-  evoasm_deme_kernel_data_t best_kernel_data;
 
   uint16_t example_win_off;
   uint16_t stagn_counter;
   uint16_t idx;
   float mut_rate;
   evoasm_arch_id_t arch_id;
-  const evoasm_pop_params_t *params;
-  evoasm_domain_t *domains;
+  uint64_t error_counter;
+  evoasm_loss_t top_loss;
+  evoasm_loss_t best_loss;
+  evoasm_prng_t prng;
+  evoasm_program_t program;
+  evoasm_deme_loss_data_t loss_data;
+  evoasm_deme_topology_data_t topology_data;
+  evoasm_deme_kernel_data_t kernel_data;
+  evoasm_deme_topology_data_t best_topology_data;
+  evoasm_deme_kernel_data_t best_kernel_data;
+
   uint16_t *immig_idxs;
+  uint8_t *surviv_counters;
+  uint64_t *error_counters;
+  struct evoasm_pop_s *pop;
+  evoasm_domain_t *domains;
+  const evoasm_pop_params_t *params;
 } evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
 
 typedef struct evoasm_deme_s evoasm_deme_t;
@@ -81,7 +83,6 @@ typedef struct evoasm_pop_s {
   bool seeded : 1;
   uint16_t gen_counter;
   uint16_t n_demes;
-
 } evoasm_pop_t;
 
 evoasm_success_t
