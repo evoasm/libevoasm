@@ -1729,8 +1729,10 @@ evoasm_program_assess(evoasm_program_t *program,
                       size_t win_off,
                       size_t win_size) {
 
-  size_t n_tuples = evoasm_program_output_get_n_tuples(output);
-  win_size = EVOASM_MIN(n_tuples, win_size);
+  {
+    size_t n_tuples = evoasm_program_output_get_n_tuples(output);
+    win_size = EVOASM_MIN(n_tuples, win_size);
+  }
 
   size_t height = output->arity;
   size_t width = program->n_output_regs;
@@ -1776,7 +1778,7 @@ evoasm_program_assess(evoasm_program_t *program,
 //                                      EVOASM_LOG_LEVEL_DEBUG);
 
 
-  loss = evoasm_program_calc_loss(program, width, height, n_tuples, dist_mat, matching);
+  loss = evoasm_program_calc_loss(program, width, height, win_size, dist_mat, matching);
   return loss;
 
 no_matching:
