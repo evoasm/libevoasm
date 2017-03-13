@@ -21,7 +21,7 @@
 #define EVOASM_MIN(a,b) (((a) < (b)) ? (a) : (b))
 #define EVOASM_CLAMP(x, min, max) (((x) > (max)) ? (max) : (((x) < (min)) ? (min) : (x)))
 
-#define EVOASM_ALIGN_DOWN(s, a) ((s) &~ ((a) - 1))
+#define EVOASM_ALIGN_DOWN(s, a) ((s) - ((s) % a))
 #define EVOASM_ALIGN_UP(s, a) EVOASM_ALIGN_DOWN(((s) + (a) - 1), a)
 
 #define EVOASM_DIV_UP(v, d) ((((v) + ((d) - 1))) / d)

@@ -847,21 +847,25 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
     }
   }
 
-  if(major && top_loss < deme->best_loss) {
-    evoasm_deme_update_best(deme, top_loss, top_indiv_idx);
+  if(major) {
+
+    if(top_loss < deme->best_loss) {
+      evoasm_deme_update_best(deme, top_loss, top_indiv_idx);
+    }
+
+    double top_loss_diff = fabs(deme->top_loss - top_loss);
+
+    if(top_loss_diff < 0.05) {
+      deme->mut_rate = EVOASM_MIN(EVOASM_DEME_MAX_MUT_RATE, deme->mut_rate * 1.04f);
+      deme->stagn_counter++;
+    } else {
+      deme->mut_rate = EVOASM_MAX(EVOASM_DEME_MIN_MUT_RATE, deme->mut_rate / 1.02f);
+      deme->stagn_counter = 0;
+    }
+
+    deme->top_loss = top_loss;
   }
 
-  double top_loss_diff = fabs(deme->top_loss - top_loss);
-
-  if(top_loss_diff < 0.05) {
-    deme->mut_rate = EVOASM_MIN(EVOASM_DEME_MAX_MUT_RATE, deme->mut_rate * 1.01f);
-    deme->stagn_counter++;
-  } else {
-    deme->mut_rate = EVOASM_MAX(EVOASM_DEME_MIN_MUT_RATE, deme->mut_rate / 1.02f);
-    deme->stagn_counter = 0;
-  }
-
-  deme->top_loss = top_loss;
 }
 
 static evoasm_success_t
