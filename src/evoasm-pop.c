@@ -230,13 +230,13 @@ evoasm_deme_init(evoasm_deme_t *deme,
 
   if(params->topology_size > 1) {
     EVOASM_TRY(error, evoasm_deme_topology_data_init, &deme->topology_data,
-               params->deme_size, params->kernel_size);
+               params->deme_size, params->topology_size);
 
     EVOASM_TRY(error, evoasm_deme_topology_data_init, &deme->best_topology_data, 1u, params->topology_size);
   }
 
   EVOASM_TRY(error, evoasm_deme_kernel_data_init, &deme->kernel_data, arch_id,
-             (size_t) params->topology_size * params->deme_size, params->kernel_size);
+             (size_t) (params->topology_size * params->deme_size), params->kernel_size);
 
   EVOASM_TRY(error, evoasm_deme_loss_data_init, &deme->loss_data, deme->params->deme_size);
 
@@ -383,6 +383,7 @@ evoasm_deme_seed_kernel_param_x64(evoasm_deme_t *deme, size_t kernel_idx, evoasm
   evoasm_inst_id_t inst_id = params->inst_ids[inst_idx];
   *inst_id_ptr = inst_id;
 
+
   /* set parameters */
   for(size_t i = 0; i < n_params; i++) {
     evoasm_domain_t *domain = &deme->domains[inst_idx * n_params + i];
@@ -405,7 +406,6 @@ evoasm_deme_seed_kernel_inst(evoasm_deme_t *deme,
 
   evoasm_deme_kernel_data_t *kernel_data = &deme->kernel_data;
   evoasm_inst_id_t *insts_ptr = &kernel_data->insts[kernel_inst_off];
-//  fprintf(stderr, "OFF: %zu (K:%zu, I:%zu)\n", kernel_inst_off, kernel_idx, inst_idx);
 
   switch(deme->arch_id) {
     case EVOASM_ARCH_X64: {
@@ -463,7 +463,7 @@ evoasm_deme_mutate_topology_edge(evoasm_deme_t *deme,
 }
 
 static void
-evoasm_deme_seed_default_topology_edge(evoasm_deme_t *deme, size_t topology_idx, size_t kernel_idx) {
+evoasm_deme_seed_default_topology_succ(evoasm_deme_t *deme, size_t topology_idx, size_t kernel_idx) {
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
   evoasm_prng_t *prng = &deme->prng;
   size_t topology_size = deme->params->topology_size;
@@ -486,7 +486,7 @@ evoasm_deme_seed_topology(evoasm_deme_t *deme,
   }
 
   for(size_t i = 0; i < topology_size; i++) {
-    evoasm_deme_seed_default_topology_edge(deme, topology_idx, i);
+    evoasm_deme_seed_default_topology_succ(deme, topology_idx, i);
   }
 
 }
