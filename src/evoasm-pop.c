@@ -82,7 +82,7 @@ static evoasm_success_t
 evoasm_deme_topology_data_init(evoasm_deme_topology_data_t *topology_data, size_t n_topologies, size_t topology_size) {
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, topology_data->default_succs, EVOASM_CACHE_LINE_SIZE,
-                   n_topologies * EVOASM_PROGRAM_TOPOLOGY_MAX_SIZE,
+                   n_topologies * (topology_size - 1),
                    sizeof(topology_data->default_succs[0]));
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, topology_data->edges, EVOASM_CACHE_LINE_SIZE,
@@ -443,7 +443,7 @@ evoasm_deme_seed_topology_edge(evoasm_deme_t *deme,
   size_t edge_off = EVOASM_DEME_TOPOLOGY_EDGE_OFF(deme, topology_idx, edge_idx);
   evoasm_deme_topology_data_t *topology_data = &deme->topology_data;
 
-  uint8_t kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
+  uint8_t kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size - 1);
   uint8_t succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
   uint8_t cond = (uint8_t) evoasm_prng_rand_between_(prng, 0, UINT8_MAX);
 
@@ -469,7 +469,9 @@ evoasm_deme_seed_default_topology_succ(evoasm_deme_t *deme, size_t topology_idx,
   size_t topology_size = deme->params->topology_size;
 
   size_t default_succ_off = EVOASM_DEME_TOPOLOGY_DEFAULT_EDGE_OFF(deme, topology_idx, kernel_idx);
-  uint8_t default_succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size + 1u);
+  uint8_t default_succ_kernel_idx = (uint8_t) evoasm_prng_rand_between_(prng, 0, (int64_t) topology_size);
+
+  assert(kernel_idx < topology_size - 1);
 
   topology_data->default_succs[default_succ_off] = default_succ_kernel_idx;
 }
@@ -485,7 +487,7 @@ evoasm_deme_seed_topology(evoasm_deme_t *deme,
     evoasm_deme_seed_topology_edge(deme, topology_idx, i);
   }
 
-  for(size_t i = 0; i < topology_size; i++) {
+  for(size_t i = 0; i < topology_size - 1; i++) {
     evoasm_deme_seed_default_topology_succ(deme, topology_idx, i);
   }
 
@@ -588,7 +590,7 @@ evoasm_deme_eval_program(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_los
   size_t win_size = SIZE_MAX;
 
   if(!major) {
-    win_off = deme->example_win_off;
+//    win_off = deme->example_win_off;
     win_size = deme->params->example_win_size;
   }
 
@@ -753,6 +755,7 @@ evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t topology
   size_t kernel_size = deme->params->kernel_size;
 
   evoasm_log_info("new best program loss: %g", loss);
+  fprintf(stderr, "new best program loss: %g\n", loss);
 
   evoasm_buf_log(deme->program.buf, EVOASM_LOG_LEVEL_DEBUG);
 

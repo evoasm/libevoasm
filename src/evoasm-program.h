@@ -62,7 +62,7 @@ typedef struct {
   uint_fast8_t n_output_regs;
   uint16_t size;
   uint16_t idx;
-  uint32_t active_succs[EVOASM_X64_JMP_COND_NONE + 1];
+  uint32_t active_succs[EVOASM_X64_JMP_COND_NONE + 2];
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
   evoasm_program_io_val_t rand_vals[EVOASM_X64_REG_NONE];
@@ -102,13 +102,12 @@ typedef struct {
 } evoasm_program_topology_t;
 
 typedef struct {
-  evoasm_x64_reg_id_t output_regs[EVOASM_KERNEL_MAX_OUTPUT_REGS];
+  bool dummy;
 } evoasm_program_x64_t;
 
 typedef struct {
   bool reset_rflags : 1;
   bool shallow : 1;
-  uint8_t n_output_regs;
   uint16_t max_tuples;
   uint16_t max_kernel_size;
   uint32_t recur_limit;
@@ -143,7 +142,7 @@ typedef struct {
   union {
     /* register at index i has _input i % input_arity */
     uint8_t x64[EVOASM_X64_REG_NONE];
-  } reg_inputs;
+  } reg_input_mapping;
 
 } evoasm_program_t;
 
