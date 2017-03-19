@@ -162,7 +162,7 @@ evoasm_program_init(evoasm_program_t *program,
 
 evoasm_program_output_t *
 evoasm_program_run(evoasm_program_t *program,
-               evoasm_program_input_t *input);
+                   evoasm_program_input_t *input);
 
 
 void
@@ -178,22 +178,26 @@ evoasm_program_elim_introns(evoasm_program_t *program, evoasm_program_t *dest_pr
 
 evoasm_success_t
 evoasm_program_emit(evoasm_program_t *program,
-                evoasm_program_input_t *input,
-                size_t win_off,
-                size_t win_size,
-                evoasm_program_emit_flags_t emit_flags);
+                    evoasm_program_input_t *input,
+                    size_t win_off,
+                    size_t win_size,
+                    evoasm_program_emit_flags_t emit_flags);
 
 evoasm_loss_t
 evoasm_program_eval(evoasm_program_t *program,
                     evoasm_program_output_t *output,
                     size_t win_off,
-                    size_t win_len);
+                    size_t win_len,
+                    bool *timed_out);
 
 evoasm_success_t
 evoasm_program_detach(evoasm_program_t *program,
                       evoasm_program_io_t *input,
                       evoasm_program_io_t *output);
 
+
+void
+evoasm_program_topology_log(evoasm_program_topology_t *program_topology, evoasm_log_level_t log_level);
 
 void
 evoasm_program_log(evoasm_program_t *program, evoasm_log_level_t log_level);

@@ -23,6 +23,7 @@
 
 typedef struct {
   evoasm_loss_t *samples;
+  evoasm_bitmap_t *timed_out;
 } evoasm_deme_loss_data_t;
 
 typedef struct {
@@ -48,6 +49,7 @@ struct evoasm_pop_s;
 
 struct evoasm_deme_s {
 
+  bool best_timed_out;
   uint16_t example_win_off;
   uint16_t stagn_counter;
   uint16_t idx;
@@ -65,7 +67,7 @@ struct evoasm_deme_s {
   evoasm_deme_kernel_data_t best_kernel_data;
 
   uint16_t *immig_idxs;
-  uint8_t *surviv_counters;
+  uint8_t *won_tourns_counters;
   uint64_t *error_counters;
   struct evoasm_pop_s *pop;
   evoasm_domain_t *domains;

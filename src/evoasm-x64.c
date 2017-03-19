@@ -309,32 +309,57 @@ evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint
   bool only_basic = (flags & EVOASM_X64_INSTS_FLAG_ONLY_BASIC) != 0;
 
   for(size_t i = 0; i < EVOASM_X64_INST_NONE; i++) {
-    if(!include_useless && !evoasm_x64_is_useful_inst((evoasm_x64_inst_id_t) i)) goto skip;
+    if(!include_useless && !evoasm_x64_is_useful_inst((evoasm_x64_inst_id_t) i)) {
+
+      evoasm_x64_inst_t *inst = (evoasm_x64_inst_t *) &EVOASM_X64_INSTS_VAR_NAME[i];
+      fprintf(stderr, "skippiing inst %s (useless)\n", evoasm_x64_inst_get_mnem(inst));
+
+      goto skip;
+    }
 
     evoasm_x64_inst_t *inst = (evoasm_x64_inst_t *) &EVOASM_X64_INSTS_VAR_NAME[i];
-    if(only_basic && !evoasm_x64_inst_is_basic(inst)) goto skip;
+    if(only_basic && !evoasm_x64_inst_is_basic(inst)) {
+      fprintf(stderr, "skippiing inst %s (non basic)\n", evoasm_x64_inst_get_mnem(inst));
+      goto skip;
+    }
 
-    if((inst->features & ~features) != 0) goto skip;
+    if((inst->features & ~features) != 0) {
+      fprintf(stderr, "skippiing inst %s (features)\n", evoasm_x64_inst_get_mnem(inst));
+      goto skip;
+    }
 
-    if(!include_useless && inst->n_operands == 0) goto skip;
+    if(!include_useless && inst->n_operands == 0) {
+      fprintf(stderr, "skippiing inst %s (no operands)\n", evoasm_x64_inst_get_mnem(inst));
+      goto skip;
+    }
 
     for(size_t j = 0; j < inst->n_operands; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
 
-      if(((1ull << operand->type) & operand_types) == 0) goto skip;
+      if(((1ull << operand->type) & operand_types) == 0) {
+        fprintf(stderr, "skippiing inst %s (operand type)\n", evoasm_x64_inst_get_mnem(inst));
+        goto skip;
+      }
 
       if(operand->type == EVOASM_X64_OPERAND_TYPE_REG ||
          operand->type == EVOASM_X64_OPERAND_TYPE_RM) {
-        if(!include_useless &&
+        if(!include_useless && operand->reg_type != EVOASM_X64_REG_TYPE_RFLAGS &&
            (operand->reg_id == EVOASM_X64_REG_SP ||
-            operand->reg_id == EVOASM_X64_REG_IP))
-          goto skip;
+            operand->reg_id == EVOASM_X64_REG_IP)) {
 
-        if(((1ull << operand->reg_type) & reg_types) == 0) goto skip;
+          fprintf(stderr, "skippiing inst %s (ip, sp)\n", evoasm_x64_inst_get_mnem(inst));
+          goto skip;
+        }
+
+        if(((1ull << operand->reg_type) & reg_types) == 0) {
+          fprintf(stderr, "skippiing inst %s (reg type)\n", evoasm_x64_inst_get_mnem(inst));
+          goto skip;
+        }
       }
     }
 
     insts[len++] = (evoasm_x64_inst_id_t) i;
+
 skip:;
   }
   return len;
