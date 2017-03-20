@@ -671,7 +671,7 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_program_t *program) {
 
   EVOASM_TRY(error, evoasm_program_emit, program, params->program_input, 0, SIZE_MAX, emit_flags);
 
-  evoasm_program_topology_log(&program->topology, EVOASM_LOG_LEVEL_FATAL);
+//  evoasm_program_topology_log(&program->topology, EVOASM_LOG_LEVEL_FATAL);
 
   evoasm_signal_set_exception_mask(program->exception_mask);
   bool timed_out;
@@ -697,11 +697,6 @@ evoasm_deme_test_indiv(evoasm_deme_t *deme, bool major, size_t topology_idx) {
 
   bool timed_out;
   EVOASM_TRY(error, evoasm_deme_eval_program, deme, major, &loss, &timed_out);
-
-  fprintf(stderr, "%zu has loss %g (%d)\n", topology_idx, loss, deme->program.recur_counter);
-  if(major) {
-    evoasm_program_log(&deme->program, EVOASM_LOG_LEVEL_FATAL);
-  }
 
   size_t loss_off = EVOASM_DEME_LOSS_OFF(deme, topology_idx);
 
@@ -861,7 +856,6 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
 //    size_t n = 1;
 
 
-      fprintf(stderr, "-------------------\n");
 
       for(size_t i = 0; i < deme->params->deme_size; i++) {
         size_t loss_off = EVOASM_DEME_LOSS_OFF(deme, i);
@@ -870,12 +864,9 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
         bool indiv_timed_out = evoasm_bitmap_get(loss_data->timed_out, loss_off);
 
         if(indiv_loss < top_loss) {
-          evoasm_log_fatal("new top loss: %f -> %f", top_loss, indiv_loss);
           top_loss = indiv_loss;
           top_timed_out = indiv_timed_out;
           top_indiv_idx = i;
-        } else {
-          evoasm_log_fatal("worse loss: %f", indiv_loss);
         }
 
 //      if(!isinf(indiv_loss)) {
@@ -884,7 +875,6 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
 //      }
       }
 
-      fprintf(stderr, "-------------------\n");
     }
 
 //    fprintf(stderr, "top loss: %f\n", top_loss);
