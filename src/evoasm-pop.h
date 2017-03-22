@@ -24,18 +24,18 @@
 typedef struct {
   evoasm_loss_t *samples;
   evoasm_bitmap_t *timed_out;
-} evoasm_deme_loss_data_t;
+} evoasm_pop_losses_t;
 
 typedef struct {
   uint8_t *edges;
   uint8_t *default_succs;
-} evoasm_deme_topology_data_t;
+} evoasm_pop_topologies_t;
 
 typedef struct {
   float *pheromones;
   uint16_t *sizes;
-  evoasm_deme_topology_data_t topology_data;
-} evoasm_pop_module_data_t;
+  evoasm_pop_topologies_t topologies;
+} evoasm_pop_modules_t;
 
 typedef struct  {
   evoasm_inst_id_t *insts;
@@ -43,7 +43,7 @@ typedef struct  {
     evoasm_x64_basic_params_t *x64;
     void *data;
   } params;
-} evoasm_deme_kernel_data_t;
+} evoasm_pop_kernels_t;
 
 struct evoasm_pop_s;
 
@@ -60,11 +60,11 @@ struct evoasm_deme_s {
   evoasm_loss_t best_loss;
   evoasm_prng_t prng;
   evoasm_program_t program;
-  evoasm_deme_loss_data_t loss_data;
-  evoasm_deme_topology_data_t topology_data;
-  evoasm_deme_kernel_data_t kernel_data;
-  evoasm_deme_topology_data_t best_topology_data;
-  evoasm_deme_kernel_data_t best_kernel_data;
+  evoasm_pop_losses_t losses;
+  evoasm_pop_topologies_t topologies;
+  evoasm_pop_kernels_t kernels;
+  evoasm_pop_topologies_t best_topologies;
+  evoasm_pop_kernels_t best_kernels;
 
   uint16_t *immig_idxs;
   uint8_t *won_tourns_counters;
@@ -80,7 +80,7 @@ typedef struct evoasm_pop_s {
   const evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
   evoasm_deme_t *demes;
-  evoasm_pop_module_data_t module_data;
+  evoasm_pop_modules_t modules;
   evoasm_loss_t *summary_losses;
   bool seeded : 1;
   uint16_t gen_counter;
@@ -100,7 +100,7 @@ void
 evoasm_pop_next_gen(evoasm_pop_t *pop);
 
 evoasm_success_t
-evoasm_pop_seed(evoasm_pop_t *pop);
+evoasm_pop_seed(evoasm_pop_t *pop, evoasm_pop_topologies_t *topologies, size_t n_topologies, evoasm_pop_kernels_t *kernels, size_t n_kernels);
 
 void
 evoasm_pop_destroy(evoasm_pop_t *pop);
