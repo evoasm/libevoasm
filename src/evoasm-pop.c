@@ -86,7 +86,9 @@ evoasm_pop_losses_destroy(evoasm_pop_losses_t *losses) {
 }
 
 
-static evoasm_success_t
+EVOASM_DEF_ALLOC_FREE_FUNCS(pop_topologies)
+
+evoasm_success_t
 evoasm_pop_topologies_init(evoasm_pop_topologies_t *topologies, size_t n_topologies, size_t topology_size) {
 
   EVOASM_TRY_ALLOC(error, aligned_calloc, topologies->default_succs, EVOASM_CACHE_LINE_SIZE,
@@ -102,13 +104,28 @@ error:
   return false;
 }
 
-static void
+void
 evoasm_pop_topologies_destroy(evoasm_pop_topologies_t *topologies) {
   evoasm_free(topologies->default_succs);
   evoasm_free(topologies->edges);
 }
 
-static evoasm_success_t
+void
+evoasm_pop_topologies_set_edge(evoasm_pop_topologies_t *topologies, size_t edge_off, size_t from_kernel_idx, size_t to_kernel_idx, size_t cond) {
+  topologies->edges[3 * edge_off + 0] = (uint8_t) from_kernel_idx;
+  topologies->edges[3 * edge_off + 1] = (uint8_t) to_kernel_idx;
+  topologies->edges[3 * edge_off + 2] = (uint8_t) cond;
+}
+
+void
+evoasm_pop_topologies_set_default_succ(evoasm_pop_topologies_t *topologies, size_t edge_off, size_t kernel_idx, size_t succ_kernel_idx) {
+  topologies->default_succs[kernel_idx] = (uint8_t) succ_kernel_idx;
+}
+
+
+EVOASM_DEF_ALLOC_FREE_FUNCS(pop_kernels)
+
+evoasm_success_t
 evoasm_pop_kernels_init(evoasm_pop_kernels_t *kernels,
                         evoasm_arch_id_t arch_id,
                         size_t n_kernels,
@@ -135,11 +152,25 @@ error:
   return false;
 }
 
-static void
+void
 evoasm_pop_kernels_destroy(evoasm_pop_kernels_t *kernels) {
   evoasm_free(kernels->insts);
   evoasm_free(kernels->params.data);
 }
+
+void
+evoasm_pop_kernels_set(evoasm_pop_kernels_t *kernels, evoasm_arch_id_t arch_id, size_t inst_off, evoasm_inst_id_t inst_id, void *params) {
+  kernels->insts[inst_off] = inst_id;
+
+  switch(arch_id) {
+    case EVOASM_ARCH_X64:
+      kernels->params.x64[inst_off] = *((evoasm_x64_basic_params_t *) params);
+      break;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
 
 static evoasm_success_t
 evoasm_pop_modules_init(evoasm_pop_modules_t *modules, size_t n) {
@@ -553,14 +584,19 @@ evoasm_deme_seed(evoasm_deme_t *deme, evoasm_pop_topologies_t *topologies, size_
                  evoasm_pop_kernels_t *kernels, size_t n_kernels) {
   size_t n_total_kernels = (size_t) EVOASM_DEME_N_KERNELS(deme);
 
-  {
-    evoasm_pop_topologies_copy_default_succs(topologies, 0, &deme->topologies, 0,
-                                             EVOASM_DEME_N_DEFAULT_SUCCS_PER_TOPOLOGY(deme));
-    evoasm_pop_topologies_copy_edges(topologies, 0, &deme->topologies, 0,
-                                     EVOASM_DEME_N_EDGES_PER_TOPOLOGY(deme));
 
-    size_t n_insts = (size_t) (n_kernels * deme->params->kernel_size);
-    evoasm_pop_kernels_copy(kernels, deme->arch_id, 0, &deme->kernels, 0, n_insts);
+  {
+    if(topologies != NULL) {
+      evoasm_pop_topologies_copy_default_succs(topologies, 0, &deme->topologies, 0,
+                                               EVOASM_DEME_N_DEFAULT_SUCCS_PER_TOPOLOGY(deme));
+      evoasm_pop_topologies_copy_edges(topologies, 0, &deme->topologies, 0,
+                                       EVOASM_DEME_N_EDGES_PER_TOPOLOGY(deme));
+    }
+
+    if(kernels != NULL) {
+      size_t n_insts = (size_t) (n_kernels * deme->params->kernel_size);
+      evoasm_pop_kernels_copy(kernels, deme->arch_id, 0, &deme->kernels, 0, n_insts);
+    }
   }
 
   for(size_t i = n_kernels; i < n_total_kernels; i++) {
@@ -578,12 +614,23 @@ evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop, evoasm_pop_topologies_t *topologies, size_t n_topologies,
                 evoasm_pop_kernels_t *kernels, size_t n_kernels) {
 
+  if(pop->params->topology_size * n_topologies != n_kernels) {
+    evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
+                 "number of kernels and topologies do not match");
+    return false;
+  }
+
+
 #pragma omp parallel for
   for(size_t i = 0; i < pop->n_demes; i++) {
     evoasm_deme_seed(&pop->demes[i], topologies, n_topologies, kernels, n_kernels);
   }
   pop->seeded = true;
   return true;
+
+error:
+  return false;
+
 }
 
 static void
