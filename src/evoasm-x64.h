@@ -324,3 +324,6 @@ evoasm_x64_emit_pop(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf);
 
 evoasm_success_t
 evoasm_x64_emit_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf);
+
+int
+evoasm_x64_sprint_inst(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, char *buf, size_t len);

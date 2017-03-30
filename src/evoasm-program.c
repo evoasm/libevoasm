@@ -1848,7 +1848,7 @@ evoasm_program_eval_(evoasm_program_t *program,
 
   evoasm_loss_t loss;
 
-//  evoasm_program_log(program, EVOASM_LOG_LEVEL_DEBUG);
+//  evoasm_program_log(program, EVOASM_LOG_LEVEL_FATAL);
 
   evoasm_kernel_t *term_kernel = evoasm_program_get_term_kernel(program);
 
@@ -2419,8 +2419,11 @@ evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_arch_id_t arch_id, evoasm_log_
     case EVOASM_ARCH_X64:
       for(size_t i = 0; i < kernel->size; i++) {
         evoasm_x64_inst_t *inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
-        const char *mnem = evoasm_x64_inst_get_mnem(inst);
-        evoasm_log(log_level, EVOASM_LOG_TAG, "%s", mnem);
+        evoasm_x64_basic_params_t *params = &kernel->x64.params[i];
+
+        char buf[1024];
+        evoasm_x64_sprint_inst(inst, params, buf, EVOASM_ARRAY_LEN(buf));
+        evoasm_log(log_level, EVOASM_LOG_TAG, "%s", buf);
       }
       break;
     default:

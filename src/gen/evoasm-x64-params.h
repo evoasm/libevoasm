@@ -419,7 +419,7 @@ static inline void evoasm_x64_basic_params_unset_(evoasm_x64_basic_params_t * pa
       evoasm_assert_not_reached();
   }
 }
-static inline evoasm_x64_param_type_t evoasm_x64_params_get_type_(evoasm_x64_param_id_t param) {
+static inline evoasm_x64_param_type_t evoasm_x64_get_param_type_(evoasm_x64_param_id_t param) {
   switch(param) {
     case EVOASM_X64_PARAM_REG0:
       return EVOASM_X64_PARAM_TYPE_REG;
@@ -482,7 +482,7 @@ static inline evoasm_x64_param_type_t evoasm_x64_params_get_type_(evoasm_x64_par
   }
 }
 
-static inline evoasm_x64_param_type_t evoasm_x64_basic_params_get_type_(evoasm_x64_basic_param_id_t param) {
+static inline evoasm_x64_param_type_t evoasm_x64_get_basic_param_type_(evoasm_x64_basic_param_id_t param) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       return EVOASM_X64_PARAM_TYPE_REG;
@@ -500,6 +500,91 @@ static inline evoasm_x64_param_type_t evoasm_x64_basic_params_get_type_(evoasm_x
       return EVOASM_X64_PARAM_TYPE_BOOL;
     case EVOASM_X64_BASIC_PARAM_REL:
       return EVOASM_X64_PARAM_TYPE_INT32;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+static inline const char * evoasm_x64_get_param_name_(evoasm_x64_param_id_t param) {
+  switch(param) {
+    case EVOASM_X64_PARAM_REG0:
+      return "reg0";
+    case EVOASM_X64_PARAM_REG1:
+      return "reg1";
+    case EVOASM_X64_PARAM_REG2:
+      return "reg2";
+    case EVOASM_X64_PARAM_REG3:
+      return "reg3";
+    case EVOASM_X64_PARAM_IMM0:
+      return "imm0";
+    case EVOASM_X64_PARAM_FORCE_REX:
+      return "force_rex?";
+    case EVOASM_X64_PARAM_REX_R:
+      return "rex_r";
+    case EVOASM_X64_PARAM_REX_X:
+      return "rex_x";
+    case EVOASM_X64_PARAM_REX_B:
+      return "rex_b";
+    case EVOASM_X64_PARAM_LEGACY_PREFIX_ORDER:
+      return "legacy_prefix_order";
+    case EVOASM_X64_PARAM_LOCK:
+      return "lock?";
+    case EVOASM_X64_PARAM_ADDR_SIZE:
+      return "addr_size";
+    case EVOASM_X64_PARAM_REG_BASE:
+      return "reg_base";
+    case EVOASM_X64_PARAM_REG_INDEX:
+      return "reg_index";
+    case EVOASM_X64_PARAM_REX_W:
+      return "rex_w";
+    case EVOASM_X64_PARAM_DISP:
+      return "disp";
+    case EVOASM_X64_PARAM_SCALE:
+      return "scale";
+    case EVOASM_X64_PARAM_FORCE_SIB:
+      return "force_sib?";
+    case EVOASM_X64_PARAM_FORCE_DISP32:
+      return "force_disp32?";
+    case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+      return "reg0_high_byte?";
+    case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
+      return "reg1_high_byte?";
+    case EVOASM_X64_PARAM_FORCE_LONG_VEX:
+      return "force_long_vex?";
+    case EVOASM_X64_PARAM_REL:
+      return "rel";
+    case EVOASM_X64_PARAM_IMM1:
+      return "imm1";
+    case EVOASM_X64_PARAM_MOFFS:
+      return "moffs";
+    case EVOASM_X64_PARAM_VEX_L:
+      return "vex_l";
+    case EVOASM_X64_PARAM_MODRM_REG:
+      return "modrm_reg";
+    case EVOASM_X64_PARAM_VEX_V:
+      return "vex_v";
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
+static inline const char * evoasm_x64_get_basic_param_name_(evoasm_x64_basic_param_id_t param) {
+  switch(param) {
+    case EVOASM_X64_BASIC_PARAM_REG0:
+      return "reg0";
+    case EVOASM_X64_BASIC_PARAM_REG1:
+      return "reg1";
+    case EVOASM_X64_BASIC_PARAM_REG2:
+      return "reg2";
+    case EVOASM_X64_BASIC_PARAM_REG3:
+      return "reg3";
+    case EVOASM_X64_BASIC_PARAM_IMM0:
+      return "imm0";
+    case EVOASM_X64_BASIC_PARAM_REG0_HIGH_BYTE:
+      return "reg0_high_byte?";
+    case EVOASM_X64_BASIC_PARAM_REG1_HIGH_BYTE:
+      return "reg1_high_byte?";
+    case EVOASM_X64_BASIC_PARAM_REL:
+      return "rel";
     default:
       evoasm_assert_not_reached();
   }

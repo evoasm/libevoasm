@@ -19,9 +19,16 @@
 
 #include "evoasm-rand.h"
 
+typedef enum {
+  EVOASM_DOMAIN_FLAG_REGS = (1 << 0)
+} evoasm_domain_flags_t;
+
+#define EVOASM_DOMAIN_HEADER \
+   uint8_t type: 3;
+
 #define EVOASM_DECL_ENUM_DOMAIN_TYPE(l) \
   typedef struct { \
-    uint8_t type; \
+    EVOASM_DOMAIN_HEADER \
     uint16_t len; \
     int64_t vals[l]; \
   } evoasm_enum ## l ## _domain_t;
@@ -40,7 +47,7 @@ typedef enum {
 } evoasm_domain_type_t;
 
 typedef struct {
-  uint8_t type;
+  EVOASM_DOMAIN_HEADER
 } evoasm_int64_domain_t;
 
 typedef evoasm_int64_domain_t evoasm_int32_domain_t;
@@ -48,13 +55,13 @@ typedef evoasm_int64_domain_t evoasm_int16_domain_t;
 typedef evoasm_int64_domain_t evoasm_int8_domain_t;
 
 typedef struct {
-  uint8_t type;
+  EVOASM_DOMAIN_HEADER
   int64_t min;
   int64_t max;
 } evoasm_range_domain_t;
 
 typedef struct {
-  uint8_t type;
+  EVOASM_DOMAIN_HEADER
   uint16_t len;
   int64_t vals[];
 } evoasm_enum_domain_t;

@@ -1047,6 +1047,7 @@ evoasm_deme_select(evoasm_deme_t *deme) {
       }
     }
 
+
     if(!isinf(min_loss)) {
       deme->won_tourns_counters[min_idx]++;
       n_selected++;

@@ -18,6 +18,7 @@
 #include "evoasm-x64.h"
 #include "evoasm.h"
 #include "evoasm-signal.h"
+#include "evoasm-param.h"
 
 EVOASM_DEF_LOG_TAG("x64")
 
@@ -42,6 +43,8 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
     EVOASM_X64_REG_14,
     EVOASM_X64_REG_15,
 };
+
+const char *evoasm_x64_get_basic_param_name(evoasm_x64_basic_param_id_t id);
 
 static evoasm_success_t
 evoasm_x64_func_emit_prolog_or_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf, bool prolog) {
@@ -968,3 +971,93 @@ evoasm_x64_get_rflags_flag_name(evoasm_x64_rflags_flag_t flag) {
       evoasm_assert_not_reached();
   }
 }
+
+int
+evoasm_x64_sprint_inst(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, char *buf, size_t len) {
+
+#define EVOASM_X64_SPRINT_INST_SNPRINTF(format, ...) \
+  off += EVOASM_MAX(0, snprintf(buf + off, len - (size_t) off, format, __VA_ARGS__))
+
+  const char *mnem = evoasm_x64_inst_get_mnem(inst);
+  int off = 0;
+
+  EVOASM_X64_SPRINT_INST_SNPRINTF("%s\t(", mnem);
+  for(evoasm_x64_basic_param_id_t i = (evoasm_x64_basic_param_id_t) 0; i < EVOASM_X64_BASIC_PARAM_NONE; i++) {
+    const char *param_name = evoasm_x64_get_basic_param_name_(i);
+    evoasm_x64_param_type_t param_type = evoasm_x64_get_basic_param_type_(i);
+    int64_t param_val = evoasm_x64_basic_params_get_(params, i);
+
+    EVOASM_X64_SPRINT_INST_SNPRINTF("%s:", param_name);
+
+    switch(param_type) {
+      case EVOASM_X64_PARAM_TYPE_BOOL:
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%s", param_val == 0 ? "false" : "true");
+        break;
+      case EVOASM_X64_PARAM_TYPE_UINT1:
+      case EVOASM_X64_PARAM_TYPE_INT3:
+      case EVOASM_X64_PARAM_TYPE_INT4:
+      case EVOASM_X64_PARAM_TYPE_INT8:
+      case EVOASM_X64_PARAM_TYPE_INT32:
+      case EVOASM_X64_PARAM_TYPE_INT64:
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%"PRId64, param_val);
+        break;
+      case EVOASM_X64_PARAM_TYPE_REG:
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%s", evoasm_x64_get_reg_name((evoasm_x64_reg_id_t) param_val));
+        break;
+      case EVOASM_X64_PARAM_TYPE_ADDR_SIZE: {
+        const char *addr_size;
+        switch((evoasm_x64_addr_size_t) param_val) {
+          case EVOASM_X64_ADDR_SIZE_64:
+            addr_size = "64";
+            break;
+          case EVOASM_X64_ADDR_SIZE_32:
+            addr_size = "32";
+            break;
+          case EVOASM_X64_ADDR_SIZE_NONE:
+            addr_size = "none";
+            break;
+          default:
+            evoasm_assert_not_reached();
+        }
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%s", addr_size);
+        break;
+      }
+      case EVOASM_X64_PARAM_TYPE_SCALE: {
+        const char *scale;
+        switch((evoasm_x64_scale_t) param_val) {
+          case EVOASM_X64_SCALE_1:
+            scale = "1";
+            break;
+          case EVOASM_X64_SCALE_2:
+            scale = "2";
+            break;
+          case EVOASM_X64_SCALE_4:
+            scale = "4";
+            break;
+          case EVOASM_X64_SCALE_8:
+            scale = "8";
+            break;
+          case EVOASM_X64_SCALE_NONE:
+            scale = "none";
+            break;
+          default:
+            evoasm_assert_not_reached();
+        }
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%s", scale);
+        break;
+      }
+      case EVOASM_X64_PARAM_TYPE_NONE:
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%s", "none");
+        break;
+      default:
+        evoasm_assert_not_reached();
+    }
+
+    if(i < inst->n_params - 1u) {
+      EVOASM_X64_SPRINT_INST_SNPRINTF("%s", ", ");
+    }
+  }
+  EVOASM_X64_SPRINT_INST_SNPRINTF("%s", ")");
+  return off;
+}
+
