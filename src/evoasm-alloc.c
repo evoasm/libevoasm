@@ -57,8 +57,9 @@ evoasm_calloc(size_t n, size_t size) {
   return ptr;
 }
 
+
 void *
-evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
+evoasm_aligned_calloc_set(size_t align, size_t n, size_t size, int val) {
   if(evoasm_unlikely(size == 0 || n >= SIZE_MAX / size)) {
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
                  "Allocating %zux%zu bytes via aligned_calloc failed: integer overflow", n, size);
@@ -69,9 +70,14 @@ evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
   void *ptr = evoasm_aligned_alloc(align, len);
 
   if(evoasm_likely(ptr != NULL)) {
-    memset(ptr, 0, len);
+    memset(ptr, val, len);
   }
   return ptr;
+}
+
+void *
+evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
+  return evoasm_aligned_calloc_set(align, n, size, 0);
 }
 
 void *

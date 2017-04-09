@@ -17,7 +17,7 @@ cooperation with the community in the case of network server software.
 The licenses for most software and other practical works are designed
 to take away your freedom to share and change the works. By contrast,
 our General Public Licenses are intended to guarantee your freedom to
-share and change all versions of a program--to make sure it remains
+share and change all versions of a kernel--to make sure it remains
 free software for all its users.
 
 When we speak of free software, we are referring to freedom, not
@@ -33,7 +33,7 @@ you this License which gives you legal permission to copy, distribute
 and/or modify the software.
 
 A secondary benefit of defending all users' freedom is that
-improvements made in alternate versions of the program, if they
+improvements made in alternate versions of the kernel, if they
 receive widespread use, become available for other developers to
 incorporate. Many developers of free software are heartened and
 encouraged by the resulting cooperation. However, in the case of
@@ -224,7 +224,7 @@ conditions:
 
 A compilation of a covered work with other separate and independent
 works, which are not by their nature extensions of the covered work,
-and which are not combined with it such as to form a larger program,
+and which are not combined with it such as to form a larger kernel,
 in or on a volume of a storage or distribution medium, is called an
 "aggregate" if the compilation and its resulting copyright are not
 used to limit the access or legal rights of the compilation's users
@@ -617,44 +617,44 @@ END OF TERMS AND CONDITIONS
 
 ### How to Apply These Terms to Your New Programs
 
-If you develop a new program, and you want it to be of the greatest
+If you develop a new kernel, and you want it to be of the greatest
 possible use to the public, the best way to achieve this is to make it
 free software which everyone can redistribute and change under these
 terms.
 
-To do so, attach the following notices to the program. It is safest to
+To do so, attach the following notices to the kernel. It is safest to
 attach them to the start of each source file to most effectively state
 the exclusion of warranty; and each file should have at least the
 "copyright" line and a pointer to where the full notice is found.
 
-        <one line to give the program's name and a brief idea of what it does.>
+        <one line to give the kernel's name and a brief idea of what it does.>
         Copyright (C) <year>  <name of author>
 
-        This program is free software: you can redistribute it and/or modify
+        This kernel is free software: you can redistribute it and/or modify
         it under the terms of the GNU Affero General Public License as
         published by the Free Software Foundation, either version 3 of the
         License, or (at your option) any later version.
 
-        This program is distributed in the hope that it will be useful,
+        This kernel is distributed in the hope that it will be useful,
         but WITHOUT ANY WARRANTY; without even the implied warranty of
         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
         GNU Affero General Public License for more details.
 
         You should have received a copy of the GNU Affero General Public License
-        along with this program.  If not, see <http://www.gnu.org/licenses/>.
+        along with this kernel.  If not, see <http://www.gnu.org/licenses/>.
 
 Also add information on how to contact you by electronic and paper
 mail.
 
 If your software can interact with users remotely through a computer
 network, you should also make sure that it provides a way for users to
-get its source. For example, if your program is a web application, its
+get its source. For example, if your kernel is a web application, its
 interface could display a "Source" link that leads users to an archive
 of the code. There are many ways you could offer source, and different
 solutions will be better for different programs; see section 13 for
 the specific requirements.
 
 You should also get your employer (if you work as a programmer) or
-school, if any, to sign a "copyright disclaimer" for the program, if
+school, if any, to sign a "copyright disclaimer" for the kernel, if
 necessary. For more information on this, and how to apply and follow
 the GNU AGPL, see <http://www.gnu.org/licenses/>.

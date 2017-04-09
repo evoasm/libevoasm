@@ -44,14 +44,14 @@ set(SOURCE_FILES
         src/evoasm-domain.c
         src/evoasm-pop-params.h
         src/evoasm-pop-params.c
-        src/evoasm-program.c
-        src/evoasm-program.h
+        src/evoasm-kernel.c
+        src/evoasm-kernel.h
         src/evoasm-pop.c
         src/evoasm-pop.h
         src/evoasm-signal.c
         src/evoasm-signal.h
-        src/evoasm-program-io.c
-        src/evoasm-program-io.h)
+        src/evoasm-kernel-io.c
+        src/evoasm-kernel-io.h)
 
 find_package(Threads)
 find_package(OpenMP REQUIRED)
