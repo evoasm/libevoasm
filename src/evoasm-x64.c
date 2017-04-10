@@ -19,6 +19,7 @@
 #include "evoasm.h"
 #include "evoasm-signal.h"
 #include "evoasm-param.h"
+#include <assert.h>
 
 EVOASM_DEF_LOG_TAG("x64")
 

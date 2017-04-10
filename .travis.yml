@@ -3,29 +3,29 @@ matrix:
   include:
     - os: linux
       dist: precise
-      env: CC=gcc-5
+      env: CC=gcc-6
       addons:
         apt:
           packages:
-            - gcc-5
+            - gcc-6
             - cmake
             - cmake-data
           sources: &sources
-            - llvm-toolchain-precise-3.8
+            - llvm-toolchain-precise-3.9
             - ubuntu-toolchain-r-test
             - george-edison55-precise-backports
     - os: linux
       dist: precise
-      env: CC=clang-3.8
+      env: CC=clang-3.9
       addons:
         apt:
           packages:
-            - clang-3.8
+            - clang-3.9
             - cmake
             - cmake-data
           sources: *sources
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode8.3
       env: CC=clang
 
 script:
