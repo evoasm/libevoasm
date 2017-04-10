@@ -26,15 +26,15 @@ static const char *const _evoasm_example_type_names[] = {
 };
 
 evoasm_kernel_io_t *
-evoasm_program_io_alloc(size_t len) {
-  evoasm_kernel_io_t *program_io = evoasm_malloc(sizeof(evoasm_kernel_io_t) + len * sizeof(evoasm_kernel_io_val_t));
-  program_io->len = (uint16_t) len;
+evoasm_kernel_io_alloc(size_t len) {
+  evoasm_kernel_io_t *kernel_io = evoasm_malloc(sizeof(evoasm_kernel_io_t) + len * sizeof(evoasm_kernel_io_val_t));
+  kernel_io->len = (uint16_t) len;
 
-  return program_io;
+  return kernel_io;
 }
 
 evoasm_success_t
-evoasm_program_io_init(evoasm_kernel_io_t *program_io, size_t arity, ...) {
+evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, ...) {
   va_list args;
   bool retval = true;
 
@@ -45,10 +45,10 @@ evoasm_program_io_init(evoasm_kernel_io_t *program_io, size_t arity, ...) {
     goto done;
   }
 
-  program_io->arity = (uint8_t) arity;
+  kernel_io->arity = (uint8_t) arity;
 
   va_start(args, arity);
-  for(size_t i = 0; i < program_io->len; i++) {
+  for(size_t i = 0; i < kernel_io->len; i++) {
     size_t type_idx = i % arity;
     evoasm_kernel_io_val_type_t type = va_arg(args, evoasm_kernel_io_val_type_t);
     evoasm_kernel_io_val_t val;
@@ -66,10 +66,10 @@ evoasm_program_io_init(evoasm_kernel_io_t *program_io, size_t arity, ...) {
         evoasm_assert_not_reached();
     }
 
-    program_io->vals[i] = val;
+    kernel_io->vals[i] = val;
 
     if(i >= arity) {
-      evoasm_kernel_io_val_type_t prev_type = program_io->types[type_idx];
+      evoasm_kernel_io_val_type_t prev_type = kernel_io->types[type_idx];
 
       if(prev_type != type) {
         evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
@@ -79,7 +79,7 @@ evoasm_program_io_init(evoasm_kernel_io_t *program_io, size_t arity, ...) {
         goto done;
       }
     }
-    program_io->types[type_idx] = type;
+    kernel_io->types[type_idx] = type;
   }
 
 
@@ -89,23 +89,23 @@ done:
 }
 
 double
-evoasm_program_io_get_value_f64(evoasm_kernel_io_t *program_io, size_t idx) {
-  return program_io->vals[idx].f64;
+evoasm_kernel_io_get_value_f64(evoasm_kernel_io_t *kernel_io, size_t idx) {
+  return kernel_io->vals[idx].f64;
 }
 
 int64_t
-evoasm_program_io_get_value_i64(evoasm_kernel_io_t *program_io, size_t idx) {
-  return program_io->vals[idx].i64;
+evoasm_kernel_io_get_value_i64(evoasm_kernel_io_t *kernel_io, size_t idx) {
+  return kernel_io->vals[idx].i64;
 }
 
 void
-evoasm_kernel_io_destroy(evoasm_kernel_io_t *program_io) {
+evoasm_kernel_io_destroy(evoasm_kernel_io_t *kernel_io) {
 
 }
 
 evoasm_kernel_io_val_type_t
-evoasm_program_io_get_type(evoasm_kernel_io_t *program_io, size_t idx) {
-  return program_io->types[idx % program_io->arity];
+evoasm_kernel_io_get_type(evoasm_kernel_io_t *kernel_io, size_t idx) {
+  return kernel_io->types[idx % kernel_io->arity];
 }
 
 EVOASM_DEF_FREE_FUNC(kernel_io)

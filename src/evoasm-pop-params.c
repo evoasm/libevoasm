@@ -41,9 +41,9 @@ EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, size_t, uint32_t)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, size_t, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_input, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_input, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(program_output, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_output, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
 
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {
@@ -166,13 +166,13 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->program_input == NULL || pop_params->program_input->len == 0) {
+  if(pop_params->kernel_input == NULL || pop_params->kernel_input->len == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "No input values given");
     goto fail;
   }
 
-  if(pop_params->program_output == NULL || pop_params->program_output->len == 0) {
+  if(pop_params->kernel_output == NULL || pop_params->kernel_output->len == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "No output values given");
     goto fail;

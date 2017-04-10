@@ -91,12 +91,25 @@ evoasm_deme_kernels_destroy(evoasm_deme_kernels_t *kernels) {
   evoasm_free(kernels->params.data);
 }
 
+
+void evoasm_deme_kernels_set_size(evoasm_deme_kernels_t *kernels, size_t kernel_idx, size_t size) {
+  kernels->sizes[kernel_idx] = (uint16_t) size;
+}
+
+static inline size_t
+evoasm_deme_kernels_get_inst_off(evoasm_deme_kernels_t *kernels, size_t kernel_idx, size_t inst_idx) {
+  return (size_t) ((kernel_idx) * (kernels->pop_params->max_kernel_size) + (inst_idx));
+}
+
 void
-evoasm_deme_kernels_set(evoasm_deme_kernels_t *kernels, evoasm_arch_id_t arch_id, size_t inst_off,
-                        evoasm_inst_id_t inst_id, void *params) {
+evoasm_deme_kernels_set_inst(evoasm_deme_kernels_t *kernels, size_t kernel_idx, size_t inst_idx,
+                             evoasm_inst_id_t inst_id, void *params) {
+
+  size_t inst_off = evoasm_deme_kernels_get_inst_off(kernels, kernel_idx, inst_idx);
+
   kernels->insts[inst_off] = inst_id;
 
-  switch(arch_id) {
+  switch(kernels->arch_id) {
     case EVOASM_ARCH_X64:
       kernels->params.x64[inst_off] = *((evoasm_x64_basic_params_t *) params);
       break;
@@ -142,7 +155,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
 
   static evoasm_deme_t zero_deme = {0};
   const evoasm_pop_params_t *params = pop->params;
-  size_t n_examples = evoasm_kernel_io_get_n_tuples(params->program_input);
+  size_t n_examples = evoasm_kernel_io_get_n_tuples(params->kernel_input);
 
   *deme = zero_deme;
   deme->idx = (uint16_t) deme_idx;
@@ -327,11 +340,6 @@ evoasm_deme_seed_kernel_param_x64(evoasm_deme_t *deme, size_t kernel_idx, evoasm
 }
 
 
-static inline size_t
-evoasm_deme_kernels_get_inst_off(evoasm_deme_kernels_t *kernels, size_t kernel_idx, size_t inst_idx) {
-  return (size_t) ((kernel_idx) * (kernels->pop_params->max_kernel_size) + (inst_idx));
-}
-
 static void
 evoasm_deme_seed_kernel_inst(evoasm_deme_t *deme,
                              size_t kernel_idx,
@@ -405,13 +413,16 @@ static void
 evoasm_deme_seed(evoasm_deme_t *deme, evoasm_deme_kernels_t *kernels) {
   size_t n_total_kernels = deme->params->deme_size;
 
+  size_t n_seed_kernels = 0;
+
   {
     if(kernels != NULL) {
+      n_seed_kernels = kernels->n_kernels;
       evoasm_deme_kernels_copy(kernels, 0, &deme->kernels, 0, kernels->n_kernels);
     }
   }
 
-  for(size_t i = kernels->n_kernels; i < n_total_kernels; i++) {
+  for(size_t i = n_seed_kernels; i < n_total_kernels; i++) {
     evoasm_deme_seed_kernel(deme, i);
   }
 }
@@ -419,7 +430,7 @@ evoasm_deme_seed(evoasm_deme_t *deme, evoasm_deme_kernels_t *kernels) {
 evoasm_success_t
 evoasm_pop_seed(evoasm_pop_t *pop, evoasm_deme_kernels_t *kernels) {
 
-  if(kernels->n_kernels > pop->params->deme_size) {
+  if(kernels != NULL && kernels->n_kernels > pop->params->deme_size) {
     evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
                  "number of kernels exceeds deme size (%d > %d)", kernels->n_kernels, pop->params->deme_size);
     return false;
@@ -438,18 +449,21 @@ error:
 }
 
 static void
-evoasm_deme_load_program_(evoasm_deme_t *deme,
+evoasm_deme_load_kernel_(evoasm_deme_t *deme,
                           evoasm_kernel_t *kernel,
                           evoasm_deme_kernels_t *kernels,
                           size_t kernel_idx) {
 
   size_t inst0_off = evoasm_deme_kernels_get_inst_off(kernels, kernel_idx, 0);
+  size_t kernel_size = kernels->sizes[kernel_idx];
+
+  kernel->size = (uint16_t) kernel_size;
 
   if(kernel->shallow) {
     kernel->insts = &kernels->insts[inst0_off];
   } else {
     EVOASM_MEMCPY_N(kernel->insts,
-                    &kernels->insts[inst0_off], kernel->size);
+                    &kernels->insts[inst0_off], kernel_size);
   }
 
   switch(deme->arch_id) {
@@ -458,7 +472,7 @@ evoasm_deme_load_program_(evoasm_deme_t *deme,
         kernel->x64.params = &kernels->params.x64[inst0_off];
       } else {
         EVOASM_MEMCPY_N(kernel->x64.params,
-                        &kernels->params.x64[inst0_off], kernel->size);
+                        &kernels->params.x64[inst0_off], kernel_size);
       }
       break;
     default:
@@ -473,7 +487,7 @@ evoasm_deme_load_kernel(evoasm_deme_t *deme,
   evoasm_kernel_t *kernel = &deme->kernel;
   evoasm_deme_kernels_t *kernels = &deme->kernels;
 
-  evoasm_deme_load_program_(deme, kernel, kernels, kernel_idx);
+  evoasm_deme_load_kernel_(deme, kernel, kernels, kernel_idx);
 }
 
 static evoasm_success_t
@@ -492,7 +506,7 @@ evoasm_deme_eval_kernel(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_loss
     win_size = deme->params->example_win_size;
   }
 
-  if(!evoasm_kernel_emit(kernel, params->program_input, win_off, win_size,
+  if(!evoasm_kernel_emit(kernel, params->kernel_input, win_off, win_size,
                          emit_flags)) {
     *ret_loss = INFINITY;
 
@@ -503,7 +517,7 @@ evoasm_deme_eval_kernel(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_loss
     return false;
   }
 
-  *ret_loss = evoasm_kernel_eval(kernel, params->program_output, win_off, win_size);
+  *ret_loss = evoasm_kernel_eval(kernel, params->kernel_output, win_off, win_size);
 
   return true;
 }
@@ -524,11 +538,11 @@ evoasm_pop_find_best_deme(evoasm_pop_t *pop) {
 }
 
 evoasm_success_t
-evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_kernel_t *kernel) {
+evoasm_pop_load_best_kernel(evoasm_pop_t *pop, evoasm_kernel_t *kernel) {
 
   evoasm_deme_t *best_deme = evoasm_pop_find_best_deme(pop);
   const evoasm_pop_params_t *params = best_deme->params;
-  size_t n_examples = evoasm_kernel_io_get_n_tuples(params->program_input);
+  size_t n_examples = evoasm_kernel_io_get_n_tuples(params->kernel_input);
 
   EVOASM_TRY(error, evoasm_kernel_init, kernel,
              evoasm_get_arch_info(best_deme->arch_id),
@@ -538,25 +552,25 @@ evoasm_pop_load_best_program(evoasm_pop_t *pop, evoasm_kernel_t *kernel) {
              false);
 
   size_t kernel_idx = 0;
-  evoasm_deme_load_program_(best_deme,
+  evoasm_deme_load_kernel_(best_deme,
                             kernel,
                             &best_deme->best_kernels,
                             kernel_idx);
 
 
-  kernel->_input = *params->program_input;
-  kernel->_output = *params->program_output;
+  kernel->_input = *params->kernel_input;
+  kernel->_output = *params->kernel_output;
   kernel->_input.len = 0;
   kernel->_output.len = 0;
 
   evoasm_kernel_emit_flags_t emit_flags = EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
-  EVOASM_TRY(error, evoasm_kernel_emit, kernel, params->program_input, 0, SIZE_MAX, emit_flags);
+  EVOASM_TRY(error, evoasm_kernel_emit, kernel, params->kernel_input, 0, SIZE_MAX, emit_flags);
 
 //  evoasm_kernel_topo_log(&kernel->topo, EVOASM_LOG_LEVEL_FATAL);
 
   evoasm_signal_set_exception_mask(kernel->exception_mask);
-  evoasm_loss_t loss = evoasm_kernel_eval(kernel, params->program_output, 0, SIZE_MAX);
+  evoasm_loss_t loss = evoasm_kernel_eval(kernel, params->kernel_output, 0, SIZE_MAX);
   (void) loss;
   assert(loss == best_deme->best_loss);
   evoasm_signal_clear_exception_mask();
@@ -705,7 +719,7 @@ evoasm_pop_eval_(evoasm_pop_t *pop, bool major) {
 
   if(!major &&
      pop->gen_counter > 0 &&
-     evoasm_kernel_input_get_n_tuples(pop->params->program_input) > pop->params->example_win_size) {
+     evoasm_kernel_input_get_n_tuples(pop->params->kernel_input) > pop->params->example_win_size) {
     for(size_t i = 0; i < n_demes; i++) {
       pop->demes[i].example_win_off++;
     }

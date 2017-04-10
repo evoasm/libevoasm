@@ -126,10 +126,8 @@ evoasm_kernel_get_buf(evoasm_kernel_t *kernel) {
 }
 
 size_t
-evoasm_kernel_get_kernel_code(evoasm_kernel_t *kernel, const uint8_t **code) {
-  size_t len = (size_t) kernel->buf_pos_body_end - kernel->buf_pos_body_start;
-  *code = kernel->buf->data + kernel->buf_pos_body_start;
-  return len;
+evoasm_kernel_get_size(evoasm_kernel_t *kernel) {
+  return kernel->size;
 }
 
 size_t
@@ -167,6 +165,12 @@ evoasm_kernel_is_output_reg(evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id) {
     default:
       evoasm_assert_not_reached();
   }
+}
+
+evoasm_reg_id_t
+evoasm_kernel_get_output_reg(evoasm_kernel_t *kernel, size_t idx) {
+  if(idx >= EVOASM_KERNEL_OUTPUT_MAX_ARITY) return EVOASM_X64_REG_NONE;
+  return kernel->output_reg_mapping[idx];
 }
 
 size_t
@@ -883,6 +887,12 @@ evoasm_kernel_x64_emit(evoasm_kernel_t *kernel,
     start_jmp_link_addr = EVOASM_X64_GET_LINK_ADDR32(buf);
 
     EVOASM_TRY(error, evoasm_kernel_x64_emit_body, kernel);
+
+    {
+      evoasm_x64_params_t params = {0};
+      EVOASM_X64_ENC(ret);
+    }
+
     kernel->buf_pos_epilog_start = (uint16_t) evoasm_buf_get_pos_(buf);
     EVOASM_TRY(error, evoasm_x64_emit_func_epilog, EVOASM_X64_ABI_SYSV, buf);
     kernel->buf_pos_epilog_end = (uint16_t) evoasm_buf_get_pos_(buf);
@@ -1285,7 +1295,7 @@ evoasm_kernel_eval(evoasm_kernel_t *kernel,
                    size_t win_off,
                    size_t win_size) {
 
-  evoasm_kernel_log(kernel, EVOASM_LOG_LEVEL_FATAL);
+//  evoasm_kernel_log(kernel, EVOASM_LOG_LEVEL_FATAL);
 
   evoasm_loss_t loss = evoasm_kernel_eval_(kernel, output, win_off, win_size);
 
