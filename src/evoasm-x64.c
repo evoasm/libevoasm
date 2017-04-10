@@ -19,7 +19,6 @@
 #include "evoasm.h"
 #include "evoasm-signal.h"
 #include "evoasm-param.h"
-#include <assert.h>
 
 EVOASM_DEF_LOG_TAG("x64")
 
@@ -853,7 +852,7 @@ evoasm_x64_cpu_state_clone(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_cpu_sta
   *cloned_cpu_state = *cpu_state;
 }
 
-static_assert(CHAR_BIT == 8, "CHAR_BIT must be 8");
+_Static_assert(CHAR_BIT == 8, "CHAR_BIT must be 8");
 
 void
 evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
