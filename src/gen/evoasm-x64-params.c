@@ -41,18 +41,18 @@ void evoasm_x64_params_unset(evoasm_x64_params_t * params, evoasm_x64_param_id_t
 void evoasm_x64_basic_params_unset(evoasm_x64_basic_params_t * params, evoasm_x64_basic_param_id_t param) {
   evoasm_x64_basic_params_unset_(params, param  );
 }
-evoasm_x64_param_type_t evoasm_x64_get_param_type(evoasm_x64_param_id_t param) {
-  return evoasm_x64_get_param_type_(param  );
+evoasm_x64_param_type_t evoasm_x64_param_get_type(evoasm_x64_param_id_t param) {
+  return evoasm_x64_param_get_type_(param  );
 }
 
-evoasm_x64_param_type_t evoasm_x64_get_basic_param_type(evoasm_x64_basic_param_id_t param) {
-  return evoasm_x64_get_basic_param_type_(param  );
+evoasm_x64_param_type_t evoasm_x64_basic_param_get_type(evoasm_x64_basic_param_id_t param) {
+  return evoasm_x64_basic_param_get_type_(param  );
 }
-const char * evoasm_x64_get_param_name(evoasm_x64_param_id_t param) {
-  return evoasm_x64_get_param_name_(param  );
+const char * evoasm_x64_param_get_name(evoasm_x64_param_id_t param) {
+  return evoasm_x64_param_get_name_(param  );
 }
 
-const char * evoasm_x64_get_basic_param_name(evoasm_x64_basic_param_id_t param) {
-  return evoasm_x64_get_basic_param_name_(param  );
+const char * evoasm_x64_basic_param_get_name(evoasm_x64_basic_param_id_t param) {
+  return evoasm_x64_basic_param_get_name_(param  );
 }
 

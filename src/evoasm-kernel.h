@@ -111,10 +111,10 @@ evoasm_kernel_init(evoasm_kernel_t *kernel,
                     bool shallow);
 
 
-evoasm_kernel_output_t *
+evoasm_success_t
 evoasm_kernel_run(evoasm_kernel_t *kernel,
-                   evoasm_kernel_input_t *input);
-
+                  evoasm_kernel_input_t *input,
+                  evoasm_kernel_output_t *output);
 
 void
 evoasm_kernel_update_topo(evoasm_kernel_t *program,

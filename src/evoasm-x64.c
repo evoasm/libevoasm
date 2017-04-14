@@ -44,7 +44,7 @@ static evoasm_x64_reg_id_t evoasm_x64_sysv_callee_save_regs[] = {
     EVOASM_X64_REG_15,
 };
 
-const char *evoasm_x64_get_basic_param_name(evoasm_x64_basic_param_id_t id);
+const char *evoasm_x64_basic_param_get_name(evoasm_x64_basic_param_id_t id);
 
 static evoasm_success_t
 evoasm_x64_func_emit_prolog_or_epilog(evoasm_x64_abi_t abi, evoasm_buf_t *buf, bool prolog) {
@@ -843,7 +843,7 @@ evoasm_x64_cpu_state_get(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t 
 bool
 evoasm_x64_cpu_state_get_rflags_flag(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_rflags_flag_t flag) {
   uint64_t rflags = cpu_state->rflags[0];
-  uint64_t mask = evoasm_x64_get_rflags_flag_mask_(flag);
+  uint64_t mask = evoasm_x64_rflags_flag_get_mask_(flag);
   return (rflags & mask) != 0;
 }
 
@@ -955,7 +955,7 @@ EVOASM_DEF_ALLOC_FREE_FUNCS(x64_params)
 EVOASM_DEF_ALLOC_FREE_FUNCS(x64_basic_params)
 
 const char *
-evoasm_x64_get_rflags_flag_name(evoasm_x64_rflags_flag_t flag) {
+evoasm_x64_rflags_flag_get_name(evoasm_x64_rflags_flag_t flag) {
   switch(flag) {
     case EVOASM_X64_RFLAGS_FLAG_OF:
       return "OF";
@@ -983,8 +983,8 @@ evoasm_x64_sprint_inst(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *param
 
   EVOASM_X64_SPRINT_INST_SNPRINTF("%s\t(", mnem);
   for(evoasm_x64_basic_param_id_t i = (evoasm_x64_basic_param_id_t) 0; i < EVOASM_X64_BASIC_PARAM_NONE; i++) {
-    const char *param_name = evoasm_x64_get_basic_param_name_(i);
-    evoasm_x64_param_type_t param_type = evoasm_x64_get_basic_param_type_(i);
+    const char *param_name = evoasm_x64_basic_param_get_name_(i);
+    evoasm_x64_param_type_t param_type = evoasm_x64_basic_param_get_type_(i);
     int64_t param_val = evoasm_x64_basic_params_get_(params, i);
 
     EVOASM_X64_SPRINT_INST_SNPRINTF("%s:", param_name);

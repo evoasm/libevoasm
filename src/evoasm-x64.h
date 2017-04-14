@@ -290,13 +290,13 @@ evoasm_x64_operand_get_reg_size_(evoasm_x64_operand_t *operand) {
 }
 
 static inline size_t
-evoasm_x64_get_reg_type_bytesize(evoasm_x64_reg_type_t reg_type) {
+evoasm_x64_reg_type_get_bytesize(evoasm_x64_reg_type_t reg_type) {
   extern uint8_t evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_NONE];
   return evoasm_x64_reg_type_bytesizes[reg_type];
 }
 
 static inline uint64_t
-evoasm_x64_get_rflags_flag_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
+evoasm_x64_rflags_flag_get_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
   switch(rflags_flag) {
     case EVOASM_X64_RFLAGS_FLAG_OF:return 1u << 11u;
     case EVOASM_X64_RFLAGS_FLAG_SF: return 1u << 7u;
@@ -308,7 +308,7 @@ evoasm_x64_get_rflags_flag_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
 }
 
 const char *
-evoasm_x64_get_rflags_flag_name(evoasm_x64_rflags_flag_t flag);
+evoasm_x64_rflags_flag_get_name(evoasm_x64_rflags_flag_t flag);
 
 evoasm_success_t
 evoasm_x64_emit_func_prolog(evoasm_x64_abi_t abi, evoasm_buf_t *buf);
@@ -327,3 +327,10 @@ evoasm_x64_emit_push(evoasm_x64_reg_id_t reg_id, evoasm_buf_t *buf);
 
 int
 evoasm_x64_sprint_inst(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, char *buf, size_t len);
+
+extern uint8_t evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_NONE];
+
+static inline bool
+evoasm_x64_have_avx() {
+ return evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] == 32;
+}

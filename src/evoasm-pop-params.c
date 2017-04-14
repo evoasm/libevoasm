@@ -17,6 +17,7 @@
 
 #include "evoasm-pop-params.h"
 #include "evoasm-util.h"
+#include "evoasm-kernel-io.h"
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
 
@@ -166,13 +167,13 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->kernel_input == NULL || pop_params->kernel_input->len == 0) {
+  if(pop_params->kernel_input == NULL || evoasm_kernel_io_get_n_vals(pop_params->kernel_input) == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "No input values given");
     goto fail;
   }
 
-  if(pop_params->kernel_output == NULL || pop_params->kernel_output->len == 0) {
+  if(pop_params->kernel_output == NULL || evoasm_kernel_io_get_n_vals(pop_params->kernel_output) == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "No output values given");
     goto fail;

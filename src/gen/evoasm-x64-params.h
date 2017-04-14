@@ -419,7 +419,7 @@ static inline void evoasm_x64_basic_params_unset_(evoasm_x64_basic_params_t * pa
       evoasm_assert_not_reached();
   }
 }
-static inline evoasm_x64_param_type_t evoasm_x64_get_param_type_(evoasm_x64_param_id_t param) {
+static inline evoasm_x64_param_type_t evoasm_x64_param_get_type_(evoasm_x64_param_id_t param) {
   switch(param) {
     case EVOASM_X64_PARAM_REG0:
       return EVOASM_X64_PARAM_TYPE_REG;
@@ -482,7 +482,7 @@ static inline evoasm_x64_param_type_t evoasm_x64_get_param_type_(evoasm_x64_para
   }
 }
 
-static inline evoasm_x64_param_type_t evoasm_x64_get_basic_param_type_(evoasm_x64_basic_param_id_t param) {
+static inline evoasm_x64_param_type_t evoasm_x64_basic_param_get_type_(evoasm_x64_basic_param_id_t param) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       return EVOASM_X64_PARAM_TYPE_REG;
@@ -504,7 +504,7 @@ static inline evoasm_x64_param_type_t evoasm_x64_get_basic_param_type_(evoasm_x6
       evoasm_assert_not_reached();
   }
 }
-static inline const char * evoasm_x64_get_param_name_(evoasm_x64_param_id_t param) {
+static inline const char * evoasm_x64_param_get_name_(evoasm_x64_param_id_t param) {
   switch(param) {
     case EVOASM_X64_PARAM_REG0:
       return "reg0";
@@ -567,7 +567,7 @@ static inline const char * evoasm_x64_get_param_name_(evoasm_x64_param_id_t para
   }
 }
 
-static inline const char * evoasm_x64_get_basic_param_name_(evoasm_x64_basic_param_id_t param) {
+static inline const char * evoasm_x64_basic_param_get_name_(evoasm_x64_basic_param_id_t param) {
   switch(param) {
     case EVOASM_X64_BASIC_PARAM_REG0:
       return "reg0";

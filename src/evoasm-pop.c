@@ -20,6 +20,7 @@
 #include "evoasm-util.h"
 #include "evoasm-kernel.h"
 #include "evoasm-error.h"
+#include "evoasm-kernel-io.h"
 
 #ifdef _OPENMP
 
@@ -450,9 +451,9 @@ error:
 
 static void
 evoasm_deme_load_kernel_(evoasm_deme_t *deme,
-                          evoasm_kernel_t *kernel,
-                          evoasm_deme_kernels_t *kernels,
-                          size_t kernel_idx) {
+                         evoasm_kernel_t *kernel,
+                         evoasm_deme_kernels_t *kernels,
+                         size_t kernel_idx) {
 
   size_t inst0_off = evoasm_deme_kernels_get_inst_off(kernels, kernel_idx, 0);
   size_t kernel_size = kernels->sizes[kernel_idx];
@@ -553,15 +554,15 @@ evoasm_pop_load_best_kernel(evoasm_pop_t *pop, evoasm_kernel_t *kernel) {
 
   size_t kernel_idx = 0;
   evoasm_deme_load_kernel_(best_deme,
-                            kernel,
-                            &best_deme->best_kernels,
-                            kernel_idx);
+                           kernel,
+                           &best_deme->best_kernels,
+                           kernel_idx);
 
 
   kernel->_input = *params->kernel_input;
   kernel->_output = *params->kernel_output;
-  kernel->_input.len = 0;
-  kernel->_output.len = 0;
+  kernel->_input.n_tuples = 0;
+  kernel->_output.n_tuples = 0;
 
   evoasm_kernel_emit_flags_t emit_flags = EVOASM_PROGRAM_EMIT_FLAG_SET_IO_MAPPING;
 
@@ -688,8 +689,13 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
 }
 
 static evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme, bool major) {
+evoasm_deme_eval(evoasm_deme_t *deme, bool major, size_t gen_counter) {
   bool retval = true;
+
+  if(!major && gen_counter > 0 &&
+     evoasm_kernel_input_get_n_tuples(deme->params->kernel_input) > deme->params->example_win_size) {
+    deme->example_win_off++;
+  }
 
   if(!evoasm_deme_test(deme, major)) {
     retval = false;
@@ -703,31 +709,16 @@ done:
 }
 
 static evoasm_success_t
-evoasm_pop_eval_(evoasm_pop_t *pop, bool major) {
+evoasm_pop_eval_major(evoasm_pop_t *pop) {
   bool retval = true;
   size_t n_demes = pop->n_demes;
-
-  if(!pop->seeded) {
-    retval = false;
-    evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
-                 "not seeded");
-    goto done;
-  }
 
   bool *retvals = evoasm_alloca(sizeof(bool) * n_demes);
   evoasm_error_t *errors = evoasm_alloca(sizeof(evoasm_error_t) * n_demes);
 
-  if(!major &&
-     pop->gen_counter > 0 &&
-     evoasm_kernel_input_get_n_tuples(pop->params->kernel_input) > pop->params->example_win_size) {
-    for(size_t i = 0; i < n_demes; i++) {
-      pop->demes[i].example_win_off++;
-    }
-  }
-
 #pragma omp parallel for
   for(size_t i = 0; i < n_demes; i++) {
-    retvals[i] = evoasm_deme_eval(&pop->demes[i], major);
+    retvals[i] = evoasm_deme_eval(&pop->demes[i], true, pop->gen_counter);
     if(!retvals[i]) {
       errors[i] = *evoasm_get_last_error();
     }
@@ -906,7 +897,8 @@ evoasm_deme_mutate(evoasm_deme_t *deme) {
 static void
 evoasm_deme_inject_best(evoasm_deme_t *deme, evoasm_deme_t *src_deme) {
   size_t dead_kernel_idx = deme->immig_idxs[src_deme->idx];
-  evoasm_deme_kernels_copy(&src_deme->best_kernels, 0, &deme->kernels, dead_kernel_idx, src_deme->best_kernels.n_kernels);
+  evoasm_deme_kernels_copy(&src_deme->best_kernels, 0, &deme->kernels, dead_kernel_idx,
+                           src_deme->best_kernels.n_kernels);
 }
 
 static void
@@ -942,10 +934,10 @@ evoasm_deme_next_gen(evoasm_deme_t *deme, bool major) {
 }
 
 static void
-evoasm_pop_next_gen_(evoasm_pop_t *pop, bool major) {
+evoasm_pop_next_gen_major(evoasm_pop_t *pop) {
 #pragma omp parallel for
   for(size_t i = 0; i < pop->n_demes; i++) {
-    evoasm_deme_next_gen(&pop->demes[i], major);
+    evoasm_deme_next_gen(&pop->demes[i], true);
   }
 
   pop->gen_counter++;
@@ -953,16 +945,56 @@ evoasm_pop_next_gen_(evoasm_pop_t *pop, bool major) {
 
 void
 evoasm_pop_next_gen(evoasm_pop_t *pop) {
-  evoasm_pop_next_gen_(pop, true);
+  evoasm_pop_next_gen_major(pop);
+}
+
+static evoasm_success_t
+evoasm_pop_run_minor_gens(evoasm_pop_t *pop, size_t n_minor_gens) {
+
+  bool retval = true;
+  size_t n_demes = pop->params->n_demes;
+  bool *retvals = evoasm_alloca(sizeof(bool) * n_demes);
+  evoasm_error_t *errors = evoasm_alloca(sizeof(evoasm_error_t) * n_demes);
+
+#pragma omp parallel for
+  for(size_t i = 0; i < pop->n_demes; i++) {
+    evoasm_deme_t *deme = &pop->demes[i];
+
+    for(size_t j = 0; j < n_minor_gens; j++) {
+      retvals[i] = evoasm_deme_eval(deme, false, pop->gen_counter + j);
+      if(!retvals[i]) {
+        errors[i] = *evoasm_get_last_error();
+        break;
+      }
+      evoasm_deme_next_gen(&pop->demes[i], false);
+    }
+  }
+
+  for(size_t i = 0; i < n_demes; i++) {
+    if(!retvals[i]) {
+      evoasm_set_last_error(&errors[i]);
+      retval = false;
+      break;
+    }
+  }
+
+  pop->gen_counter = (uint16_t) (pop->gen_counter + n_minor_gens);
+
+  return retval;
 }
 
 evoasm_success_t
 evoasm_pop_eval(evoasm_pop_t *pop, size_t n_minor_gens) {
-  for(size_t i = 0; i < n_minor_gens; i++) {
-    EVOASM_TRY(error, evoasm_pop_eval_, pop, false);
-    evoasm_pop_next_gen_(pop, false);
+
+  if(!pop->seeded) {
+    evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
+                 "not seeded");
+    goto error;
   }
-  EVOASM_TRY(error, evoasm_pop_eval_, pop, true);
+
+  EVOASM_TRY(error, evoasm_pop_run_minor_gens, pop, n_minor_gens);
+
+  EVOASM_TRY(error, evoasm_pop_eval_major, pop);
   return true;
 
 error:

@@ -19,98 +19,153 @@
 #include "evoasm-kernel-io.h"
 #include <stdarg.h>
 
-static const char *const _evoasm_example_type_names[] = {
-    "i64",
-    "u64",
-    "f64"
-};
 
-evoasm_kernel_io_t *
-evoasm_kernel_io_alloc(size_t len) {
-  evoasm_kernel_io_t *kernel_io = evoasm_malloc(sizeof(evoasm_kernel_io_t) + len * sizeof(evoasm_kernel_io_val_t));
-  kernel_io->len = (uint16_t) len;
+EVOASM_DEF_ALLOC_FREE_FUNCS(kernel_io)
 
-  return kernel_io;
-}
 
 evoasm_success_t
-evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, ...) {
-  va_list args;
-  bool retval = true;
+evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, evoasm_kernel_io_val_type_t *types) {
+  static evoasm_kernel_io_t zero_kernel_io = {0};
+  *kernel_io = zero_kernel_io;
 
   if(arity > EVOASM_PROGRAM_IO_MAX_ARITY) {
-    evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
+    evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_ERROR_CODE_NONE,
                  "Maximum arity exceeded (%zu > %d)", arity, EVOASM_PROGRAM_IO_MAX_ARITY);
-    retval = false;
-    goto done;
+    goto error;
   }
 
   kernel_io->arity = (uint8_t) arity;
 
-  va_start(args, arity);
-  for(size_t i = 0; i < kernel_io->len; i++) {
-    size_t type_idx = i % arity;
-    evoasm_kernel_io_val_type_t type = va_arg(args, evoasm_kernel_io_val_type_t);
-    evoasm_kernel_io_val_t val;
-    switch(type) {
-      case EVOASM_KERNEL_IO_VAL_TYPE_F64:
-        val.f64 = va_arg(args, double);
-        break;
-      case EVOASM_KERNEL_IO_VAL_TYPE_I64:
-        val.i64 = va_arg(args, int64_t);
-        break;
-      case EVOASM_KERNEL_IO_VAL_TYPE_U64:
-        val.u64 = va_arg(args, uint64_t);
-        break;
-      default:
-        evoasm_assert_not_reached();
-    }
-
-    kernel_io->vals[i] = val;
-
-    if(i >= arity) {
-      evoasm_kernel_io_val_type_t prev_type = kernel_io->types[type_idx];
-
-      if(prev_type != type) {
-        evoasm_error(EVOASM_ERROR_TYPE_PROGRAM, EVOASM_ERROR_CODE_NONE,
-                     "Example value type mismatch (previously %s, now %s)",
-                     _evoasm_example_type_names[prev_type], _evoasm_example_type_names[type]);
-        retval = false;
-        goto done;
-      }
-    }
-    kernel_io->types[type_idx] = type;
+  for(size_t i = 0; i < arity; i++) {
+    kernel_io->types[i] = types[i];
   }
 
+  size_t n_vals = evoasm_kernel_io_get_n_vals(kernel_io);
 
-done:
-  va_end(args);
-  return retval;
+  EVOASM_TRY_ALLOC_N(error, calloc, kernel_io->vals, n_vals);
+
+  return true;
+
+error:
+  return false;
 }
 
-double
-evoasm_kernel_io_get_value_f64(evoasm_kernel_io_t *kernel_io, size_t idx) {
-  return kernel_io->vals[idx].f64;
-}
+#define EVOASM_KERNEL_IO_DEF_VAL_SETTER(type_name, c_type) \
+  void \
+  evoasm_kernel_io_set_val_## type_name (evoasm_kernel_io_t *kernel_io, size_t tuple_idx, size_t val_idx, size_t elem_idx, c_type val) { \
+    kernel_io->vals[val_idx].type_name[elem_idx] = val; \
+  }
 
-int64_t
-evoasm_kernel_io_get_value_i64(evoasm_kernel_io_t *kernel_io, size_t idx) {
-  return kernel_io->vals[idx].i64;
-}
+#define EVOASM_KERNEL_IO_DEF_VAL_GETTER(type_name, c_type) \
+  c_type \
+  evoasm_kernel_io_get_val_## type_name (evoasm_kernel_io_t *kernel_io, size_t tuple_idx, size_t val_idx, size_t elem_idx) { \
+    return kernel_io->vals[val_idx].type_name[elem_idx]; \
+  }
+
+#define EVOASM_KERNEL_IO_DEF_VAL_GETTER_SETTER(type_name, c_type) \
+  EVOASM_KERNEL_IO_DEF_VAL_SETTER(type_name, c_type) \
+  EVOASM_KERNEL_IO_DEF_VAL_GETTER(type_name, c_type) \
+
+
+EVOASM_KERNEL_IO_DEF_VAL_GETTER_SETTER(f32, float)
+
+EVOASM_KERNEL_IO_DEF_VAL_GETTER_SETTER(f64, double)
+
+EVOASM_KERNEL_IO_DEF_VAL_GETTER_SETTER(i64, int64_t)
+
+EVOASM_KERNEL_IO_DEF_VAL_GETTER_SETTER(u64, uint64_t)
 
 void
 evoasm_kernel_io_destroy(evoasm_kernel_io_t *kernel_io) {
-
+  evoasm_free(kernel_io->vals);
 }
 
 evoasm_kernel_io_val_type_t
-evoasm_kernel_io_get_type(evoasm_kernel_io_t *kernel_io, size_t idx) {
-  return kernel_io->types[idx % kernel_io->arity];
+evoasm_kernel_io_get_type(evoasm_kernel_io_t *kernel_io, size_t arg_idx) {
+  return evoasm_kernel_io_get_type_(kernel_io, arg_idx);
 }
 
-EVOASM_DEF_FREE_FUNC(kernel_io)
+size_t
+evoasm_kernel_io_val_type_get_len(evoasm_kernel_io_val_type_t io_val_type) {
+  switch(io_val_type) {
+    case EVOASM_KERNEL_IO_VAL_TYPE_I64X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U64X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F32X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F64X1:
+      return 1;
+    case EVOASM_KERNEL_IO_VAL_TYPE_I64X2:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U64X2:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F64X2:
+      return 2;
+    case EVOASM_KERNEL_IO_VAL_TYPE_I32X4:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U32X4:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F32X4:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F64x4:
+      return 4;
+    case EVOASM_KERNEL_IO_VAL_TYPE_I16X8:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U16X8:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F32X8:
+      return 8;
+    case EVOASM_KERNEL_IO_VAL_TYPE_I8X16:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U8X16:
+      return 16;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
+evoasm_kernel_io_val_type_t
+evoasm_kernel_io_val_type_get_elem_type(evoasm_kernel_io_val_type_t io_val_type) {
+  switch(io_val_type) {
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_U8X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_I8X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U16X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_I16X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U32X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_I32X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_I64X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_U64X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F32X1:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F64X1:
+      return io_val_type;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_I64X2:
+      return EVOASM_KERNEL_IO_VAL_TYPE_I64X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_U64X2:
+      return EVOASM_KERNEL_IO_VAL_TYPE_U64X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_F64X2:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F64x4:
+      return EVOASM_KERNEL_IO_VAL_TYPE_F64X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_I32X4:
+      return EVOASM_KERNEL_IO_VAL_TYPE_I32X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_U32X4:
+      return EVOASM_KERNEL_IO_VAL_TYPE_U32X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_F32X4:
+    case EVOASM_KERNEL_IO_VAL_TYPE_F32X8:
+      return EVOASM_KERNEL_IO_VAL_TYPE_F32X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_I16X8:
+      return EVOASM_KERNEL_IO_VAL_TYPE_I16X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_U16X8:
+      return EVOASM_KERNEL_IO_VAL_TYPE_U16X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_I8X16:
+      return EVOASM_KERNEL_IO_VAL_TYPE_I8X1;
+
+    case EVOASM_KERNEL_IO_VAL_TYPE_U8X16:
+      return EVOASM_KERNEL_IO_VAL_TYPE_U8X1;
+
+     default:
+      evoasm_assert_not_reached();
+  }
+}
 
 EVOASM_DEF_GETTER(kernel_io, arity, size_t)
-
-EVOASM_DEF_GETTER(kernel_io, len, size_t)
 
