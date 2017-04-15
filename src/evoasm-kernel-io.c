@@ -24,7 +24,7 @@ EVOASM_DEF_ALLOC_FREE_FUNCS(kernel_io)
 
 
 evoasm_success_t
-evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, evoasm_kernel_io_val_type_t *types) {
+evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, size_t n_tuples, evoasm_kernel_io_val_type_t *types) {
   static evoasm_kernel_io_t zero_kernel_io = {0};
   *kernel_io = zero_kernel_io;
 
@@ -35,12 +35,13 @@ evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, evoasm_kernel
   }
 
   kernel_io->arity = (uint8_t) arity;
+  kernel_io->n_tuples = (uint16_t) n_tuples;
 
   for(size_t i = 0; i < arity; i++) {
     kernel_io->types[i] = types[i];
   }
 
-  size_t n_vals = evoasm_kernel_io_get_n_vals(kernel_io);
+  size_t n_vals = evoasm_kernel_io_get_n_vals_(kernel_io);
 
   EVOASM_TRY_ALLOC_N(error, calloc, kernel_io->vals, n_vals);
 
@@ -83,6 +84,21 @@ evoasm_kernel_io_destroy(evoasm_kernel_io_t *kernel_io) {
 evoasm_kernel_io_val_type_t
 evoasm_kernel_io_get_type(evoasm_kernel_io_t *kernel_io, size_t arg_idx) {
   return evoasm_kernel_io_get_type_(kernel_io, arg_idx);
+}
+
+evoasm_kernel_io_val_t *
+evoasm_kernel_io_get_val(evoasm_kernel_io_t *kernel_io, size_t tuple_idx, size_t val_idx) {
+  return evoasm_kernel_io_get_val_(kernel_io, tuple_idx, val_idx);
+}
+
+size_t
+evoasm_kernel_io_get_n_vals(evoasm_kernel_io_t *kernel_io) {
+  return evoasm_kernel_io_get_n_vals_(kernel_io);
+}
+
+size_t
+evoasm_kernel_io_get_n_tuples(evoasm_kernel_io_t *kernel_io) {
+  return evoasm_kernel_io_get_n_tuples_(kernel_io);
 }
 
 size_t

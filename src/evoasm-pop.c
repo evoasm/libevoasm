@@ -156,7 +156,7 @@ evoasm_deme_init(evoasm_deme_t *deme,
 
   static evoasm_deme_t zero_deme = {0};
   const evoasm_pop_params_t *params = pop->params;
-  size_t n_examples = evoasm_kernel_io_get_n_tuples(params->kernel_input);
+  size_t n_examples = evoasm_kernel_io_get_n_tuples_(params->kernel_input);
 
   *deme = zero_deme;
   deme->idx = (uint16_t) deme_idx;
@@ -543,7 +543,7 @@ evoasm_pop_load_best_kernel(evoasm_pop_t *pop, evoasm_kernel_t *kernel) {
 
   evoasm_deme_t *best_deme = evoasm_pop_find_best_deme(pop);
   const evoasm_pop_params_t *params = best_deme->params;
-  size_t n_examples = evoasm_kernel_io_get_n_tuples(params->kernel_input);
+  size_t n_examples = evoasm_kernel_io_get_n_tuples_(params->kernel_input);
 
   EVOASM_TRY(error, evoasm_kernel_init, kernel,
              evoasm_get_arch_info(best_deme->arch_id),
@@ -693,7 +693,7 @@ evoasm_deme_eval(evoasm_deme_t *deme, bool major, size_t gen_counter) {
   bool retval = true;
 
   if(!major && gen_counter > 0 &&
-     evoasm_kernel_input_get_n_tuples(deme->params->kernel_input) > deme->params->example_win_size) {
+      evoasm_kernel_input_get_n_tuples(deme->params->kernel_input) > deme->params->example_win_size) {
     deme->example_win_off++;
   }
 

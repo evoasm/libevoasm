@@ -167,13 +167,13 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
     goto fail;
   }
 
-  if(pop_params->kernel_input == NULL || evoasm_kernel_io_get_n_vals(pop_params->kernel_input) == 0) {
+  if(pop_params->kernel_input == NULL || evoasm_kernel_io_get_n_vals_(pop_params->kernel_input) == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "No input values given");
     goto fail;
   }
 
-  if(pop_params->kernel_output == NULL || evoasm_kernel_io_get_n_vals(pop_params->kernel_output) == 0) {
+  if(pop_params->kernel_output == NULL || evoasm_kernel_io_get_n_vals_(pop_params->kernel_output) == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "No output values given");
     goto fail;

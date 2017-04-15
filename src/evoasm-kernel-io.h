@@ -76,21 +76,21 @@ typedef evoasm_kernel_io_t evoasm_kernel_output_t;
 typedef evoasm_kernel_io_t evoasm_kernel_input_t;
 
 evoasm_success_t
-evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, evoasm_kernel_io_val_type_t *types);
+evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, size_t n_tuples, evoasm_kernel_io_val_type_t *types);
 
 static inline size_t
-evoasm_kernel_io_get_n_tuples(evoasm_kernel_io_t *kernel_io) {
+evoasm_kernel_io_get_n_tuples_(evoasm_kernel_io_t *kernel_io) {
   return kernel_io->n_tuples;
 }
 
 static inline size_t
-evoasm_kernel_io_get_n_vals(evoasm_kernel_io_t *kernel_io) {
+evoasm_kernel_io_get_n_vals_(evoasm_kernel_io_t *kernel_io) {
   return (size_t)(kernel_io->n_tuples * kernel_io->arity);
 }
 
 static inline evoasm_kernel_io_val_t *
-evoasm_kernel_io_get_val(evoasm_kernel_io_t *kernel_io, size_t tuple_idx, size_t val_idx) {
-  return &kernel_io->vals[val_idx];
+evoasm_kernel_io_get_val_(evoasm_kernel_io_t *kernel_io, size_t tuple_idx, size_t val_idx) {
+  return &kernel_io->vals[tuple_idx * kernel_io->arity + val_idx];
 }
 
 static inline evoasm_kernel_io_val_type_t
@@ -98,8 +98,8 @@ evoasm_kernel_io_get_type_(evoasm_kernel_io_t *kernel_io, size_t idx) {
   return (evoasm_kernel_io_val_type_t) kernel_io->types[idx];
 }
 
-#define evoasm_kernel_input_get_n_tuples evoasm_kernel_io_get_n_tuples
-#define evoasm_kernel_output_get_n_tuples evoasm_kernel_io_get_n_tuples
+#define evoasm_kernel_input_get_n_tuples evoasm_kernel_io_get_n_tuples_
+#define evoasm_kernel_output_get_n_tuples evoasm_kernel_io_get_n_tuples_
 
 
 EVOASM_DECL_ALLOC_FREE_FUNCS(kernel_io)

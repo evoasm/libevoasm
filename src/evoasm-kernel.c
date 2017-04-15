@@ -782,7 +782,7 @@ evoasm_kernel_x64_emit_input_load(evoasm_kernel_t *kernel,
         arg_idx = kernel->x64.reg_input_mapping[input_reg];
       }
 
-      evoasm_kernel_io_val_t *arg = evoasm_kernel_io_get_val(input, tuple_idx, arg_idx);
+      evoasm_kernel_io_val_t *arg = evoasm_kernel_io_get_val_(input, tuple_idx, arg_idx);
       evoasm_kernel_io_val_type_t arg_type = evoasm_kernel_io_get_type_(input, arg_idx);
 
       EVOASM_TRY(error, evoasm_kernel_x64_emit_input_reg_load, kernel, input_reg, buf, arg, arg_type, &loaded_arg,
@@ -1063,7 +1063,7 @@ evoasm_kernel_update_dist_mat(evoasm_kernel_t *kernel,
 
   for(size_t i = 0; i < height; i++) {
     evoasm_kernel_io_val_t *expected_val = &io_vals[i];
-    evoasm_kernel_io_val_type_t tuple_type = output->types[i];
+    evoasm_kernel_io_val_type_t tuple_type = (evoasm_kernel_io_val_type_t) output->types[i];
     double expected_val_dbl[16];
     size_t expected_val_dbl_len;
     expected_val_dbl_len = evoasm_kernel_io_val_to_dbl(expected_val, tuple_type, expected_val_dbl);
@@ -1120,14 +1120,18 @@ evoasm_kernel_log_output(evoasm_kernel_t *kernel,
 
   for(size_t i = 0; i < n_tuples; i++) {
     for(size_t j = 0; j < height; j++) {
+
+      evoasm_kernel_io_val_t *target_val = evoasm_kernel_io_get_val_(output, i, j);
+      evoasm_log(log_level, EVOASM_LOG_TAG, "%ld (%f)\t| ", target_val->i64[0], target_val->f64[0]);
+
       for(size_t k = 0; k < width; k++) {
         bool matched = matching[j] == k;
-        evoasm_kernel_io_val_t val = kernel->output_vals[i * width + k];
+        evoasm_kernel_io_val_t *val = &kernel->output_vals[i * width + k];
 
         if(matched) {
           evoasm_log(log_level, EVOASM_LOG_TAG, " \x1b[1m ");
         }
-        evoasm_log(log_level, EVOASM_LOG_TAG, " %ld (%f)\t ", val.i64[0], val.f64[0]);
+        evoasm_log(log_level, EVOASM_LOG_TAG, " %ld (%f)\t ", val->i64[0], val->f64[0]);
         if(matched) {
           evoasm_log(log_level, EVOASM_LOG_TAG, " \x1b[0m ");
         }
@@ -1472,7 +1476,8 @@ next:;
   }
 
   *loaded_output = *kernel_output;
-  EVOASM_TRY_ALLOC_N(error, calloc, loaded_output->vals, evoasm_kernel_input_get_n_tuples(input) * height);
+  loaded_output->n_tuples = (uint16_t) n_tuples;
+  EVOASM_TRY_ALLOC_N(error, calloc, loaded_output->vals, n_tuples * height);
 
   for(size_t i = 0; i < n_tuples; i++) {
     for(size_t j = 0; j < height; j++) {
