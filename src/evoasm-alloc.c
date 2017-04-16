@@ -36,14 +36,14 @@ evoasm_malloc(size_t size) {
 
 void *
 evoasm_aligned_alloc(size_t align, size_t size) {
-#if __STDC_VERSION__ >= 201112L
-  void *ptr = aligned_alloc(align, size);
-  if(evoasm_unlikely(!ptr)) {
-    int error_code = errno;
-#elif _POSIX_C_SOURCE >= 200112L
+#if _POSIX_C_SOURCE >= 200112L
   void *ptr;
   int error_code = posix_memalign(&ptr, align, size);
   if(evoasm_unlikely(error_code)) {
+#elif __STDC_VERSION__ >= 201112L
+  void *ptr = aligned_alloc(align, size);
+  if(evoasm_unlikely(!ptr)) {
+    int error_code = errno;
 #else
 #error No aligned memory allocation function found
 #endif
