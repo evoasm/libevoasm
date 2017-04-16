@@ -125,7 +125,6 @@ evoasm_deme_destroy(evoasm_deme_t *deme) {
   evoasm_prng_destroy(&deme->prng);
   evoasm_free(deme->won_tourns_counters);
   evoasm_free(deme->immig_idxs);
-  evoasm_free(deme->error_counters);
 
   evoasm_deme_kernels_destroy(&deme->kernels);
   evoasm_deme_losses_destroy(&deme->losses);
@@ -189,9 +188,6 @@ evoasm_deme_init(evoasm_deme_t *deme,
 
   deme->best_loss = INFINITY;
   deme->top_loss = INFINITY;
-
-  EVOASM_TRY_ALLOC(error, aligned_calloc, deme->error_counters, (size_t) n_examples, EVOASM_CACHE_LINE_SIZE,
-                   sizeof(uint64_t));
 
   return true;
 
