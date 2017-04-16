@@ -36,16 +36,19 @@ evoasm_malloc(size_t size) {
 
 void *
 evoasm_aligned_alloc(size_t align, size_t size) {
-#if _POSIX_C_SOURCE >= 200112L
   void *ptr;
+
+#if defined(__APPLE__)
   int error_code = posix_memalign(&ptr, align, size);
   if(evoasm_unlikely(error_code)) {
-#elif __STDC_VERSION__ >= 201112L
-  void *ptr = aligned_alloc(align, size);
+#else
+#  if defined(_WIN32)
+  ptr = _aligned_malloc(size, align);
+#  else
+  ptr = aligned_alloc(align, size);
+#  endif
   if(evoasm_unlikely(!ptr)) {
     int error_code = errno;
-#else
-#error No aligned memory allocation function found
 #endif
 
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
