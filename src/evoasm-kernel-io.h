@@ -147,35 +147,8 @@ evoasm_kernel_io_val_type_get_bytesize(evoasm_kernel_io_val_type_t io_val_type) 
   }
 }
 
-static inline const char *
-evoasm_kernel_io_val_type_get_name(evoasm_kernel_io_val_type_t io_val_type) {
-  switch(io_val_type) {
-    case EVOASM_KERNEL_IO_VAL_TYPE_I64X1:return "i64x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U64X1:return "u64x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_F32X1:return "f32x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_F64X1:return "f64x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I64X2:return "i64x2";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U64X2:return "u64x2";
-    case EVOASM_KERNEL_IO_VAL_TYPE_F64X2:return "f64x2";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I32X4:return "i32x4";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U32X4:return "u32x4";
-    case EVOASM_KERNEL_IO_VAL_TYPE_F32X4:return "f32x4";
-    case EVOASM_KERNEL_IO_VAL_TYPE_F64x4:return "f64x4";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I16X8:return "i16x8";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U16X8:return "u16x8";
-    case EVOASM_KERNEL_IO_VAL_TYPE_F32X8:return "f32x8";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I8X16:return "i8x16";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U8X16:return "u8x16";
-    case EVOASM_KERNEL_IO_VAL_TYPE_NONE:return "none";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U8X1: return "u8x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I8X1:return "i8x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U16X1:return "u16x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I16X1:return "i16x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_U32X1:return "u32x1";
-    case EVOASM_KERNEL_IO_VAL_TYPE_I32X1:return "i32x1";
-    default: evoasm_assert_not_reached();
-  }
-}
+const char *
+evoasm_kernel_io_val_type_get_name(evoasm_kernel_io_val_type_t io_val_type);
 
 static inline size_t
 evoasm_kernel_io_val_to_dbl(evoasm_kernel_io_val_t *io_val, evoasm_kernel_io_val_type_t io_val_type, double *dbls) {

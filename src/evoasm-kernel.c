@@ -1521,7 +1521,8 @@ evoasm_kernel_run(evoasm_kernel_t *kernel,
   for(size_t i = 0; i < input->arity; i++) {
     if(input->types[i] != kernel->_input.types[i]) {
       evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_ERROR_CODE_NONE,
-                   "type mismatch (%d != %d)", input->types[i], kernel->_input.types[i]);
+                   "type mismatch (%s != %s)", evoasm_kernel_io_val_type_get_name(input->types[i]),
+                                               evoasm_kernel_io_val_type_get_name(kernel->_input.types[i]));
       return false;
     }
   }
@@ -1875,6 +1876,26 @@ evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_log_level_t log_level) {
     default:
       evoasm_assert_not_reached();
   }
+}
+
+evoasm_kernel_io_val_type_t
+evoasm_kernel_get_input_type(evoasm_kernel_t *kernel, size_t arg_idx) {
+  return evoasm_kernel_io_get_type_(&kernel->_input, arg_idx);
+}
+
+evoasm_kernel_io_val_type_t
+evoasm_kernel_get_output_type(evoasm_kernel_t *kernel, size_t arg_idx) {
+  return evoasm_kernel_io_get_type_(&kernel->_output, arg_idx);
+}
+
+size_t
+evoasm_kernel_get_input_arity(evoasm_kernel_t *kernel, size_t arg_idx) {
+  return kernel->_input.arity;
+}
+
+size_t
+evoasm_kernel_get_output_arity(evoasm_kernel_t *kernel, size_t arg_idx) {
+  return kernel->_output.arity;
 }
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(kernel)
