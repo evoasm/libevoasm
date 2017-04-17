@@ -554,77 +554,99 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
 
 static const evoasm_x64_inst_enc_func_t xmm_load_funcs[2][EVOASM_KERNEL_IO_VAL_TYPE_NONE] = {
     [false] = {
-      [EVOASM_KERNEL_IO_VAL_TYPE_I64X1] = evoasm_x64_movq_xmm_rm64,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U64X1] = evoasm_x64_movq_xmm_rm64,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F32X1] = evoasm_x64_movss_xmm_xmmm32,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F64X1] = evoasm_x64_movsd_xmm_xmmm64,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I64X2] = evoasm_x64_movdqa_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U64X2] = evoasm_x64_movdqa_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F64X2] = evoasm_x64_movapd_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I32X4] = evoasm_x64_movaps_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U32X4] = evoasm_x64_movaps_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F32X4] = evoasm_x64_movaps_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I16X8] = evoasm_x64_movdqa_xmm_xmmm128,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U16X8] = evoasm_x64_movdqa_xmm_xmmm128,
-    },
-    [true] = {
-        [EVOASM_KERNEL_IO_VAL_TYPE_I64X1] = evoasm_x64_vmovq_xmm_rm64,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U64X1] = evoasm_x64_vmovq_xmm_rm64,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F32X1] = evoasm_x64_vmovss_xmm_m32,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F64X1] = evoasm_x64_vmovsd_xmm_m64,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I64X2] = evoasm_x64_vmovdqa_xmm_xmmm128,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U64X2] = evoasm_x64_vmovdqa_xmm_xmmm128,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F64X2] = evoasm_x64_vmovapd_xmm_xmmm128,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I32X4] = evoasm_x64_vmovaps_xmm_xmmm128,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U32X4] = evoasm_x64_vmovaps_xmm_xmmm128,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F32X4] = evoasm_x64_vmovaps_xmm_xmmm128,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F64x4] = evoasm_x64_vmovapd_ymm_ymmm256,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X2] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X2] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X4] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X4] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X8] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X8] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X16] = evoasm_x64_movdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X16] = evoasm_x64_movdqa_xmm_xmmm128,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X2] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X2] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X4] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X4] = evoasm_x64_movq_xmm_rm64,
         [EVOASM_KERNEL_IO_VAL_TYPE_I16X8] = evoasm_x64_movdqa_xmm_xmmm128,
         [EVOASM_KERNEL_IO_VAL_TYPE_U16X8] = evoasm_x64_movdqa_xmm_xmmm128,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X2] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X2] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X4] = evoasm_x64_movdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X4] = evoasm_x64_movdqa_xmm_xmmm128,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I64X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U64X1] = evoasm_x64_movq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I64X2] = evoasm_x64_movdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U64X2] = evoasm_x64_movdqa_xmm_xmmm128,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_F64X1] = evoasm_x64_movsd_xmm_xmmm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F64X2] = evoasm_x64_movapd_xmm_xmmm128,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_F32X1] = evoasm_x64_movss_xmm_xmmm32,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F32X2] = evoasm_x64_movaps_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F32X4] = evoasm_x64_movaps_xmm_xmmm128,
+    },
+    [true] = {
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X2] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X2] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X4] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X4] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X8] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X8] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X16] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X16] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I8X32] = evoasm_x64_vmovdqa_ymm_ymmm256,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U8X32] = evoasm_x64_vmovdqa_ymm_ymmm256,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X2] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X2] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X4] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X4] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X8] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X8] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I16X16] = evoasm_x64_vmovdqa_ymm_ymmm256,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U16X16] = evoasm_x64_vmovdqa_ymm_ymmm256,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X2] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X2] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X4] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X4] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I32X8] = evoasm_x64_vmovdqa_ymm_ymmm256,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U32X8] = evoasm_x64_vmovdqa_ymm_ymmm256,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_I64X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U64X1] = evoasm_x64_vmovq_xmm_rm64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I64X2] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U64X2] = evoasm_x64_vmovdqa_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_I64X4] = evoasm_x64_vmovdqa_ymm_ymmm256,
+        [EVOASM_KERNEL_IO_VAL_TYPE_U64X4] = evoasm_x64_vmovdqa_ymm_ymmm256,
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_F32X1] = evoasm_x64_vmovss_xmm_m32,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F32X2] = evoasm_x64_vmovaps_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F32X4] = evoasm_x64_vmovaps_xmm_xmmm128,
         [EVOASM_KERNEL_IO_VAL_TYPE_F32X8] = evoasm_x64_vmovaps_ymm_ymmm256,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I8X16] = evoasm_x64_vmovdqa_ymm_ymmm256,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U8X16] = evoasm_x64_vmovdqa_ymm_ymmm256
+
+        [EVOASM_KERNEL_IO_VAL_TYPE_F64X1] = evoasm_x64_vmovsd_xmm_m64,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F64X2] = evoasm_x64_vmovapd_xmm_xmmm128,
+        [EVOASM_KERNEL_IO_VAL_TYPE_F64X4] = evoasm_x64_vmovapd_ymm_ymmm256,
+
     }
 };
 
-static const evoasm_used evoasm_x64_inst_enc_func_t xmm_store_funcs[2][EVOASM_KERNEL_IO_VAL_TYPE_NONE] = {
-    [false] = {
-      [EVOASM_KERNEL_IO_VAL_TYPE_I64X1] = evoasm_x64_movq_rm64_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U64X1] = evoasm_x64_movq_rm64_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F32X1] = evoasm_x64_movss_xmmm32_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F64X1] = evoasm_x64_movsd_xmmm64_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I64X2] = evoasm_x64_movdqa_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U64X2] = evoasm_x64_movdqa_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F64X2] = evoasm_x64_movapd_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I32X4] = evoasm_x64_movaps_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U32X4] = evoasm_x64_movaps_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F32X4] = evoasm_x64_movaps_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F64x4] = NULL,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I16X8] = evoasm_x64_movdqa_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U16X8] = evoasm_x64_movdqa_xmmm128_xmm,
-      [EVOASM_KERNEL_IO_VAL_TYPE_F32X8] = NULL,
-      [EVOASM_KERNEL_IO_VAL_TYPE_I8X16] = NULL,
-      [EVOASM_KERNEL_IO_VAL_TYPE_U8X16] = NULL
-    },
-    [true] = {
-        [EVOASM_KERNEL_IO_VAL_TYPE_I64X1] = evoasm_x64_vmovq_rm64_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U64X1] = evoasm_x64_vmovq_rm64_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F32X1] = evoasm_x64_vmovss_m32_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F64X1] = evoasm_x64_vmovsd_m64_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I64X2] = evoasm_x64_vmovdqa_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U64X2] = evoasm_x64_vmovdqa_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F64X2] = evoasm_x64_vmovapd_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I32X4] = evoasm_x64_vmovaps_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U32X4] = evoasm_x64_vmovaps_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F32X4] = evoasm_x64_vmovaps_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F64x4] = evoasm_x64_vmovapd_ymmm256_ymm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I16X8] = evoasm_x64_movdqa_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U16X8] = evoasm_x64_movdqa_xmmm128_xmm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_F32X8] = evoasm_x64_vmovaps_ymmm256_ymm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_I8X16] = evoasm_x64_vmovdqa_ymmm256_ymm,
-        [EVOASM_KERNEL_IO_VAL_TYPE_U8X16] = evoasm_x64_vmovdqa_ymmm256_ymm
-    }
-};
 
 static evoasm_success_t
 evoasm_kernel_x64_emit_input_reg_load(evoasm_kernel_t *kernel,
@@ -676,7 +698,7 @@ evoasm_kernel_x64_emit_input_reg_load(evoasm_kernel_t *kernel,
 
       if(evoasm_unlikely(enc_func == NULL)) {
         evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_ERROR_CODE_NONE,
-                     "value type %s is not supported on this system",  evoasm_kernel_io_val_type_get_name(arg_type));
+                     "value type %s is not supported on this system", evoasm_kernel_io_val_type_get_name(arg_type));
         return false;
       }
 
@@ -1522,7 +1544,7 @@ evoasm_kernel_run(evoasm_kernel_t *kernel,
     if(input->types[i] != kernel->_input.types[i]) {
       evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_ERROR_CODE_NONE,
                    "type mismatch (%s != %s)", evoasm_kernel_io_val_type_get_name(input->types[i]),
-                                               evoasm_kernel_io_val_type_get_name(kernel->_input.types[i]));
+                   evoasm_kernel_io_val_type_get_name(kernel->_input.types[i]));
       return false;
     }
   }
