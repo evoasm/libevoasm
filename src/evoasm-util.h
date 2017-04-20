@@ -17,8 +17,11 @@
 
 #pragma once
 
-#define EVOASM_MAX(a,b) (((a) > (b)) ? (a) : (b))
-#define EVOASM_MIN(a,b) (((a) < (b)) ? (a) : (b))
+#include <stdlib.h>
+#include <stdint.h>
+
+#define EVOASM_MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define EVOASM_MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define EVOASM_CLAMP(x, min, max) (((x) > (max)) ? (max) : (((x) < (min)) ? (min) : (x)))
 
 #define EVOASM_ALIGN_DOWN(s, a) ((s) - ((s) % a))
@@ -106,9 +109,29 @@
 
 #define EVOASM_SWAP(type, a, b) do { type s = (a); (a) = (b); (b) = s;} while (0)
 
+
+#ifdef __GNUC__
+  static inline size_t evoasm_popcount64(uint64_t v) {
+    return (size_t) __builtin_popcountll(v);
+  }
+#else
+  static inline size_t evoasm_popcount64(uint64_t v) {
+    size_t c = 0, i;
+    for(; v > 0; v &= v - 1) c++;
+    return c;
+  }
+#endif
+
+
 #if defined(__linux__) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
 #define EVOASM_UNIX
 #endif
+
+typedef enum {
+  EVOASM_METRIC_ABSDIFF,
+  EVOASM_METRIC_XOR,
+  EVOASM_METRIC_NONE
+} evoasm_metric_t;
 
 #define EVOASM_CB_CONTINUE true
 #define EVOASM_CB_STOP false

@@ -1067,12 +1067,6 @@ error:
   return false;
 }
 
-
-typedef enum {
-  EVOASM_METRIC_ABSDIFF,
-  EVOASM_METRIC_NONE
-} evoasm_metric;
-
 static void
 evoasm_kernel_update_dist_mat(evoasm_kernel_t *kernel,
                               evoasm_kernel_output_t *output,
@@ -1080,7 +1074,7 @@ evoasm_kernel_update_dist_mat(evoasm_kernel_t *kernel,
                               size_t height,
                               size_t tuple_idx,
                               double *dist_mat,
-                              evoasm_metric metric) {
+                              evoasm_metric_t metric) {
   evoasm_kernel_io_val_t *io_vals = output->vals + tuple_idx * output->arity;
 
   for(size_t i = 0; i < height; i++) {
@@ -1317,7 +1311,7 @@ evoasm_kernel_build_dist_mat(evoasm_kernel_t *kernel,
                              size_t win_size,
                              size_t height,
                              double *dist_mat,
-                             evoasm_metric metric) {
+                             evoasm_metric_t metric) {
 
   size_t n_tuples = evoasm_kernel_output_get_n_tuples(output);
   size_t width = kernel->n_output_regs;

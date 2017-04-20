@@ -868,6 +868,41 @@ evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
   }
 }
 
+double
+evoasm_x64_cpu_state_calc_dist(evoasm_x64_cpu_state_t *cpu_state,
+                          evoasm_x64_cpu_state_t *other_cpu_state,
+                          evoasm_metric_t metric) {
+
+  size_t len = sizeof(evoasm_x64_cpu_state_t) / sizeof(uint64_t);
+  uint64_t *data = (uint64_t *) cpu_state;
+  uint64_t *other_data = (uint64_t *) other_cpu_state;
+
+  double dist = 0;
+
+  for(size_t i = 0; i < len; i++) {
+    switch(metric) {
+      case EVOASM_METRIC_ABSDIFF:
+        dist += fabs((double)data[i] - (double)other_data[i]);
+        break;
+      case EVOASM_METRIC_XOR:
+        dist += (double) evoasm_popcount64(data[i] ^ other_data[i]) / 64.0;
+        break;
+      default: evoasm_assert_not_reached();
+    }
+  }
+  return dist;
+}
+
+void
+evoasm_x64_cpu_state_rand(evoasm_x64_cpu_state_t *cpu_state, evoasm_prng_t *prng) {
+  size_t len = sizeof(evoasm_x64_cpu_state_t) / sizeof(uint64_t);
+  uint64_t *data = (uint64_t *) cpu_state;
+
+  for(size_t i = 0; i < len; i++) {
+    data[i] = evoasm_prng_rand64_(prng);
+  }
+}
+
 void
 evoasm_x64_cpu_state_init(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_cpu_state_flags_t flags) {
   static evoasm_x64_cpu_state_t zero_cpu_state = {0};

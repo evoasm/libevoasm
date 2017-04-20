@@ -26,7 +26,7 @@ typedef struct {
   uint64_t data[EVOASM_PRNG_SEED_LEN];
 } evoasm_prng_state_t;
 
-typedef struct evoasm_prng64 {
+typedef struct evoasm_prng64_s {
   /* xorshift1024star */
   evoasm_prng_state_t state;
   size_t p;

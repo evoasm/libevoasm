@@ -21,6 +21,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "evoasm-util.h"
+
 #define EVOASM_BITMAP_DEF_IDX_VARS(key) \
   size_t size = sizeof(uint64_t) * 8;\
   size_t ary_idx = ((size_t) key) / size;\
@@ -129,27 +131,15 @@ evoasm_bitmap_or64(evoasm_bitmap_t *bitmap, size_t idx, uint64_t bits) {
     } \
   }
 
-#ifdef __GNUC__
-#  define EVOASM_BITMAP_DEF_POPCOUNT(width) \
-    static inline size_t evoasm_bitmap ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
-      size_t c = 0; \
-      size_t i;\
-      for(i = 0; i < width / 64; i++) {\
-        c += (size_t) __builtin_popcountll(bitmap->data[i]);\
-      } \
-      return c;\
-    }
-#else
-#  define EVOASM_BITMAP_DEF_POPCOUNT(width) \
-    static inline size_t evoasm_bitmap_t ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
-      size_t c = 0, i;\
-      for(i = 0; i < width / 64; i++) {\
-        uint64_t x = bitmap->data[i]; \
-        for(; x > 0; x &= x - 1) c++;\
-      } \
-      return c;\
-    }
-#endif
+#define EVOASM_BITMAP_DEF_POPCOUNT(width) \
+  static inline size_t evoasm_bitmap ## width ## _ ## popcount (evoasm_bitmap##width##_t *bitmap) { \
+    size_t c = 0; \
+    size_t i;\
+    for(i = 0; i < width / 64; i++) {\
+      c += evoasm_popcount64(bitmap->data[i]); \
+    } \
+    return c;\
+  }
 
 EVOASM_BITMAP_DEF_UNOP(not, 128, ~)
 EVOASM_BITMAP_DEF_BINOP(and, 128, &)

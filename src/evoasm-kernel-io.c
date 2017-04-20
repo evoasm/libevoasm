@@ -215,6 +215,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_U8X16;
         case 32:
           return EVOASM_KERNEL_IO_VAL_TYPE_U8X32;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_I8X1:
       switch(vec_size) {
@@ -230,6 +232,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_I8X16;
         case 32:
           return EVOASM_KERNEL_IO_VAL_TYPE_I8X32;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_U16X1:
       switch(vec_size) {
@@ -243,6 +247,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_U16X8;
         case 16:
           return EVOASM_KERNEL_IO_VAL_TYPE_U16X16;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_I16X1:
       switch(vec_size) {
@@ -256,6 +262,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_I16X8;
         case 16:
           return EVOASM_KERNEL_IO_VAL_TYPE_I16X16;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_U32X1:
       switch(vec_size) {
@@ -267,6 +275,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_U32X4;
         case 8:
           return EVOASM_KERNEL_IO_VAL_TYPE_U32X8;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_I32X1:
       switch(vec_size) {
@@ -278,6 +288,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_I32X4;
         case 8:
           return EVOASM_KERNEL_IO_VAL_TYPE_I32X8;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_I64X1:
       switch(vec_size) {
@@ -287,6 +299,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_I64X2;
         case 4:
           return EVOASM_KERNEL_IO_VAL_TYPE_I64X4;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_U64X1:
       switch(vec_size) {
@@ -296,6 +310,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_U64X2;
         case 4:
           return EVOASM_KERNEL_IO_VAL_TYPE_U64X4;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_F32X1:
       switch(vec_size) {
@@ -307,6 +323,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_F32X4;
         case 8:
           return EVOASM_KERNEL_IO_VAL_TYPE_F32X8;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     case EVOASM_KERNEL_IO_VAL_TYPE_F64X1:
       switch(vec_size) {
@@ -316,6 +334,8 @@ evoasm_kernel_io_val_type_make(evoasm_kernel_io_val_type_t elem_type, size_t vec
           return EVOASM_KERNEL_IO_VAL_TYPE_F64X2;
         case 4:
           return EVOASM_KERNEL_IO_VAL_TYPE_F64X4;
+        default:
+          return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
       }
     default:
       return EVOASM_KERNEL_IO_VAL_TYPE_NONE;
