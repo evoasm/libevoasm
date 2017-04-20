@@ -590,5 +590,68 @@ static inline const char * evoasm_x64_basic_param_get_name_(evoasm_x64_basic_par
   }
 }
 
+static inline evoasm_x64_basic_param_id_t evoasm_x64_param_to_basic_(evoasm_x64_param_id_t param) {
+  switch(param) {
+    case EVOASM_X64_PARAM_REG0:
+      return EVOASM_X64_BASIC_PARAM_REG0;
+    case EVOASM_X64_PARAM_REG1:
+      return EVOASM_X64_BASIC_PARAM_REG1;
+    case EVOASM_X64_PARAM_REG2:
+      return EVOASM_X64_BASIC_PARAM_REG2;
+    case EVOASM_X64_PARAM_REG3:
+      return EVOASM_X64_BASIC_PARAM_REG3;
+    case EVOASM_X64_PARAM_IMM0:
+      return EVOASM_X64_BASIC_PARAM_IMM0;
+    case EVOASM_X64_PARAM_FORCE_REX:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REX_R:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REX_X:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REX_B:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_LEGACY_PREFIX_ORDER:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_LOCK:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_ADDR_SIZE:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REG_BASE:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REG_INDEX:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REX_W:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_DISP:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_SCALE:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_FORCE_SIB:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_FORCE_DISP32:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+      return EVOASM_X64_BASIC_PARAM_REG0_HIGH_BYTE;
+    case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
+      return EVOASM_X64_BASIC_PARAM_REG1_HIGH_BYTE;
+    case EVOASM_X64_PARAM_FORCE_LONG_VEX:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_REL:
+      return EVOASM_X64_BASIC_PARAM_REL;
+    case EVOASM_X64_PARAM_IMM1:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_MOFFS:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_VEX_L:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_MODRM_REG:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    case EVOASM_X64_PARAM_VEX_V:
+      return EVOASM_X64_BASIC_PARAM_NONE;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
 
 _Static_assert(sizeof(evoasm_x64_basic_params_t) <= sizeof(uint64_t), "basic parameters should bit into 64 bits");

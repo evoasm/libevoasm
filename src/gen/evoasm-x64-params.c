@@ -56,3 +56,7 @@ const char * evoasm_x64_basic_param_get_name(evoasm_x64_basic_param_id_t param) 
   return evoasm_x64_basic_param_get_name_(param  );
 }
 
+evoasm_x64_basic_param_id_t evoasm_x64_param_to_basic(evoasm_x64_param_id_t param) {
+  return evoasm_x64_param_to_basic_(param  );
+}
+
