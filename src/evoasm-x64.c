@@ -19,6 +19,9 @@
 #include "evoasm.h"
 #include "evoasm-signal.h"
 #include "evoasm-param.h"
+#include "evoasm-error.h"
+
+#include <stddef.h>
 
 EVOASM_DEF_LOG_TAG("x64")
 
@@ -135,11 +138,37 @@ evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
 
 evoasm_success_t
 evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  for(size_t i = 0; i < inst->n_params; i++) {
+    evoasm_domain_t *domain = inst->params[i].domain;
+    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
+    evoasm_param_val_t param_val = evoasm_x64_params_get_(params, param_id);
+
+    if(!evoasm_domain_contains(domain, param_val)) {
+      evoasm_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_PARAM,
+                   "Invalid value for parameter %s", evoasm_x64_param_get_name_(param_id));
+      return false;
+    }
+  }
   return evoasm_x64_inst_enc_(inst, params, buf_ref);
 }
 
 evoasm_success_t
 evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
+  for(size_t i = 0; i < inst->n_params; i++) {
+    evoasm_domain_t *domain = inst->params[i].domain;
+    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
+    evoasm_x64_basic_param_id_t basic_param_id = evoasm_x64_param_to_basic_(param_id);
+
+    if(basic_param_id != EVOASM_X64_BASIC_PARAM_NONE) {
+      evoasm_param_val_t param_val = evoasm_x64_basic_params_get_(params, basic_param_id);
+      if(!evoasm_domain_contains(domain, param_val)) {
+        evoasm_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_PARAM,
+                     "Invalid value for parameter %s", evoasm_x64_basic_param_get_name(basic_param_id));
+        return false;
+      }
+    }
+  }
+
   return evoasm_x64_inst_enc_basic_(inst, params, buf_ref);
 }
 
@@ -858,7 +887,7 @@ void
 evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
                          evoasm_x64_cpu_state_t *other_cpu_state,
                          evoasm_x64_cpu_state_t *xored_cpu_state) {
-  size_t size = sizeof(evoasm_x64_cpu_state_t);
+  size_t size = offsetof(evoasm_x64_cpu_state_t, flags);
   uint8_t *data = (uint8_t *) cpu_state;
   uint8_t *other_data = (uint8_t *) other_cpu_state;
   uint8_t *xored_data = (uint8_t *) xored_cpu_state;
@@ -870,10 +899,10 @@ evoasm_x64_cpu_state_xor(evoasm_x64_cpu_state_t *cpu_state,
 
 double
 evoasm_x64_cpu_state_calc_dist(evoasm_x64_cpu_state_t *cpu_state,
-                          evoasm_x64_cpu_state_t *other_cpu_state,
-                          evoasm_metric_t metric) {
+                               evoasm_x64_cpu_state_t *other_cpu_state,
+                               evoasm_metric_t metric) {
 
-  size_t len = sizeof(evoasm_x64_cpu_state_t) / sizeof(uint64_t);
+  size_t len = offsetof(evoasm_x64_cpu_state_t, flags) / sizeof(uint64_t);
   uint64_t *data = (uint64_t *) cpu_state;
   uint64_t *other_data = (uint64_t *) other_cpu_state;
 
@@ -882,12 +911,13 @@ evoasm_x64_cpu_state_calc_dist(evoasm_x64_cpu_state_t *cpu_state,
   for(size_t i = 0; i < len; i++) {
     switch(metric) {
       case EVOASM_METRIC_ABSDIFF:
-        dist += fabs((double)data[i] - (double)other_data[i]);
+        dist += fabs((double) data[i] - (double) other_data[i]);
         break;
       case EVOASM_METRIC_XOR:
         dist += (double) evoasm_popcount64(data[i] ^ other_data[i]) / 64.0;
         break;
-      default: evoasm_assert_not_reached();
+      default:
+        evoasm_assert_not_reached();
     }
   }
   return dist;
@@ -895,12 +925,15 @@ evoasm_x64_cpu_state_calc_dist(evoasm_x64_cpu_state_t *cpu_state,
 
 void
 evoasm_x64_cpu_state_rand(evoasm_x64_cpu_state_t *cpu_state, evoasm_prng_t *prng) {
-  size_t len = sizeof(evoasm_x64_cpu_state_t) / sizeof(uint64_t);
+  size_t len = offsetof(evoasm_x64_cpu_state_t, flags) / sizeof(uint64_t);
   uint64_t *data = (uint64_t *) cpu_state;
 
   for(size_t i = 0; i < len; i++) {
     data[i] = evoasm_prng_rand64_(prng);
   }
+
+  /* make sure we do not set the sigtrap flag or something */
+  cpu_state->rflags[0] &= EVOASM_X64_USEFUL_RFLAGS_MASK;
 }
 
 void
@@ -1034,7 +1067,8 @@ evoasm_x64_sprint_inst(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *param
       case EVOASM_X64_PARAM_TYPE_INT8:
       case EVOASM_X64_PARAM_TYPE_INT32:
       case EVOASM_X64_PARAM_TYPE_INT64:
-        EVOASM_X64_SPRINT_INST_SNPRINTF("%"PRId64, param_val);
+        EVOASM_X64_SPRINT_INST_SNPRINTF("%"
+                                            PRId64, param_val);
         break;
       case EVOASM_X64_PARAM_TYPE_REG:
         EVOASM_X64_SPRINT_INST_SNPRINTF("%s", evoasm_x64_get_reg_name((evoasm_x64_reg_id_t) param_val));

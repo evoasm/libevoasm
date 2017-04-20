@@ -295,6 +295,8 @@ evoasm_x64_reg_type_get_bytesize(evoasm_x64_reg_type_t reg_type) {
   return evoasm_x64_reg_type_bytesizes[reg_type];
 }
 
+#define EVOASM_X64_USEFUL_RFLAGS_MASK 2245
+
 static inline uint64_t
 evoasm_x64_rflags_flag_get_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
   switch(rflags_flag) {

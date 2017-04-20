@@ -241,6 +241,18 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
 static inline bool
 evoasm_domain_contains(evoasm_domain_t *domain, int64_t val) {
   switch(domain->type) {
+    case EVOASM_DOMAIN_TYPE_INT8: {
+      return val >= INT8_MIN && val <= INT8_MAX;
+    }
+    case EVOASM_DOMAIN_TYPE_INT16: {
+      return val >= INT16_MIN && val <= INT16_MAX;
+    }
+    case EVOASM_DOMAIN_TYPE_INT32: {
+      return val >= INT32_MIN && val <= INT32_MAX;
+    }
+    case EVOASM_DOMAIN_TYPE_INT64: {
+      return val >= INT64_MIN && val <= INT64_MAX;
+    }
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
       return val >= interval->min && val <= interval->max;
