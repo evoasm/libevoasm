@@ -36,12 +36,14 @@ typedef struct evoasm_pop_params_s {
   evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
   evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];
   uint8_t n_params;
-
+  uint8_t dist_metric;
   uint16_t n_demes;
   uint16_t deme_size;
   uint16_t min_kernel_size;
   uint16_t max_kernel_size;
   uint16_t example_win_size;
+  uint16_t n_local_search_iters;
+  uint16_t n_minor_gens;
   evoasm_prng_state_t seed;
   uint32_t recur_limit;
   uint16_t n_insts;

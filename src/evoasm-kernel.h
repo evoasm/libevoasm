@@ -137,6 +137,7 @@ evoasm_kernel_emit(evoasm_kernel_t *kernel,
 evoasm_loss_t
 evoasm_kernel_eval(evoasm_kernel_t *program,
                     evoasm_kernel_output_t *output,
+                    evoasm_metric_t,
                     size_t win_off,
                     size_t win_len);
 

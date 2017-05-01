@@ -46,6 +46,8 @@ EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_input, evoasm_kernel_io_t *, evoasm_k
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_output, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
 
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(dist_metric, evoasm_metric_t, uint8_t)
+
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {
   for(size_t i = 0; i < pop_params->n_params; i++) {

@@ -278,7 +278,7 @@ evoasm_kernel_get_operand_reg_id_x64(evoasm_kernel_t *kernel, evoasm_x64_operand
       return EVOASM_X64_REG_NONE;
     }
   } else {
-    evoasm_x64_inst_t *inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[inst_idx]);
+    evoasm_x64_inst_t *inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[inst_idx]);
     if(op->param_idx < inst->n_params) {
       return (evoasm_x64_reg_id_t) evoasm_x64_basic_params_get_(&kernel->x64.params[inst_idx],
                                                                 (evoasm_x64_basic_param_id_t) inst->params[op->param_idx].id);
@@ -427,7 +427,7 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
 
   /* First, handle read ops, so that writing ops do not disturb us */
   for(size_t i = 0; i < kernel->size; i++) {
-    evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
+    evoasm_x64_inst_t *x64_inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
     evoasm_x64_basic_params_t *x64_basic_params = &kernel->x64.params[i];
 
     for(size_t j = 0; j < x64_inst->n_operands; j++) {
@@ -849,7 +849,7 @@ evoasm_kernel_x64_emit_body(evoasm_kernel_t *kernel) {
   kernel->buf_pos_body_start = (uint16_t) buf->pos;
 
   for(size_t i = 0; i < kernel->size; i++) {
-    evoasm_x64_inst_t *inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
+    evoasm_x64_inst_t *inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
     kernel->exception_mask = kernel->exception_mask | inst->exceptions;
     EVOASM_TRY(error, evoasm_x64_inst_enc_basic_, inst, &kernel->x64.params[i], &buf_ref);
   }
@@ -1067,14 +1067,13 @@ error:
   return false;
 }
 
-static void
-evoasm_kernel_update_dist_mat(evoasm_kernel_t *kernel,
-                              evoasm_kernel_output_t *output,
-                              size_t width,
-                              size_t height,
-                              size_t tuple_idx,
-                              double *dist_mat,
-                              evoasm_metric_t metric) {
+static inline void
+evoasm_kernel_update_dist_mat_absdiff(evoasm_kernel_t *kernel,
+                                      evoasm_kernel_output_t *output,
+                                      size_t width,
+                                      size_t height,
+                                      size_t tuple_idx,
+                                      double *dist_mat) {
   evoasm_kernel_io_val_t *io_vals = output->vals + tuple_idx * output->arity;
 
   for(size_t i = 0; i < height; i++) {
@@ -1086,34 +1085,64 @@ evoasm_kernel_update_dist_mat(evoasm_kernel_t *kernel,
 
     for(size_t j = 0; j < width; j++) {
       evoasm_kernel_io_val_t *actual_val = &kernel->output_vals[tuple_idx * width + j];
-      //uint8_t output_size = kernel->output_sizes[j];
-      //switch(output_size) {
-      //
-      //}
-      // FIXME: output is essentially just a bitstring and could be anything
-      // an integer (both, signed or unsigned) a float or double.
-      // Moreover, a portion of the output value could
-      // hold the correct answer (e.g. lower 8 or 16 bits etc.).
-      // For now we use the tuple output type and assume signedness.
-      // This needs to be fixed.
 
       double actual_val_dbl[16];
       size_t actual_val_dbl_len = evoasm_kernel_io_val_to_dbl(actual_val, tuple_type, actual_val_dbl);
       (void) actual_val_dbl_len;
 
-      switch(metric) {
-        default:
-        case EVOASM_METRIC_ABSDIFF: {
-          double dist = 0;
-          for(size_t k = 0; k < expected_val_dbl_len; k++) {
-            dist += fabs(actual_val_dbl[k] - expected_val_dbl[k]);
-          }
-          dist_mat[i * width + j] += dist;
-          break;
-        }
+      double dist = 0;
+      for(size_t k = 0; k < expected_val_dbl_len; k++) {
+        dist += fabs(actual_val_dbl[k] - expected_val_dbl[k]);
       }
+      dist_mat[i * width + j] += dist;
     }
   }
+}
+
+
+static inline void
+evoasm_kernel_update_dist_mat_hamming(evoasm_kernel_t *kernel,
+                                      evoasm_kernel_output_t *output,
+                                      size_t width,
+                                      size_t height,
+                                      size_t tuple_idx,
+                                      double *dist_mat) {
+  evoasm_kernel_io_val_t *io_vals = output->vals + tuple_idx * output->arity;
+
+  for(size_t i = 0; i < height; i++) {
+    evoasm_kernel_io_val_t *expected_val = &io_vals[i];
+    for(size_t j = 0; j < width; j++) {
+      evoasm_kernel_io_val_t *actual_val = &kernel->output_vals[tuple_idx * width + j];
+
+      uint64_t dist = 0;
+      for(size_t k = 0; k < EVOASM_ARRAY_LEN(actual_val->u64); k++) {
+        dist += evoasm_popcount64(actual_val->u64[k] ^ expected_val->u64[k]);
+      }
+
+      dist_mat[i * width + j] += (double) dist;
+    }
+  }
+}
+
+
+static void
+evoasm_kernel_update_dist_mat(evoasm_kernel_t *kernel,
+                              evoasm_kernel_output_t *output,
+                              size_t width,
+                              size_t height,
+                              size_t tuple_idx,
+                              double *dist_mat,
+                              evoasm_metric_t metric) {
+  switch(metric) {
+    case EVOASM_METRIC_ABSDIFF:
+      evoasm_kernel_update_dist_mat_absdiff(kernel, output, width, height, tuple_idx, dist_mat);
+      break;
+    case EVOASM_METRIC_HAMMING:
+    default:
+      evoasm_kernel_update_dist_mat_hamming(kernel, output, width, height, tuple_idx, dist_mat);
+      break;
+  }
+
 }
 
 static void
@@ -1324,7 +1353,7 @@ evoasm_kernel_build_dist_mat(evoasm_kernel_t *kernel,
   for(size_t i = 0; i < win_size; i++) {
     size_t tuple_idx = (win_off + i) % n_tuples;
     evoasm_kernel_update_dist_mat(kernel, output, width, height, tuple_idx, dist_mat,
-                                  EVOASM_METRIC_ABSDIFF);
+                                  metric);
 
 
   }
@@ -1333,6 +1362,7 @@ evoasm_kernel_build_dist_mat(evoasm_kernel_t *kernel,
 static evoasm_loss_t
 evoasm_kernel_assess(evoasm_kernel_t *kernel,
                      evoasm_kernel_output_t *output,
+                     evoasm_metric_t dist_metric,
                      size_t win_off,
                      size_t win_size) {
 
@@ -1348,7 +1378,7 @@ evoasm_kernel_assess(evoasm_kernel_t *kernel,
   evoasm_loss_t loss;
 
   evoasm_kernel_build_dist_mat(kernel, output, win_off, win_size,
-                               height, dist_mat, EVOASM_METRIC_ABSDIFF);
+                               height, dist_mat, dist_metric);
 
   if(height == 1) {
     /* COMMON FAST-PATH */
@@ -1395,6 +1425,7 @@ no_matching:
 static inline evoasm_loss_t
 evoasm_kernel_eval_(evoasm_kernel_t *kernel,
                     evoasm_kernel_output_t *output,
+                    evoasm_metric_t dist_metric,
                     size_t output_off,
                     size_t output_size) {
 
@@ -1430,7 +1461,7 @@ evoasm_kernel_eval_(evoasm_kernel_t *kernel,
 
   if(EVOASM_SIGNAL_TRY()) {
     evoasm_buf_exec(kernel->buf);
-    loss = evoasm_kernel_assess(kernel, output, output_off, output_size);
+    loss = evoasm_kernel_assess(kernel, output, dist_metric, output_off, output_size);
   } else {
     evoasm_log_fatal("kernel %p signaled", (void *) kernel);
     loss = INFINITY;
@@ -1444,12 +1475,13 @@ evoasm_kernel_eval_(evoasm_kernel_t *kernel,
 evoasm_loss_t
 evoasm_kernel_eval(evoasm_kernel_t *kernel,
                    evoasm_kernel_output_t *output,
+                   evoasm_metric_t metric,
                    size_t win_off,
                    size_t win_size) {
 
 //  evoasm_kernel_log(kernel, EVOASM_LOG_LEVEL_FATAL);
 
-  evoasm_loss_t loss = evoasm_kernel_eval_(kernel, output, win_off, win_size);
+  evoasm_loss_t loss = evoasm_kernel_eval_(kernel, output, metric, win_off, win_size);
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
   for(size_t i = 0; i < 10; i++) {
@@ -1611,14 +1643,14 @@ evoasm_kernel_x64_find_writers(evoasm_kernel_t *kernel,
 
   if(reader_inst_idx < kernel->size) {
     params = &kernel->x64.params[reader_inst_idx];
-    inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[reader_inst_idx]);
+    inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[reader_inst_idx]);
   } else {
     params = NULL;
     inst = NULL;
   }
 
   for(int i = (int) reader_inst_idx - 1; i >= 0; i--) {
-    evoasm_x64_inst_t *writer_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
+    evoasm_x64_inst_t *writer_inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
 
     for(size_t j = 0; j < writer_inst->n_operands; j++) {
       evoasm_x64_operand_t *writer_op = &writer_inst->operands[j];
@@ -1686,7 +1718,7 @@ evoasm_kernel_x64_mark_writers(evoasm_kernel_t *kernel, size_t inst_idx,
     evoasm_bitmap_t *inst_bitmap = (evoasm_bitmap_t *) &ctx->inst_bitmap;
     if(evoasm_bitmap_get(inst_bitmap, writer_inst_idx)) continue;
 
-    evoasm_x64_inst_t *x64_inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[writer_inst_idx]);
+    evoasm_x64_inst_t *x64_inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[writer_inst_idx]);
     evoasm_bitmap_set(inst_bitmap, writer_inst_idx);
     EVOASM_LOG_INTRON_ELIM("\tMarking %zuth writer to %s: %s (%zu)\n", i, evoasm_x64_get_reg_name(reg_id),
                            x64_inst->mnem, writer_inst_idx);
@@ -1881,7 +1913,7 @@ evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_log_level_t log_level) {
   switch(kernel->arch_info->id) {
     case EVOASM_ARCH_X64:
       for(size_t i = 0; i < kernel->size; i++) {
-        evoasm_x64_inst_t *inst = evoasm_x64_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
+        evoasm_x64_inst_t *inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);
         evoasm_x64_basic_params_t *params = &kernel->x64.params[i];
 
         char buf[1024];

@@ -129,7 +129,7 @@
 
 typedef enum {
   EVOASM_METRIC_ABSDIFF,
-  EVOASM_METRIC_XOR,
+  EVOASM_METRIC_HAMMING,
   EVOASM_METRIC_NONE
 } evoasm_metric_t;
 

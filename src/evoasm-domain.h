@@ -20,7 +20,7 @@
 #include "evoasm-rand.h"
 
 #define EVOASM_DOMAIN_HEADER \
-   uint8_t type: 3;
+   uint8_t type;
 
 #define EVOASM_DOMAIN_DECL_ENUM_DOMAIN_STRUCT(l) \
   typedef struct { \
@@ -293,3 +293,8 @@ evoasm_domain_is_empty(evoasm_domain_t *domain) {
 
 void
 evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level);
+
+
+bool
+evoasm_domain_is_range(evoasm_domain_t *domain);
+

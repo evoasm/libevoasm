@@ -77,14 +77,14 @@ typedef enum {
 
 
 typedef union {
-  int64_t i64[2];
-  uint64_t u64[2];
-  int32_t i32[4];
-  uint32_t u32[4];
-  int16_t i16[8];
-  int16_t u16[8];
-  int8_t i8[16];
-  uint8_t u8[16];
+  int64_t i64[4];
+  uint64_t u64[4];
+  int32_t i32[8];
+  uint32_t u32[8];
+  int16_t i16[16];
+  int16_t u16[16];
+  int8_t i8[32];
+  uint8_t u8[32];
   double f64[4];
   float f32[8];
 } evoasm_kernel_io_val_t;

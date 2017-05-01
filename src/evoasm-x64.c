@@ -132,8 +132,8 @@ cpuid_failed:
 }
 
 evoasm_x64_inst_t *
-evoasm_x64_inst(evoasm_x64_inst_id_t inst_id) {
-  return evoasm_x64_inst_(inst_id);
+evoasm_x64_get_inst(evoasm_x64_inst_id_t inst_id) {
+  return evoasm_x64_get_inst_(inst_id);
 }
 
 evoasm_success_t
@@ -913,7 +913,7 @@ evoasm_x64_cpu_state_calc_dist(evoasm_x64_cpu_state_t *cpu_state,
       case EVOASM_METRIC_ABSDIFF:
         dist += fabs((double) data[i] - (double) other_data[i]);
         break;
-      case EVOASM_METRIC_XOR:
+      case EVOASM_METRIC_HAMMING:
         dist += (double) evoasm_popcount64(data[i] ^ other_data[i]) / 64.0;
         break;
       default:

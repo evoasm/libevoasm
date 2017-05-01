@@ -46,6 +46,7 @@ struct evoasm_deme_s {
   uint16_t example_win_off;
   uint16_t stagn_counter;
   uint16_t idx;
+  uint16_t imm_param_idx;
   float mut_rate;
   evoasm_arch_id_t arch_id;
   uint64_t error_counter;
@@ -63,6 +64,8 @@ struct evoasm_deme_s {
   struct evoasm_pop_s *pop;
   evoasm_domain_t *domains;
   const evoasm_pop_params_t *params;
+  evoasm_bitmap_t *imm_insts_bitmap;
+  uint16_t *inst_idx_mapping;
 } evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
 
 typedef struct evoasm_deme_s evoasm_deme_t;
@@ -70,6 +73,8 @@ typedef struct evoasm_deme_s evoasm_deme_t;
 typedef struct evoasm_pop_s {
   const evoasm_pop_params_t *params;
   evoasm_domain_t *domains;
+  uint16_t *inst_idx_mapping;
+  evoasm_bitmap_t *imm_insts_bitmap;
   evoasm_deme_t *demes;
   evoasm_loss_t *summary_losses;
   bool seeded : 1;
@@ -84,7 +89,7 @@ evoasm_pop_init(evoasm_pop_t *pop,
 
 
 evoasm_success_t
-evoasm_pop_eval(evoasm_pop_t *pop, size_t n_minor_gens);
+evoasm_pop_eval(evoasm_pop_t *pop);
 
 void
 evoasm_pop_next_gen(evoasm_pop_t *pop);

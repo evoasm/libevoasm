@@ -76,6 +76,18 @@ evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   return evoasm_domain_rand_(domain, prng);
 }
 
+bool
+evoasm_domain_is_range(evoasm_domain_t *domain) {
+  switch((evoasm_domain_type_t) domain->type) {
+    case EVOASM_DOMAIN_TYPE_RANGE:
+    case EVOASM_DOMAIN_TYPE_INT64:
+    case EVOASM_DOMAIN_TYPE_INT32:
+    case EVOASM_DOMAIN_TYPE_INT16:
+    case EVOASM_DOMAIN_TYPE_INT8:  return true;
+    default: return false;
+  }
+}
+
 EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
 
 evoasm_success_t

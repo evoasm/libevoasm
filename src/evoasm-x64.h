@@ -257,19 +257,19 @@ evoasm_x64_inst_enc_basic_(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *p
 extern const evoasm_x64_inst_t *EVOASM_X64_INSTS_VAR_NAME;
 
 static inline evoasm_x64_inst_t *
-evoasm_x64_inst_(evoasm_x64_inst_id_t inst_id) {
+evoasm_x64_get_inst_(evoasm_x64_inst_id_t inst_id) {
   return (evoasm_x64_inst_t *) &EVOASM_X64_INSTS_VAR_NAME[inst_id];
 }
 
 static inline evoasm_success_t
 evoasm_x64_enc_(evoasm_x64_inst_id_t inst_id, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
-  evoasm_x64_inst_t *inst = evoasm_x64_inst_(inst_id);
+  evoasm_x64_inst_t *inst = evoasm_x64_get_inst_(inst_id);
   return evoasm_x64_inst_enc_(inst, params, buf_ref);
 }
 
 static inline evoasm_success_t
 evoasm_x64_enc_basic_(evoasm_x64_inst_id_t inst_id, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
-  evoasm_x64_inst_t *inst = evoasm_x64_inst_(inst_id);
+  evoasm_x64_inst_t *inst = evoasm_x64_get_inst_(inst_id);
   return evoasm_x64_inst_enc_basic_(inst, params, buf_ref);
 }
 
