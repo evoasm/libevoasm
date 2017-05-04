@@ -22,6 +22,8 @@
 
 #define EVOASM_MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define EVOASM_MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define EVOASM_ABS(a) (((a) < 0) ? -(a) : (a))
+
 #define EVOASM_CLAMP(x, min, max) (((x) > (max)) ? (max) : (((x) < (min)) ? (min) : (x)))
 
 #define EVOASM_ALIGN_DOWN(s, a) ((s) - ((s) % a))
@@ -32,8 +34,8 @@
 #define EVOASM_ARRAY_LEN(array) (sizeof(array) / sizeof(array[0]))
 
 #ifdef __GNUC__
-# define evoasm_unlikely(e) (__builtin_expect(e, 0))
-# define evoasm_likely(e) (__builtin_expect(e, 1))
+# define evoasm_unlikely(e) (__builtin_expect(!!(e), 0))
+# define evoasm_likely(e) (__builtin_expect(!!(e), 1))
 # define evoasm_used __attribute__((used))
 # define evoasm_printf(x, y) __attribute__((__format__(__printf__, x, y)))
 #else

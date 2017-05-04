@@ -20,7 +20,7 @@
 #include "evoasm-rand.h"
 
 #define EVOASM_DOMAIN_HEADER \
-   uint8_t type;
+   uint8_t type : 3; \
 
 #define EVOASM_DOMAIN_DECL_ENUM_DOMAIN_STRUCT(l) \
   typedef struct { \
@@ -33,25 +33,31 @@
 #define EVOASM_ENUM_DOMAIN_SIZE(len) (sizeof(evoasm_enum_domain_t) + EVOASM_ENUM_DOMAIN_VALS_SIZE(len))
 
 typedef enum {
+  EVOASM_DOMAIN_FLAG_INT64 = 1 << 0,
+  EVOASM_DOMAIN_FLAG_INT32 = 1 << 1,
+  EVOASM_DOMAIN_FLAG_INT16 = 1 << 2,
+  EVOASM_DOMAIN_FLAG_INT8 = 1 << 3,
+} evoasm_domain_flags;
+
+#define EVOASM_DOMAIN_FLAGS_NONE 0
+
+typedef enum {
   EVOASM_DOMAIN_TYPE_ENUM,
   EVOASM_DOMAIN_TYPE_RANGE,
-  EVOASM_DOMAIN_TYPE_INT64,
-  EVOASM_DOMAIN_TYPE_INT32,
-  EVOASM_DOMAIN_TYPE_INT16,
-  EVOASM_DOMAIN_TYPE_INT8,
   EVOASM_DOMAIN_TYPE_NONE
 } evoasm_domain_type_t;
 
+typedef enum {
+  EVOASM_RANGE_DOMAIN_TYPE_INT8,
+  EVOASM_RANGE_DOMAIN_TYPE_INT16,
+  EVOASM_RANGE_DOMAIN_TYPE_INT32,
+  EVOASM_RANGE_DOMAIN_TYPE_INT64,
+  EVOASM_RANGE_DOMAIN_TYPE_CUSTOM,
+} evoasm_range_domain_type_t;
+
 typedef struct {
   EVOASM_DOMAIN_HEADER
-} evoasm_int64_domain_t;
-
-typedef evoasm_int64_domain_t evoasm_int32_domain_t;
-typedef evoasm_int64_domain_t evoasm_int16_domain_t;
-typedef evoasm_int64_domain_t evoasm_int8_domain_t;
-
-typedef struct {
-  EVOASM_DOMAIN_HEADER
+  uint8_t range_type;
   int64_t min;
   int64_t max;
 } evoasm_range_domain_t;
@@ -82,19 +88,22 @@ evoasm_domain_rand_(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;
-      return evoasm_prng_rand_between_(prng, range_domain->min, range_domain->max + 1);
-    }
-    case EVOASM_DOMAIN_TYPE_INT64: {
-      return (int64_t) evoasm_prng_rand64_(prng);
-    }
-    case EVOASM_DOMAIN_TYPE_INT32: {
-      return (int32_t) evoasm_prng_rand32_(prng);
-    }
-    case EVOASM_DOMAIN_TYPE_INT16: {
-      return (int16_t) evoasm_prng_rand16_(prng);
-    }
-    case EVOASM_DOMAIN_TYPE_INT8: {
-      return (int8_t) evoasm_prng_rand8_(prng);
+      switch(range_domain->range_type) {
+        case EVOASM_RANGE_DOMAIN_TYPE_INT64: {
+          return (int64_t) evoasm_prng_rand64_(prng);
+        }
+        case EVOASM_RANGE_DOMAIN_TYPE_INT32: {
+          return (int32_t) evoasm_prng_rand32_(prng);
+        }
+        case EVOASM_RANGE_DOMAIN_TYPE_INT16: {
+          return (int16_t) evoasm_prng_rand16_(prng);
+        }
+        case EVOASM_RANGE_DOMAIN_TYPE_INT8: {
+          return (int8_t) evoasm_prng_rand8_(prng);
+        }
+        default:
+          return evoasm_prng_rand_between_(prng, range_domain->min, range_domain->max + 1);
+      }
     }
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enm = (evoasm_enum_domain_t *) domain;
@@ -112,17 +121,13 @@ evoasm_domain_clone(evoasm_domain_t *restrict domain, evoasm_domain_t *restrict 
 
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_RANGE: {
-      evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
-      evoasm_range_domain_t *interval_dst = (evoasm_range_domain_t *) domain_dst;
-      interval_dst->min = interval->min;
-      interval_dst->max = interval->max;
+      evoasm_range_domain_t *range = (evoasm_range_domain_t *) domain;
+      evoasm_range_domain_t *range_dst = (evoasm_range_domain_t *) domain_dst;
+      range_dst->min = range->min;
+      range_dst->max = range->max;
+      range_dst->range_type = range->range_type;
       break;
     }
-    case EVOASM_DOMAIN_TYPE_INT64:
-    case EVOASM_DOMAIN_TYPE_INT32:
-    case EVOASM_DOMAIN_TYPE_INT16:
-    case EVOASM_DOMAIN_TYPE_INT8:
-      break;
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enm = (evoasm_enum_domain_t *) domain;
       evoasm_enum_domain_t *enm_dst = (evoasm_enum_domain_t *) domain_dst;
@@ -140,38 +145,71 @@ evoasm_domain_get_bounds_(evoasm_domain_t *domain, int64_t *min, int64_t *max) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
+
       *min = enum_domain->vals[0];
       *max = enum_domain->vals[enum_domain->len];
       break;
     }
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;
-      *min = range_domain->min;
-      *max = range_domain->max;
-      break;
-    }
-    case EVOASM_DOMAIN_TYPE_INT8: {
-      *min = INT8_MIN;
-      *max = INT8_MAX;
-      break;
-    }
-    case EVOASM_DOMAIN_TYPE_INT16: {
-      *min = INT16_MIN;
-      *max = INT16_MAX;
-      break;
-    }
-    case EVOASM_DOMAIN_TYPE_INT32: {
-      *min = INT32_MIN;
-      *max = INT32_MAX;
-      break;
-    }
-    case EVOASM_DOMAIN_TYPE_INT64: {
-      *min = INT64_MIN;
-      *max = INT64_MAX;
+
+      switch((evoasm_range_domain_type_t) range_domain->range_type) {
+        case EVOASM_RANGE_DOMAIN_TYPE_INT8:
+          *min = INT8_MIN;
+          *max = INT8_MAX;
+          break;
+        case EVOASM_RANGE_DOMAIN_TYPE_INT16:
+          *min = INT16_MIN;
+          *max = INT16_MAX;
+          break;
+        case EVOASM_RANGE_DOMAIN_TYPE_INT32:
+          *min = INT32_MIN;
+          *max = INT32_MAX;
+          break;
+        case EVOASM_RANGE_DOMAIN_TYPE_INT64:
+          *min = INT64_MIN;
+          *max = INT64_MAX;
+          break;
+        default:
+          *min = range_domain->min;
+          *max = range_domain->max;
+          break;
+      }
       break;
     }
     default:
       evoasm_assert_not_reached();
+  }
+}
+
+static inline uint64_t
+evoasm_range_domain_get_size(evoasm_range_domain_t *range_domain) {
+  switch((evoasm_range_domain_type_t) range_domain->range_type) {
+    case EVOASM_RANGE_DOMAIN_TYPE_INT8: return UINT8_MAX;
+    case EVOASM_RANGE_DOMAIN_TYPE_INT16: return UINT16_MAX;
+    case EVOASM_RANGE_DOMAIN_TYPE_INT32: return UINT32_MAX;
+    case EVOASM_RANGE_DOMAIN_TYPE_INT64: return UINT64_MAX;
+    default: {
+      return (uint64_t) (range_domain->max - range_domain->min);
+    }
+  }
+}
+
+static inline size_t
+evoasm_range_domain_get_bitsize(evoasm_range_domain_t *range_domain) {
+  switch((evoasm_range_domain_type_t) range_domain->range_type) {
+    case EVOASM_RANGE_DOMAIN_TYPE_INT8: return 8;
+    case EVOASM_RANGE_DOMAIN_TYPE_INT16: return 16;
+    case EVOASM_RANGE_DOMAIN_TYPE_INT32: return 32;
+    case EVOASM_RANGE_DOMAIN_TYPE_INT64: return 64;
+    default: {
+      uint64_t v = (uint64_t) EVOASM_MAX(EVOASM_ABS(range_domain->min),
+                                         EVOASM_ABS(range_domain->max));
+
+      size_t l = 0;
+      while(v >>= 1) ++l;
+      return l;
+    }
   }
 }
 
@@ -241,21 +279,10 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
 static inline bool
 evoasm_domain_contains(evoasm_domain_t *domain, int64_t val) {
   switch(domain->type) {
-    case EVOASM_DOMAIN_TYPE_INT8: {
-      return val >= INT8_MIN && val <= INT8_MAX;
-    }
-    case EVOASM_DOMAIN_TYPE_INT16: {
-      return val >= INT16_MIN && val <= INT16_MAX;
-    }
-    case EVOASM_DOMAIN_TYPE_INT32: {
-      return val >= INT32_MIN && val <= INT32_MAX;
-    }
-    case EVOASM_DOMAIN_TYPE_INT64: {
-      return val >= INT64_MIN && val <= INT64_MAX;
-    }
     case EVOASM_DOMAIN_TYPE_RANGE: {
-      evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
-      return val >= interval->min && val <= interval->max;
+      int64_t min, max;
+      evoasm_domain_get_bounds_(domain, &min, &max);
+      return val >= min && val <= max;
     }
     case EVOASM_DOMAIN_TYPE_ENUM: {
       size_t i;
@@ -280,11 +307,6 @@ evoasm_domain_is_empty(evoasm_domain_t *domain) {
       evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
       return interval->min >= interval->max;
     }
-    case EVOASM_DOMAIN_TYPE_INT64:
-    case EVOASM_DOMAIN_TYPE_INT32:
-    case EVOASM_DOMAIN_TYPE_INT16:
-    case EVOASM_DOMAIN_TYPE_INT8:
-      return false;
     default:
       evoasm_assert_not_reached();
   }

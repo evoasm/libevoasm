@@ -30,6 +30,7 @@ evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
   switch(domain->type) {
     case EVOASM_DOMAIN_TYPE_ENUM: {
       evoasm_enum_domain_t *enum_domain = (evoasm_enum_domain_t *) domain;
+
       evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Enum%d( ", enum_domain->len);
       for(size_t i = 0; i < enum_domain->len; i++) {
         evoasm_log(log_level, EVOASM_LOG_TAG, "  %" PRId64 " ", enum_domain->vals[i]);
@@ -38,13 +39,18 @@ evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level) {
       break;
     }
     case EVOASM_DOMAIN_TYPE_RANGE: {
-      evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
-      evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Interval(%" PRId64 "..%" PRId64 ")", interval->min, interval->max);
+      evoasm_range_domain_t *range = (evoasm_range_domain_t *) domain;
+
+      switch((evoasm_range_domain_type_t) range->range_type) {
+        case EVOASM_RANGE_DOMAIN_TYPE_INT64:
+          evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Interval(INT64_MIN..INT64_MAX)");
+          break;
+        default:
+          evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Interval(%" PRId64 "..%" PRId64 ")", range->min, range->max);
+          break;
+      }
       break;
     }
-    case EVOASM_DOMAIN_TYPE_INT64:
-      evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Interval(INT64_MIN..INT64_MAX)");
-      break;
     default:
       evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Domain INVALID");
   }
@@ -76,18 +82,6 @@ evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   return evoasm_domain_rand_(domain, prng);
 }
 
-bool
-evoasm_domain_is_range(evoasm_domain_t *domain) {
-  switch((evoasm_domain_type_t) domain->type) {
-    case EVOASM_DOMAIN_TYPE_RANGE:
-    case EVOASM_DOMAIN_TYPE_INT64:
-    case EVOASM_DOMAIN_TYPE_INT32:
-    case EVOASM_DOMAIN_TYPE_INT16:
-    case EVOASM_DOMAIN_TYPE_INT8:  return true;
-    default: return false;
-  }
-}
-
 EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
 
 evoasm_success_t
@@ -105,8 +99,8 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
 
       if(len > EVOASM_ENUM_DOMAIN_LEN_MAX) {
         evoasm_error(EVOASM_ERROR_TYPE_NONE, EVOASM_ERROR_CODE_NONE,
-                         "Exceeded maximum enumeration domain length (%d > %d)",
-                         enum_domain->len, EVOASM_ENUM_DOMAIN_LEN_MAX);
+                     "Exceeded maximum enumeration domain length (%d > %d)",
+                     enum_domain->len, EVOASM_ENUM_DOMAIN_LEN_MAX);
         return false;
       }
 
@@ -117,15 +111,13 @@ evoasm_domain_init(evoasm_domain_t *domain, evoasm_domain_type_t type, ...) {
     }
     case EVOASM_DOMAIN_TYPE_RANGE: {
       evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;
-      range_domain->min = va_arg(args, int64_t);
-      range_domain->max = va_arg(args, int64_t);
+      range_domain->range_type = va_arg(args, evoasm_range_domain_type_t);
+      if(range_domain->range_type == EVOASM_RANGE_DOMAIN_TYPE_CUSTOM) {
+        range_domain->min = va_arg(args, int64_t);
+        range_domain->max = va_arg(args, int64_t);
+      }
       break;
     }
-    case EVOASM_DOMAIN_TYPE_INT64:
-    case EVOASM_DOMAIN_TYPE_INT32:
-    case EVOASM_DOMAIN_TYPE_INT16:
-    case EVOASM_DOMAIN_TYPE_INT8:
-      break;
     default:
       evoasm_assert_not_reached();
 

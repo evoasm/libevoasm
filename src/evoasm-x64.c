@@ -138,36 +138,36 @@ evoasm_x64_get_inst(evoasm_x64_inst_id_t inst_id) {
 
 evoasm_success_t
 evoasm_x64_inst_enc(evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, evoasm_buf_ref_t *buf_ref) {
-  for(size_t i = 0; i < inst->n_params; i++) {
-    evoasm_domain_t *domain = inst->params[i].domain;
-    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
-    evoasm_param_val_t param_val = evoasm_x64_params_get_(params, param_id);
-
-    if(!evoasm_domain_contains(domain, param_val)) {
-      evoasm_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_PARAM,
-                   "Invalid value for parameter %s", evoasm_x64_param_get_name_(param_id));
-      return false;
-    }
-  }
+//  for(size_t i = 0; i < inst->n_params; i++) {
+//    evoasm_domain_t *domain = inst->params[i].domain;
+//    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
+//    evoasm_param_val_t param_val = evoasm_x64_params_get_(params, param_id);
+//
+//    if(!evoasm_domain_contains(domain, param_val)) {
+//      evoasm_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_PARAM,
+//                   "Invalid value for parameter %s", evoasm_x64_param_get_name_(param_id));
+//      return false;
+//    }
+//  }
   return evoasm_x64_inst_enc_(inst, params, buf_ref);
 }
 
 evoasm_success_t
 evoasm_x64_inst_enc_basic(evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params, evoasm_buf_ref_t *buf_ref) {
-  for(size_t i = 0; i < inst->n_params; i++) {
-    evoasm_domain_t *domain = inst->params[i].domain;
-    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
-    evoasm_x64_basic_param_id_t basic_param_id = evoasm_x64_param_to_basic_(param_id);
-
-    if(basic_param_id != EVOASM_X64_BASIC_PARAM_NONE) {
-      evoasm_param_val_t param_val = evoasm_x64_basic_params_get_(params, basic_param_id);
-      if(!evoasm_domain_contains(domain, param_val)) {
-        evoasm_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_PARAM,
-                     "Invalid value for parameter %s", evoasm_x64_basic_param_get_name(basic_param_id));
-        return false;
-      }
-    }
-  }
+//  for(size_t i = 0; i < inst->n_params; i++) {
+//    evoasm_domain_t *domain = inst->params[i].domain;
+//    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
+//    evoasm_x64_basic_param_id_t basic_param_id = evoasm_x64_param_to_basic_(param_id);
+//
+//    if(basic_param_id != EVOASM_X64_BASIC_PARAM_NONE) {
+//      evoasm_param_val_t param_val = evoasm_x64_basic_params_get_(params, basic_param_id);
+//      if(!evoasm_domain_contains(domain, param_val)) {
+//        evoasm_error(EVOASM_ERROR_TYPE_ARCH, EVOASM_ARCH_ERROR_CODE_INVALID_PARAM,
+//                     "Invalid value for parameter %s", evoasm_x64_basic_param_get_name(basic_param_id));
+//        return false;
+//      }
+//    }
+//  }
 
   return evoasm_x64_inst_enc_basic_(inst, params, buf_ref);
 }
@@ -303,6 +303,30 @@ evoasm_x64_basic_params_init(evoasm_x64_basic_params_t *params) {
   *params = zero_params;
 }
 
+void
+evoasm_x64_params_rand(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst, evoasm_prng_t *prng) {
+  for(size_t i = 0; i < inst->n_params; i++) {
+    evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
+    switch(param_id) {
+      case EVOASM_X64_PARAM_IMM0:
+      case EVOASM_X64_PARAM_REG0:
+      case EVOASM_X64_PARAM_REG1:
+      case EVOASM_X64_PARAM_REG2:
+      case EVOASM_X64_PARAM_REG3:
+      case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+      case EVOASM_X64_PARAM_REG1_HIGH_BYTE: {
+        evoasm_domain_t *domain = inst->params->domain;
+        evoasm_param_val_t param_val = evoasm_domain_rand_(domain, prng);
+        evoasm_x64_params_set_(params, param_id, param_val);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+}
+
+
 static bool
 evoasm_x64_is_useful_inst(evoasm_x64_inst_id_t inst) {
   switch(inst) {
@@ -334,8 +358,8 @@ evoasm_x64_is_useful_inst(evoasm_x64_inst_id_t inst) {
 }
 
 size_t
-evoasm_x64_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types,
-                 evoasm_x64_inst_id_t *insts) {
+evoasm_x64_get_insts(uint64_t flags, uint64_t features, uint64_t operand_types, uint64_t reg_types,
+                     evoasm_x64_inst_id_t *insts) {
   size_t len = 0;
   bool include_useless = (flags & EVOASM_X64_INSTS_FLAG_INCLUDE_USELESS) != 0;
   bool only_basic = (flags & EVOASM_X64_INSTS_FLAG_ONLY_BASIC) != 0;

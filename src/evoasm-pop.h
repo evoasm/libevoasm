@@ -42,7 +42,7 @@ typedef struct  {
 struct evoasm_pop_s;
 
 struct evoasm_deme_s {
-
+  bool major;
   uint16_t example_win_off;
   uint16_t stagn_counter;
   uint16_t idx;

@@ -524,7 +524,7 @@ evoasm_deme_load_kernel(evoasm_deme_t *deme,
 }
 
 static evoasm_success_t
-evoasm_deme_eval_kernel(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_loss) {
+evoasm_deme_eval_kernel(evoasm_deme_t *deme, evoasm_loss_t *ret_loss) {
   const evoasm_pop_params_t *params = deme->params;
   evoasm_kernel_t *kernel = &deme->kernel;
 
@@ -534,7 +534,7 @@ evoasm_deme_eval_kernel(evoasm_deme_t *deme, bool major, evoasm_loss_t *ret_loss
   size_t win_off = 0;
   size_t win_size = SIZE_MAX;
 
-  if(!major) {
+  if(!deme->major) {
     win_off = deme->example_win_off;
     win_size = deme->params->example_win_size;
   }
@@ -617,13 +617,13 @@ error:
 }
 
 static evoasm_success_t
-evoasm_deme_test_kernel(evoasm_deme_t *deme, bool major, size_t kernel_idx) {
+evoasm_deme_test_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
   evoasm_loss_t loss;
   evoasm_deme_losses_t *losses = &deme->losses;
 
   evoasm_deme_load_kernel(deme, kernel_idx);
 
-  EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, major, &loss);
+  EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &loss);
 
   losses->losses[kernel_idx] = loss;
 
@@ -647,10 +647,10 @@ evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t kernel_i
 }
 
 static evoasm_success_t
-evoasm_deme_test(evoasm_deme_t *deme, bool major) {
+evoasm_deme_test(evoasm_deme_t *deme) {
 
   for(size_t i = 0; i < deme->params->deme_size; i++) {
-    EVOASM_TRY(error, evoasm_deme_test_kernel, deme, major, i);
+    EVOASM_TRY(error, evoasm_deme_test_kernel, deme, i);
   }
 
   return true;
@@ -671,10 +671,9 @@ evoasm_pop_get_gen_counter(evoasm_pop_t *pop) {
 }
 
 static void
-evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
+evoasm_deme_eval_update(evoasm_deme_t *deme) {
 
-
-  if(major) {
+  if(deme->major) {
     evoasm_deme_losses_t *losses = &deme->losses;
 
     evoasm_loss_t top_loss = INFINITY;
@@ -723,36 +722,41 @@ evoasm_deme_eval_update(evoasm_deme_t *deme, bool major) {
 }
 
 static evoasm_success_t
-evoasm_deme_eval(evoasm_deme_t *deme, bool major, size_t gen_counter) {
+evoasm_deme_eval(evoasm_deme_t *deme, bool major) {
   bool retval = true;
 
-  if(!major && gen_counter > 0 &&
-     evoasm_kernel_input_get_n_tuples(deme->params->kernel_input) > deme->params->example_win_size) {
+  if(!major && evoasm_kernel_input_get_n_tuples(deme->params->kernel_input) > deme->params->example_win_size) {
     deme->example_win_off++;
   }
 
-  if(!evoasm_deme_test(deme, major)) {
+  deme->major = major;
+
+  if(!evoasm_deme_test(deme)) {
     retval = false;
     goto done;
   }
 
-  evoasm_deme_eval_update(deme, major);
+  evoasm_deme_eval_update(deme);
 
 done:
   return retval;
 }
 
 static evoasm_success_t
-evoasm_pop_eval_major(evoasm_pop_t *pop) {
+evoasm_pop_run_major_gen(evoasm_pop_t *pop) {
   bool retval = true;
   size_t n_demes = pop->n_demes;
 
   bool *retvals = evoasm_alloca(sizeof(bool) * n_demes);
   evoasm_error_t *errors = evoasm_alloca(sizeof(evoasm_error_t) * n_demes);
 
+  for(size_t i = 0; i < n_demes; i++) {
+    pop->demes[i].major = true;
+  }
+
 #pragma omp parallel for
   for(size_t i = 0; i < n_demes; i++) {
-    retvals[i] = evoasm_deme_eval(&pop->demes[i], true, pop->gen_counter);
+    retvals[i] = evoasm_deme_eval(&pop->demes[i], true);
     if(!retvals[i]) {
       errors[i] = *evoasm_get_last_error();
     }
@@ -842,9 +846,83 @@ evoasm_deme_soft_mutate_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
 }
 
 
+static inline evoasm_success_t
+evoasm_deme_local_search_imm_operand(evoasm_deme_t *deme,
+                                     size_t kernel_idx,
+                                     evoasm_x64_basic_params_t *params_ptr,
+                                     evoasm_domain_t *domain) {
+  int64_t min, max;
+  evoasm_domain_get_bounds_(domain, &min, &max);
+  evoasm_range_domain_t *range_domain = (evoasm_range_domain_t *) domain;
+  evoasm_prng_t *prng = &deme->prng;
+
+  evoasm_param_val_t old_param_val = params_ptr->imm0;
+  evoasm_param_val_t new_param_val;
+
+  switch((evoasm_metric_t) deme->params->dist_metric) {
+    case EVOASM_METRIC_ABSDIFF: {
+      uint64_t size = evoasm_range_domain_get_size(range_domain);
+      float r1 = (evoasm_prng_randf_(prng) - 0.5f) * 0.1f;
+      float r2 = (evoasm_prng_randf_(prng) - 0.5f) * 0.1f;
+      new_param_val = (evoasm_param_val_t) roundf(size * r1 * r2);
+      break;
+    }
+    case EVOASM_METRIC_HAMMING: {
+      size_t bit_pos = (size_t) evoasm_prng_rand_between_(prng, 0,
+                                                          (int64_t) evoasm_range_domain_get_bitsize(range_domain));
+      new_param_val = old_param_val ^ (1 << bit_pos);
+      break;
+    }
+    default:
+      evoasm_assert_not_reached();
+      break;
+  }
+
+
+  evoasm_loss_t old_loss = deme->losses.losses[kernel_idx];
+  evoasm_loss_t new_loss;
+
+#ifdef EVOASM_ENABLE_PARANOID_MODE
+  evoasm_deme_load_kernel(deme, kernel_idx);
+  EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &new_loss);
+  assert(old_loss == new_loss);
+#endif
+
+  assert(new_param_val != old_param_val);
+  params_ptr->imm0 = new_param_val;
+
+  evoasm_deme_load_kernel(deme, kernel_idx);
+  EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &new_loss);
+
+  if(new_loss <= old_loss) {
+    deme->losses.losses[kernel_idx] = new_loss;
+    if(evoasm_unlikely(new_loss <= deme->best_loss)) {
+      evoasm_deme_update_best(deme, new_loss, kernel_idx);
+    }
+  } else {
+    params_ptr->imm0 = old_param_val;
+  }
+
+error:
+  return false;
+}
+
+static void
+evoasm_deme_local_search_inst(evoasm_deme_t *deme, size_t kernel_idx, evoasm_inst_id_t *inst_id_ptr) {
+//  evoasm_inst_id_t old_inst_id = *inst_id_ptr;
+//  size_t n_similar_insts = evoam_x64_similar_insts_lens[old_inst_id][deme->params->dist_metric];
+//  evoasm_inst_id_t new_inst_id = evoasm_x64_similar_insts[old_inst_id][deme->params->dist_metric][]
+//
+//  *inst_id_ptr = new_inst_id;
+//  test();
+
+
+}
+
 static void
 evoasm_deme_local_search_kernel_param_x64(evoasm_deme_t *deme, size_t kernel_idx, evoasm_inst_id_t *inst_id_ptr,
                                           evoasm_x64_basic_params_t *params_ptr) {
+
   const evoasm_pop_params_t *params = deme->params;
   size_t n_params = params->n_params;
   evoasm_prng_t *prng = &deme->prng;
@@ -855,13 +933,13 @@ evoasm_deme_local_search_kernel_param_x64(evoasm_deme_t *deme, size_t kernel_idx
     float r = evoasm_prng_randf_(prng);
     if(r < 0.7) {
       evoasm_domain_t *domain = &deme->domains[inst_idx * deme->params->n_params + deme->imm_param_idx];
-      evoasm_deme_local_search_imm_operand(deme, params_ptr);
+      evoasm_deme_local_search_imm_operand(deme, kernel_idx, params_ptr, domain);
     } else {
       goto change_inst;
     }
   } else {
 change_inst:
-    evoasm_deme_local_search_inst(deme, inst_id_ptr);
+    evoasm_deme_local_search_inst(deme, kernel_idx, inst_id_ptr);
   }
 }
 
@@ -872,34 +950,27 @@ evoasm_deme_local_search_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
   evoasm_deme_kernels_t *kernels = &deme->kernels;
   size_t iters = deme->params->n_local_search_iters;
   size_t kernel_size = deme->kernels.sizes[kernel_idx];
-  size_t iters_per_inst = iters / kernel_size;
+  evoasm_prng_t *prng = &deme->prng;
 
-  size_t rem_iters = iters;
-  size_t inst_idx = 0;
-  while(rem_iters > 0) {
-    size_t rem_iters_per_inst = EVOASM_MIN(rem_iters, iters_per_inst);
+  for(size_t i = 0; i < iters; i++) {
+    size_t inst_idx = (size_t) evoasm_prng_rand_between_(prng, 0, (int64_t) kernel_size);
+    size_t inst_off = evoasm_deme_kernels_get_inst_off(kernels, kernel_idx, inst_idx);
+    evoasm_inst_id_t *insts_ptr = &kernels->insts[inst_off];
 
-    for(size_t i = 0; i < rem_iters_per_inst; i++) {
-      size_t kernel_inst_off = evoasm_deme_kernels_get_inst_off(kernels, kernel_idx, inst_idx);
-      evoasm_inst_id_t *insts_ptr = &kernels->insts[kernel_inst_off];
-
-      switch(deme->arch_id) {
-        case EVOASM_ARCH_X64: {
-          evoasm_x64_basic_params_t *params_ptr = &kernels->params.x64[kernel_inst_off];
-          evoasm_deme_local_search_kernel_param_x64(deme, kernel_idx, insts_ptr, params_ptr);
-          break;
-        }
-        default:
-          evoasm_assert_not_reached();
+    switch(deme->arch_id) {
+      case EVOASM_ARCH_X64: {
+        evoasm_x64_basic_params_t *params_ptr = &kernels->params.x64[inst_off];
+        evoasm_deme_local_search_kernel_param_x64(deme, kernel_idx, insts_ptr, params_ptr);
+        break;
       }
-
-
+      default:
+        evoasm_assert_not_reached();
     }
 
-    inst_idx = (inst_idx + 1) % kernel_size;
-    rem_iters--;
+
   }
 }
+
 
 static void
 evoasm_deme_reproduce(evoasm_deme_t *deme) {
@@ -1045,6 +1116,7 @@ evoasm_deme_next_gen(evoasm_deme_t *deme, bool major) {
     evoasm_deme_save_elite(deme);
     evoasm_deme_immigrate_elite(deme);
   }
+
   evoasm_deme_reproduce(deme);
   evoasm_deme_local_search(deme);
 }
@@ -1078,7 +1150,7 @@ evoasm_pop_run_minor_gens(evoasm_pop_t *pop) {
     evoasm_deme_t *deme = &pop->demes[i];
 
     for(size_t j = 0; j < n_minor_gens; j++) {
-      retvals[i] = evoasm_deme_eval(deme, false, pop->gen_counter + j);
+      retvals[i] = evoasm_deme_eval(deme, false);
       if(!retvals[i]) {
         errors[i] = *evoasm_get_last_error();
         break;
@@ -1109,9 +1181,11 @@ evoasm_pop_eval(evoasm_pop_t *pop) {
     goto error;
   }
 
-  EVOASM_TRY(error, evoasm_pop_run_minor_gens, pop);
+  if(pop->gen_counter > 0) {
+    EVOASM_TRY(error, evoasm_pop_run_minor_gens, pop);
+  }
 
-  EVOASM_TRY(error, evoasm_pop_eval_major, pop);
+  EVOASM_TRY(error, evoasm_pop_run_major_gen, pop);
   return true;
 
 error:

@@ -21,7 +21,15 @@
 
 EVOASM_DEF_ALLOC_FREE_FUNCS(pop_params)
 
-EVOASM_DEF_ZERO_INIT_FUNC(pop_params)
+void
+evoasm_pop_params_init(evoasm_pop_params_t *params) {
+  static evoasm_pop_params_t zero_pop_params = {0};
+  *params = zero_pop_params;
+
+  params->dist_metric = EVOASM_METRIC_NONE;
+  params->n_local_search_iters = 5;
+  params->n_minor_gens = 5;
+}
 
 #define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, value_type, field_type) \
   EVOASM_DEF_GETTER(pop_params, field, value_type) \
@@ -47,6 +55,9 @@ EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_input, evoasm_kernel_io_t *, evoasm_k
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_output, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
 
 EVOASM_POP_PARAMS_DEF_GETTER_SETTER(dist_metric, evoasm_metric_t, uint8_t)
+
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_minor_gens, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_local_search_iters, size_t, uint16_t)
 
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {
@@ -124,6 +135,12 @@ evoasm_pop_params_validate(evoasm_pop_params_t *pop_params) {
   if(pop_params->deme_size == 0) {
     evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
                  "Deme size cannot be zero");
+    goto fail;
+  }
+
+  if(pop_params->dist_metric == EVOASM_METRIC_NONE) {
+    evoasm_error(EVOASM_ERROR_TYPE_POP_PARAMS, EVOASM_POP_PARAMS_ERROR_CODE_INVALID,
+                 "no distance metric specified");
     goto fail;
   }
 
