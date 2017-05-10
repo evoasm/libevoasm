@@ -75,6 +75,7 @@ typedef struct evoasm_pop_s {
   evoasm_domain_t *domains;
   uint16_t *inst_idx_mapping;
   evoasm_bitmap_t *imm_insts_bitmap;
+  evoasm_bitmap_t *insts_bitmap;
   evoasm_deme_t *demes;
   evoasm_loss_t *summary_losses;
   bool seeded : 1;

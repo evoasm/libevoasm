@@ -303,7 +303,7 @@ evoasm_x64_basic_params_init(evoasm_x64_basic_params_t *params) {
   *params = zero_params;
 }
 
-void
+bool
 evoasm_x64_params_rand(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst, evoasm_prng_t *prng) {
   for(size_t i = 0; i < inst->n_params; i++) {
     evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[i].id;
@@ -324,6 +324,105 @@ evoasm_x64_params_rand(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst, evo
         break;
     }
   }
+  return true;
+}
+
+static ssize_t
+evoasm_x64_params_rand_id_to_idx(evoasm_x64_param_id_t param_id) {
+  switch(param_id) {
+    case EVOASM_X64_PARAM_IMM0:
+      return 0;
+    case EVOASM_X64_PARAM_REG0:
+      return 1;
+    case EVOASM_X64_PARAM_REG1:
+      return 2;
+    case EVOASM_X64_PARAM_REG2:
+      return 3;
+    case EVOASM_X64_PARAM_REG3:
+      return 4;
+    case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
+      return 5;
+    case EVOASM_X64_PARAM_REG1_HIGH_BYTE:
+      return 6;
+    default:
+      return -1;
+  }
+}
+
+static evoasm_x64_param_id_t
+evoasm_x64_params_rand_idx_to_id(size_t idx) {
+  switch(idx) {
+    case 0: return EVOASM_X64_PARAM_IMM0;
+    case 1: return EVOASM_X64_PARAM_REG0;
+    case 2: return EVOASM_X64_PARAM_REG1;
+    case 3: return EVOASM_X64_PARAM_REG2;
+    case 4: return EVOASM_X64_PARAM_REG3;
+    case 5: return EVOASM_X64_PARAM_REG0_HIGH_BYTE;
+    case 6: return EVOASM_X64_PARAM_REG1_HIGH_BYTE;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
+
+bool
+evoasm_x64_params_rand2(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst1, evoasm_x64_inst_t *inst2,
+                        evoasm_prng_t *prng) {
+
+  evoasm_domain_t *domains[2][7] = {0};
+
+  for(size_t i = 0; i < 2; i++) {
+    evoasm_x64_inst_t *inst;
+
+    if(i == 0) {
+      inst = inst1;
+    } else {
+      inst = inst2;
+    }
+
+    for(size_t j = 0; j < inst->n_params; j++) {
+      evoasm_x64_param_id_t param_id = (evoasm_x64_param_id_t) inst->params[j].id;
+      ssize_t idx = evoasm_x64_params_rand_id_to_idx(param_id);
+      if(idx != -1) {
+        domains[i][idx] = inst->params[j].domain;
+      }
+    }
+  }
+
+  for(size_t i = 0; i < EVOASM_ARRAY_LEN(domains[0]); i++) {
+    evoasm_domain_t *domain;
+    evoasm_domain_t intersect_domain;
+
+    if(domains[0][i] == NULL) {
+      domain = domains[1][i];
+    }
+    else if(domains[1][i] == NULL) {
+      domain = domains[0][i];
+    } else {
+      evoasm_domain_intersect(domains[0][i], domains[1][i], &intersect_domain);
+      if(evoasm_domain_is_empty(&intersect_domain)) {
+        return false;
+      }
+      domain = &intersect_domain;
+    }
+
+    if(domain != NULL) {
+      evoasm_param_val_t param_val = evoasm_domain_rand_(domain, prng);
+
+      evoasm_x64_param_id_t param_id = evoasm_x64_params_rand_idx_to_id(i);
+      if(param_id == EVOASM_X64_PARAM_REG0 && param_val == EVOASM_X64_REG_SP) {
+        evoasm_assert_not_reached();
+      }
+
+      if(param_id == EVOASM_X64_PARAM_REG1 && param_val == EVOASM_X64_REG_SP) {
+        evoasm_assert_not_reached();
+      }
+
+      evoasm_x64_params_set_(params, param_id, param_val);
+    }
+  }
+
+  return true;
 }
 
 

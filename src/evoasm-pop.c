@@ -141,6 +141,10 @@ evoasm_pop_destroy(evoasm_pop_t *pop) {
   for(size_t i = 0; i < pop->n_demes; i++) {
     evoasm_deme_destroy(&pop->demes[i]);
   }
+
+  evoasm_free(pop->inst_idx_mapping);
+  evoasm_free(pop->imm_insts_bitmap);
+  evoasm_free(pop->insts_bitmap);
   evoasm_free(pop->demes);
   evoasm_free(pop->summary_losses);
 }
@@ -223,9 +227,13 @@ evoasm_pop_init_domains(evoasm_pop_t *pop) {
 //  if(!pop->domains) goto error;
 
   EVOASM_TRY_ALLOC(error, calloc, pop->imm_insts_bitmap, EVOASM_BITMAP_BYTESIZE(params->n_insts), 1);
+  EVOASM_TRY_ALLOC(error, calloc, pop->insts_bitmap, EVOASM_BITMAP_BYTESIZE(params->n_insts), 1);
 
   for(size_t i = 0; i < params->n_insts; i++) {
-    evoasm_x64_inst_t *inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) params->inst_ids[i]);
+    evoasm_x64_inst_id_t inst_id = (evoasm_x64_inst_id_t) params->inst_ids[i];
+    evoasm_x64_inst_t *inst = evoasm_x64_get_inst_(inst_id);
+    evoasm_bitmap_set(pop->insts_bitmap, inst_id);
+
     for(size_t j = 0; j < params->n_params; j++) {
       evoasm_domain_t *inst_domain = &pop->domains[i * params->n_params + j];
       evoasm_param_id_t param_id = params->param_ids[j];

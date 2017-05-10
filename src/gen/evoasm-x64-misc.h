@@ -97,3 +97,13 @@ evoasm_x64_get_reg_name(evoasm_x64_reg_id_t reg);
 #define EVOASM_X64_SCRATCH_REG1 EVOASM_X64_REG_14
 #define EVOASM_X64_SCRATCH_REG2 EVOASM_X64_REG_15
 
+typedef struct {
+evoasm_inst_id_t inst;
+int32_t imm;
+} evoasm_x64_similar_inst_entry_t;
+
+
+extern const evoasm_x64_similar_inst_entry_t *evoasm_x64_similar_insts_absdiff;
+extern const uint16_t                         evoasm_x64_n_similar_insts_idxs_absdiff[EVOASM_X64_INST_NONE][2];
+extern const evoasm_x64_similar_inst_entry_t *evoasm_x64_similar_insts_hamming;
+extern const uint16_t                         evoasm_x64_n_similar_insts_idxs_hamming[EVOASM_X64_INST_NONE][2];

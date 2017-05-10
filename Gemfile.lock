@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/furunkel/evoasm-gen.git
-  revision: 16f24d523e11f89d11ed764bc1b2b9c0fbf89f9b
+  revision: fba6840a474299e79d44a5d32f062dcfe69fd98d
   branch: master
   specs:
     evoasm-gen (0.0.1)
@@ -12,7 +12,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     erubis (2.7.0)
-    ffi (1.9.14)
+    ffi (1.9.18)
     gv (0.1.0)
       ffi
     rake (10.5.0)
@@ -25,4 +25,4 @@ DEPENDENCIES
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.13.7
+   1.14.3

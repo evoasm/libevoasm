@@ -214,8 +214,13 @@ evoasm_range_domain_get_bitsize(evoasm_range_domain_t *range_domain) {
 }
 
 static inline void
-evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *restrict domain2,
+evoasm_domain_intersect(evoasm_domain_t *domain1, evoasm_domain_t *domain2,
                         evoasm_domain_t *restrict domain_dst) {
+
+  if(domain1 == domain2) {
+    *domain_dst = *domain1;
+    return;
+  }
 
   if(domain1->type == EVOASM_DOMAIN_TYPE_ENUM && domain2->type == EVOASM_DOMAIN_TYPE_ENUM) {
     size_t i = 0, j = 0;
@@ -224,6 +229,7 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
     evoasm_enum_domain_t *enum_dst = (evoasm_enum_domain_t *) domain_dst;
 
     enum_dst->len = 0;
+    enum_dst->type = EVOASM_DOMAIN_TYPE_ENUM;
     /*
      * NOTE: vals are sorted (INC)
      */
@@ -261,6 +267,7 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
     evoasm_enum_domain_t *enum_domain_dst = (evoasm_enum_domain_t *) domain_dst;
     evoasm_enum_domain_t *enum_domain1 = (evoasm_enum_domain_t *) domain1;
 
+    enum_domain_dst->type = EVOASM_DOMAIN_TYPE_ENUM;
     enum_domain_dst->len = 0;
     for(i = 0; i < enum_domain1->len; i++) {
       if(enum_domain1->vals[i] >= min2 && enum_domain1->vals[i] <= max2) {
@@ -269,10 +276,20 @@ evoasm_domain_intersect(evoasm_domain_t *restrict domain1, evoasm_domain_t *rest
     }
   } else {
     evoasm_range_domain_t *range_domain_dst = (evoasm_range_domain_t *) domain_dst;
+    range_domain_dst->type = EVOASM_DOMAIN_TYPE_RANGE;
 
-    evoasm_domain_get_bounds_(domain1, &min1, &max1);
-    range_domain_dst->min = EVOASM_MAX(min1, min2);
-    range_domain_dst->max = EVOASM_MIN(max1, max2);
+    evoasm_range_domain_t *range_domain1 = (evoasm_range_domain_t *) domain1;
+    evoasm_range_domain_t *range_domain2 = (evoasm_range_domain_t *) domain2;
+
+    if(range_domain1->range_type != EVOASM_RANGE_DOMAIN_TYPE_CUSTOM && range_domain2->range_type != EVOASM_RANGE_DOMAIN_TYPE_CUSTOM) {
+      range_domain_dst->range_type = EVOASM_MIN(range_domain1->range_type, range_domain2->range_type);
+    } else {
+      range_domain_dst->range_type = EVOASM_RANGE_DOMAIN_TYPE_CUSTOM;
+
+      evoasm_domain_get_bounds_(domain1, &min1, &max1);
+      range_domain_dst->min = EVOASM_MAX(min1, min2);
+      range_domain_dst->max = EVOASM_MIN(max1, max2);
+    }
   }
 }
 
@@ -304,8 +321,12 @@ evoasm_domain_is_empty(evoasm_domain_t *domain) {
     case EVOASM_DOMAIN_TYPE_ENUM:
       return ((evoasm_enum_domain_t *) domain)->len == 0;
     case EVOASM_DOMAIN_TYPE_RANGE: {
-      evoasm_range_domain_t *interval = (evoasm_range_domain_t *) domain;
-      return interval->min >= interval->max;
+      evoasm_range_domain_t *range = (evoasm_range_domain_t *) domain;
+      if(range->range_type == EVOASM_RANGE_DOMAIN_TYPE_CUSTOM) {
+        return range->min >= range->max;
+      } else {
+        return false;
+      }
     }
     default:
       evoasm_assert_not_reached();
