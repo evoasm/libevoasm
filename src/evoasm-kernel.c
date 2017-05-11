@@ -545,7 +545,7 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
   assert(kernel->n_input_regs <= EVOASM_KERNEL_MAX_INPUT_REGS);
 
   if(kernel->n_output_regs == 0) {
-    evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_PROGRAM_ERROR_CODE_NO_OUTPUT, "no output registers in kernel");
+    evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_KERNEL_ERROR_CODE_NO_OUTPUT, "no output registers in kernel");
     return false;
   }
 
@@ -914,7 +914,7 @@ error:
 //          assert(evoasm_kernel_is_used_kernel(kernel, succ_kernel_idx));
 //          uint32_t *jmp_link_addr = transn_link_addrs[i][j];
 //          if(jmp_link_addr != NULL) {
-//            assert(*jmp_link_addr == 0xdeadbeef);
+//            assert(*jmp_link_addr == 0x1badbabe);
 //            uint8_t *succ_kernel_addr = kernel_addrs[succ_kernel_idx];
 //            EVOASM_X64_LINK_ADDR32(jmp_link_addr, succ_kernel_addr);
 //          }
@@ -961,7 +961,7 @@ evoasm_kernel_x64_emit_reset_and_call(evoasm_kernel_t *kernel) {
   evoasm_buf_t *buf = kernel->buf;
 
   {
-    uint32_t rel = (uint32_t) (kernel->buf_pos_body_start - (evoasm_buf_get_pos_(kernel->buf) + 5));
+    int32_t rel = (int32_t) kernel->buf_pos_body_start - (int32_t)(evoasm_buf_get_pos_(kernel->buf) + 5);
     evoasm_x64_params_t params = {0};
     EVOASM_X64_SET(EVOASM_X64_PARAM_REL, rel);
     EVOASM_X64_ENC(call_rel32);
@@ -1026,7 +1026,7 @@ evoasm_kernel_x64_emit(evoasm_kernel_t *kernel,
 
     {
       evoasm_x64_params_t params = {0};
-      EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0xdeadbeef);
+//      EVOASM_X64_SET(EVOASM_X64_PARAM_REL, 0);
       EVOASM_X64_ENC(jmp_rel32);
     }
 

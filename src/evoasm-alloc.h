@@ -58,7 +58,7 @@ typedef enum {
 
 void *evoasm_malloc(size_t) EVOASM_MALLOC_ATTRS;
 void *evoasm_calloc(size_t, size_t) EVOASM_CALLOC_ATTRS;
-void *evoasm_realloc(void *, size_t) EVOASM_REALLOC_ATTRS;
+evoasm_success_t evoasm_realloc(void **ptr, size_t size);
 void *evoasm_aligned_alloc(size_t, size_t) EVOASM_ALIGNED_ALLOC_ATTRS;
 void *evoasm_aligned_calloc_set(size_t align, size_t n, size_t size, int val) EVOASM_ALIGNED_CALLOC_ATTRS ;
 void *evoasm_aligned_calloc(size_t align, size_t n, size_t size) EVOASM_ALIGNED_CALLOC_ATTRS;

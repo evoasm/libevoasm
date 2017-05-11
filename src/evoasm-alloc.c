@@ -93,16 +93,19 @@ evoasm_aligned_calloc(size_t align, size_t n, size_t size) {
   return evoasm_aligned_calloc_set(align, n, size, 0);
 }
 
-void *
-evoasm_realloc(void *ptr, size_t size) {
-  void *new_ptr = realloc(ptr, size);
+evoasm_success_t
+evoasm_realloc(void **ptr, size_t size) {
+  void *new_ptr = realloc(*ptr, size);
 
-  if(evoasm_unlikely(!ptr)) {
+  if(evoasm_unlikely(!new_ptr)) {
     evoasm_error(EVOASM_ERROR_TYPE_ALLOC, EVOASM_ERROR_CODE_NONE,
                  "Allocating %zu bytes via realloc failed: %s", size, strerror(errno));
-    return NULL;
+    return false;
   }
-  return new_ptr;
+  else {
+    *ptr = new_ptr;
+    return true;
+  }
 }
 
 void

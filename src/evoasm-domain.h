@@ -337,7 +337,3 @@ evoasm_domain_is_empty(evoasm_domain_t *domain) {
 void
 evoasm_domain_log(evoasm_domain_t *domain, evoasm_log_level_t log_level);
 
-
-bool
-evoasm_domain_is_range(evoasm_domain_t *domain);
-

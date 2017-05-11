@@ -102,8 +102,9 @@ evoasm_inst_id_t inst;
 int32_t imm;
 } evoasm_x64_similar_inst_entry_t;
 
+#define EVOASM_X64_MAX_SIMILAR_INSTS_PER_INST 32
 
 extern const evoasm_x64_similar_inst_entry_t *evoasm_x64_similar_insts_absdiff;
-extern const uint16_t                         evoasm_x64_n_similar_insts_idxs_absdiff[EVOASM_X64_INST_NONE][2];
+extern const uint16_t                        *evoasm_x64_similar_inst_idxs_absdiff;
 extern const evoasm_x64_similar_inst_entry_t *evoasm_x64_similar_insts_hamming;
-extern const uint16_t                         evoasm_x64_n_similar_insts_idxs_hamming[EVOASM_X64_INST_NONE][2];
+extern const uint16_t                        *evoasm_x64_similar_inst_idxs_hamming;

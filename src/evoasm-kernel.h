@@ -20,6 +20,7 @@
 #include "evoasm-pop-params.h"
 #include "evoasm-x64.h"
 #include "evoasm-kernel-io.h"
+#include "gen/evoasm-enums.h"
 
 #define EVOASM_KERNEL_MAX_OUTPUT_REGS 254
 #define EVOASM_KERNEL_MAX_INPUT_REGS 254
@@ -84,7 +85,7 @@ typedef struct {
 
 
 typedef enum {
-  EVOASM_PROGRAM_ERROR_CODE_NO_OUTPUT
+  EVOASM_KERNEL_ERROR_CODE_NO_OUTPUT
 } evoasm_kernel_error_code_t;
 
 typedef enum {

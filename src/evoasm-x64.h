@@ -25,6 +25,7 @@
 
 #include "gen/evoasm-x64-enums.h"
 #include "gen/evoasm-x64-params.h"
+#include "gen/evoasm-enums.h"
 
 #define EVOASM_X64_RFLAGS_FLAGS_GET(flags, flag) ((flags) & (1u << (flag)))
 #define EVOASM_X64_RFLAGS_FLAGS_SET(flags, flag) ((flags) = (flags) | (1u << (flag)))

@@ -129,11 +129,5 @@
 #define EVOASM_UNIX
 #endif
 
-typedef enum {
-  EVOASM_METRIC_ABSDIFF,
-  EVOASM_METRIC_HAMMING,
-  EVOASM_METRIC_NONE
-} evoasm_metric_t;
-
 #define EVOASM_CB_CONTINUE true
 #define EVOASM_CB_STOP false
