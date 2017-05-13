@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "evoasm-domain.h"
 
 evoasm_success_t evoasm_x64_adc_al_imm8(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_adc_ax_imm16(evoasm_x64_enc_ctx_t *ctx);
@@ -1711,3 +1712,4 @@ evoasm_success_t evoasm_x64_vxorps_xmm_xmm_xmmm128(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_vxorps_ymm_ymm_ymmm256(evoasm_x64_enc_ctx_t *ctx);
 evoasm_success_t evoasm_x64_xtest(evoasm_x64_enc_ctx_t *ctx);
 
+extern const evoasm_domain_t **evoasm_domains;

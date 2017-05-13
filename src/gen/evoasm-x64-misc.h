@@ -98,8 +98,12 @@ evoasm_x64_get_reg_name(evoasm_x64_reg_id_t reg);
 #define EVOASM_X64_SCRATCH_REG2 EVOASM_X64_REG_15
 
 typedef struct {
-evoasm_inst_id_t inst;
-int32_t imm;
+  uint8_t reg0_domain_idx;
+  uint8_t reg1_domain_idx;
+  uint8_t reg2_domain_idx;
+  uint8_t reg3_domain_idx;
+  evoasm_inst_id_t inst_id;
+  int32_t imm;
 } evoasm_x64_similar_inst_entry_t;
 
 #define EVOASM_X64_MAX_SIMILAR_INSTS_PER_INST 32
