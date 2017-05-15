@@ -684,7 +684,7 @@ evoasm_deme_test_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
 
   EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &loss);
 
-  evoasm_log_info("kernel %zu has loss: %g", kernel_idx, loss);
+  evoasm_log_debug("kernel %zu has loss: %g", kernel_idx, loss);
   losses->losses[kernel_idx] = loss;
 
   return true;
@@ -695,7 +695,9 @@ error:
 static inline void
 evoasm_deme_update_best(evoasm_deme_t *deme, evoasm_loss_t loss, size_t kernel_idx) {
 
-  evoasm_log_info("new best kernel loss: %g", loss);
+  if(loss < deme->best_loss) {
+    evoasm_log_info("new best kernel loss: %g", loss);
+  }
 
   evoasm_buf_log(deme->kernel.buf, EVOASM_LOG_LEVEL_DEBUG);
 
@@ -918,7 +920,7 @@ evoasm_deme_local_search_run_and_eval(evoasm_deme_t *deme,
   EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &new_loss);
 
   if(new_loss < old_loss) {
-    evoasm_log_warn("local search improved %g -> %g\n", old_loss, new_loss);
+    evoasm_log_debug("local search improved %g -> %g\n", old_loss, new_loss);
     deme->losses.losses[kernel_idx] = new_loss;
     if(evoasm_unlikely(new_loss <= deme->best_loss)) {
       evoasm_deme_update_best(deme, new_loss, kernel_idx);
@@ -1147,6 +1149,8 @@ evoasm_deme_reproduce(evoasm_deme_t *deme) {
 
   // store immigration target indexes
   {
+
+    while(dead_idx < deme_size && deme->won_tourns_counters[dead_idx] != 0) dead_idx++;
     size_t j = 0;
     for(size_t i = dead_idx; i < deme_size; i++) {
       if(deme->won_tourns_counters[i] == 0) {

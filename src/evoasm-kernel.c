@@ -1463,7 +1463,7 @@ evoasm_kernel_eval_(evoasm_kernel_t *kernel,
     evoasm_buf_exec(kernel->buf);
     loss = evoasm_kernel_assess(kernel, output, dist_metric, output_off, output_size);
   } else {
-    evoasm_log_fatal("kernel %p signaled", (void *) kernel);
+    evoasm_log_debug("kernel %p signaled", (void *) kernel);
     loss = INFINITY;
   }
 

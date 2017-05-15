@@ -59,7 +59,7 @@ struct evoasm_deme_s {
   evoasm_deme_kernels_t best_kernels;
 
   uint16_t *immig_idxs;
-  uint8_t *won_tourns_counters;
+  uint16_t *won_tourns_counters;
   uint64_t *error_counters;
   struct evoasm_pop_s *pop;
   evoasm_domain_t *domains;
