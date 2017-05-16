@@ -82,6 +82,11 @@ evoasm_domain_rand(evoasm_domain_t *domain, evoasm_prng_t *prng) {
   return evoasm_domain_rand_(domain, prng);
 }
 
+evoasm_range_domain_type_t
+evoasm_range_domain_get_type(evoasm_range_domain_t *range_domain) {
+  return (evoasm_range_domain_type_t) range_domain->range_type;
+}
+
 EVOASM_DEF_ALLOC_FREE_FUNCS(domain)
 
 evoasm_success_t
