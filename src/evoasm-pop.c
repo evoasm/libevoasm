@@ -836,9 +836,7 @@ done:
   return retval;
 }
 
-#define EVOASM_DEME_TOURN_SIZE 5
-
-static inline void
+static inline bool
 evoasm_deme_select(evoasm_deme_t *deme) {
   evoasm_deme_losses_t *losses = &deme->losses;
   size_t deme_size = deme->params->deme_size;
@@ -847,12 +845,13 @@ evoasm_deme_select(evoasm_deme_t *deme) {
 
   size_t n_selected = 0;
   size_t n_to_select = deme_size - deme->params->n_demes;
+  size_t n_iters = 0;
 
   while(n_selected < n_to_select) {
     size_t min_idx = SIZE_MAX;
     evoasm_loss_t min_loss = INFINITY;
 
-    for(size_t i = 0; i < EVOASM_DEME_TOURN_SIZE; i++) {
+    for(size_t i = 0; i < deme->params->tourn_size; i++) {
       size_t idx = (size_t) evoasm_prng_rand_between_(&deme->prng, 0, (int64_t) deme_size);
       evoasm_loss_t loss = losses->losses[idx];
 
@@ -866,7 +865,12 @@ evoasm_deme_select(evoasm_deme_t *deme) {
       deme->won_tourns_counters[min_idx]++;
       n_selected++;
     }
+
+    n_iters++;
+    if(n_iters > deme_size && n_selected == 0) return false;
   }
+
+  return  true;
 }
 
 static void
@@ -1265,15 +1269,19 @@ evoasm_deme_immigrate_elite(evoasm_deme_t *deme) {
 
 static evoasm_success_t
 evoasm_deme_next_gen(evoasm_deme_t *deme, bool major) {
-  evoasm_deme_select(deme);
+  if(evoasm_deme_select(deme)) {
 
-  if(major) {
-    evoasm_deme_save_elite(deme);
-    evoasm_deme_immigrate_elite(deme);
+    if(major) {
+      evoasm_deme_save_elite(deme);
+      evoasm_deme_immigrate_elite(deme);
+    }
+
+    evoasm_deme_reproduce(deme);
+    EVOASM_TRY(error, evoasm_deme_local_search, deme);
+  } else {
+    evoasm_log_info("reseeding deme %d", deme->idx);
+    evoasm_deme_seed(deme, NULL);
   }
-
-  evoasm_deme_reproduce(deme);
-  EVOASM_TRY(error, evoasm_deme_local_search, deme);
 
   return true;
 

@@ -124,6 +124,17 @@
   }
 #endif
 
+#define EVOASM_UINT8_T uint8_t
+#define EVOASM_INT8_T  int8_t
+
+#define EVOASM_UINT16_T uint16_t
+#define EVOASM_INT16_T  int16_t
+
+#define EVOASM_UINT32_T uint32_t
+#define EVOASM_INT32_T  int32_t
+
+#define EVOASM_UINT64_T uint64_t
+#define EVOASM_INT64_T  int64_t
 
 #if defined(__linux__) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))
 #define EVOASM_UNIX

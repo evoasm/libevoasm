@@ -33,10 +33,9 @@ typedef enum {
 } evoasm_pop_params_error_code_t;
 
 typedef struct evoasm_pop_params_s {
-  evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
-  evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];
   uint8_t n_params;
   uint8_t dist_metric;
+  uint8_t tourn_size;
   uint16_t n_demes;
   uint16_t deme_size;
   uint16_t min_kernel_size;
@@ -50,6 +49,8 @@ typedef struct evoasm_pop_params_s {
   evoasm_kernel_io_t *kernel_input;
   evoasm_kernel_io_t *kernel_output;
   evoasm_inst_id_t inst_ids[EVOASM_X64_INST_NONE];
+  evoasm_param_id_t param_ids[EVOASM_POP_PARAMS_MAX_PARAMS];
+  evoasm_domain_t *domains[EVOASM_POP_PARAMS_MAX_PARAMS];
 } evoasm_pop_params_t;
 
 bool
