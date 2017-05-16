@@ -201,7 +201,6 @@ evoasm_deme_init(evoasm_deme_t *deme,
              evoasm_get_arch_info(arch_id),
              params->max_kernel_size,
              n_examples,
-             params->recur_limit,
              true);
 
   EVOASM_TRY(error, evoasm_deme_kernels_init, &deme->kernels, deme->params, deme->arch_id, params->deme_size);
@@ -641,7 +640,6 @@ evoasm_pop_load_best_kernel(evoasm_pop_t *pop, evoasm_kernel_t *kernel) {
              evoasm_get_arch_info(best_deme->arch_id),
              params->max_kernel_size,
              n_examples,
-             params->recur_limit,
              false);
 
   size_t kernel_idx = 0;
@@ -1228,7 +1226,9 @@ evoasm_pop_calc_summary(evoasm_pop_t *pop, evoasm_loss_t *summary) {
 
 static bool
 evoasm_deme_local_search(evoasm_deme_t *deme) {
-  if(deme->params->n_local_search_iters == 0 || deme->pop->gen_counter < 2 * deme->params->n_minor_gens) return true;
+  if(deme->params->n_local_search_iters == 0 || deme->pop->gen_counter < 2 * deme->params->n_minor_gens) {
+    return true;
+  }
 
   for(size_t i = 0; i < deme->params->deme_size; i++) {
     EVOASM_TRY(error, evoasm_deme_local_search_kernel, deme, i);

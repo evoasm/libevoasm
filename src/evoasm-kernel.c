@@ -34,7 +34,7 @@ evoasm_kernel_destroy(evoasm_kernel_t *kernel) {
 
   if(!kernel->shallow) {
     evoasm_free(kernel->insts);
-    switch(kernel->arch_info->id) {
+    switch(kernel->arch_id) {
       case EVOASM_ARCH_X64:
         evoasm_free(kernel->x64.params);
         break;
@@ -133,7 +133,7 @@ evoasm_kernel_get_code(evoasm_kernel_t *kernel, bool frame, const uint8_t **code
 
 bool
 evoasm_kernel_is_input_reg(evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id) {
-  switch(kernel->arch_info->id) {
+  switch(kernel->arch_id) {
     case EVOASM_ARCH_X64:
       return kernel->x64.reg_info.reg_info[reg_id].input;
     default:
@@ -143,7 +143,7 @@ evoasm_kernel_is_input_reg(evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id) {
 
 bool
 evoasm_kernel_is_output_reg(evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id) {
-  switch(kernel->arch_info->id) {
+  switch(kernel->arch_id) {
     case EVOASM_ARCH_X64:
       for(size_t i = 0; i < kernel->n_output_regs; i++) {
         if(kernel->x64.output_regs[i] == reg_id) return true;
@@ -1122,6 +1122,7 @@ evoasm_kernel_update_dist_mat_hamming(evoasm_kernel_t *kernel,
       dist_mat[i * width + j] += (double) dist;
     }
   }
+  evoasm_assert_not_reached();
 }
 
 
@@ -1380,7 +1381,7 @@ evoasm_kernel_assess(evoasm_kernel_t *kernel,
   evoasm_kernel_build_dist_mat(kernel, output, win_off, win_size,
                                height, dist_mat, dist_metric);
 
-  if(height == 1) {
+  if(evoasm_likely(height == 1)) {
     /* COMMON FAST-PATH */
     if(!evoasm_kernel_match(kernel, width, dist_mat, matching)) {
       goto no_matching;
@@ -1390,7 +1391,7 @@ evoasm_kernel_assess(evoasm_kernel_t *kernel,
   }
 
   for(size_t i = 0; i < height; i++) {
-    switch(kernel->arch_info->id) {
+    switch(kernel->arch_id) {
       case EVOASM_ARCH_X64: {
         kernel->output_reg_mapping[i] = kernel->x64.output_regs[matching[i]];
         break;
@@ -1551,8 +1552,6 @@ evoasm_kernel_run(evoasm_kernel_t *kernel,
                   evoasm_kernel_input_t *input,
                   evoasm_kernel_output_t *output) {
 
-  bool retval = true;
-
   if(input->arity != kernel->_input.arity) {
     evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_ERROR_CODE_NONE,
                  "arity mismatch (%d for %d)", input->arity, kernel->_input.arity);
@@ -1597,13 +1596,12 @@ evoasm_kernel_run(evoasm_kernel_t *kernel,
     evoasm_assert_not_reached();
   }
 
-done:
   evoasm_signal_clear_exception_mask();
-  return retval;
+  return true;
 
 error_clear:
-  retval = false;
-  goto done;
+  evoasm_signal_clear_exception_mask();
+  return false;
 
 error:
   return false;
@@ -1615,7 +1613,7 @@ evoasm_kernel_emit(evoasm_kernel_t *kernel,
                    size_t win_off,
                    size_t win_size,
                    evoasm_kernel_emit_flags_t emit_flags) {
-  switch(kernel->arch_info->id) {
+  switch(kernel->arch_id) {
     case EVOASM_ARCH_X64: {
       return evoasm_kernel_x64_emit(kernel, input, win_off, win_size, emit_flags);
       break;
@@ -1771,7 +1769,6 @@ evoasm_kernel_elim_introns(evoasm_kernel_t *kernel, evoasm_kernel_t *dst_kernel)
              kernel->arch_info,
              kernel->max_kernel_size,
              kernel->max_tuples,
-             kernel->recur_limit,
              false);
 
   for(size_t i = 0; i < kernel->_output.arity; i++) {
@@ -1862,14 +1859,13 @@ evoasm_kernel_init(evoasm_kernel_t *kernel,
                    evoasm_arch_info_t *arch_info,
                    size_t max_kernel_size,
                    size_t max_tuples,
-                   size_t recur_limit,
                    bool shallow) {
 
   static evoasm_kernel_t zero_kernel = {0};
 
   *kernel = zero_kernel;
   kernel->arch_info = arch_info;
-  kernel->recur_limit = (uint32_t) recur_limit;
+  kernel->arch_id = (evoasm_arch_id_t) arch_info->id;
   kernel->shallow = shallow;
   kernel->max_kernel_size = (uint16_t) max_kernel_size;
   kernel->max_tuples = (uint16_t) max_tuples;
@@ -1889,7 +1885,7 @@ evoasm_kernel_init(evoasm_kernel_t *kernel,
 
   if(!shallow) {
     EVOASM_TRY_ALLOC(error, calloc, kernel->insts, max_kernel_size, sizeof(kernel->insts[0]));
-    switch(kernel->arch_info->id) {
+    switch(kernel->arch_id) {
       case EVOASM_ARCH_X64: {
         EVOASM_TRY_ALLOC(error, calloc, kernel->x64.params, max_kernel_size, sizeof(kernel->x64.params[0]));
         break;
@@ -1910,7 +1906,7 @@ void
 evoasm_kernel_log(evoasm_kernel_t *kernel, evoasm_log_level_t log_level) {
   if(_evoasm_log_level > log_level) return;
 
-  switch(kernel->arch_info->id) {
+  switch(kernel->arch_id) {
     case EVOASM_ARCH_X64:
       for(size_t i = 0; i < kernel->size; i++) {
         evoasm_x64_inst_t *inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[i]);

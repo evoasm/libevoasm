@@ -27,39 +27,38 @@ evoasm_pop_params_init(evoasm_pop_params_t *params) {
   *params = zero_pop_params;
 
   params->dist_metric = EVOASM_METRIC_NONE;
-  params->n_local_search_iters = 5;
+  params->n_local_search_iters = 0;
   params->n_minor_gens = 5;
   params->tourn_size = 3;
 }
 
-#define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, value_type, field_type) \
-  EVOASM_DEF_GETTER(pop_params, field, value_type) \
-  EVOASM_DEF_SETTER(pop_params, field, value_type, field_type)
+#define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) \
+  EVOASM_DEF_GETTER(pop_params, field, type) \
+  EVOASM_DEF_SETTER(pop_params, field, type)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernel_size, size_t, uint16_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(min_kernel_size, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(max_kernel_size, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(deme_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(deme_size, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, size_t, uint8_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_params, uint8_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_demes, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(example_win_size, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(example_win_size, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(recur_limit, size_t, uint32_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, uint16_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_insts, size_t, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_input, evoasm_kernel_io_t *)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_input, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_output, evoasm_kernel_io_t *)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(kernel_output, evoasm_kernel_io_t *, evoasm_kernel_io_t *)
+EVOASM_DEF_GETTER(pop_params, dist_metric, evoasm_metric_t)
+EVOASM_DEF_CAST_SETTER(pop_params, dist_metric, evoasm_metric_t, uint8_t)
 
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(dist_metric, evoasm_metric_t, uint8_t)
-
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_minor_gens, size_t, uint16_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_local_search_iters, size_t, uint16_t)
-EVOASM_POP_PARAMS_DEF_GETTER_SETTER(tourn_size, size_t, uint8_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_minor_gens, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(n_local_search_iters, uint16_t)
+EVOASM_POP_PARAMS_DEF_GETTER_SETTER(tourn_size, uint8_t)
 
 static evoasm_domain_t **
 evoasm_pop_params_find_domain(evoasm_pop_params_t *pop_params, evoasm_param_id_t param_id) {

@@ -44,7 +44,6 @@ typedef struct evoasm_pop_params_s {
   uint16_t n_local_search_iters;
   uint16_t n_minor_gens;
   evoasm_prng_state_t seed;
-  uint32_t recur_limit;
   uint16_t n_insts;
   evoasm_kernel_io_t *kernel_input;
   evoasm_kernel_io_t *kernel_output;

@@ -53,13 +53,13 @@ typedef struct {
   uint16_t size;
   uint16_t max_tuples;
   uint16_t max_kernel_size;
-  uint32_t recur_limit;
   uint32_t exception_mask;
   uint16_t buf_pos_body_start;
   uint16_t buf_pos_body_end;
   uint16_t buf_pos_epilog_start;
   uint16_t buf_pos_epilog_end;
   evoasm_arch_info_t *arch_info;
+  evoasm_arch_id_t arch_id;
   evoasm_buf_t *buf;
   evoasm_kernel_io_val_type_t types[EVOASM_KERNEL_OUTPUT_MAX_ARITY];
   evoasm_kernel_io_val_t *output_vals;
@@ -108,7 +108,6 @@ evoasm_kernel_init(evoasm_kernel_t *kernel,
                     evoasm_arch_info_t *arch_info,
                     size_t max_kernel_size,
                     size_t max_tuples,
-                    size_t recur_limit,
                     bool shallow);
 
 
