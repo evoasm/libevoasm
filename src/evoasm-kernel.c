@@ -819,8 +819,10 @@ evoasm_kernel_x64_emit_input_load(evoasm_kernel_t *kernel,
     if(kernel->x64.reg_info.reg_info[non_input_reg].input) continue;
     if(non_input_reg == EVOASM_X64_REG_SP) continue;
 
-    evoasm_kernel_io_val_t *tuple = &kernel->rand_vals[non_input_reg];
-    EVOASM_TRY(error, evoasm_kernel_x64_emit_input_reg_load, kernel, non_input_reg, buf, tuple, NULL, true);
+    evoasm_kernel_io_val_t *arg = &kernel->rand_vals[non_input_reg];
+    evoasm_kernel_io_val_type_t arg_type = EVOASM_KERNEL_IO_VAL_TYPE_I64X1;
+
+    EVOASM_TRY(error, evoasm_kernel_x64_emit_input_reg_load, kernel, non_input_reg, buf, arg, arg_type, NULL, true);
   }
   EVOASM_TRY(error, evoasm_x64_emit_pop, EVOASM_X64_SCRATCH_REG1, buf);
 #endif
@@ -961,7 +963,7 @@ evoasm_kernel_x64_emit_reset_and_call(evoasm_kernel_t *kernel) {
   evoasm_buf_t *buf = kernel->buf;
 
   {
-    int32_t rel = (int32_t) kernel->buf_pos_body_start - (int32_t)(evoasm_buf_get_pos_(kernel->buf) + 5);
+    int32_t rel = (int32_t) kernel->buf_pos_body_start - (int32_t) (evoasm_buf_get_pos_(kernel->buf) + 5);
     evoasm_x64_params_t params = {0};
     EVOASM_X64_SET(EVOASM_X64_PARAM_REL, rel);
     EVOASM_X64_ENC(call_rel32);
@@ -1442,11 +1444,8 @@ evoasm_kernel_eval_(evoasm_kernel_t *kernel,
   evoasm_signal_set_exception_mask(kernel->exception_mask);
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
-  for(size_t i = 0; i < kernel->topo.size; i++) {
-    evoasm_kernel_t *kernel = &kernel->kernels[i];
-    for(size_t j = 0; j < EVOASM_X64_REG_NONE; j++) {
-      kernel->rand_vals[j].i64 = rand() | (rand() << (rand() % 24));
-    }
+  for(size_t j = 0; j < EVOASM_X64_REG_NONE; j++) {
+    kernel->rand_vals[j].i64[0] = rand() | (rand() << (rand() % 24));
   }
 #endif
 
@@ -1486,14 +1485,13 @@ evoasm_kernel_eval(evoasm_kernel_t *kernel,
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
   for(size_t i = 0; i < 10; i++) {
-    bool timed_out_;
-    evoasm_loss_t loss_ = evoasm_kernel_eval_(kernel, output, win_off, win_size, &timed_out_);
+    evoasm_loss_t loss_ = evoasm_kernel_eval_(kernel, output, metric, win_off, win_size);
 
-    if(loss_ != loss || *timed_out != timed_out_) {
+    if(loss_ != loss) {
       evoasm_kernel_log(kernel, EVOASM_LOG_LEVEL_WARN);
       evoasm_buf_log(kernel->buf, EVOASM_LOG_LEVEL_WARN);
     }
-    assert(loss_ == loss && *timed_out == timed_out_);
+    assert(loss_ == loss);
   }
 #endif
 
