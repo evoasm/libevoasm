@@ -1124,7 +1124,6 @@ evoasm_kernel_update_dist_mat_hamming(evoasm_kernel_t *kernel,
       dist_mat[i * width + j] += (double) dist;
     }
   }
-  evoasm_assert_not_reached();
 }
 
 
