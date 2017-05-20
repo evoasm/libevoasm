@@ -266,12 +266,12 @@ enc_failed:
   return false;
 }
 
-static evoasm_x64_reg_id_t
+static inline evoasm_x64_reg_id_t
 evoasm_kernel_get_operand_reg_id_x64(evoasm_kernel_t *kernel, evoasm_x64_operand_t *op, size_t inst_idx) {
-  if(op->implicit) {
+  if(evoasm_unlikely(op->implicit)) {
     if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
       return EVOASM_X64_REG_RFLAGS;
-    } else if(op->reg_id < EVOASM_X64_REG_NONE) {
+    } else if(evoasm_likely(op->reg_id < EVOASM_X64_REG_NONE)) {
       return (evoasm_x64_reg_id_t) op->reg_id;
     } else {
       evoasm_assert_not_reached();
@@ -279,7 +279,7 @@ evoasm_kernel_get_operand_reg_id_x64(evoasm_kernel_t *kernel, evoasm_x64_operand
     }
   } else {
     evoasm_x64_inst_t *inst = evoasm_x64_get_inst_((evoasm_x64_inst_id_t) kernel->insts[inst_idx]);
-    if(op->param_idx < inst->n_params) {
+    if(evoasm_likely(op->param_idx < inst->n_params)) {
       return (evoasm_x64_reg_id_t) evoasm_x64_basic_params_get_(&kernel->x64.params[inst_idx],
                                                                 (evoasm_x64_basic_param_id_t) inst->params[op->param_idx].id);
     } else {
@@ -293,12 +293,12 @@ typedef struct {
   evoasm_bitmap512_t mask;
 } evoasm_x64_reg_cover_t;
 
-static void
+static inline void
 evoasm_x64_reg_cover_or_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params,
                              evoasm_bitmap512_t *mask512, bool read) {
   evoasm_bitmap_t *mask = (evoasm_bitmap_t *) mask512;
 
-  if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
+  if(evoasm_unlikely(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS)) {
     unsigned flags;
     if(read) {
       flags = op->read_flags;
@@ -368,7 +368,7 @@ hb:
   }
 }
 
-static void
+static inline void
 evoasm_x64_reg_cover_update(evoasm_x64_reg_cover_t *reg_cover, evoasm_x64_inst_t *inst,
                             evoasm_x64_operand_t *op, evoasm_x64_basic_params_t *params) {
   evoasm_x64_reg_cover_or_mask(inst, op, params, &reg_cover->mask, false);
@@ -413,7 +413,7 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
 
   kernel->n_input_regs = 0;
 
-  if(!preserve_output_regs) {
+  if(evoasm_likely(!preserve_output_regs)) {
     kernel->n_output_regs = 0;
   }
   kernel->x64.maybe_written_flags = 0;
@@ -474,7 +474,7 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
 
       if(op->written && (op->type == EVOASM_X64_OPERAND_TYPE_REG || op->type == EVOASM_X64_OPERAND_TYPE_RM)) {
 
-        if(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS) {
+        if(evoasm_unlikely(op->reg_type == EVOASM_X64_REG_TYPE_RFLAGS)) {
           kernel->x64.maybe_written_flags =
               (kernel->x64.maybe_written_flags | op->maybe_written_flags) & EVOASM_X64_RFLAGS_FLAGS_BITSIZE;
           //kernel->x64.reg_info.reg_info[EVOASM_X64_REG_RFLAGS].written = true;
@@ -487,7 +487,7 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
 
           if(!reg_info->written) {
             reg_info->written = true;
-            if(!preserve_output_regs) {
+            if(evoasm_likely(!preserve_output_regs)) {
               kernel->x64.output_regs[kernel->n_output_regs] = reg_id;
               kernel->n_output_regs++;
             }
@@ -544,7 +544,7 @@ evoasm_kernel_x64_prepare(evoasm_kernel_t *kernel, bool preserve_output_regs) {
   assert(kernel->n_output_regs <= EVOASM_KERNEL_MAX_OUTPUT_REGS);
   assert(kernel->n_input_regs <= EVOASM_KERNEL_MAX_INPUT_REGS);
 
-  if(kernel->n_output_regs == 0) {
+  if(evoasm_unlikely(kernel->n_output_regs == 0)) {
     evoasm_error(EVOASM_ERROR_TYPE_KERNEL, EVOASM_KERNEL_ERROR_CODE_NO_OUTPUT, "no output registers in kernel");
     return false;
   }
