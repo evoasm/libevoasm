@@ -98,14 +98,14 @@ evoasm_x64_init() {
   evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_MXCSR] = 4;
 
 #ifdef EVOASM_X64_ENABLE_AVX512
-  uint64_t avx512 = EVOASM_X64_FEATURE_AVX512F |
-                    EVOASM_X64_FEATURE_AVX512DQ |
-                    EVOASM_X64_FEATURE_AVX512IFMA |
-                    EVOASM_X64_FEATURE_AVX512PF |
-                    EVOASM_X64_FEATURE_AVX512ER |
-                    EVOASM_X64_FEATURE_AVX512CD |
-                    EVOASM_X64_FEATURE_AVX512BW |
-                    EVOASM_X64_FEATURE_AVX512VL;
+  uint64_t avx512 = (1ULL << EVOASM_X64_FEATURE_AVX512F) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512DQ) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512IFMA) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512PF) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512ER) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512CD) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512BW) |
+                    (1ULL << EVOASM_X64_FEATURE_AVX512VL);
 
   if(x64->features & avx512) {
     evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] = 64;
@@ -113,7 +113,7 @@ evoasm_x64_init() {
   }
   else
 #endif
-  if(features & EVOASM_X64_FEATURE_AVX) {
+  if(features & (1ULL << EVOASM_X64_FEATURE_AVX)) {
     evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] = 32;
   } else {
     evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] = 16;
