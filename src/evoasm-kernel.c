@@ -235,7 +235,7 @@ evoasm_kernel_x64_emit_output_store(evoasm_kernel_t *kernel,
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
 
-        if(have_avx) {
+        if(!have_avx) {
           EVOASM_X64_ENC(movdqa_xmmm128_xmm);
         } else {
           EVOASM_X64_ENC(vmovdqa_ymmm256_ymm);
