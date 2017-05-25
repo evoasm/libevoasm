@@ -205,7 +205,22 @@ EVOASM_X64_OPERAND_DEF_BOOL_GETTER(maybe_written)
 
 EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
 
-EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_operand_word_t)
+//EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_operand_word_t)
+
+evoasm_x64_operand_word_t
+evoasm_x64_operand_get_word(evoasm_x64_operand_t *op, evoasm_x64_inst_t *inst, evoasm_x64_params_t *params) {
+  if(params != NULL && inst != NULL && op->word == EVOASM_X64_OPERAND_WORD_LB && !op->implicit &&
+     op->param_idx < inst->n_params &&
+     (
+         (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG0 && params->reg0_high_byte)
+         ||
+         (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG1 && params->reg1_high_byte)
+     )) {
+    return EVOASM_X64_OPERAND_WORD_HB;
+  }
+
+  return (evoasm_x64_operand_word_t) op->word;
+}
 
 EVOASM_X64_OPERAND_DEF_GETTER(type, evoasm_x64_operand_type_t)
 
@@ -315,7 +330,7 @@ evoasm_x64_params_rand(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst, evo
       case EVOASM_X64_PARAM_REG3:
       case EVOASM_X64_PARAM_REG0_HIGH_BYTE:
       case EVOASM_X64_PARAM_REG1_HIGH_BYTE: {
-        evoasm_domain_t *domain = inst->params->domain;
+        evoasm_domain_t *domain = inst->params[i].domain;
         evoasm_param_val_t param_val = evoasm_domain_rand_(domain, prng);
         evoasm_x64_params_set_(params, param_id, param_val);
         break;
@@ -352,13 +367,20 @@ evoasm_x64_params_rand_id_to_idx(evoasm_x64_param_id_t param_id) {
 static evoasm_x64_param_id_t
 evoasm_x64_params_rand_idx_to_id(size_t idx) {
   switch(idx) {
-    case 0: return EVOASM_X64_PARAM_IMM0;
-    case 1: return EVOASM_X64_PARAM_REG0;
-    case 2: return EVOASM_X64_PARAM_REG1;
-    case 3: return EVOASM_X64_PARAM_REG2;
-    case 4: return EVOASM_X64_PARAM_REG3;
-    case 5: return EVOASM_X64_PARAM_REG0_HIGH_BYTE;
-    case 6: return EVOASM_X64_PARAM_REG1_HIGH_BYTE;
+    case 0:
+      return EVOASM_X64_PARAM_IMM0;
+    case 1:
+      return EVOASM_X64_PARAM_REG0;
+    case 2:
+      return EVOASM_X64_PARAM_REG1;
+    case 3:
+      return EVOASM_X64_PARAM_REG2;
+    case 4:
+      return EVOASM_X64_PARAM_REG3;
+    case 5:
+      return EVOASM_X64_PARAM_REG0_HIGH_BYTE;
+    case 6:
+      return EVOASM_X64_PARAM_REG1_HIGH_BYTE;
     default:
       evoasm_assert_not_reached();
   }
@@ -395,8 +417,7 @@ evoasm_x64_params_rand2(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst1, e
 
     if(domains[0][i] == NULL) {
       domain = domains[1][i];
-    }
-    else if(domains[1][i] == NULL) {
+    } else if(domains[1][i] == NULL) {
       domain = domains[0][i];
     } else {
       evoasm_domain_intersect(domains[0][i], domains[1][i], &intersect_domain);
