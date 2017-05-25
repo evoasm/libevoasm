@@ -113,7 +113,7 @@ evoasm_x64_init() {
   }
   else
 #endif
-  if(features & EVOASM_X64_FEATURE_AVX2) {
+  if(features & EVOASM_X64_FEATURE_AVX) {
     evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] = 32;
   } else {
     evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] = 16;
