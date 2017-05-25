@@ -1878,7 +1878,7 @@ evoasm_kernel_init(evoasm_kernel_t *kernel,
 
   size_t output_vals_len = max_tuples * EVOASM_KERNEL_MAX_OUTPUT_REGS;
 
-  EVOASM_TRY_ALLOC(error, calloc, kernel->output_vals, output_vals_len, sizeof(evoasm_kernel_io_val_t));
+  EVOASM_TRY_ALLOC(error, aligned_calloc, kernel->output_vals, EVOASM_KERNEL_IO_ALIGN, output_vals_len, sizeof(evoasm_kernel_io_val_t));
 
   if(!shallow) {
     EVOASM_TRY_ALLOC(error, calloc, kernel->insts, max_kernel_size, sizeof(kernel->insts[0]));
