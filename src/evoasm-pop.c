@@ -467,6 +467,7 @@ evoasm_deme_seed_kernel(evoasm_deme_t *deme, size_t kernel_idx) {
                                                               deme->params->min_kernel_size,
                                                               deme->params->max_kernel_size + 1);
 
+  assert(kernel_size > 0);
   deme->kernels.sizes[kernel_idx] = kernel_size;
 
   for(size_t i = 0; i < kernel_size; i++) {
@@ -547,6 +548,8 @@ evoasm_deme_load_kernel_(evoasm_deme_t *deme,
 
   size_t inst0_off = evoasm_deme_kernels_get_inst_off(kernels, kernel_idx, 0);
   size_t kernel_size = kernels->sizes[kernel_idx];
+
+  assert(kernel_size > 0);
 
   kernel->size = (uint16_t) kernel_size;
 

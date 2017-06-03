@@ -19,9 +19,16 @@
 #include "evoasm-kernel-io.h"
 #include <stdarg.h>
 
+evoasm_kernel_io_t *
+evoasm_kernel_io_alloc() {
+  evoasm_kernel_io_t *kernel_io = evoasm_aligned_alloc(EVOASM_KERNEL_IO_ALIGN, sizeof(evoasm_kernel_io_t));
+  return kernel_io;
+}
 
-EVOASM_DEF_ALLOC_FREE_FUNCS(kernel_io)
-
+void
+evoasm_kernel_io_free(evoasm_kernel_io_t *kernel_io) {
+  evoasm_free(kernel_io);
+}
 
 evoasm_success_t
 evoasm_kernel_io_init(evoasm_kernel_io_t *kernel_io, size_t arity, size_t n_tuples,

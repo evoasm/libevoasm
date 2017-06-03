@@ -19,6 +19,8 @@
 
 #include <stdint.h>
 
+#define EVOASM_KERNEL_IO_ALIGN 32
+
 #define EVOASM_PROGRAM_IO_MAX_ARITY 8
 
 typedef enum {

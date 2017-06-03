@@ -235,7 +235,7 @@ evoasm_kernel_x64_emit_output_store(evoasm_kernel_t *kernel,
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg_id);
         EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, EVOASM_X64_SCRATCH_REG1);
 
-        if(have_avx) {
+        if(!have_avx) {
           EVOASM_X64_ENC(movdqa_xmmm128_xmm);
         } else {
           EVOASM_X64_ENC(vmovdqa_ymmm256_ymm);
@@ -1878,7 +1878,7 @@ evoasm_kernel_init(evoasm_kernel_t *kernel,
 
   size_t output_vals_len = max_tuples * EVOASM_KERNEL_MAX_OUTPUT_REGS;
 
-  EVOASM_TRY_ALLOC(error, calloc, kernel->output_vals, output_vals_len, sizeof(evoasm_kernel_io_val_t));
+  EVOASM_TRY_ALLOC(error, aligned_calloc, kernel->output_vals, EVOASM_KERNEL_IO_ALIGN, output_vals_len, sizeof(evoasm_kernel_io_val_t));
 
   if(!shallow) {
     EVOASM_TRY_ALLOC(error, calloc, kernel->insts, max_kernel_size, sizeof(kernel->insts[0]));
