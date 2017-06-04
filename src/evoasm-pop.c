@@ -223,6 +223,7 @@ evoasm_pop_init_domains(evoasm_pop_t *pop) {
   const evoasm_pop_params_t *params = pop->params;
 
   size_t domains_len = (size_t) (params->n_insts * params->n_params);
+  evoasm_x64_param_id_t empty_domain_param_id;
 
   EVOASM_TRY_ALLOC_N(error, calloc, pop->domains, domains_len);
 
@@ -237,7 +238,7 @@ evoasm_pop_init_domains(evoasm_pop_t *pop) {
   for(size_t i = 0; i < params->n_insts; i++) {
     evoasm_x64_inst_id_t inst_id = (evoasm_x64_inst_id_t) params->inst_ids[i];
     evoasm_x64_inst_t *inst = evoasm_x64_get_inst_(inst_id);
-    evoasm_bitmap_set(pop->insts_bitmap, inst_id);
+    evoasm_bitmap_set_(pop->insts_bitmap, inst_id);
 
     for(size_t j = 0; j < params->n_params; j++) {
       evoasm_domain_t *inst_domain = &pop->domains[i * params->n_params + j];
@@ -247,17 +248,23 @@ evoasm_pop_init_domains(evoasm_pop_t *pop) {
         if(param->id == param_id) {
           evoasm_domain_t *user_domain = params->domains[param_id];
           if(user_domain != NULL) {
-            if(evoasm_domain_is_empty(user_domain)) goto empty_domain;
+            if(evoasm_domain_is_empty(user_domain)) {
+              empty_domain_param_id = (evoasm_x64_param_id_t) param_id;
+              goto empty_domain;
+            }
 
             evoasm_domain_clone(user_domain, &cloned_domain);
             evoasm_domain_intersect(&cloned_domain, param->domain, inst_domain);
-            if(evoasm_domain_is_empty(inst_domain)) goto empty_domain;
+            if(evoasm_domain_is_empty(inst_domain)) {
+              empty_domain_param_id = (evoasm_x64_param_id_t) param_id;
+              goto empty_domain;
+            }
           } else {
             evoasm_domain_clone(param->domain, inst_domain);
           }
 
           if(param_id == EVOASM_X64_PARAM_IMM0 && inst_domain->type == EVOASM_DOMAIN_TYPE_RANGE) {
-            evoasm_bitmap_set(pop->imm_insts_bitmap, i);
+            evoasm_bitmap_set_(pop->imm_insts_bitmap, i);
           }
 
           goto found;
@@ -294,7 +301,7 @@ found:;
     size_t inst_counter = 0;
 
     for(size_t i = 0; i < EVOASM_X64_INST_NONE; i++) {
-      if(evoasm_bitmap_get(pop->insts_bitmap, i)) {
+      if(evoasm_bitmap_get_(pop->insts_bitmap, i)) {
         size_t idx_from = similar_inst_idxs[2 * i];
         size_t idx_to = similar_inst_idxs[2 * i + 1];
 
@@ -302,7 +309,7 @@ found:;
 
         for(size_t j = idx_from; j < idx_to; j++) {
           evoasm_x64_similar_inst_entry_t entry = similar_insts[j];
-          if(evoasm_bitmap_get(pop->insts_bitmap, entry.inst_id)) {
+          if(evoasm_bitmap_get_(pop->insts_bitmap, entry.inst_id)) {
             pop->similar_insts[entry_counter++] = entry;
           }
         }
@@ -325,7 +332,7 @@ error:
 
 empty_domain:
   evoasm_error(EVOASM_ERROR_TYPE_POP, EVOASM_ERROR_CODE_NONE,
-               "Empty domain");
+               "Empty domain (%s)", evoasm_x64_param_get_name_(empty_domain_param_id));
   return false;
 }
 
@@ -341,14 +348,13 @@ evoasm_pop_init(evoasm_pop_t *pop,
   if(!evoasm_pop_params_validate((evoasm_pop_params_t *) params)) goto error;
 
   pop->params = params;
-  pop->n_demes = params->n_demes;
-
+  size_t n_demes = params->n_demes;
 #ifdef _OPENMP
   {
     int max_threads;
     max_threads = omp_get_max_threads();
     omp_set_dynamic(0);
-    int n_threads = EVOASM_MIN(max_threads, pop->n_demes);
+    int n_threads = EVOASM_MIN(max_threads, (int) n_demes);
     omp_set_num_threads(n_threads);
     evoasm_log_info("Using OpenMP with %d threads", n_threads);
   }
@@ -373,11 +379,11 @@ evoasm_pop_init(evoasm_pop_t *pop,
     pop->inst_idx_mapping[params->inst_ids[i]] = (uint16_t) i;
   }
 
-  EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, (size_t) pop->n_demes,
+  EVOASM_TRY_ALLOC(error, aligned_calloc, pop->demes, EVOASM_CACHE_LINE_SIZE, n_demes,
                    sizeof(evoasm_deme_t));
 
 
-  for(size_t i = 0; i < pop->n_demes; i++) {
+  for(size_t i = 0; i < n_demes; i++) {
     evoasm_prng_state_t seed;
 
     for(size_t j = 0; j < EVOASM_PRNG_SEED_LEN; j++) {
@@ -391,6 +397,8 @@ evoasm_pop_init(evoasm_pop_t *pop,
                arch_id,
                &seed);
   }
+
+  pop->n_demes = (uint16_t) n_demes;
 
   return true;
 
@@ -604,7 +612,8 @@ evoasm_deme_eval_kernel(evoasm_deme_t *deme, evoasm_loss_t *ret_loss) {
                          emit_flags)) {
     *ret_loss = INFINITY;
 
-    if(evoasm_last_error.type == EVOASM_ERROR_TYPE_KERNEL && evoasm_last_error.code == EVOASM_KERNEL_ERROR_CODE_NO_OUTPUT) {
+    if(evoasm_last_error.type == EVOASM_ERROR_TYPE_KERNEL &&
+       evoasm_last_error.code == EVOASM_KERNEL_ERROR_CODE_NO_OUTPUT) {
       /* do not abort on this error, instead just let loss be infinity */
       return true;
     }
@@ -871,7 +880,7 @@ evoasm_deme_select(evoasm_deme_t *deme) {
     if(n_iters > deme_size && n_selected == 0) return false;
   }
 
-  return  true;
+  return true;
 }
 
 static void
@@ -960,7 +969,7 @@ evoasm_deme_local_search_imm_operand_x64(evoasm_deme_t *deme,
       uint64_t size = evoasm_range_domain_get_size(range_domain);
       float r1 = (evoasm_prng_randf_(prng) - 0.5f) * 0.1f;
       float r2 = (evoasm_prng_randf_(prng) - 0.5f) * 0.1f;
-      new_param_val = (int32_t) round((double)size * r1 * r2);
+      new_param_val = (int32_t) round((double) size * r1 * r2);
       break;
     }
     case EVOASM_METRIC_HAMMING: {
@@ -1020,12 +1029,12 @@ evoasm_deme_local_search_inst_x64(evoasm_deme_t *deme, size_t kernel_idx, evoasm
 
 #ifdef EVOASM_ENABLE_PARANOID_MODE
     {
-    evoasm_loss_t old_loss = deme->losses.losses[kernel_idx];
-    evoasm_loss_t new_loss;
-    evoasm_deme_load_kernel(deme, kernel_idx);
-    EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &new_loss);
-    assert(old_loss == new_loss);
-  }
+      evoasm_loss_t old_loss = deme->losses.losses[kernel_idx];
+      evoasm_loss_t new_loss;
+      evoasm_deme_load_kernel(deme, kernel_idx);
+      EVOASM_TRY(error, evoasm_deme_eval_kernel, deme, &new_loss);
+      assert(old_loss == new_loss);
+    }
 #endif
 
     bool undo;
@@ -1074,15 +1083,14 @@ evoasm_deme_local_search_kernel_param_x64(evoasm_deme_t *deme, size_t kernel_idx
 
   assert(deme->params->inst_ids[inst_idx] == inst_id);
 
-  if(evoasm_bitmap_get(deme->imm_insts_bitmap, inst_idx)) {
+  if(evoasm_bitmap_get_(deme->imm_insts_bitmap, inst_idx)) {
     float r = evoasm_prng_randf_(prng);
     if(r < 0.6) {
       EVOASM_TRY(error, evoasm_deme_local_search_imm_operand_x64, deme, kernel_idx, params_ptr, inst_idx);
     } else {
       goto change_inst;
     }
-  }
-  else {
+  } else {
 change_inst:
     EVOASM_TRY(error, evoasm_deme_local_search_inst_x64, deme, kernel_idx, inst_id_ptr, params_ptr, inst_idx);
   }

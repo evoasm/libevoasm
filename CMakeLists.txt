@@ -51,7 +51,7 @@ set(SOURCE_FILES
         src/evoasm-signal.c
         src/evoasm-signal.h
         src/evoasm-kernel-io.c
-        src/evoasm-kernel-io.h)
+        src/evoasm-kernel-io.h src/evoasm-bitmap.c)
 
 find_package(Threads)
 find_package(OpenMP)

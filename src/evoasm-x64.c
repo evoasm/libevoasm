@@ -208,18 +208,8 @@ EVOASM_X64_OPERAND_DEF_BOOL_GETTER(mnem)
 //EVOASM_X64_OPERAND_DEF_GETTER(word, evoasm_x64_operand_word_t)
 
 evoasm_x64_operand_word_t
-evoasm_x64_operand_get_word(evoasm_x64_operand_t *op, evoasm_x64_inst_t *inst, evoasm_x64_params_t *params) {
-  if(params != NULL && inst != NULL && op->word == EVOASM_X64_OPERAND_WORD_LB && !op->implicit &&
-     op->param_idx < inst->n_params &&
-     (
-         (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG0 && params->reg0_high_byte)
-         ||
-         (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG1 && params->reg1_high_byte)
-     )) {
-    return EVOASM_X64_OPERAND_WORD_HB;
-  }
-
-  return (evoasm_x64_operand_word_t) op->word;
+evoasm_x64_operand_get_word(evoasm_x64_operand_t *op, evoasm_x64_inst_t *inst, evoasm_x64_params_t *params, bool read) {
+  return evoasm_x64_operand_get_word_(op, inst, params, read);
 }
 
 EVOASM_X64_OPERAND_DEF_GETTER(type, evoasm_x64_operand_type_t)
@@ -386,6 +376,21 @@ evoasm_x64_params_rand_idx_to_id(size_t idx) {
   }
 }
 
+ssize_t
+evoasm_x64_inst_get_operand_idx(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *operand) {
+  ptrdiff_t index = operand - inst->operands;
+  if(index >= 0 && index < inst->n_operands) {
+    return index;
+  }
+  return -1;
+}
+
+bool
+evoasm_x64_operand_word_get_mask(evoasm_x64_operand_word_t operand_word, evoasm_bitmap_t *bitmap) {
+  if(operand_word == EVOASM_X64_OPERAND_WORD_NONE) return false;
+  evoasm_x64_operand_word_get_mask_(operand_word, bitmap);
+  return true;
+}
 
 bool
 evoasm_x64_params_rand2(evoasm_x64_params_t *params, evoasm_x64_inst_t *inst1, evoasm_x64_inst_t *inst2,
@@ -489,6 +494,7 @@ evoasm_x64_get_insts(uint64_t flags, uint64_t features, uint64_t operand_types, 
   size_t len = 0;
   bool include_useless = (flags & EVOASM_X64_INSTS_FLAG_INCLUDE_USELESS) != 0;
   bool only_basic = (flags & EVOASM_X64_INSTS_FLAG_ONLY_BASIC) != 0;
+  uint64_t simd_reg_types = (1ull << EVOASM_X64_REG_TYPE_XMM) | (1ull << EVOASM_X64_REG_TYPE_ZMM) | (1ull << EVOASM_X64_REG_TYPE_MM);
 
   for(size_t i = 0; i < EVOASM_X64_INST_NONE; i++) {
     if(!include_useless && !evoasm_x64_is_useful_inst((evoasm_x64_inst_id_t) i)) {
@@ -515,6 +521,10 @@ evoasm_x64_get_insts(uint64_t flags, uint64_t features, uint64_t operand_types, 
       goto skip;
     }
 
+    bool any_reg_type_matching = false;
+    bool all_reg_types_matching = true;
+    bool all_non_matching_gp = true;
+
     for(size_t j = 0; j < inst->n_operands; j++) {
       evoasm_x64_operand_t *operand = &inst->operands[j];
 
@@ -534,11 +544,27 @@ evoasm_x64_get_insts(uint64_t flags, uint64_t features, uint64_t operand_types, 
         }
 
         if(((1ull << operand->reg_type) & reg_types) == 0) {
-          evoasm_log_debug("skipping inst %s (reg type)\n", evoasm_x64_inst_get_mnem(inst));
-          goto skip;
+          all_reg_types_matching = false;
+          all_non_matching_gp = all_non_matching_gp && (operand->reg_type == EVOASM_X64_REG_TYPE_GP);
+        } else {
+          any_reg_type_matching = true;
         }
       }
     }
+
+    if(reg_types & simd_reg_types) {
+      if(!any_reg_type_matching || !all_non_matching_gp) {
+        evoasm_log_debug("skipping inst %s (no register matches types or non-matching is not general-purpose register)\n", evoasm_x64_inst_get_mnem(inst));
+        goto skip;
+      }
+    } else {
+      if(!all_reg_types_matching) {
+        evoasm_log_debug("skipping inst %s (not all registers match types)\n", evoasm_x64_inst_get_mnem(inst));
+        goto skip;
+      }
+    }
+
+
 
     insts[len++] = (evoasm_x64_inst_id_t) i;
 

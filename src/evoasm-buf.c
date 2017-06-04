@@ -140,13 +140,17 @@ void
 evoasm_buf_log(evoasm_buf_t *buf, evoasm_log_level_t log_level) {
   if(_evoasm_log_level > log_level) return;
 
-  evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Buffer: capa: %zu, pos: %zu, addr: %p\n",
-             buf->capa, buf->pos, (void *) buf->data);
-  for(size_t i = 0; i < buf->pos; i++) {
-    if(i > 0) evoasm_log(log_level, EVOASM_LOG_TAG, "   ");
-    evoasm_log(log_level, EVOASM_LOG_TAG, " %02X ", buf->data[i]);
+#pragma omp critical
+  {
+
+    evoasm_log(log_level, EVOASM_LOG_TAG, "Evoasm::Buffer: capa: %zu, pos: %zu, addr: %p\n",
+               buf->capa, buf->pos, (void *) buf->data);
+    for(size_t i = 0; i < buf->pos; i++) {
+      if(i > 0) evoasm_log(log_level, EVOASM_LOG_TAG, "   ");
+      evoasm_log(log_level, EVOASM_LOG_TAG, " %02X ", buf->data[i]);
+    }
+    evoasm_log(log_level, EVOASM_LOG_TAG, " \n ");
   }
-  evoasm_log(log_level, EVOASM_LOG_TAG, " \n ");
 }
 
 void

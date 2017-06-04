@@ -182,6 +182,7 @@ typedef struct {
   unsigned type: EVOASM_X64_OPERAND_TYPE_BITSIZE;
   unsigned size: EVOASM_X64_OPERAND_SIZE_BITSIZE_OPT;
   unsigned word: EVOASM_X64_OPERAND_WORD_BITSIZE_OPT;
+  unsigned mem_word: EVOASM_X64_OPERAND_WORD_BITSIZE_OPT;
   unsigned reg_type: EVOASM_X64_REG_TYPE_BITSIZE_OPT;
   unsigned param_idx: EVOASM_X64_PARAM_IDX_BITSIZE;
   union {
@@ -301,12 +302,85 @@ evoasm_x64_reg_type_get_bytesize(evoasm_x64_reg_type_t reg_type) {
 static inline uint64_t
 evoasm_x64_rflags_flag_get_mask_(evoasm_x64_rflags_flag_t rflags_flag) {
   switch(rflags_flag) {
-    case EVOASM_X64_RFLAGS_FLAG_OF:return 1u << 11u;
-    case EVOASM_X64_RFLAGS_FLAG_SF: return 1u << 7u;
-    case EVOASM_X64_RFLAGS_FLAG_ZF: return 1u << 6u;
-    case EVOASM_X64_RFLAGS_FLAG_PF: return 1u << 2u;
-    case EVOASM_X64_RFLAGS_FLAG_CF:return 1u << 0u;
-    default: evoasm_assert_not_reached();
+    case EVOASM_X64_RFLAGS_FLAG_OF:
+      return 1u << 11u;
+    case EVOASM_X64_RFLAGS_FLAG_SF:
+      return 1u << 7u;
+    case EVOASM_X64_RFLAGS_FLAG_ZF:
+      return 1u << 6u;
+    case EVOASM_X64_RFLAGS_FLAG_PF:
+      return 1u << 2u;
+    case EVOASM_X64_RFLAGS_FLAG_CF:
+      return 1u << 0u;
+    default:
+      evoasm_assert_not_reached();
+  }
+}
+
+#define EVOASM_X64_OPERAND_GET_WORD \
+  if(read && !op->read) return EVOASM_X64_OPERAND_WORD_NONE; \
+  if(!read && !op->written) return EVOASM_X64_OPERAND_WORD_NONE; \
+  if(params != NULL && inst != NULL && op->word == EVOASM_X64_OPERAND_WORD_LB && !op->implicit && \
+    op->param_idx < inst->n_params && \
+    ( \
+      (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG0 && params->reg0_high_byte) \
+      || \
+      (inst->params[op->param_idx].id == EVOASM_X64_BASIC_PARAM_REG1 && params->reg1_high_byte) \
+    )) { \
+      return EVOASM_X64_OPERAND_WORD_HB; \
+  } \
+  if(!read && op->reg_type == EVOASM_X64_REG_TYPE_GP && op->size == EVOASM_X64_OPERAND_SIZE_32) { \
+    return EVOASM_X64_OPERAND_WORD_LQW; \
+  } \
+  return (evoasm_x64_operand_word_t) op->word;
+
+
+static inline evoasm_x64_operand_word_t
+evoasm_x64_operand_get_word_(evoasm_x64_operand_t *op, evoasm_x64_inst_t *inst, evoasm_x64_params_t *params,
+                             bool read) {
+  EVOASM_X64_OPERAND_GET_WORD
+}
+
+static inline evoasm_x64_operand_word_t
+evoasm_x64_operand_get_word_basic_(evoasm_x64_operand_t *op, evoasm_x64_inst_t *inst, evoasm_x64_basic_params_t *params,
+                             bool read) {
+  EVOASM_X64_OPERAND_GET_WORD
+}
+
+static inline void
+evoasm_x64_operand_word_get_mask_(evoasm_x64_operand_word_t operand_word, evoasm_bitmap_t *bitmap) {
+  switch(operand_word) {
+    case EVOASM_X64_OPERAND_WORD_LB:
+      evoasm_bitmap_or64(bitmap, 0, 0x00000000000000ffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_HB: {
+      evoasm_bitmap_or64(bitmap, 0, 0x000000000000ff00ull);
+      break;
+    }
+    case EVOASM_X64_OPERAND_WORD_W:
+      evoasm_bitmap_or64(bitmap, 0, 0x000000000000ffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_DW:
+      evoasm_bitmap_or64(bitmap, 0, 0x00000000ffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_LQW:
+      evoasm_bitmap_or64(bitmap, 0, 0xffffffffffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_HQW:
+      evoasm_bitmap_or64(bitmap, 1, 0xffffffffffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_DQW:
+      evoasm_bitmap_or64(bitmap, 0, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(bitmap, 1, 0xffffffffffffffffull);
+      break;
+    case EVOASM_X64_OPERAND_WORD_VW:
+      evoasm_bitmap_or64(bitmap, 0, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(bitmap, 1, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(bitmap, 2, 0xffffffffffffffffull);
+      evoasm_bitmap_or64(bitmap, 3, 0xffffffffffffffffull);
+      break;
+    default:
+      evoasm_assert_not_reached();
   }
 }
 
@@ -335,5 +409,5 @@ extern uint8_t evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_NONE];
 
 static inline bool
 evoasm_x64_have_avx() {
- return evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] == 32;
+  return evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_XMM] == 32;
 }
