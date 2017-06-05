@@ -93,6 +93,7 @@ evoasm_x64_init() {
   EVOASM_TRY(cpuid_failed, evoasm_x64_get_features, &features);
 
   evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_GP] = 8;
+  evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_MM] = 8;
   evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_RFLAGS] = 8;
   evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_IP] = 8;
   evoasm_x64_reg_type_bytesizes[EVOASM_X64_REG_TYPE_MXCSR] = 4;
@@ -791,6 +792,34 @@ enc_failed:
   return false;
 }
 
+static evoasm_success_t
+evoasm_x64_emit_gp_load_store(evoasm_reg_id_t reg,
+                              uint8_t *data,
+                              evoasm_x64_reg_id_t tmp_reg,
+                              evoasm_buf_t *buf,
+                              bool load) {
+
+  evoasm_x64_params_t params = {0};
+  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg);
+  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
+  EVOASM_X64_ENC(mov_r64_imm64);
+
+
+  if(load) {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+    EVOASM_X64_ENC(mov_r64_rm64);
+  } else {
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
+    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
+    EVOASM_X64_ENC(mov_rm64_r64);
+  }
+
+  return true;
+
+enc_failed:
+  return false;
+}
 
 static evoasm_success_t
 evoasm_x64_emit_mm_load_store(evoasm_reg_id_t reg,
@@ -813,35 +842,6 @@ evoasm_x64_emit_mm_load_store(evoasm_reg_id_t reg,
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
     EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
     EVOASM_X64_ENC(movq_mmm64_mm);
-  }
-
-  return true;
-
-enc_failed:
-  return false;
-}
-
-static evoasm_success_t
-evoasm_x64_emit_gp_load_store(evoasm_reg_id_t reg,
-                              uint8_t *data,
-                              evoasm_x64_reg_id_t tmp_reg,
-                              evoasm_buf_t *buf,
-                              bool load) {
-
-  evoasm_x64_params_t params = {0};
-  EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, tmp_reg);
-  EVOASM_X64_SET(EVOASM_X64_PARAM_IMM0, (evoasm_param_val_t) (uintptr_t) data);
-  EVOASM_X64_ENC(mov_r64_imm64);
-
-
-  if(load) {
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG0, reg);
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
-    EVOASM_X64_ENC(mov_r64_rm64);
-  } else {
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG_BASE, tmp_reg);
-    EVOASM_X64_SET(EVOASM_X64_PARAM_REG1, reg);
-    EVOASM_X64_ENC(mov_rm64_r64);
   }
 
   return true;
@@ -976,7 +976,8 @@ void
 evoasm_x64_cpu_state_set(evoasm_x64_cpu_state_t *cpu_state, evoasm_x64_reg_id_t reg, const uint64_t *data,
                          size_t len) {
   size_t bytes_len = EVOASM_MIN(evoasm_x64_reg_type_bytesizes[evoasm_x64_get_reg_type(reg)], len * sizeof(uint64_t));
-  memcpy(evoasm_x64_cpu_state_get_reg_data(cpu_state, reg), data, bytes_len);
+  uint64_t *reg_data = evoasm_x64_cpu_state_get_reg_data(cpu_state, reg);
+  memcpy(reg_data, data, bytes_len);
 
   if(reg == EVOASM_X64_REG_RFLAGS) {
     /* Mask away dangerous and useless flags */

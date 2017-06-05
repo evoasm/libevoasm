@@ -87,9 +87,7 @@ evoasm_bitmap_set64(evoasm_bitmap_t *bitmap, size_t idx, uint64_t bits) {
 
 static inline void
 evoasm_bitmap_or64(evoasm_bitmap_t *bitmap, size_t idx, uint64_t bits) {
-  EVOASM_BITMAP_DEF_IDX_VARS(idx);
-  (void) bit_idx;
-  bitmap[ary_idx] |= bits;
+  bitmap[idx] |= bits;
 }
 
 
