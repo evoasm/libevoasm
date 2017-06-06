@@ -131,6 +131,11 @@ evoasm_kernel_get_code(evoasm_kernel_t *kernel, bool frame, const uint8_t **code
   return len;
 }
 
+size_t
+evoasm_kernel_get_reg_input_mapping(evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id) {
+  return kernel->x64.reg_input_mapping[reg_id];
+}
+
 bool
 evoasm_kernel_is_input_reg(evoasm_kernel_t *kernel, evoasm_reg_id_t reg_id) {
   switch(kernel->arch_id) {
@@ -1363,17 +1368,17 @@ evoasm_kernel_assess(evoasm_kernel_t *kernel,
   }
 
 
-  evoasm_kernel_log_dist_mat(kernel,
-                              width,
-                              height,
-                              dist_mat,
-                              matching,
-                              EVOASM_LOG_LEVEL_FATAL);
-
-  evoasm_kernel_log_output(kernel,
-                                    output,
-                                    matching,
-                                    EVOASM_LOG_LEVEL_FATAL);
+//  evoasm_kernel_log_dist_mat(kernel,
+//                              width,
+//                              height,
+//                              dist_mat,
+//                              matching,
+//                              EVOASM_LOG_LEVEL_FATAL);
+//
+//  evoasm_kernel_log_output(kernel,
+//                                    output,
+//                                    matching,
+//                                    EVOASM_LOG_LEVEL_FATAL);
 
 
   loss = evoasm_kernel_calc_loss(kernel, width, height, win_size, dist_mat, matching);
