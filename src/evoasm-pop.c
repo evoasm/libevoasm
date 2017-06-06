@@ -739,7 +739,7 @@ evoasm_pop_get_best_loss(evoasm_pop_t *pop) {
 
 size_t
 evoasm_pop_get_gen_counter(evoasm_pop_t *pop) {
-  return pop->gen_counter;
+  return pop->cur_gen;
 }
 
 static void
@@ -847,14 +847,19 @@ done:
 }
 
 static inline bool
-evoasm_deme_select(evoasm_deme_t *deme) {
+evoasm_deme_select(evoasm_deme_t *deme, bool major) {
   evoasm_deme_losses_t *losses = &deme->losses;
   size_t deme_size = deme->params->deme_size;
 
   EVOASM_MEMSET_N(deme->won_tourns_counters, 0, deme_size);
 
   size_t n_selected = 0;
-  size_t n_to_select = deme_size - deme->params->n_demes;
+  size_t n_to_select = deme_size;
+
+  if(major) {
+    n_to_select -= deme->params->n_demes;
+  }
+
   size_t n_iters = 0;
 
   while(n_selected < n_to_select) {
@@ -871,7 +876,7 @@ evoasm_deme_select(evoasm_deme_t *deme) {
       }
     }
 
-    if(!isinf(min_loss)) {
+    if(!isinf(min_loss) && deme->won_tourns_counters[min_idx] < UINT8_MAX) {
       deme->won_tourns_counters[min_idx]++;
       n_selected++;
     }
@@ -1134,7 +1139,7 @@ error:
 
 
 static void
-evoasm_deme_reproduce(evoasm_deme_t *deme) {
+evoasm_deme_reproduce(evoasm_deme_t *deme, bool major) {
   size_t deme_size = deme->params->deme_size;
   size_t dead_idx = 0;
   size_t surviv_idx = 0;
@@ -1160,17 +1165,23 @@ evoasm_deme_reproduce(evoasm_deme_t *deme) {
     dead_idx++;
   }
 
+  for(size_t i = 0; i < deme_size; i++) {
+    if(deme->won_tourns_counters[i] == 1) {
+      evoasm_deme_mutate_kernel(deme, i);
+    }
+  }
+
   // store immigration target indexes
   {
-
-    while(dead_idx < deme_size && deme->won_tourns_counters[dead_idx] != 0) dead_idx++;
-    size_t j = 0;
-    for(size_t i = dead_idx; i < deme_size; i++) {
-      if(deme->won_tourns_counters[i] == 0) {
-        deme->immig_idxs[j++] = (uint16_t) i;
+    if(major) {
+      size_t j = 0;
+      for(size_t i = dead_idx; i < deme_size; i++) {
+        if(deme->won_tourns_counters[i] == 0) {
+          deme->immig_idxs[j++] = (uint16_t) i;
+        }
       }
+      assert(j == deme->params->n_demes);
     }
-    assert(j == deme->params->n_demes);
   }
 
 }
@@ -1237,7 +1248,7 @@ evoasm_pop_calc_summary(evoasm_pop_t *pop, evoasm_loss_t *summary) {
 
 static bool
 evoasm_deme_local_search(evoasm_deme_t *deme) {
-  if(deme->params->n_local_search_iters == 0 || deme->pop->gen_counter < 2 * deme->params->n_minor_gens) {
+  if(deme->params->n_local_search_iters == 0 || deme->pop->cur_gen < 2 * deme->params->n_minor_gens) {
     return true;
   }
 
@@ -1280,14 +1291,18 @@ evoasm_deme_immigrate_elite(evoasm_deme_t *deme) {
 
 static evoasm_success_t
 evoasm_deme_next_gen(evoasm_deme_t *deme, bool major) {
-  if(evoasm_deme_select(deme)) {
+  if(evoasm_deme_select(deme, major)) {
 
     if(major) {
       evoasm_deme_save_elite(deme);
-      evoasm_deme_immigrate_elite(deme);
+      size_t cur_gen = deme->pop->cur_gen;
+      if(cur_gen - deme->last_migr_gen >= deme->params->migr_freq) {
+        evoasm_deme_immigrate_elite(deme);
+        deme->last_migr_gen = (uint16_t) cur_gen;
+      }
     }
 
-    evoasm_deme_reproduce(deme);
+    evoasm_deme_reproduce(deme, major);
     EVOASM_TRY(error, evoasm_deme_local_search, deme);
   } else {
     evoasm_log_info("reseeding deme %d", deme->idx);
@@ -1323,7 +1338,7 @@ evoasm_pop_next_gen_major(evoasm_pop_t *pop) {
     }
   }
 
-  pop->gen_counter++;
+  pop->cur_gen++;
 
   return retval;
 }
@@ -1368,7 +1383,7 @@ evoasm_pop_run_minor_gens(evoasm_pop_t *pop) {
     }
   }
 
-  pop->gen_counter = (uint16_t) (pop->gen_counter + n_minor_gens);
+  pop->cur_gen = (uint16_t) (pop->cur_gen + n_minor_gens);
 
   return retval;
 }
@@ -1382,7 +1397,7 @@ evoasm_pop_eval(evoasm_pop_t *pop) {
     goto error;
   }
 
-  if(pop->gen_counter > 0) {
+  if(pop->cur_gen > 0) {
     EVOASM_TRY(error, evoasm_pop_run_minor_gens, pop);
   }
 

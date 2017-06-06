@@ -59,7 +59,7 @@ struct evoasm_deme_s {
   evoasm_deme_kernels_t best_kernels;
 
   uint16_t *immig_idxs;
-  uint16_t *won_tourns_counters;
+  uint8_t *won_tourns_counters;
   uint64_t *error_counters;
   struct evoasm_pop_s *pop;
   evoasm_domain_t *domains;
@@ -68,6 +68,7 @@ struct evoasm_deme_s {
   uint16_t *inst_idx_mapping;
   evoasm_x64_similar_inst_entry_t *similar_insts;
   uint16_t *similar_inst_idxs;
+  uint16_t last_migr_gen;
 } evoasm_aligned(EVOASM_CACHE_LINE_SIZE) ;
 
 typedef struct evoasm_deme_s evoasm_deme_t;
@@ -81,7 +82,7 @@ typedef struct evoasm_pop_s {
   evoasm_deme_t *demes;
   evoasm_loss_t *summary_losses;
   bool seeded : 1;
-  uint16_t gen_counter;
+  uint16_t cur_gen;
   uint16_t n_demes;
   evoasm_x64_similar_inst_entry_t *similar_insts;
   uint16_t *similar_inst_idxs;

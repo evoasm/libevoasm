@@ -30,6 +30,7 @@ evoasm_pop_params_init(evoasm_pop_params_t *params) {
   params->n_local_search_iters = 0;
   params->n_minor_gens = 5;
   params->tourn_size = 3;
+  params->migr_freq = 128;
 }
 
 #define EVOASM_POP_PARAMS_DEF_GETTER_SETTER(field, type) \
