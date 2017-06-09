@@ -847,17 +847,23 @@ done:
 }
 
 static inline bool
-evoasm_deme_select(evoasm_deme_t *deme, bool major) {
+evoasm_deme_select(evoasm_deme_t *deme, bool major, bool migr) {
   evoasm_deme_losses_t *losses = &deme->losses;
   size_t deme_size = deme->params->deme_size;
 
   EVOASM_MEMSET_N(deme->won_tourns_counters, 0, deme_size);
 
   size_t n_selected = 0;
+  /* - 1 for the elite (currently only a single individual) */
   size_t n_to_select = deme_size;
 
   if(major) {
-    n_to_select -= deme->params->n_demes;
+    /* on major we might */
+    if(migr) {
+      n_to_select -= (deme->params->n_demes);
+    } else {
+      n_to_select--;
+    }
   }
 
   size_t n_iters = 0;
@@ -1139,7 +1145,7 @@ error:
 
 
 static void
-evoasm_deme_reproduce(evoasm_deme_t *deme, bool major) {
+evoasm_deme_reproduce(evoasm_deme_t *deme, bool major, bool migr) {
   size_t deme_size = deme->params->deme_size;
   size_t dead_idx = 0;
   size_t surviv_idx = 0;
@@ -1172,8 +1178,8 @@ evoasm_deme_reproduce(evoasm_deme_t *deme, bool major) {
   }
 
   // store immigration target indexes
-  {
-    if(major) {
+  if(major) {
+    if(migr) {
       size_t j = 0;
       for(size_t i = dead_idx; i < deme_size; i++) {
         if(deme->won_tourns_counters[i] == 0) {
@@ -1181,6 +1187,12 @@ evoasm_deme_reproduce(evoasm_deme_t *deme, bool major) {
         }
       }
       assert(j == deme->params->n_demes);
+    } else {
+      /* we should have a single dead left, which is later filled
+       * with the elite individual */
+      while(dead_idx < deme_size && deme->won_tourns_counters[dead_idx] != 0) dead_idx++;
+      assert(dead_idx < deme_size);
+      deme->immig_idxs[deme->idx] = (uint16_t) dead_idx;
     }
   }
 
@@ -1291,18 +1303,20 @@ evoasm_deme_immigrate_elite(evoasm_deme_t *deme) {
 
 static evoasm_success_t
 evoasm_deme_next_gen(evoasm_deme_t *deme, bool major) {
-  if(evoasm_deme_select(deme, major)) {
+  size_t cur_gen = deme->pop->cur_gen;
+  bool migr = (cur_gen - deme->last_migr_gen) >= deme->params->migr_freq;
+
+  if(evoasm_deme_select(deme, major, migr)) {
+    evoasm_deme_reproduce(deme, major, migr);
 
     if(major) {
-      evoasm_deme_save_elite(deme);
-      size_t cur_gen = deme->pop->cur_gen;
-      if(cur_gen - deme->last_migr_gen >= deme->params->migr_freq) {
+      if(migr) {
         evoasm_deme_immigrate_elite(deme);
         deme->last_migr_gen = (uint16_t) cur_gen;
+      } else {
+        evoasm_deme_save_elite(deme);
       }
     }
-
-    evoasm_deme_reproduce(deme, major);
     EVOASM_TRY(error, evoasm_deme_local_search, deme);
   } else {
     evoasm_log_info("reseeding deme %d", deme->idx);
