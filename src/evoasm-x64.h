@@ -348,7 +348,7 @@ evoasm_x64_operand_get_word_basic_(evoasm_x64_operand_t *op, evoasm_x64_inst_t *
 }
 
 static inline void
-evoasm_x64_operand_word_get_mask_(evoasm_x64_operand_word_t operand_word, evoasm_bitmap_t *bitmap) {
+evoasm_x64_operand_word_or_mask_(evoasm_x64_operand_word_t operand_word, evoasm_bitmap_t *bitmap) {
   switch(operand_word) {
     case EVOASM_X64_OPERAND_WORD_LB:
       evoasm_bitmap_or64(bitmap, 0, 0x00000000000000ffull);
@@ -380,7 +380,7 @@ evoasm_x64_operand_word_get_mask_(evoasm_x64_operand_word_t operand_word, evoasm
       evoasm_bitmap_or64(bitmap, 3, 0xffffffffffffffffull);
       break;
     default:
-      evoasm_assert_not_reached();
+      break;
   }
 }
 

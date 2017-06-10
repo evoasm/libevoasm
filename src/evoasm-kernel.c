@@ -316,15 +316,16 @@ evoasm_x64_reg_cover_or_mask(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *op, 
         evoasm_bitmap_or64(mask, 0, evoasm_x64_rflags_flag_get_mask_(flag));
       }
     }
-    return;
   } else {
+    /* do not mask maybe writes as the bits in the mask might not actually be written */
     if(!read && op->maybe_written) {
       return;
     }
+
+    evoasm_x64_operand_word_t op_word = evoasm_x64_operand_get_word_basic_(op, inst, params, read);
+    evoasm_x64_operand_word_or_mask_(op_word, mask);
   }
 
-  evoasm_x64_operand_word_t op_word = evoasm_x64_operand_get_word_basic_(op, inst, params, read);
-  evoasm_x64_operand_word_get_mask_(op_word, mask);
 }
 
 static inline void

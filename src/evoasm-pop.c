@@ -1177,6 +1177,26 @@ evoasm_deme_reproduce(evoasm_deme_t *deme, bool major, bool migr) {
     }
   }
 
+#ifdef EVOASM_ENABLE_PARANOID_MODE
+  {
+    size_t n_dead_rem = 0;
+    for(size_t i = dead_idx; i < deme_size; i++) {
+      if(deme->won_tourns_counters[i] == 0) n_dead_rem++;
+    }
+
+    if(major) {
+      if(migr) {
+        assert(n_dead_rem == deme->params->n_demes);
+      } else {
+        assert(n_dead_rem == 1);
+      }
+    } else {
+      assert(n_dead_rem == 0);
+    }
+  };
+#endif
+
+
   // store immigration target indexes
   if(major) {
     if(migr) {
@@ -1192,9 +1212,11 @@ evoasm_deme_reproduce(evoasm_deme_t *deme, bool major, bool migr) {
        * with the elite individual */
       while(dead_idx < deme_size && deme->won_tourns_counters[dead_idx] != 0) dead_idx++;
       assert(dead_idx < deme_size);
+
       deme->immig_idxs[deme->idx] = (uint16_t) dead_idx;
     }
   }
+
 
 }
 

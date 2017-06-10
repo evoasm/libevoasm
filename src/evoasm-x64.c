@@ -389,7 +389,7 @@ evoasm_x64_inst_get_operand_idx(evoasm_x64_inst_t *inst, evoasm_x64_operand_t *o
 bool
 evoasm_x64_operand_word_get_mask(evoasm_x64_operand_word_t operand_word, evoasm_bitmap_t *bitmap) {
   if(operand_word == EVOASM_X64_OPERAND_WORD_NONE) return false;
-  evoasm_x64_operand_word_get_mask_(operand_word, bitmap);
+  evoasm_x64_operand_word_or_mask_(operand_word, bitmap);
   return true;
 }
 
